@@ -1,0 +1,43 @@
+.contenedorrealizarpagos {
+  background-color: white;
+  opacity: 0.85;
+  border-radius: 10px;
+  padding: 20px;
+  height: 90vh;
+  width: 70vw;
+  margin-left: 40px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-start; */
+  align-items: center;
+}
+
+.cajaspago{
+  width: 100%;
+  border: 1px solid;
+  border-radius: 10px;
+  color:black;
+  outline: none;
+  height:25px;
+}
+
+.encabezadopagos{
+  width: 300px;
+  font-size: large;
+  text-align: center;
+}
+
+.selectcaso{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inputpago{
+  display: flex;
+  flex-direction: column;
+}
+/* .labelpagos{
+  margin-bottom: 10px;
+} */

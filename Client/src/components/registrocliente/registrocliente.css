@@ -1,0 +1,70 @@
+.contenedorregistro{
+  background-color: white;
+  opacity: 0.85;
+  border-radius: 10px;
+  padding: 10px;
+  height: 90vh;
+  width: 70vw;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 40px;
+}
+
+.comentarios {
+  text-align: center;
+  font-size: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+}
+
+.ciudad{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.honorarios {
+  text-align:flex-start;
+  font-size: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* .cajaregistrocliente {
+  height: 25px;
+  width: 150px;
+  border-radius: 5px;
+  margin-right: 40px;
+} */
+
+.cajaregistrocliente{
+   width: 50%;
+   padding: 10px;
+   margin: 10px;
+   border: 1px solid black; /* Color del borde */
+   border-radius: 5px;
+   background-color: transparent; /* Fondo transparente */
+   color: black; /* Color del texto */
+   font-family: "Outfit", sans-serif; /* Estilo de fuente */
+   outline: none; /* Elimina el contorno al seleccionar el campo */
+ }
+
+ .labelregistrodecliente {
+  height: 25px;
+  width: 250px;
+  font-size: 100;
+  padding-left: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  text-align: start;
+  align-self: center;
+}
+
+.inforegistrocliente{
+display: flex;
+flex-direction: row;
+}
+

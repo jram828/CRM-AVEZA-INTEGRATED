@@ -1,0 +1,83 @@
+.contenedorcrearcaso {
+  background-color: white;
+  opacity: 0.85;
+  border-radius: 10px;
+  padding: 10px;
+  height: 90vh;
+  width: 70vw;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 40px;
+}
+
+.comentarios {
+  text-align: center;
+  font-size: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+}
+
+.encabezado {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  height: fit-content;
+  margin: 10px;
+}
+
+.labelcrearcaso {
+  height: 30px;
+  width: 100%;
+  font-size: medium;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  text-align: start;
+  justify-content: flex-end;
+  align-content: center;
+  margin-left: 50px;
+}
+
+.cajacrearcaso {
+  width: 100%;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.inputcrearcaso {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.botonescrearcaso {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.datoscrearcaso {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 80vh;
+  width: 70vw;
+}
+
+.textareacrear {
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+}

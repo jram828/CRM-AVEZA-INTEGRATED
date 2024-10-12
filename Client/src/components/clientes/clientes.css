@@ -1,0 +1,28 @@
+.contenedorlitigios{
+  background-color: white;
+  opacity: 0.85;
+  border-radius: 10px;
+  padding: 10px;
+  height: 90vh;
+  width: 70vw;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.encabezado{
+  width: 300px;
+}
+
+.registrocliente{
+  display: flex;
+  flex-direction: row;
+}
+
+   .divclientes{
+    display: grid;
+    justify-content: flex-start;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(20px, auto);
+   }

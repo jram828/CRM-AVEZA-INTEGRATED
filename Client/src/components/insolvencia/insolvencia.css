@@ -1,0 +1,170 @@
+.contenedorinsolvencia {
+  background-color: white;
+  opacity: 0.85;
+  border-radius: 10px;
+  padding: 10px;
+  height: 98%;
+  width: 70vw;
+  margin: 40px 0px 40px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.infodetaildeudas {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.infodetailpropuesta {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.infodetailingresos {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.infotextarea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.infotodosinsolvencia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.infotodosingresos {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.resultadostodos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resultadoingresos {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.resultadogastos {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cajadeudas {
+  width: 50%;
+  padding: 2px;
+  margin: 10px;
+  border: 1px solid black; /* Color del borde */
+  border-radius: 5px;
+  background-color: transparent; /* Fondo transparente */
+  color: black; /* Color del texto */
+  font-family: "Outfit", sans-serif; /* Estilo de fuente */
+  outline: none; /* Elimina el contorno al seleccionar el campo */
+  height: 20px;
+}
+
+.cajaingresos {
+  width: 50%;
+  padding: 2px;
+  margin: 10px;
+  border: 1px solid black; /* Color del borde */
+  border-radius: 5px;
+  background-color: transparent; /* Fondo transparente */
+  color: black; /* Color del texto */
+  font-family: "Outfit", sans-serif; /* Estilo de fuente */
+  outline: none; /* Elimina el contorno al seleccionar el campo */
+  height: 20px;
+}
+
+.labeldetaildeudas {
+  height: 25px;
+  width: 250px;
+  font-size: 100;
+  padding-left: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  text-align: start;
+  align-self: center;
+}
+
+.labelingresos {
+  height: 25px;
+  width: 250px;
+  font-size: 100;
+  padding-left: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  text-align: start;
+  align-self: center;
+}
+
+.informationTable {
+  border-collapse: collapse;
+  margin: 20px;
+}
+
+.tableCell {
+  border: 1px solid black;
+  margin: 0;
+  padding: 5px 10px;
+  width: "max-content";
+  min-width: "150px";
+  text-align: center;
+}
+
+.textareainsolvencia {
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  /* margin: 10px; */
+  font-size: medium;
+}
+
+.formpropuesta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formdeudas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formingresos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formgastos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.infoseccion{
+  margin: 10px;
+  border: 1px solid black; /* Color del borde */
+  border-radius: 5px;
+    display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+}

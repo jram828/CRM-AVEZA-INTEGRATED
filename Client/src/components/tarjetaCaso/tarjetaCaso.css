@@ -1,0 +1,36 @@
+
+.contenedortarjetacaso{
+  background-color: lightgray;
+  opacity: 0.85;
+  border-radius: 8px;
+  padding: 5px;
+  margin: 10px;
+  min-width:300px;
+  min-height: 100px;
+}
+
+.infocasotarjeta{
+    display: flex;
+    flex-direction: row;
+}
+
+.labelcaso{
+    font-size: medium;
+    font-weight: bold;
+    min-width: 100px;
+    margin: 5px;
+    align-content: center;
+    height: 30px;
+}
+
+.nombrecaso{
+    font-size: medium;
+    font-weight:normal;
+    align-content: center;
+    min-width: 170px;
+}
+
+.link{
+    text-decoration: none;
+    color: black;
+}

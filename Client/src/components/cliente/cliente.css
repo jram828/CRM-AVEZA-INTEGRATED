@@ -1,0 +1,34 @@
+.cardcliente{
+  display: flex;
+  flex-direction: column;
+  background-color: lightgray;
+  opacity: 0.85;
+  border-radius: 8px;
+  padding: 5px;
+   margin: 10px;
+  min-width:300px;
+  min-height: 75px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.titulocard{
+  font-size: large;
+  color: black;
+}
+
+.link{
+  text-decoration: none;
+}
+
+.paginaclientes{
+  border-radius: 3px;
+  padding: 3px;
+  margin: 8px;
+  background-color: rgb(81, 115, 238, 0.75);
+  color: black;
+  /* height: 25x; */
+  min-width: 90px;
+  font-weight: bold;
+}

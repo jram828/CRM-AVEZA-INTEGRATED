@@ -1,0 +1,97 @@
+.containerDiary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  opacity: 0.9;
+  border-radius: 10px;
+  padding: 10px;
+  height: 90vh;
+  width: 78vw;
+  justify-content: flex-start;
+}
+
+.agenda {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.calendario {
+  display: flex;
+  flex-direction: row;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  min-height: 80vh;
+  justify-content: flex-start;
+}
+
+.formCita {
+  flex: 1;
+  margin: 20px;
+  margin-top: 100px;
+}
+
+.containerCita {
+  /* border-color: black; */
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: lightgrey;
+  align-items: center;
+  margin-left: 25px;
+  padding: 10px;
+  opacity: 0.8;
+}
+
+.labelCrearCita{
+    font-size: medium;
+    font-weight: bold;
+    min-width: 100px;
+    margin: 5px;
+    align-items: center;
+    height: 30px;
+    text-align: left;
+}
+
+
+.inputCrearCita {
+  min-height: 22px;
+  width: 180px;
+  border-radius: 5px;
+  /* border-color: 1px solid black; */
+  color: black;
+}
+
+time {
+  width: 250px;
+  color: black;
+  height: 60px;
+}
+
+.tituloCita{
+  font-size: large;
+  font-weight: bold;
+}
+
+.infoCrearCita{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.encabezado{
+  font-size: large;
+  font-weight: bold;
+}
+
+.selectcita {
+   width: 80%;
+   padding: 10px;
+   margin: 10px;
+   border: 1px solid black; /* Color del borde */
+   border-radius: 5px;
+   background-color: transparent; /* Fondo transparente */
+   color: black; /* Color del texto */
+   font-family: "Outfit", sans-serif; /* Estilo de fuente */
+   outline: none; /* Elimina el contorno al seleccionar el campo */
+ }

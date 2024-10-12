@@ -27,7 +27,7 @@ server.use("/crmAveza", router); //Manejador de rutas 'REST'
 
 server.use(express.static(path.join(dirname, 'dist')))
 
-server.get('*', (req, res)=>{
+server.get('/', (req, res)=>{
     res.sendFile(path.join(dirname, 'dist, index.html'))
 })
 

@@ -1,7 +1,7 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
-import { useSelector } from "react-redux";
+import { acreedores } from "../../Server/utils/listaAcreedores";
 
 export const generarSolicitud = (
   ingresos,
@@ -13,7 +13,8 @@ export const generarSolicitud = (
   deudas,
   propuestas,
   motivos,
-  cliente
+  cliente, 
+  listaAcreedores
 ) => {
   console.log("Datos solicitud:", {
     ingresos,
@@ -26,7 +27,8 @@ export const generarSolicitud = (
     propuestas,
     motivos,
     cliente,
-    ciudad: cliente.Ciudads[0].nombre_ciudad
+    ciudad: cliente.Ciudads[0].nombre_ciudad,
+    listaAcreedores
   });
   const docs = document.getElementById("doc");
 
@@ -62,6 +64,7 @@ export const generarSolicitud = (
       procesos: procesos,
       obligaciones: obligaciones,
       sociedades: sociedades,
+      acreedores: listaAcreedores,
       deudas: deudas,
       propuestas: propuestas,
       energia: Number(gastos[0].energia).toLocaleString(),

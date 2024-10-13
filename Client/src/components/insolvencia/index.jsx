@@ -44,6 +44,7 @@ const Insolvencia = () => {
   const procesosObj = [];
   const sociedadesObj = [];
   const obligacionesObj = [];
+  const listaAcreedoresObj = [];
 
   const initGastos = {
     energia: "",
@@ -95,6 +96,14 @@ const Insolvencia = () => {
         motivos:"",
       };
 
+      const datosAcreedorInit = {
+        direccion: "",
+        email: "",
+        nombre: "",
+        nit: "",
+      };
+    
+
   const [ingreso, setIngreso] = useState(initIngreso);
   const [ingresos, setIngresos] = useState(ingresosObj);
   const [gasto, setGasto] = useState(initGastos);
@@ -113,10 +122,16 @@ const Insolvencia = () => {
   const [propuesta, setPropuesta] = useState(initPropuesta);
   const [acreedorFilt, setAcreedorFilt] = useState(initAcreedorFilt);
    const [motivos, setMotivos] = useState(initMotivos);
+  //  const [datosAcreedor, setDatosAcreedor] = useState(initGastos);
+   const [listaAcreedores, setListaAcreedores] = useState(listaAcreedoresObj);
    
   const addDeuda = (deuda) => {
     setDeudas([...deudas, deuda]);
     setDatosDeuda(initDeuda);
+  };
+
+  const addAcreedor = (acreedor) => {
+    setListaAcreedores([...listaAcreedores, acreedor]);
   };
 
   const addPropuesta = (propuesta) => {
@@ -160,6 +175,11 @@ const Insolvencia = () => {
     // )
     //   return;
     addDeuda(datosDeuda);
+    const filteredAcreedor = listaacreedores.filter(acreedor =>
+      acreedor.nombre.toLowerCase().includes(datosDeuda.acreedor.toLowerCase())
+    );
+    addAcreedor(filteredAcreedor);
+
     try {
       // await postDeuda(deudas);
     } catch (error) {
@@ -406,7 +426,8 @@ const Insolvencia = () => {
       deudas,
       propuestas,
       motivos,
-      cliente
+      cliente,
+      listaAcreedores
     );
   };
 

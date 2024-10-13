@@ -1,16 +1,16 @@
 import "./detailCasos.css";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { clienteActual, deleteCaso, getCasos, modificarCaso } from "../../redux/actions";
+import { useDispatch } from "react-redux";
+import { clienteActual, deleteCaso, finCaso, modificarCaso } from "../../redux/actions";
 import { Button, Buttonf } from "../Mystyles";
 import { getCasoById } from "../../handlers/detailCaso";
 import { numeroALetras } from "../convertiraletras";
 import { generarDocumentos } from "../../handlers/generarDocumentos";
-import { generarSolicitud } from "../../handlers/generarSolicitud";
+// import { generarSolicitud } from "../../handlers/generarSolicitud";
 
 function DetailCasos() {
-  const user = JSON.parse(localStorage.getItem("loggedUser"));
+  // const user = JSON.parse(localStorage.getItem("loggedUser"));
   const { id } = useParams(); // Obtener el id de los parámetros de la ruta
   console.log("Id detail:", id);
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ function DetailCasos() {
     radicado: "",
   });
 
-  const caso = useSelector((state) => state.caso); // Asumimos que el detalle del caso se almacena en 'caso'
+  // const caso = useSelector((state) => state.caso); // Asumimos que el detalle del caso se almacena en 'caso'
 
   const formatDate = (dateString) => {
     if (!dateString) return ""; // Devuelve una cadena vacía si dateString es nulo o indefinido
@@ -99,8 +99,8 @@ function DetailCasos() {
 
   const handleUpdateCaso = (e) => {
     e.preventDefault();
-    dispatch(modificarCaso(userDataDetail));
-    window.localStorage.setItem("caso", JSON.stringify(userDataDetail));
+    dispatch(modificarCaso(casoDetail));
+    window.localStorage.setItem("caso", JSON.stringify(casoDetail));
     // window.location.reload();
   };
 

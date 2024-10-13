@@ -18,7 +18,6 @@ import Clientes from "./components/clientes/index.jsx";
 import Contrato from "./components/contrato/index.jsx";
 import ConfigurarRecordatorios from "./components/configurarrecordatorios/index.jsx";
 import AgendarCitas from "./components/agendarcitas/index.jsx";
-import Financiamiento from "./components/financiamiento/index.jsx";
 import RegistroCliente from "./components/registrocliente/index.jsx";
 import CrearUsuario from "./components/crearusuario/index.jsx";
 import RecordatorioContrasena from "./components/recordatoriocontrasena/index.jsx";
@@ -29,7 +28,7 @@ import Autorizacion from "./components/autorizacion/index.jsx";
 import Insolvencia from "./components/insolvencia/index.jsx";
 import Poder from "./components/poder/index.jsx";
 import WordToHtml from "./components/wordtohtml/index.jsx";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { setAuth } from "./redux/actions.js";
 import Abogados from "./components/abogados/index.jsx";
 import RegistroAbogado from "./components/registroabogado/index.jsx";
@@ -53,7 +52,7 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  // const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
 
   //Funcion para verificar datos de ingreso
@@ -95,10 +94,10 @@ function App() {
     navigate("/");
   };
 
-  const sendSMS = () => {
-    // setAccess(false);
-    navigate("/sms");
-  };
+  // const sendSMS = () => {
+  //   // setAccess(false);
+  //   navigate("/sms");
+  // };
 
   // const onClose = (id) => {
   //   const charactersFilter = characters.filter(

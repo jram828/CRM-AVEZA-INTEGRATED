@@ -31,7 +31,7 @@ server.get('/', (req, res)=>{
     res.sendFile(path.join(dirname, 'dist, index.html'))
 })
 
-server.use((err, req, res, next)=>{          //Manejador de errores
+server.use((err, req, res)=>{          //Manejador de errores
     const status = err.status ||500
     const message = err.message || 'Error'
     console.error('Error: ', err)

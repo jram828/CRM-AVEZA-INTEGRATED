@@ -22,7 +22,7 @@ function Casos() {
   const pages = useSelector((state) => state.pages);
   const [filterApplied, setFilterApplied] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchPerformed, setSearchPerformed] = useState(false);
+  // const [searchPerformed, setSearchPerformed] = useState(false);
   const [order, setOrder] = useState("");
 
   useEffect(() => {
@@ -56,24 +56,24 @@ function Casos() {
     dispatch(getCasos(1));
     localStorage.removeItem("casosFilter");
     setFilterApplied(false);
-    setSearchPerformed(false);
+    // setSearchPerformed(false);
   };
 
   const handleFilter = (filtro, inputValue) => {
     dispatch(filterCasos(filtro, inputValue));
     localStorage.setItem("casosFilter", JSON.stringify({ filtro, inputValue }));
     setFilterApplied(true);
-    setSearchPerformed(true);
+    // setSearchPerformed(true);
   };
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
-  const handleOrderChange = (newOrder) => {
-    setOrder(newOrder);
-    setCurrentPage(1);
-  };
+  // const handleOrderChange = (newOrder) => {
+  //   setOrder(newOrder);
+  //   setCurrentPage(1);
+  // };
 
   const isLoading = !casos || !casos.datosPagina;
 

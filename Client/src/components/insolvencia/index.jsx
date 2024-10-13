@@ -3,17 +3,13 @@ import "../../App.css";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "../insolvencia/insolvencia.css";
-import { printDivContent } from "../../utils/printDivContent";
-import { Link } from "react-router-dom";
 import { Button } from "../Mystyles";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarSolicitud } from "../../handlers/generarSolicitud.jsx";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);
-
   console.log("Cliente insolvencia:", cliente);
-  const acreedores = useSelector((state) => state.acreedores);
 
   const deudasObj = [];
   const propuestasObj = [];
@@ -96,13 +92,6 @@ const Insolvencia = () => {
         motivos:"",
       };
 
-      const datosAcreedorInit = {
-        direccion: "",
-        email: "",
-        nombre: "",
-        nit: "",
-      };
-    
 
   const [ingreso, setIngreso] = useState(initIngreso);
   const [ingresos, setIngresos] = useState(ingresosObj);

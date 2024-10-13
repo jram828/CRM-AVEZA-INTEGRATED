@@ -1,7 +1,6 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
-import { acreedores } from "../../Server/utils/listaAcreedores";
 
 export const generarSolicitud = (
   ingresos,

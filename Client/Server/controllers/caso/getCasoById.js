@@ -13,6 +13,11 @@ const getCasoId = async (id) => {
       {
         model: Cliente,
         attributes: ["apellidos", "nombres", "direccion", "celular","email"],
+        include: [
+          {
+            model: Ciudad,
+            attributes: ["nombre_ciudad","codigo_ciudad"]}
+          ]
       },
       {
         model: Abogado,

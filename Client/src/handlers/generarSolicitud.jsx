@@ -50,7 +50,7 @@ export const generarSolicitud = (
     // !Reemplazar contenido de array en una tabla
     doc.render({
       nombre: cliente.nombres,
-      appellido: cliente.apellidos,
+      apellido: cliente.apellidos,
       celular: cliente.celular,
       cedula: cliente.cedula,
       direccion: cliente.direccion,

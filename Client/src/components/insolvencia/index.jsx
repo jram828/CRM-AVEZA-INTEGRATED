@@ -1,6 +1,6 @@
 import "../../App.css";
-import logo from "../../img/logoAveza.png";
-import React, { useEffect, useState } from "react";
+// import logo from "../../img/logoAveza.png";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "../insolvencia/insolvencia.css";
 import { printDivContent } from "../../utils/printDivContent";
@@ -11,6 +11,8 @@ import { generarSolicitud } from "../../handlers/generarSolicitud.jsx";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);
+
+  console.log("Cliente insolvencia:", cliente);
   const acreedores = useSelector((state) => state.acreedores);
 
   const deudasObj = [];
@@ -372,14 +374,14 @@ const Insolvencia = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleSearch();
+      // handleSearch();
     }
   };
 
-  const formatInputValue = (value) => {
-    if (!value) return "";
-    return value.toUpperCase(); //.charAt(0).toUpperCase() + value.slice(1); //.toLowerCase();
-  };
+  // const formatInputValue = (value) => {
+  //   if (!value) return "";
+  //   return value.toUpperCase(); //.charAt(0).toUpperCase() + value.slice(1); //.toLowerCase();
+  // };
 
   useEffect(() => {
     // const obtenerAcreedores = async () => {
@@ -403,8 +405,8 @@ const Insolvencia = () => {
       sociedades,
       deudas,
       propuestas,
-      motivos
-      
+      motivos,
+      cliente
     );
   };
 
@@ -555,7 +557,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="text"
-                    text
                     className="cajadeudas"
                     name="tipoGarantia"
                     id="tipogarantia"
@@ -572,7 +573,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="text"
-                    text
                     className="cajadeudas"
                     name="documentoSoporte"
                     id="documentosoporte"
@@ -587,7 +587,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    text
                     className="cajadeudas"
                     name="capital"
                     id="capital"
@@ -601,7 +600,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    text
                     className="cajadeudas"
                     name="intereses"
                     id="intereses"
@@ -615,7 +613,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="text"
-                    text
                     className="cajadeudas"
                     name="clasificacion"
                     id="clasificacion"
@@ -629,7 +626,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="text"
-                    text
                     className="cajadeudas"
                     name="diasMora"
                     id="diasmora"
@@ -831,7 +827,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="aguaAlcAseo"
                     id="agua"
@@ -845,7 +840,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="gas"
                     id="gas"
@@ -860,7 +854,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="telecomunicaciones"
                     id="telecomunicaciones"
@@ -874,7 +867,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="television"
                     id="television"
@@ -888,7 +880,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="arriendo"
                     id="arriendo"
@@ -902,7 +893,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="seguros"
                     id="seguros"
@@ -916,7 +906,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="alimentacion"
                     id="alimentacion"
@@ -930,7 +919,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="transporte"
                     id="transporte"
@@ -944,7 +932,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    number
                     className="cajaingresos"
                     name="otros"
                     id="otros"
@@ -973,7 +960,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="text"
-                    text
                     className="cajadeudas"
                     name="Clasificacion"
                     id="clasificacionpropuesta"
@@ -987,7 +973,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    text
                     className="cajadeudas"
                     name="tasaIntereses"
                     id="tasainteres"
@@ -1001,7 +986,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    text
                     className="cajadeudas"
                     name="valorCuota"
                     id="valorcuota"
@@ -1015,7 +999,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    text
                     className="cajadeudas"
                     name="numeroCuotas"
                     id="numeroCuotas"
@@ -1044,7 +1027,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="text"
-                    text
                     className="cajadeudas"
                     name="nombresConyuge"
                     id="nombresConyuge"
@@ -1058,7 +1040,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    text
                     className="cajadeudas"
                     name="idConyuge"
                     id="idConyuge"
@@ -1084,7 +1065,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="text"
-                    text
                     className="cajadeudas"
                     name="nombresHijo"
                     id="nombresHijo"
@@ -1098,7 +1078,6 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="number"
-                    text
                     className="cajadeudas"
                     name="idHijo"
                     id="idHijo"
@@ -1190,7 +1169,7 @@ const Insolvencia = () => {
               <tbody>
                 {bienes.length > 0 ? (
                   bienes.map((bien, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td className="tableCell">{bien.tipoBien}</td>
                       <td className="tableCell">{bien.valor}</td>
                       <td className="tableCell">{bien.tipoAfectacion}</td>
@@ -1242,7 +1221,7 @@ const Insolvencia = () => {
               <tbody>
                 {procesos.length > 0 ? (
                   procesos.map((proceso, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td className="tableCell">{proceso.juzgado}</td>
                       <td className="tableCell">{proceso.radicado}</td>
                       <td className="tableCell">{proceso.demandante}</td>
@@ -1402,7 +1381,7 @@ const Insolvencia = () => {
               <tbody>
                 {sociedades.length > 0 ? (
                   sociedades.map((sociedad, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td className="tableCell">{sociedad.nombresConyuge}</td>
                       <td className="tableCell">{sociedad.idConyuge}</td>
                     </tr>

@@ -1,6 +1,7 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
+import { useSelector } from "react-redux";
 
 export const generarSolicitud = (
   ingresos,
@@ -12,8 +13,8 @@ export const generarSolicitud = (
   deudas,
   propuestas,
   motivos,
+  cliente
 ) => {
-
   console.log("Datos solicitud:", {
     ingresos,
     gastos,
@@ -24,6 +25,7 @@ export const generarSolicitud = (
     deudas,
     propuestas,
     motivos,
+    cliente
   });
   const docs = document.getElementById("doc");
 
@@ -47,6 +49,11 @@ export const generarSolicitud = (
 
     // !Reemplazar contenido de array en una tabla
     doc.render({
+      nombres: cliente.nombres,
+      appellidos: cliente.apellidos,
+      celular: cliente.celular,
+      cedula: cliente.cedulaCliente,
+      direccion: cliente.direccion,
       ingresos: ingresos,
       motivos: motivos,
       bienes: bienes,

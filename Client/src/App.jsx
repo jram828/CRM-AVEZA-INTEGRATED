@@ -100,12 +100,12 @@ function App() {
     navigate("/sms");
   };
 
-  const onClose = (id) => {
-    const charactersFilter = characters.filter(
-      (character) => character.id !== id
-    );
-    setCharacters(charactersFilter);
-  };
+  // const onClose = (id) => {
+  //   const charactersFilter = characters.filter(
+  //     (character) => character.id !== id
+  //   );
+  //   setCharacters(charactersFilter);
+  // };
 
   //Acceder al modulo de crear usuario
   const clickHandlerCrear = (e) => {

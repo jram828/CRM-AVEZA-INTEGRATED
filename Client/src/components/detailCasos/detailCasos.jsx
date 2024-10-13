@@ -2,11 +2,12 @@ import "./detailCasos.css";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCaso, getCasos, modificarCaso } from "../../redux/actions";
+import { clienteActual, deleteCaso, getCasos, modificarCaso } from "../../redux/actions";
 import { Button, Buttonf } from "../Mystyles";
 import { getCasoById } from "../../handlers/detailCaso";
 import { numeroALetras } from "../convertiraletras";
 import { generarDocumentos } from "../../handlers/generarDocumentos";
+import { generarSolicitud } from "../../handlers/generarSolicitud";
 
 function DetailCasos() {
   const user = JSON.parse(localStorage.getItem("loggedUser"));
@@ -107,6 +108,12 @@ function DetailCasos() {
     generarDocumentos(casoDetail, valor_pretensiones_letras, honorarios_letras);
   };
 
+  const handlerSolicitud = () => {
+    dispatch(clienteActual(casoDetail.Cliente));
+    navigate("/insolvencia");
+  };
+
+
   const handleUpdateDetailCaso = (e) => {
     setCasoDetail({
       ...casoDetail,
@@ -181,7 +188,7 @@ function DetailCasos() {
           <div className="infocaso">
             <br />
             <div className="infodetailcaso">
-              <label for="idCaso" className="labeldetailcaso">
+              <label htmlFor="idCaso" className="labeldetailcaso">
                 Consecutivo de caso:
               </label>
               <input
@@ -195,7 +202,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="radicado" className="labeldetailcaso">
+              <label htmlFor="radicado" className="labeldetailcaso">
                 N° Radicado Juzgado:
               </label>
               <input
@@ -208,7 +215,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="nombres" className="labeldetailcaso">
+              <label htmlFor="nombres" className="labeldetailcaso">
                 Tipo de caso:
               </label>
               <input
@@ -219,14 +226,16 @@ function DetailCasos() {
                 value={casoDetail.TipoDeCaso.descripcion}
                 onChange={handleUpdateDetailCaso}
               />
+              <div className="cajadetail">
+                <Buttonf onClick={handlerSolicitud}>Solicitud</Buttonf>
+              </div>
             </div>
             <div className="infodetailcaso">
-              <label for="etapa" className="labeldetailcaso">
+              <label htmlFor="etapa" className="labeldetailcaso">
                 Etapa:
               </label>
               <input
                 type="text"
-                text
                 className="cajadetail"
                 name="etapa"
                 id="etapa"
@@ -235,12 +244,11 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="fecha" className="labeldetailcaso">
+              <label htmlFor="fecha" className="labeldetailcaso">
                 Fecha:
               </label>
               <input
                 type="text"
-                text
                 className="cajadetail"
                 name="fecha"
                 id="fecha"
@@ -250,12 +258,11 @@ function DetailCasos() {
             </div>
             {casoDetail.fechaFin ? (
               <div className="infodetailcaso">
-                <label for="fechaFin" className="labeldetailcaso">
+                <label htmlFor="fechaFin" className="labeldetailcaso">
                   Fecha de finalización:
                 </label>
                 <input
                   type="text"
-                  text
                   className="cajadetail"
                   name="fechaFin"
                   id="fechaFin"
@@ -265,7 +272,7 @@ function DetailCasos() {
               </div>
             ) : (
               <div className="infodetailcaso">
-                <label for="fechaFin" className="labeldetailcaso">
+                <label htmlFor="fechaFin" className="labeldetailcaso">
                   Fecha de finalización:
                 </label>
                 <div className="cajadetail">
@@ -275,12 +282,11 @@ function DetailCasos() {
             )}
 
             <div className="infodetailcaso">
-              <label for="valor_pretensiones" className="labeldetailcaso">
+              <label htmlFor="valor_pretensiones" className="labeldetailcaso">
                 Valor pretensiones:
               </label>
               <input
                 type="number"
-                text
                 className="cajadetail"
                 name="valor_pretensiones"
                 id="valor_pretensiones"
@@ -289,12 +295,11 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="honorarios" className="labeldetailcaso">
+              <label htmlFor="honorarios" className="labeldetailcaso">
                 Valor honorarios:
               </label>
               <input
                 type="number"
-                text
                 className="cajadetail"
                 name="honorarios"
                 id="honorarios"
@@ -303,12 +308,14 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="aceptacion_cotizacion" className="labeldetailcaso">
+              <label
+                htmlFor="aceptacion_cotizacion"
+                className="labeldetailcaso"
+              >
                 Aceptación de cotización:
               </label>
               <input
                 type="text"
-                text
                 className="cajadetail"
                 name="aceptacion_cotizacion"
                 id="aceptacion_cotizacion"
@@ -317,12 +324,11 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="tiene_contrato" className="labeldetailcaso">
+              <label htmlFor="tiene_contrato" className="labeldetailcaso">
                 Tiene contrato?
               </label>
               <input
                 type="text"
-                text
                 className="cajadetail"
                 name="tiene_contrato"
                 id="tiene_contrato"
@@ -331,7 +337,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="descripcion" className="labeldetailcaso">
+              <label htmlFor="descripcion" className="labeldetailcaso">
                 Descripcion:
               </label>
 
@@ -351,7 +357,7 @@ function DetailCasos() {
               <h6 className="titulo">Cliente</h6>
             </div>
             <div className="infodetailcaso">
-              <label for="ClienteCedulaCliente" className="labeldetailcaso">
+              <label htmlFor="ClienteCedulaCliente" className="labeldetailcaso">
                 Número de cédula:
               </label>
               <input
@@ -364,7 +370,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="nombresCliente" className="labeldetailcaso">
+              <label htmlFor="nombresCliente" className="labeldetailcaso">
                 Nombre (s):
               </label>
               <input
@@ -377,7 +383,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="apellidosCliente" className="labeldetailcaso">
+              <label htmlFor="apellidosCliente" className="labeldetailcaso">
                 Apellido (s):
               </label>
               <input
@@ -390,7 +396,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="celularCliente" className="labeldetailcaso">
+              <label htmlFor="celularCliente" className="labeldetailcaso">
                 Número de celular:
               </label>
               <input
@@ -403,7 +409,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="emailCliente" className="labeldetailcaso">
+              <label htmlFor="emailCliente" className="labeldetailcaso">
                 Correo electrónico:
               </label>
               <input
@@ -416,7 +422,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="direccionCliente" className="labeldetailcaso">
+              <label htmlFor="direccionCliente" className="labeldetailcaso">
                 Dirección:
               </label>
               <input
@@ -434,7 +440,7 @@ function DetailCasos() {
               <h6 className="titulo">Abogado</h6>
             </div>
             <div className="infodetailcaso">
-              <label for="AbogadoCedulaAbogado" className="labeldetailcaso">
+              <label htmlFor="AbogadoCedulaAbogado" className="labeldetailcaso">
                 Número de cédula:
               </label>
               <input
@@ -447,7 +453,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="nombresAbogado" className="labeldetailcaso">
+              <label htmlFor="nombresAbogado" className="labeldetailcaso">
                 Nombre (s):
               </label>
               <input
@@ -460,7 +466,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="apellidosAbogado" className="labeldetailcaso">
+              <label htmlFor="apellidosAbogado" className="labeldetailcaso">
                 Apellido (s):
               </label>
               <input
@@ -473,7 +479,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="celularAbogado" className="labeldetailcaso">
+              <label htmlFor="celularAbogado" className="labeldetailcaso">
                 Número de celular:
               </label>
               <input
@@ -486,7 +492,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="emailAbogado" className="labeldetailcaso">
+              <label htmlFor="emailAbogado" className="labeldetailcaso">
                 Correo electrónico:
               </label>
               <input
@@ -499,7 +505,7 @@ function DetailCasos() {
               />
             </div>
             <div className="infodetailcaso">
-              <label for="direccionAbogado" className="labeldetailcaso">
+              <label htmlFor="direccionAbogado" className="labeldetailcaso">
                 Dirección:
               </label>
               <input
@@ -516,7 +522,6 @@ function DetailCasos() {
             
           </div> */}
         </div>
-        
       </div>
     </div>
   );

@@ -37,16 +37,16 @@ function Casos() {
   console.log("pages", pages);
 
   useEffect(() => {
-    if (order) {
-      dispatch(orderCasos(order, currentPage));
-    } else {
+    // if (order) {
+    //   dispatch(orderCasos(order, currentPage));
+    // } else {
       const storedFilter = JSON.parse(localStorage.getItem("casosFilter"));
       console.log('Stored filter:', storedFilter)
       if (storedFilter) {
         setFilterApplied(true);
       }
       dispatch(getCasos(currentPage));
-    }
+    // }
   }, [dispatch, currentPage, order]);
 
   console.log("order", order, "currentpage", currentPage);

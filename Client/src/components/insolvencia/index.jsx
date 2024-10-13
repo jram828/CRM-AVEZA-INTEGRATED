@@ -176,7 +176,7 @@ const Insolvencia = () => {
     //   return;
     addDeuda(datosDeuda);
     const filteredAcreedor = listaacreedores.filter(acreedor =>
-      acreedor.nombre.toLowerCase().includes(datosDeuda.acreedor.toLowerCase())
+      acreedor.nombre.toLowerCase()===datosDeuda.acreedor.toLowerCase()
     );
     addAcreedor(filteredAcreedor);
 

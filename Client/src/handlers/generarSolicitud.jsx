@@ -25,7 +25,8 @@ export const generarSolicitud = (
     deudas,
     propuestas,
     motivos,
-    cliente
+    cliente,
+    ciudad: cliente.Ciudads[0].nombre_ciudad
   });
   const docs = document.getElementById("doc");
 

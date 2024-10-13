@@ -32,6 +32,15 @@ export const generarSolicitud = (
   });
   const docs = document.getElementById("doc");
 
+  const newAcreedores = listaAcreedores.map((acreedor,index) => ({
+    contador: index + 1,
+    nombreAcreedor: acreedor.nombre,
+    NIT: acreedor.NIT,
+    direccionAcreedor: acreedor.direccion,
+    ciudadAcreedor: acreedor.ciudad,
+    telefono: acreedor.telefono,
+    emailAcreedor: acreedor.email}));
+
   const reader = new FileReader();
   if (docs.files.length === 0) {
     alert("No files selected");
@@ -64,7 +73,7 @@ export const generarSolicitud = (
       procesos: procesos,
       obligaciones: obligaciones,
       sociedades: sociedades,
-      acreedores: listaAcreedores,
+      acreedores: newAcreedores,
       deudas: deudas,
       propuestas: propuestas,
       energia: Number(gastos[0].energia).toLocaleString(),

@@ -54,6 +54,7 @@ export const generarSolicitud = (
       celular: cliente.celular,
       cedula: cliente.cedula,
       direccion: cliente.direccion,
+      ciudad: cliente.Ciudads[0].nombre_ciudad,
       ingresos: ingresos,
       motivos: motivos.motivos,
       bienes: bienes,

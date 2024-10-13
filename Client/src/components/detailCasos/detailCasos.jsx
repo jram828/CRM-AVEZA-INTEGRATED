@@ -109,7 +109,7 @@ function DetailCasos() {
   };
 
   const handlerSolicitud = () => {
-    dispatch(clienteActual(casoDetail.Cliente));
+    dispatch(clienteActual({...casoDetail.Cliente, cedula: casoDetail.ClienteCedulaCliente}));
     navigate("/insolvencia");
   };
 

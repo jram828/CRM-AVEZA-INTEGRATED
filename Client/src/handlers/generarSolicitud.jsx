@@ -49,13 +49,13 @@ export const generarSolicitud = (
 
     // !Reemplazar contenido de array en una tabla
     doc.render({
-      nombres: cliente.nombres,
-      appellidos: cliente.apellidos,
+      nombre: cliente.nombres,
+      appellido: cliente.apellidos,
       celular: cliente.celular,
-      cedula: cliente.cedulaCliente,
+      cedula: cliente.cedula,
       direccion: cliente.direccion,
       ingresos: ingresos,
-      motivos: motivos,
+      motivos: motivos.motivos,
       bienes: bienes,
       procesos: procesos,
       obligaciones: obligaciones,

@@ -5,6 +5,7 @@
   Abogado,
   TipoDeCaso,
   PagosCliente,
+  Ciudad
 } = models
 const getCasoId = async (id) => {
   console.log(id)

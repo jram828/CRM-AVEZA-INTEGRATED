@@ -2,12 +2,7 @@
 import { useState } from "react";
 import "./App.css";
 import Nav from "./components/nav/index.jsx";
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import PrevisualizarContrato from "./components/previsualizarcontrato/index.jsx";
 import Detail from "./components/detail/index.jsx";
 import Form from "./components/login/index.jsx";
@@ -28,7 +23,7 @@ import Autorizacion from "./components/autorizacion/index.jsx";
 import Insolvencia from "./components/insolvencia/index.jsx";
 import Poder from "./components/poder/index.jsx";
 import WordToHtml from "./components/wordtohtml/index.jsx";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { setAuth } from "./redux/actions.js";
 import Abogados from "./components/abogados/index.jsx";
 import RegistroAbogado from "./components/registroabogado/index.jsx";
@@ -40,6 +35,7 @@ import AllConsultas from "./components/allConsultas/allConsultas.jsx";
 import Payments from "./components/payments/payments.component.jsx";
 import { crearUsuario } from "./handlers/crearUsuario.jsx";
 import Status from "./components/status/index.jsx";
+import CambiarContrasena from "./components/cambiarcontrasena/index.jsx";
 
 const URL = import.meta.env.VITE_URL;
 // const { URL } = process.env;
@@ -53,7 +49,6 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const isAuthenticated = useSelector((state) => state.isAuthenticated);
-
 
   //Funcion para verificar datos de ingreso
   async function login(userData) {
@@ -86,9 +81,8 @@ function App() {
     }
   }
 
-
   const logout = () => {
-     window.localStorage.setItem("loggedUser", JSON.stringify({}));
+    window.localStorage.setItem("loggedUser", JSON.stringify({}));
     alert("Ha salido exitosamente");
     setAccess(false);
     navigate("/");
@@ -112,7 +106,6 @@ function App() {
     setAccess(true);
     navigate("/crearusuario");
   };
-
 
   //Acceder al modulo de recordar contraseñas
   const clickHandlerRecordatorio = (e) => {
@@ -184,6 +177,7 @@ function App() {
           path="/recordatoriocontrasena"
           element={<RecordatorioContrasena />}
         />
+        <Route path="cambiarcontrasena" element={<CambiarContrasena />} />
         <Route path="documentoslegales" element={<DocumentosLegales />} />
         <Route path="contrato" element={<Contrato />} />
         <Route path="clientes" element={<Clientes />} />
@@ -198,6 +192,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;

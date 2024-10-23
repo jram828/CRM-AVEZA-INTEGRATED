@@ -133,15 +133,11 @@ export const getByIdAbogado = (cedulaAbogado) => {
   const endpoint = `/abogados/${cedulaAbogado}`;
   console.log("URL", endpoint);
   return async (dispatch) => {
-    try {
-      const { data } = await axios.get(endpoint);
-      return dispatch({
-        type: GET_BY_ID_ABOGADO,
-        payload: data,
-      });
-    } catch (error) {
-      throw error;
-    }
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_BY_ID_ABOGADO,
+      payload: data,
+    });
   };
 };
 
@@ -149,15 +145,11 @@ export const getByIdCliente = (cedulaCliente) => {
   const endpoint = `/clientes/cedulacliente?cedulaCliente=${cedulaCliente}`;
   console.log("URL", endpoint);
   return async (dispatch) => {
-    try {
-      const { data } = await axios.get(endpoint);
-      return dispatch({
-        type: GET_BY_ID_CLIENTE,
-        payload: data,
-      });
-    } catch (error) {
-      throw error;
-    }
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_BY_ID_CLIENTE,
+      payload: data,
+    });
   };
 };
 
@@ -165,16 +157,12 @@ export const filterCliente = (filtro) => {
   const endpoint = `/clientes/conocimientolitigios?${filtro}`;
   console.log("URL", endpoint);
   return async (dispatch) => {
-    try {
-      const { data } = await axios.get(endpoint);
+    const { data } = await axios.get(endpoint);
 
-      return dispatch({
-        type: FILTER_CLIENTE,
-        payload: data,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return dispatch({
+      type: FILTER_CLIENTE,
+      payload: data,
+    });
   };
 };
 
@@ -182,15 +170,11 @@ export const filterAbogado = (filtro) => {
   const endpoint = `/abogados?${filtro}`;
   console.log("URL", endpoint);
   return async (dispatch) => {
-    try {
-      const { data } = await axios.get(endpoint);
-      return dispatch({
-        type: FILTER_ABOGADO,
-        payload: data,
-      });
-    } catch (error) {
-      throw error;
-    }
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: FILTER_ABOGADO,
+      payload: data,
+    });
   };
 };
 
@@ -269,7 +253,6 @@ export const getCasos = (page) => {
 };
 
 export const getCasosTodos = () => {
-  const endpoint = `/casos`;
   return async (dispatch) => {
     const { data } = await axios.get('/casos');
     console.log('Data casos:',data)
@@ -284,16 +267,12 @@ export const filterCasos = (filtro) => {
   const endpoint = `/casos?${filtro}`;
   console.log("URL", endpoint);
   return async (dispatch) => {
-    try {
-      const { data } = await axios.get(endpoint);
+    const { data } = await axios.get(endpoint);
 
-      return dispatch({
-        type: FILTER_CASOS,
-        payload: data,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return dispatch({
+      type: FILTER_CASOS,
+      payload: data,
+    });
   };
 };
 
@@ -313,16 +292,12 @@ export const getCasoById = (id) => {
   const endpoint = `/casos/${id}`;
   console.log("URL", endpoint);
   return async (dispatch) => {
-    try {
-      const { data } = await axios.get(endpoint);
-      console.log('Data get caso by Id:', data)
-      return dispatch({
-        type: GET_CASO_BY_ID,
-        payload: data,
-      });
-    } catch (error) {
-      throw error;
-    }
+    const { data } = await axios.get(endpoint);
+    console.log('Data get caso by Id:', data);
+    return dispatch({
+      type: GET_CASO_BY_ID,
+      payload: data,
+    });
   };
 };
 
@@ -367,7 +342,7 @@ export const postCita = (payload) => {
 };
 
 export const getCitas = () => {
-  const endpoint = `/citas?porPagina=20`;
+  // const endpoint = `/citas?porPagina=20`;
   return async (dispatch) => {
     const { data } = await axios.get('/citas');
     return dispatch({
@@ -381,16 +356,12 @@ export const filterCitas = (filtro) => {
   const endpoint = `/citas?${filtro}`;
   console.log("URL", endpoint);
   return async (dispatch) => {
-    try {
-      const { data } = await axios.get(endpoint);
+    const { data } = await axios.get(endpoint);
 
-      return dispatch({
-        type: FILTER_CITAS,
-        payload: data,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return dispatch({
+      type: FILTER_CITAS,
+      payload: data,
+    });
   };
 };
 
@@ -401,7 +372,6 @@ export const setFiltro = (filtro) => {
       };
 };
 export const postConsulta =  async(payload) => {
-  const endpoint = `/consultas`;
    console.log('Payload post consulta:', payload)
   const { nombre, apellido, consulta, correo, telefono} = payload;
   
@@ -459,10 +429,17 @@ export const postConsulta =  async(payload) => {
       };
     };
   
-export const recordarPassword = async (email) => {
-  const endpoint = `/login/password/?correo=${email}`;
+export const recordarPassword = async (email,cedula) => {
+  const endpoint = `/login/password/?correo=${email}&cedula=${cedula}`;
   console.log("PAYLOAD", email);
   const data = await axios.get(endpoint);
+  return data;
+};
+
+export const cambiarPassword = async (password,cedula) => {
+  const endpoint = `/login/password/?contrasena=${password}&cedula=${cedula}`;
+  console.log("PAYLOAD", password);
+  const data = await axios.post(endpoint);
   return data;
 };
 

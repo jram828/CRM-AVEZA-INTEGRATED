@@ -74,8 +74,8 @@ const sendEmailCliente = ({nombres, email}) => {
     // })
 
 
-const sendEmailPassword = (nombre, correo, password) => {
-    console.log("Datos email:", nombre, correo, password);
+const sendEmailPassword = (nombre, correo, cedula) => {
+    console.log("Datos email:", nombre, correo, cedula);
     
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
@@ -83,11 +83,11 @@ const sendEmailPassword = (nombre, correo, password) => {
     const templatePath = path.join(__dirname, "", "templatePassword.html");
     const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
 
-    console.log("Datos email password:", nombre, correo, password);
+    console.log("Datos email password:", nombre, correo, cedula);
     var personalizedHtml = htmlTemplate
       .replace("{{nombre}}", nombre)
       .replace("{{correo}}", correo)
-      .replace("{{password}}", password);
+      .replace("{{cedula}}", cedula);
   
 
   const mailOptions = {

@@ -1,6 +1,6 @@
 import { getLogin} from '../controllers/usuario/login.js'
 import { getLoginGoogle } from '../controllers/usuario/loginGoogle.js'
-import { getPassword } from '../controllers/usuario/password.js'
+import { cambiarPassword, getPassword } from '../controllers/usuario/password.js'
 
 const loginHandler = async (req, res)=>{
     try {
@@ -35,4 +35,17 @@ const recoverPasswordHandler = async (req, res) => {
   }
 };
 
-export { loginHandler, loginHandlerGoogle, recoverPasswordHandler };
+const cambiarPasswordHandler = async (req, res) => {
+  try {
+    const { correo,cedula } = req.query;
+        // const { correo} = req.body;
+
+        console.log("Correo query:", req.query);
+    const response = await cambiarPassword(correo,cedula);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export { loginHandler, loginHandlerGoogle, recoverPasswordHandler, cambiarPasswordHandler };

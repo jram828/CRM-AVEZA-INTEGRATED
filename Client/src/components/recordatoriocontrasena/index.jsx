@@ -5,26 +5,26 @@ import { Button } from "../Mystyles";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useState } from "react";
-import axios from "axios";
 import { recordarPassword } from "../../redux/actions";
 
 
-const RecordatorioContrasena = (props) => {
+const RecordatorioContrasena = () => {
 
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState({
       email: "",
+      cedula: ""
     });
 
     const handlerPassword = async (e) => {
       e.preventDefault();
 
-      const { email } = userData;
+      const { email,cedula } = userData;
       console.log("Datos recordar password:", email);
 
       try {
-        await recordarPassword(email);
+        await recordarPassword(email,cedula);
         // console.log("Respuesta password:", data);
         window.alert("Se envió el recordatorio por email");
         navigate("/");
@@ -47,9 +47,15 @@ const RecordatorioContrasena = (props) => {
         <br />
         <h1 className="titulo">Recordar contraseña</h1>
         <br />
-        <span>La contraseña será enviada al correo que tienes registrado</span>
+        <span>Se enviará un link para cambiar la contraseña al correo que tienes registrado</span>
       </div>
       <br />
+      <div className="emailinput">
+        <label className="label-password" htmlFor="correo">
+          Usuario:
+        </label>
+        <input className="emailrecordatorio" type="number" name="cedula" id="cedula" onChange={handleChange} />
+      </div>
       <div className="emailinput">
         <label className="label-password" htmlFor="correo">
           Email:

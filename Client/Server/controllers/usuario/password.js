@@ -13,9 +13,29 @@ const getPassword = async (email) => {
   console.log("Password usuario: ", user.password);
 
     if (!user) throw new Error("Usuario no encontrado");
-    sendEmailPassword(user.nombres, user.email,user.password);
+    sendEmailPassword(user.nombres, user.email,user.password, user.cedula);
     return user
 
 };
 
-export { getPassword };
+const cambiarPassword = async (password,cedula) => {
+  console.log('Email get password: ',email)
+  const [updateCount, updateClient] = await Usuario.update(
+    {
+      password: password,
+    },
+    {
+      where: {
+        cedula: cedula,
+      },
+    },
+  );
+
+  if (updateCount > 0) {
+    return "Password Actualizado";
+  } else {
+    return "";
+  }
+};
+
+export { getPassword, cambiarPassword };

@@ -121,6 +121,7 @@ function App() {
       {location.pathname !== "/" &&
       location.pathname !== "/crearusuario" &&
       location.pathname !== "/recordatoriocontrasena" &&
+      location.pathname !== "/cambiarcontrasena" &&
       location.pathname !== "/consultas" ? (
         <Nav logout={logout} />
       ) : undefined}

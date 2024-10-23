@@ -87,9 +87,9 @@ const sendEmailPassword = (nombre, correo, cedula) => {
     var personalizedHtml = htmlTemplate
       .replace("{{nombre}}", nombre)
       .replace("{{correo}}", correo)
-      // .replace("{{cedula}}", cedula);
+      .replace("{{cedula}}", cedula);
   
-      personalizedHtml.replace("{{cedula}}", cedula);
+      // personalizedHtml.replace("{{cedula}}", cedula);
 
   const mailOptions = {
     from: ` CRM AVEZA ${EMAIL}`,

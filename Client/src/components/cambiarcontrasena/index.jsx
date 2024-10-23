@@ -8,7 +8,6 @@ import { cambiarPassword } from "../../redux/actions";
 
 const CambiarContrasena = () => {
   const [queries, setQueries] = useState({});
-  const [datosPago, setDatosPago] = useState({});
   const { search } = useLocation();
 
   // console.log('Search: ', search)

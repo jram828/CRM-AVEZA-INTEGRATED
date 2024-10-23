@@ -1,7 +1,7 @@
 import { models } from "../../DB.js";
 import { sendEmailPassword } from "../../utils/emailNotifier.js";
 
-const { Cliente, Abogado, Usuario } = models;
+const {Usuario } = models;
 
 const getPassword = async (email) => {
   console.log('Email get password: ',email)

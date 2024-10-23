@@ -20,7 +20,7 @@ const getPassword = async (email) => {
 };
 
 const cambiarPassword = async (password,cedula) => {
-  console.log('Cedula get password: ',cedula)
+  console.log('Cedula get password: ',password, cedula)
 
   const encryptedPassword = await encryptPassword(password);
 

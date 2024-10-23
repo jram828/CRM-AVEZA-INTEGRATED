@@ -91,7 +91,7 @@ const sendEmailPassword = (nombre, correo, cedula) => {
   
 
   const mailOptions = {
-    from: EMAIL,
+    from: ` CRM AVEZA ${EMAIL}`,
     to: correo,
       subject: "🚀 Recordatorio de contraseña, CRM AVEZA.",
     html: personalizedHtml

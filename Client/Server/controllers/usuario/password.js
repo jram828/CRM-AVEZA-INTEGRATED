@@ -38,7 +38,7 @@ const cambiarPassword = async (password,cedula) => {
   if (updateCount > 0) {
     return "Password Actualizado";
   } else {
-    return "";
+    return "Usuario no encontrado";
   }
 };
 

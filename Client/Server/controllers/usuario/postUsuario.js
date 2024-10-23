@@ -1,4 +1,6 @@
 import { models } from "../../DB.js";
+import { encryptPassword } from "../../utils/encryptPassword.js";
+
 const { Usuario } = models;
 const crearUsuario = async (
   email,
@@ -22,9 +24,11 @@ const crearUsuario = async (
     return ("Faltan datos");
   } else {
     try {
+      const encryptedPassword = await encryptPassword(password);
+
       const newUser = await Usuario.create({
         email: email,
-        password: password,
+        password: encryptedPassword ,
         nombres: nombres,
         apellidos: apellidos,
         cedula: cedula,

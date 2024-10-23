@@ -84,12 +84,11 @@ const sendEmailPassword = (nombre, correo, cedula) => {
     const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
 
     console.log("Datos email password:", nombre, correo, cedula);
+
+    const link= `https://crm-aveza-integrated.onrender.com/cambiarpassword?cedula=${cedula}&correo=${correo}`
     var personalizedHtml = htmlTemplate
       .replace("{{nombre}}", nombre)
-      .replace("{{correo}}", correo)
-      .replace("{{cedula}}", cedula);
-  
-      // personalizedHtml.replace("{{cedula}}", cedula);
+      .replace("{{link}}", link);
 
   const mailOptions = {
     from: ` CRM AVEZA ${EMAIL}`,

@@ -1,4 +1,6 @@
 import bcrypt from "bcrypt";
+import { config } from "dotenv";
+
 config(); // Cargar variables de entorno desde el archivo .env
 
 const { SALT_BCRYPT } = process.env;

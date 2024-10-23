@@ -177,7 +177,7 @@ function App() {
           path="/recordatoriocontrasena"
           element={<RecordatorioContrasena />}
         />
-        <Route path="cambiarcontrasena" element={<CambiarContrasena />} />
+        <Route path="/cambiarcontrasena" element={<CambiarContrasena />} />
         <Route path="documentoslegales" element={<DocumentosLegales />} />
         <Route path="contrato" element={<Contrato />} />
         <Route path="clientes" element={<Clientes />} />

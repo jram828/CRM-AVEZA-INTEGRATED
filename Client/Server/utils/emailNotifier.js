@@ -85,7 +85,7 @@ const sendEmailPassword = (nombre, correo, cedula) => {
 
     console.log("Datos email password:", nombre, correo, cedula);
 
-    const link= `https://crm-aveza-integrated.onrender.com/cambiarpassword?cedula=${cedula}&correo=${correo}`
+    const link= `https://crm-aveza-integrated.onrender.com/cambiarcontrasena?cedula=${cedula}&correo=${correo}`
     var personalizedHtml = htmlTemplate
       .replace("{{nombre}}", nombre)
       .replace("{{link}}", link);

@@ -20,8 +20,8 @@ export const validar = (input) => {
     errores.password = "La contraseña debe tener más de 6 caracteres";
   }
 
-  if (input.password.length > 10) {
-    errores.password = "La contraseña debe tener maximo 10 caracteres";
+  if (input.password.length > 20) {
+    errores.password = "La contraseña debe tener maximo 20 caracteres";
   }
 
   // console.log(errores);

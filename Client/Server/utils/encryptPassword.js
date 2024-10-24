@@ -6,7 +6,7 @@ config(); // Cargar variables de entorno desde el archivo .env
 const { SALT_BCRYPT } = process.env;
  console.log('SALT_BCRYPT:', SALT_BCRYPT);
 export const encryptPassword = async (password) => {
-  const salt = await bcrypt.genSalt(12);
+  const salt = await bcrypt.genSalt(SALT_BCRYPT);
   return await bcrypt.hash(password, salt);
 };
 

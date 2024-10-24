@@ -25,9 +25,9 @@ const RecordatorioContrasena = () => {
 
       try {
         await recordarPassword(email,cedula);
-        // console.log("Respuesta password:", data);
         window.alert("Se envió el recordatorio por email");
-        navigate("/");
+        window.close();
+        // navigate("/");
       } catch (error) {
         window.alert("No se envió el recordatorio");
       }

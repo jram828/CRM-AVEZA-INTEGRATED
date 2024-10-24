@@ -84,7 +84,7 @@ const CambiarContrasena = () => {
       </div>
       <div className="emailinput">
         <label className="label-password" htmlFor="correo">
-          Repetir conrtaseña:
+          Repetir contraseña:
         </label>
         <input
           className="emailrecordatorio"

@@ -37,11 +37,11 @@ const recoverPasswordHandler = async (req, res) => {
 
 const cambiarPasswordHandler = async (req, res) => {
   try {
-    const { correo,cedula } = req.query;
+    const { cedula,password} = req.query;
         // const { correo} = req.body;
 
         console.log("Correo query:", req.query);
-    const response = await cambiarPassword(correo,cedula);
+    const response = await cambiarPassword(cedula,password);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });

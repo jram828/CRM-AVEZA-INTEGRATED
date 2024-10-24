@@ -4,10 +4,10 @@ import { config } from "dotenv";
 config(); // Cargar variables de entorno desde el archivo .env
 
 const { SALT_BCRYPT } = process.env;
-
+ console.log('SALT_BCRYPT:', SALT_BCRYPT);
 export const encryptPassword = async (password) => {
-  const salt = await bcrypt.genSalt(SALT_BCRYPT);
-  return await bcrypt.hash(password, salt);
+  const salt = bcrypt.genSalt(SALT_BCRYPT);
+  return bcrypt.hash(password, salt);
 };
 
 export const verifyPassword = async (bodyPassword, userPassword) => {

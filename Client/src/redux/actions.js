@@ -439,7 +439,7 @@ export const recordarPassword = async (email,cedula) => {
 export const cambiarPassword = async (password,cedula) => {
   const endpoint = `/login/password/?contrasena=${password}&cedula=${cedula}`;
   console.log("PAYLOAD", password);
-  const data = await axios.post(endpoint);
+  const data = await axios.get(endpoint);
   return data;
 };
 

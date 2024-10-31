@@ -41,8 +41,6 @@ const CrearUsuario = () => {
           <img src={logo} alt="logo-aveza" />
         </div>
         <h1 className="titulo">Crear Usuario</h1>
-        <br />
-        <br />
         <div className="infocrearu">
           <div className="infocrearusuario">
             <label for="nombre" className="labelcrearusuario">
@@ -71,8 +69,6 @@ const CrearUsuario = () => {
             />
           </div>
         </div>
-        <br />
-        <br />
         <div className="infocrearu">
           <div className="infocrearusuario">
             <label for="numerocedula" className="labelcrearusuario">
@@ -101,8 +97,6 @@ const CrearUsuario = () => {
             />
           </div>
         </div>
-        <br />
-        <br />
         <div className="infocrearu">
           <div className="infocrearusuario">
             <label for="direccion" className="labelcrearusuario">
@@ -131,9 +125,6 @@ const CrearUsuario = () => {
             />
           </div>
         </div>
-
-        <br />
-        <br />
         <div className="infocrearu">
           <div className="infocrearusuario">
             <label for="ciudad" className="labelcrearusuario">
@@ -162,9 +153,6 @@ const CrearUsuario = () => {
             />
           </div>
         </div>
-        <br />
-        <br />
-
         <div className="botonescrearusuario">
           <Button
             onClick={submitHandlerCrear}

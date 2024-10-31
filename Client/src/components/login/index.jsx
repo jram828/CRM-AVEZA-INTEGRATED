@@ -95,9 +95,8 @@ const Form = ({ login, clickHandlerRecordatorio, clickHandlerCrear }) => {
                 <img
                   src={logo}
                   alt="Logo Aveza"
-                  style={{ height: "90px", width: "100%" }}
+                  style={{ height: "90px", width: "90%" }}
                 />
-                <br />
                 <br />
               </td>
               <td></td>
@@ -166,17 +165,6 @@ const Form = ({ login, clickHandlerRecordatorio, clickHandlerCrear }) => {
             </tr>
             <tr>
               <td></td>
-              {/* <td>
-                <label htmlFor="tipodeusuario">Tipo de usuario:</label>
-              </td>
-              <td>
-                <select name="tipodeusuario" id="idusuario">
-                  <option value="">Elija una opcion</option>
-                  <option value="1">Administrador</option>
-                  <option value="2">Cliente</option>
-                </select>
-              </td>
-              <td></td> */}
             </tr>
             <tr>
               <td></td>
@@ -217,7 +205,6 @@ const Form = ({ login, clickHandlerRecordatorio, clickHandlerCrear }) => {
             </tr>
           </table>
         </form>
-        <br />
         <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
       </div>
       <div className="containerPhoto">

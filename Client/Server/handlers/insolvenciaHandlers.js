@@ -29,4 +29,4 @@ const crearSolicitudHandler = async (req, res) => {
   }
 };
 
-export { crearAcreedoresHandler, getAllAcreedoresHandler };
+export { crearAcreedoresHandler, getAllAcreedoresHandler, crearSolicitudHandler };

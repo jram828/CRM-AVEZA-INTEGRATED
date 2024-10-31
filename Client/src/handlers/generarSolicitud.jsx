@@ -1,6 +1,8 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
+import { crearSolicitud } from "../redux/actions";
+import { useDispatch } from "react-redux";
 
 export const generarSolicitud = (
   ingresos,
@@ -15,6 +17,7 @@ export const generarSolicitud = (
   cliente, 
   listaAcreedores
 ) => {
+  const dispatch = useDispatch();
   console.log("Datos solicitud:", {
     ingresos,
     gastos,
@@ -40,6 +43,20 @@ export const generarSolicitud = (
     telefono: acreedor.telefono,
     emailAcreedor: acreedor.email}));
 
+    const datosinsolvencia = {  ingresos,
+      gastos,
+      bienes,
+      procesos,
+      obligaciones,
+      sociedades,
+      deudas,
+      propuestas,
+      motivos,
+      cliente,
+      ciudad:cliente.Ciudads[0].nombre_ciudad,
+      acreedores: newAcreedores};
+
+      dispatch(crearSolicitud(datosinsolvencia));
   const reader = new FileReader();
   if (docs.files.length === 0) {
     alert("No files selected");

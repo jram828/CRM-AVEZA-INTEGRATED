@@ -762,6 +762,7 @@ const Insolvencia = () => {
                         <li
                           key={index}
                           onClick={() => handleJuzgadoClick(juzgado.nombre)}
+                          className="opcionjuzgado"
                         >
                           {juzgado.nombre}
                         </li>

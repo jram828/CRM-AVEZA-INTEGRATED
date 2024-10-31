@@ -427,6 +427,9 @@ const Insolvencia = () => {
 
   const handleJuzgadoChange = (e) => {
     const value = e.target.value;
+
+    console.log("Input name:", e.target.name); 
+    console.log("Input value:", e.target.value);   
     setProceso({
       ...proceso,
       [e.target.name]: e.target.value,
@@ -437,6 +440,8 @@ const Insolvencia = () => {
         juzgado.toLowerCase().includes(value.toLowerCase())
       )
     );
+
+    console.log("Juzgados filtrados:", filteredJuzgado);
   };
 
   const handleJuzgadoClick = (nombreJuzgado) => {
@@ -445,6 +450,8 @@ const Insolvencia = () => {
       ["juzgado"]: nombreJuzgado,
     });
     setFilteredJuzgado([]);
+
+    console.log("Juzgado seleccionado:", nombreJuzgado, proceso.juzgado);
   };
 
   return (

@@ -2,7 +2,7 @@
   background-color: white;
   opacity: 0.9;
   border-radius: 10px;
-  width: 95vw;
+  width: 40vw;
   justify-content: center;
 }
 
@@ -23,7 +23,7 @@
 
 .cajalogin{
   height: 25px;
-  width: 200px;
+  width: 20vw;
   border-radius: 5px;
   margin: 10px;
   /* color: red; */
@@ -31,7 +31,7 @@
 
 .labellogin {
   height: 25px;
-  min-width: 150px;
+  min-width: 15vw;
   font-size: larger;
   color: black;
   text-align: justify;

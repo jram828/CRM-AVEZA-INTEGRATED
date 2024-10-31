@@ -1,5 +1,5 @@
-export const codigoCiudades = [
-    {nombre:'JUZGADO 001 CIVIL DEL CIRCUITO DE MEDELLÍN '},
+export const juzgados = [
+{nombre:'JUZGADO 001 CIVIL DEL CIRCUITO DE MEDELLÍN '},
 {nombre:'JUZGADO 002 CIVIL DEL CIRCUITO DE MEDELLÍN '},
 {nombre:'JUZGADO 003 CIVIL DEL CIRCUITO DE MEDELLÍN '},
 {nombre:'JUZGADO 004 CIVIL DEL CIRCUITO DE MEDELLÍN '},

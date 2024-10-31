@@ -6,7 +6,7 @@ import "../insolvencia/insolvencia.css";
 import { Button } from "../Mystyles";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarSolicitud } from "../../handlers/generarSolicitud.jsx";
-import juzgados from "../../utils/juzgados.js";
+import {juzgados} from "../../utils/juzgados.js";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);

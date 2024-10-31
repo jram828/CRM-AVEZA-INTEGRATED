@@ -436,7 +436,7 @@ const Insolvencia = () => {
     });
 
     const foundJuzgado=juzgados.filter((juzgado) =>
-      juzgado.toLowerCase().includes(value.toLowerCase())
+      juzgado.nombre.toLowerCase().includes(value.toLowerCase())
     )
     console.log("Juzgados encontrados:", foundJuzgado);
     setFilteredJuzgado(foundJuzgado);

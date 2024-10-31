@@ -435,11 +435,11 @@ const Insolvencia = () => {
       [e.target.name]: e.target.value,
     });
 
-    setFilteredJuzgado(
-      juzgados.filter((juzgado) =>
-        juzgado.toLowerCase().includes(value.toLowerCase())
-      )
-    );
+    const foundJuzgado=juzgados.filter((juzgado) =>
+      juzgado.toLowerCase().includes(value.toLowerCase())
+    )
+    console.log("Juzgados encontrados:", foundJuzgado);
+    setFilteredJuzgado(foundJuzgado);
 
     console.log("Juzgados filtrados:", filteredJuzgado);
   };

@@ -757,17 +757,36 @@ const Insolvencia = () => {
                 </div>
                 <div className="selectorjuzgado">
                   {filteredJuzgado.length > 0 && (
-                    <ul>
+                    <select
+                      name="acreedor"
+                      id="acreedor"
+                      className="cajadeudas"
+                      onChange={(event) => handleDeudaChange(event)}
+                    >
+                      <option value="" className="opcionesacreedor">
+                        Juzgados encontrados
+                      </option>
                       {filteredJuzgado.map((juzgado, index) => (
-                        <li
+                        <option
                           key={index}
-                          onClick={() => handleJuzgadoClick(juzgado.nombre)}
+                          value={juzgado.nombre}
                           className="opcionjuzgado"
                         >
                           {juzgado.nombre}
-                        </li>
+                        </option>
                       ))}
-                    </ul>
+                    </select>
+                    // <ul>
+                    //   {filteredJuzgado.map((juzgado, index) => (
+                    //     <li
+                    //       key={index}
+                    //       onClick={() => handleJuzgadoClick(juzgado.nombre)}
+                    //       className="opcionjuzgado"
+                    //     >
+                    //       {juzgado.nombre}
+                    //     </li>
+                    //   ))}
+                    // </ul>
                   )}
                 </div>
                 <div className="infodetailingresos">

@@ -6,6 +6,7 @@ import "../insolvencia/insolvencia.css";
 import { Button } from "../Mystyles";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarSolicitud } from "../../handlers/generarSolicitud.jsx";
+import juzgados from "../../utils/juzgados.js";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);
@@ -84,14 +85,13 @@ const Insolvencia = () => {
     idHijo: "",
   };
 
-    const initAcreedorFilt = {
-      acreedores: [],
-    };
-  
-      const initMotivos = {
-        motivos:"",
-      };
+  const initAcreedorFilt = {
+    acreedores: [],
+  };
 
+  const initMotivos = {
+    motivos: "",
+  };
 
   const [ingreso, setIngreso] = useState(initIngreso);
   const [ingresos, setIngresos] = useState(ingresosObj);
@@ -110,10 +110,10 @@ const Insolvencia = () => {
   const [datosDeuda, setDatosDeuda] = useState(initDeuda);
   const [propuesta, setPropuesta] = useState(initPropuesta);
   const [acreedorFilt, setAcreedorFilt] = useState(initAcreedorFilt);
-   const [motivos, setMotivos] = useState(initMotivos);
+  const [motivos, setMotivos] = useState(initMotivos);
   //  const [datosAcreedor, setDatosAcreedor] = useState(initGastos);
-   const [listaAcreedores, setListaAcreedores] = useState(listaAcreedoresObj);
-   
+  const [listaAcreedores, setListaAcreedores] = useState(listaAcreedoresObj);
+
   const addDeuda = (deuda) => {
     setDeudas([...deudas, deuda]);
     setDatosDeuda(initDeuda);
@@ -148,12 +148,12 @@ const Insolvencia = () => {
     });
   };
 
-    const handleMotivosChange = (e) => {
-      setMotivos({
-        ...motivos,
-        [e.target.name]: e.target.value,
-      });
-    };
+  const handleMotivosChange = (e) => {
+    setMotivos({
+      ...motivos,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmitDeuda = async (e) => {
     e.preventDefault();
@@ -165,8 +165,8 @@ const Insolvencia = () => {
     //   return;
     addDeuda(datosDeuda);
     console.log("Acreedor buscado:", datosDeuda.acreedor);
-    const filteredAcreedor = listaacreedores.filter(acreedor =>
-      acreedor.nombre===datosDeuda.acreedor
+    const filteredAcreedor = listaacreedores.filter(
+      (acreedor) => acreedor.nombre === datosDeuda.acreedor
     );
     console.log("Acreedor encontrado:", filteredAcreedor);
     addAcreedor(filteredAcreedor[0]);
@@ -245,7 +245,7 @@ const Insolvencia = () => {
   console.log("Obligaciones:", obligaciones);
   console.log("obligacion:", obligacion);
 
-   console.log("motivos:", motivos);
+  console.log("motivos:", motivos);
 
   const handleIngresoChange = (e) => {
     setIngreso({
@@ -422,6 +422,31 @@ const Insolvencia = () => {
     );
   };
 
+  // const [inputValue, setInputValue] = useState("");
+  const [filteredJuzgado, setFilteredJuzgado] = useState([]);
+
+  const handleJuzgadoChange = (e) => {
+    const value = e.target.value;
+    setProceso({
+      ...proceso,
+      [e.target.name]: e.target.value,
+    });
+
+    setFilteredJuzgado(
+      juzgados.filter((juzgado) =>
+        juzgado.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  };
+
+  const handleJuzgadoClick = (nombreJuzgado) => {
+        setProceso({
+      ...proceso,
+      ["juzgado"]: nombreJuzgado,
+    });
+    setFilteredJuzgado([]);
+  };
+
   return (
     <div className="contenedorinsolvencia">
       <div className="encabezado">
@@ -521,15 +546,6 @@ const Insolvencia = () => {
                     Buscar Institución
                   </Button>
 
-                  {/* <input
-                    type="text"
-                    className="cajadeudas"
-                    name="acreedor"
-                    id="acreedor"
-                    value={datosDeuda.acreedor}
-                    onChange={(event) => handleDeudaChange(event)}
-                  /> */}
-
                   <select
                     name="acreedor"
                     id="acreedor"
@@ -537,17 +553,18 @@ const Insolvencia = () => {
                     onChange={(event) => handleDeudaChange(event)}
                   >
                     <option value="" className="opcionesacreedor">
-                     Instituciones encontradas
+                      Instituciones encontradas
                     </option>
-                    {acreedorFilt.length>0&&acreedorFilt.map((acreedor) => (
-                  <option
-                    key={acreedor.idAcreedor}
-                    value={acreedor.idAcreedor}
-                    className="opcionesacreedor"
-                  >
-                    {acreedor.nombre}
-                  </option>
-                ))}
+                    {acreedorFilt.length > 0 &&
+                      acreedorFilt.map((acreedor) => (
+                        <option
+                          key={acreedor.idAcreedor}
+                          value={acreedor.idAcreedor}
+                          className="opcionesacreedor"
+                        >
+                          {acreedor.nombre}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 <div className="infodetaildeudas">
@@ -729,6 +746,26 @@ const Insolvencia = () => {
                     value={proceso.juzgado}
                     onChange={(event) => handleProcesoChange(event)}
                   />
+                  <input
+                    type="text"
+                    value={proceso.juzgado}
+                    name="juzgado"
+                    id="juzgado"
+                    onChange={(event) => handleJuzgadoChange(event)}
+                    placeholder="Buscar juzgado..."
+                  />{" "}
+                  {filteredJuzgado.length > 0 && (
+                    <ul>
+                      {filteredJuzgado.map((juzgado, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleJuzgadoClick(juzgado.nombre)}
+                        >
+                          {juzgado.nombre}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
                 <div className="infodetailingresos">
                   <label htmlFor="radicado" className="labelingresos">

@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "Encryption",
-        "Login"
+        "Login",
+        "Selector with search in insolvencia"
     ]
 }

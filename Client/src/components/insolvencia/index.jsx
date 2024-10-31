@@ -6,7 +6,7 @@ import "../insolvencia/insolvencia.css";
 import { Button } from "../Mystyles";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarSolicitud } from "../../handlers/generarSolicitud.jsx";
-import {juzgados} from "../../utils/juzgados.js";
+import { juzgados } from "../../utils/juzgados.js";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);
@@ -428,16 +428,16 @@ const Insolvencia = () => {
   const handleJuzgadoChange = (e) => {
     const value = e.target.value;
 
-    console.log("Input name:", e.target.name); 
-    console.log("Input value:", e.target.value);   
+    console.log("Input name:", e.target.name);
+    console.log("Input value:", e.target.value);
     setProceso({
       ...proceso,
       [e.target.name]: e.target.value,
     });
 
-    const foundJuzgado=juzgados.filter((juzgado) =>
+    const foundJuzgado = juzgados.filter((juzgado) =>
       juzgado.nombre.toLowerCase().includes(value.toLowerCase())
-    )
+    );
     console.log("Juzgados encontrados:", foundJuzgado);
     setFilteredJuzgado(foundJuzgado);
 
@@ -445,7 +445,7 @@ const Insolvencia = () => {
   };
 
   const handleJuzgadoClick = (nombreJuzgado) => {
-        setProceso({
+    setProceso({
       ...proceso,
       ["juzgado"]: nombreJuzgado,
     });
@@ -747,20 +747,15 @@ const Insolvencia = () => {
                   </label>
                   <input
                     type="text"
+                    value={proceso.juzgado}
+                    name="juzgado"
+                    id="juzgado"
                     className="cajaingresos"
-                    name="juzgado"
-                    id="juzgado"
-                    value={proceso.juzgado}
-                    onChange={(event) => handleProcesoChange(event)}
-                  />
-                  <input
-                    type="text"
-                    value={proceso.juzgado}
-                    name="juzgado"
-                    id="juzgado"
                     onChange={(event) => handleJuzgadoChange(event)}
                     placeholder="Buscar juzgado..."
                   />{" "}
+                </div>
+                <div className="infodetailingresos">
                   {filteredJuzgado.length > 0 && (
                     <ul>
                       {filteredJuzgado.map((juzgado, index) => (

@@ -29,6 +29,17 @@
   justify-content: center;
 }
 
+.selectorjuzgado{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.opcionjuzgado:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
 .infotextarea {
   display: flex;
   flex-direction: column;

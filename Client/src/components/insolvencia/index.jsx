@@ -755,7 +755,7 @@ const Insolvencia = () => {
                     placeholder="Buscar juzgado..."
                   />{" "}
                 </div>
-                <div className="infodetailingresos">
+                <div className="selectorjuzgado">
                   {filteredJuzgado.length > 0 && (
                     <ul>
                       {filteredJuzgado.map((juzgado, index) => (

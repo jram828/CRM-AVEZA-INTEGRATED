@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "Encryption",
         "Login",
-        "Selector with search in insolvencia"
+        "Selector with search in insolvencia",
+        "Detail casos"
     ]
 }

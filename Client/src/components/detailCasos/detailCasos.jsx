@@ -59,6 +59,7 @@ function DetailCasos() {
     obtenerCaso(id);
   }, [id]);
 
+
   console.log("Caso detail:", casoDetail);
   // ciudad: datos.Ciudads[0].nombre_ciudad,
   // departamento: datos.Ciudads[0].Departamentos[0].nombre_departamento,
@@ -70,6 +71,25 @@ function DetailCasos() {
   const honorarios_letras = numeroALetras(Number(casoDetail.honorarios));
   // const honorarios = Number(casoDetail.honorarios).toLocaleString();
 
+  
+  const formatNumero = (numero) => {
+    return numero
+      ? new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(numero).replace(/^COP/, '$')
+      : '';
+  };
+
+  const parseNumero = (numeroFormateado) => {
+    return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(',', '.'));
+  };
+
+  const handleNumberInputChange = (e) => {
+    const { name, value } = e.target;
+    setCasoDetail({
+      ...casoDetail,
+      [name]: parseNumero(value), // Almacena el valor como número en el estado
+    });
+  };
+  
   const handleFinalizar = () => {
     // const isConfirmed = window.confirm(
     //   "¿Estás seguro de que deseas finalizar este caso?"
@@ -91,7 +111,6 @@ function DetailCasos() {
 
     if (isConfirmed) {
       dispatch(deleteCaso(id));
-      // dispatch(getCasos());
       console.log("id", id);
       navigate("/casos");
     }
@@ -101,7 +120,6 @@ function DetailCasos() {
     e.preventDefault();
     dispatch(modificarCaso(casoDetail));
     window.localStorage.setItem("caso", JSON.stringify(casoDetail));
-    // window.location.reload();
   };
 
   const handlerGenerarDocumentos = () => {
@@ -129,23 +147,15 @@ function DetailCasos() {
         </div>
         <div className="menu-detail">
           <input type="file" id="doc" />
-          {/* <Link to={"/generardocumentos"}> */}
           <Button
             className="botonesiniciosesion"
             onClick={handlerGenerarDocumentos}
           >
             Generar documentos
           </Button>
-          {/* </Link> */}
-          {/* <Link to={"/cotizacion"}>
-            <Button className="botonesiniciosesion">Cotización</Button>
-          </Link> */}
           <Button onClick={handleUpdateCaso} className="botonesiniciosesion">
             Actualizar
           </Button>
-          {/* <Button className="botonesiniciosesion" onClick={generarContrato}>
-            Generar Documentos
-          </Button> */}
           <Button
             className="btn btn-sm w-35 border border-error bg-white hover:bg-white"
             onClick={handleDelete}
@@ -286,12 +296,12 @@ function DetailCasos() {
                 Valor pretensiones:
               </label>
               <input
-                type="number"
+                type="text"
                 className="cajadetail"
                 name="valor_pretensiones"
                 id="valor_pretensiones"
-                value={casoDetail.valor_pretensiones}
-                onChange={handleUpdateDetailCaso}
+                value={formatNumero(casoDetail.valor_pretensiones)}
+                onChange={handleNumberInputChange}
               />
             </div>
             <div className="infodetailcaso">
@@ -299,12 +309,12 @@ function DetailCasos() {
                 Valor honorarios:
               </label>
               <input
-                type="number"
+                type="text"
                 className="cajadetail"
                 name="honorarios"
                 id="honorarios"
-                value={casoDetail.honorarios}
-                onChange={handleUpdateDetailCaso}
+                value={formatNumero(casoDetail.honorarios)}
+                onChange={handleNumberInputChange}
               />
             </div>
             <div className="infodetailcaso">

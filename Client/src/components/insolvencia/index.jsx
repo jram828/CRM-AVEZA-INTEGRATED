@@ -699,7 +699,7 @@ const Insolvencia = () => {
                     Valor comercial:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="valor"
                     id="valorBien"
@@ -760,33 +760,22 @@ const Insolvencia = () => {
                     <select
                       name="acreedor"
                       id="acreedor"
-                      className="cajadeudas"
+                      className="cajaingresos"
                       onChange={(event) => handleDeudaChange(event)}
                     >
-                      <option value="" className="opcionesacreedor">
+                      <option value="" className="cajaingresos">
                         Juzgados encontrados
                       </option>
                       {filteredJuzgado.map((juzgado, index) => (
                         <option
                           key={index}
                           value={juzgado.nombre}
-                          className="opcionjuzgado"
+                          className="cajaingresos"
                         >
                           {juzgado.nombre}
                         </option>
                       ))}
                     </select>
-                    // <ul>
-                    //   {filteredJuzgado.map((juzgado, index) => (
-                    //     <li
-                    //       key={index}
-                    //       onClick={() => handleJuzgadoClick(juzgado.nombre)}
-                    //       className="opcionjuzgado"
-                    //     >
-                    //       {juzgado.nombre}
-                    //     </li>
-                    //   ))}
-                    // </ul>
                   )}
                 </div>
                 <div className="infodetailingresos">

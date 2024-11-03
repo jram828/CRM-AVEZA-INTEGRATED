@@ -2,7 +2,12 @@ import "./detailCasos.css";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { clienteActual, deleteCaso, finCaso, modificarCaso } from "../../redux/actions";
+import {
+  clienteActual,
+  deleteCaso,
+  finCaso,
+  modificarCaso,
+} from "../../redux/actions";
 import { Button, Buttonf } from "../Mystyles";
 import { getCasoById } from "../../handlers/detailCaso";
 import { numeroALetras } from "../convertiraletras";
@@ -60,7 +65,6 @@ function DetailCasos() {
     obtenerCaso(id);
   }, [id]);
 
-
   console.log("Caso detail:", casoDetail);
   // ciudad: datos.Ciudads[0].nombre_ciudad,
   // departamento: datos.Ciudads[0].Departamentos[0].nombre_departamento,
@@ -73,24 +77,24 @@ function DetailCasos() {
   // const honorarios = Number(casoDetail.honorarios).toLocaleString();
 
   const formatNumero = (numero) => {
-    if (!numero) return '';
-    
+    if (!numero) return "";
+
     // Convertir a número flotante para manejar decimales
-    const num = parseFloat(numero.toString().replace(/,/g, '.'));
-    
+    const num = parseFloat(numero.toString().replace(/,/g, "."));
+
     // Formatear el número con separadores de miles y mantener dos decimales
-    return num.toLocaleString('es-CO', {
+    return num.toLocaleString("es-CO", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
   };
 
   const parseNumero = (numeroFormateado) => {
-    return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(',', '.'));
+    return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(",", "."));
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       const { name } = e.target;
       setCasoDetail({
         ...casoDetail,
@@ -99,7 +103,7 @@ function DetailCasos() {
       setEditingField(null);
     }
   };
-  
+
   const handleFinalizar = () => {
     // const isConfirmed = window.confirm(
     //   "¿Estás seguro de que deseas finalizar este caso?"
@@ -137,10 +141,14 @@ function DetailCasos() {
   };
 
   const handlerSolicitud = () => {
-    dispatch(clienteActual({...casoDetail.Cliente, cedula: casoDetail.ClienteCedulaCliente}));
+    dispatch(
+      clienteActual({
+        ...casoDetail.Cliente,
+        cedula: casoDetail.ClienteCedulaCliente,
+      })
+    );
     navigate("/insolvencia");
   };
-
 
   const handleUpdateDetailCaso = (e) => {
     setCasoDetail({
@@ -248,10 +256,11 @@ function DetailCasos() {
                 value={casoDetail.TipoDeCaso.descripcion}
                 onChange={handleUpdateDetailCaso}
               />
-              <div className="cajadetail">
-                <Buttonf onClick={handlerSolicitud}>Solicitud</Buttonf>
-              </div>
             </div>
+            {casoDetail.TipoDeCaso.descripcion === "Insolvencia" && (
+            <div className="infodetailcaso">
+              <Buttonf onClick={handlerSolicitud}>Solicitud</Buttonf>
+            </div>)}
             <div className="infodetailcaso">
               <label htmlFor="etapa" className="labeldetailcaso">
                 Etapa:
@@ -313,7 +322,11 @@ function DetailCasos() {
                 name="valor_pretensiones"
                 id="valor_pretensiones"
                 onChange={handleUpdateDetailCaso}
-                value={editingField === "valor_pretensiones" ? casoDetail.valor_pretensiones : formatNumero(casoDetail.valor_pretensiones)}
+                value={
+                  editingField === "valor_pretensiones"
+                    ? casoDetail.valor_pretensiones
+                    : formatNumero(casoDetail.valor_pretensiones)
+                }
                 onKeyDown={handleKeyPress}
               />
             </div>
@@ -327,7 +340,11 @@ function DetailCasos() {
                 name="honorarios"
                 id="honorarios"
                 onChange={handleUpdateDetailCaso}
-                value={editingField === "honorarios" ? casoDetail.honorarios : formatNumero(casoDetail.honorarios)}
+                value={
+                  editingField === "honorarios"
+                    ? casoDetail.honorarios
+                    : formatNumero(casoDetail.honorarios)
+                }
                 onKeyDown={handleKeyPress}
               />
             </div>

@@ -37,6 +37,7 @@ function DetailCasos() {
     radicado: "",
   });
 
+  const [editingField, setEditingField] = useState(null);
   // const caso = useSelector((state) => state.caso); // Asumimos que el detalle del caso se almacena en 'caso'
 
   const formatDate = (dateString) => {
@@ -88,12 +89,15 @@ function DetailCasos() {
     return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(',', '.'));
   };
 
-  const handleNumberInputChange = (e) => {
-    const { name, value } = e.target;
-    setCasoDetail({
-      ...casoDetail,
-      [name]: parseNumero(value), // Almacena el valor como número en el estado
-    });
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      const { name } = e.target;
+      setCasoDetail({
+        ...casoDetail,
+        [name]: parseNumero(casoDetail[name]), // Formatea el valor solo cuando se presiona Enter
+      });
+      setEditingField(null);
+    }
   };
   
   const handleFinalizar = () => {
@@ -143,6 +147,8 @@ function DetailCasos() {
       ...casoDetail,
       [e.target.name]: e.target.value, // Sintaxis ES6 para actualizar la key correspondiente
     });
+
+    setEditingField(e.target.name);
   };
 
   return (
@@ -306,8 +312,9 @@ function DetailCasos() {
                 className="cajadetail"
                 name="valor_pretensiones"
                 id="valor_pretensiones"
-                value={formatNumero(casoDetail.valor_pretensiones)}
-                onChange={handleNumberInputChange}
+                onChange={handleUpdateDetailCaso}
+                value={editingField === "valor_pretensiones" ? casoDetail.valor_pretensiones : formatNumero(casoDetail.valor_pretensiones)}
+                onKeyDown={handleKeyPress}
               />
             </div>
             <div className="infodetailcaso">
@@ -319,8 +326,9 @@ function DetailCasos() {
                 className="cajadetail"
                 name="honorarios"
                 id="honorarios"
-                value={formatNumero(casoDetail.honorarios)}
-                onChange={handleNumberInputChange}
+                onChange={handleUpdateDetailCaso}
+                value={editingField === "honorarios" ? casoDetail.honorarios : formatNumero(casoDetail.honorarios)}
+                onKeyDown={handleKeyPress}
               />
             </div>
             <div className="infodetailcaso">

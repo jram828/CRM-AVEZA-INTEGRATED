@@ -1,16 +1,19 @@
 import "../../App.css";
 // import logo from "../../img/logoAveza.png";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../insolvencia/insolvencia.css";
 import { Button } from "../Mystyles";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarSolicitud } from "../../handlers/generarSolicitud.jsx";
 import { juzgados } from "../../utils/juzgados.js";
+import { crearSolicitud } from "../../redux/actions.js";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);
   console.log("Cliente insolvencia:", cliente);
+
+  const dispatch = useDispatch();
 
   const deudasObj = [];
   const propuestasObj = [];
@@ -407,7 +410,7 @@ const Insolvencia = () => {
   }, []);
 
   const handlerGenerarSolicitud = () => {
-    generarSolicitud(
+    const datosinsolvencia=generarSolicitud(
       ingresos,
       gastos,
       bienes,
@@ -420,6 +423,9 @@ const Insolvencia = () => {
       cliente,
       listaAcreedores
     );
+
+    console.log("Datos insolvencia para back:", datosinsolvencia);
+    dispatch(crearSolicitud(datosinsolvencia));
   };
 
   // const [inputValue, setInputValue] = useState("");
@@ -444,15 +450,15 @@ const Insolvencia = () => {
     console.log("Juzgados filtrados:", filteredJuzgado);
   };
 
-  const handleJuzgadoClick = (nombreJuzgado) => {
-    setProceso({
-      ...proceso,
-      ["juzgado"]: nombreJuzgado,
-    });
-    setFilteredJuzgado([]);
+  // const handleJuzgadoClick = (nombreJuzgado) => {
+  //   setProceso({
+  //     ...proceso,
+  //     ["juzgado"]: nombreJuzgado,
+  //   });
+  //   setFilteredJuzgado([]);
 
-    console.log("Juzgado seleccionado:", nombreJuzgado, proceso.juzgado);
-  };
+  //   console.log("Juzgado seleccionado:", nombreJuzgado, proceso.juzgado);
+  // };
 
   return (
     <div className="contenedorinsolvencia">

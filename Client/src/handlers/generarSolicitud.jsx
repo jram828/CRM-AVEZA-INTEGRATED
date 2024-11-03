@@ -1,8 +1,6 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
-import { crearSolicitud } from "../redux/actions";
-import { useDispatch } from "react-redux";
 
 export const generarSolicitud = (
   ingresos,
@@ -14,10 +12,9 @@ export const generarSolicitud = (
   deudas,
   propuestas,
   motivos,
-  cliente, 
+  cliente,
   listaAcreedores
 ) => {
-  const dispatch = useDispatch();
   console.log("Datos solicitud:", {
     ingresos,
     gastos,
@@ -30,33 +27,35 @@ export const generarSolicitud = (
     motivos,
     cliente,
     ciudad: cliente.Ciudads[0].nombre_ciudad,
-    listaAcreedores
+    listaAcreedores,
   });
   const docs = document.getElementById("doc");
 
-  const newAcreedores = listaAcreedores.map((acreedor,index) => ({
+  const newAcreedores = listaAcreedores.map((acreedor, index) => ({
     contador: index + 1,
     nombreAcreedor: acreedor.nombre,
     NIT: acreedor.NIT,
     direccionAcreedor: acreedor.direccion,
     ciudadAcreedor: acreedor.ciudad,
     telefono: acreedor.telefono,
-    emailAcreedor: acreedor.email}));
+    emailAcreedor: acreedor.email,
+  }));
 
-    const datosinsolvencia = {  ingresos,
-      gastos,
-      bienes,
-      procesos,
-      obligaciones,
-      sociedades,
-      deudas,
-      propuestas,
-      motivos,
-      cliente,
-      ciudad:cliente.Ciudads[0].nombre_ciudad,
-      acreedores: newAcreedores};
+  const datosinsolvencia = {
+    ingresos,
+    gastos,
+    bienes,
+    procesos,
+    obligaciones,
+    sociedades,
+    deudas,
+    propuestas,
+    motivos,
+    cliente,
+    ciudad: cliente.Ciudads[0].nombre_ciudad,
+    acreedores: newAcreedores,
+  };
 
-      dispatch(crearSolicitud(datosinsolvencia));
   const reader = new FileReader();
   if (docs.files.length === 0) {
     alert("No files selected");
@@ -104,8 +103,6 @@ export const generarSolicitud = (
       otros: Number(gastos[0].otros).toLocaleString(),
     });
 
-
-
     const blob = doc.getZip().generate({
       type: "blob",
       mimeType:
@@ -117,4 +114,6 @@ export const generarSolicitud = (
     // Output the document using Data-URI
     saveAs(blob, `Solicitud Insolvencia.docx`);
   };
+
+  return datosinsolvencia;
 };

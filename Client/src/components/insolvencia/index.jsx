@@ -449,9 +449,9 @@ const Insolvencia = () => {
                     className="cajadeudas"
                     onChange={(event) => handleDeudaChange(event)}
                   >
-                    {/* <option value="" className="opcionesacreedor">
+                    <option value="" className="opcionesacreedor">
                       Instituciones encontradas
-                    </option> */}
+                    </option>
                     {acreedorFilt.length > 0 &&
                       acreedorFilt.map((acreedor) => (
                         <option
@@ -648,10 +648,10 @@ const Insolvencia = () => {
                 <div className="selectorjuzgado">
                   {filteredJuzgado.length > 0 && (
                     <select
-                      name="acreedor"
-                      id="acreedor"
+                      name="juzgado"
+                      id="juzgado"
                       className="cajaingresos"
-                      onChange={(event) => handleDeudaChange(event)}
+                      onChange={(event) => handleProcesoChange(event)}
                     >
                       <option value="" className="cajaingresos">
                         Juzgados encontrados

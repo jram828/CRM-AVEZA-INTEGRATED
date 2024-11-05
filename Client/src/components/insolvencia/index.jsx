@@ -160,12 +160,6 @@ const Insolvencia = () => {
 
   const handleSubmitDeuda = async (e) => {
     e.preventDefault();
-    // if (
-    //   !userState.userFirstname ||
-    //   !userState.userLastname ||
-    //   !userState.userPhone
-    // )
-    //   return;
     addDeuda(datosDeuda);
     console.log("Acreedor buscado:", datosDeuda.acreedor);
     const filteredAcreedor = listaacreedores.filter(
@@ -173,32 +167,16 @@ const Insolvencia = () => {
     );
     console.log("Acreedor encontrado:", filteredAcreedor);
     addAcreedor(filteredAcreedor[0]);
-
-    try {
-      // await postDeuda(deudas);
-    } catch (error) {
-      console.error("Error al crear las deudas:", error.message);
-    }
   };
 
   const handleSubmitPropuesta = async (e) => {
     e.preventDefault();
     addPropuesta(propuesta);
-    try {
-      // await postPropuesta(propuestas);
-    } catch (error) {
-      console.error("Error al crear las deudas:", error.message);
-    }
   };
 
   const handleSubmitMotivos = async (e) => {
     e.preventDefault();
-    // addPropuesta(propuesta);
-    try {
-      // await postPropuesta(propuestas);
-    } catch (error) {
-      console.error("Error al crear las deudas:", error.message);
-    }
+
   };
 
   const addIngreso = (ingreso) => {
@@ -293,80 +271,36 @@ const Insolvencia = () => {
   };
   const handleSubmitIngreso = async (e) => {
     e.preventDefault();
-    // if (
-    //   !userState.userFirstname ||
-    //   !userState.userLastname ||
-    //   !userState.userPhone
-    // )
-    //   return;
     addIngreso(ingreso);
-    try {
-      // await postgasto(deudas);
-    } catch (error) {
-      console.error("Error al crear los ingresos:", error.message);
-    }
   };
 
   const handleSubmitBien = async (e) => {
     e.preventDefault();
-    // if (
-    //   !userState.userFirstname ||
-    //   !userState.userLastname ||
-    //   !userState.userPhone
-    // )
-    //   return;
     addBien(bien);
-    try {
-      // await postDeuda(deudas);
-    } catch (error) {
-      console.error("Error al crear los bienes:", error.message);
-    }
   };
 
   const handleSubmitGasto = async (e) => {
     e.preventDefault();
     addGasto(gasto);
-    try {
-      // await postGasto(gasto);
-    } catch (error) {
-      console.error("Error al crear los gastos:", error.message);
-    }
   };
 
   const handleSubmitProceso = async (e) => {
     e.preventDefault();
     addProceso(proceso);
-    try {
-      // await postGasto(gasto);
-    } catch (error) {
-      console.error("Error al crear el proceso:", error.message);
-    }
   };
 
   const handleSubmitObligacion = async (e) => {
     e.preventDefault();
     addObligacion(obligacion);
-    try {
-      // await postObligacion(obligacion);
-    } catch (error) {
-      console.error("Error al crear el proceso:", error.message);
-    }
   };
 
   const handleSubmitSociedad = async (e) => {
     e.preventDefault();
     addSociedad(sociedad);
-    try {
-      // await postSociedad(sociedad);
-    } catch (error) {
-      console.error("Error al crear el proceso:", error.message);
-    }
   };
 
   const handleSearchAcreedor = (e) => {
     e.preventDefault();
-
-    // const textoBuscado = "Banco Popular"; // Cambia esto al texto que deseas buscar
 
     const resultado = listaacreedores.find((acreedor) => {
       return acreedor.nombre.includes(datosDeuda.acreedorBuscado);
@@ -377,10 +311,6 @@ const Insolvencia = () => {
     if (resultados) {
       console.log("Elemento encontrado:", resultado);
       setAcreedorFilt(resultados);
-      // setDatosDeuda({
-      //   ...datosDeuda,
-      //   acreedor: resultado.nombre,
-      // });
     } else {
       console.log("No se encontró ningún elemento con ese nombre.");
     }
@@ -392,25 +322,8 @@ const Insolvencia = () => {
     }
   };
 
-  // const formatInputValue = (value) => {
-  //   if (!value) return "";
-  //   return value.toUpperCase(); //.charAt(0).toUpperCase() + value.slice(1); //.toLowerCase();
-  // };
-
-  useEffect(() => {
-    // const obtenerAcreedores = async () => {
-    //   try {
-    //     const listaAcreedores = await getAcreedores();
-    //     setAcreedores(listaAcreedores);
-    //   } catch (error) {
-    //     console.error("Error al obtener las instituciones:", error);
-    //   }
-    // };
-    // obtenerAcreedores();
-  }, []);
-
   const handlerGenerarSolicitud = () => {
-    const datosinsolvencia=generarSolicitud(
+    const datosinsolvencia = generarSolicitud(
       ingresos,
       gastos,
       bienes,
@@ -428,7 +341,6 @@ const Insolvencia = () => {
     dispatch(crearSolicitud(datosinsolvencia));
   };
 
-  // const [inputValue, setInputValue] = useState("");
   const [filteredJuzgado, setFilteredJuzgado] = useState([]);
 
   const handleJuzgadoChange = (e) => {
@@ -450,15 +362,20 @@ const Insolvencia = () => {
     console.log("Juzgados filtrados:", filteredJuzgado);
   };
 
-  // const handleJuzgadoClick = (nombreJuzgado) => {
-  //   setProceso({
-  //     ...proceso,
-  //     ["juzgado"]: nombreJuzgado,
-  //   });
-  //   setFilteredJuzgado([]);
+  const handleAcreedorChange = (e) => {
+    e.preventDefault();
 
-  //   console.log("Juzgado seleccionado:", nombreJuzgado, proceso.juzgado);
-  // };
+    setDatosDeuda({
+      ...datosDeuda,
+      [e.target.name]: e.target.value,
+    });
+
+    const foundAcreedor = listaacreedores.filter((acreedor) =>
+      acreedor.nombre.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    console.log("Acreedores encontrados:", foundAcreedor);
+    setAcreedorFilt(foundAcreedor);
+  };
 
   return (
     <div className="contenedorinsolvencia">
@@ -468,7 +385,6 @@ const Insolvencia = () => {
       <br />
       <div className="menu-insolvencia">
         <input type="file" id="doc" />
-        {/* <Link to={"/generardocumentos"}> */}
         <Button
           className="botonesiniciosesion"
           onClick={handlerGenerarSolicitud}
@@ -490,12 +406,6 @@ const Insolvencia = () => {
                 </div>
                 <br />
                 <div className="infotextarea">
-                  {/* <label
-                htmlFor="clasificacionpropuesta"
-                className="labeldetaildeudas"
-              >
-                Clasificación del Crédito:
-              </label> */}
                   <textarea
                     name="motivos"
                     id="motivos"
@@ -514,7 +424,6 @@ const Insolvencia = () => {
                   </Button>
                 </div>
               </div>
-              {/* <br /> */}
               <div className="infoseccion">
                 <div className="encabezadodeudas">
                   <h6 className="titulo">Información de las deudas</h6>
@@ -523,51 +432,26 @@ const Insolvencia = () => {
                   <label htmlFor="acreedor" className="labeldetaildeudas">
                     Selecciona el acreedor:
                   </label>
-                  {/* <select
+                  <input
+                    type="text"
+                    value={datosDeuda.acreedor}
                     name="acreedor"
                     id="acreedor"
                     className="cajadeudas"
-                    onChange={(event) => handleDeudaChange(event)}
-                  >
-                    <option value="" className="opcionesacreedor">
-                      Acreedor
-                    </option>
-                    {acreedores.map((acreedor) => (
-                  <option
-                    key={acreedor.idAcreedor}
-                    value={acreedor.idAcreedor}
-                    className="opcionesacreedor"
-                  >
-                    {acreedor.nombre}
-                  </option>
-                ))}
-                  </select> */}
-
-                  <input
-                    placeholder="Nombre Institución"
-                    type="text"
-                    name="acreedorBuscado"
-                    id="acreedorBuscado"
-                    value={datosDeuda.acreedorBuscado}
-                    onKeyDown={handleKeyDown}
-                    onChange={(event) => handleDeudaChange(event)}
-                    className="cajadeudas"
+                    onChange={(event) => handleAcreedorChange(event)}
+                    placeholder="Buscar Institución..."
                   />
                 </div>
                 <div className="infodetaildeudas">
-                  <Button onClick={handleSearchAcreedor} className="buscar">
-                    Buscar Institución
-                  </Button>
-
                   <select
                     name="acreedor"
                     id="acreedor"
                     className="cajadeudas"
                     onChange={(event) => handleDeudaChange(event)}
                   >
-                    <option value="" className="opcionesacreedor">
+                    {/* <option value="" className="opcionesacreedor">
                       Instituciones encontradas
-                    </option>
+                    </option> */}
                     {acreedorFilt.length > 0 &&
                       acreedorFilt.map((acreedor) => (
                         <option
@@ -759,7 +643,7 @@ const Insolvencia = () => {
                     className="cajaingresos"
                     onChange={(event) => handleJuzgadoChange(event)}
                     placeholder="Buscar juzgado..."
-                  />{" "}
+                  />
                 </div>
                 <div className="selectorjuzgado">
                   {filteredJuzgado.length > 0 && (

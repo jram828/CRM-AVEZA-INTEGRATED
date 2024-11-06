@@ -1147,7 +1147,6 @@ const Insolvencia = () => {
                   Guardar obligación
                 </Button>
               </div>
-              {/* <br /> */}
             </div>
           </div>
         </div>
@@ -1190,10 +1189,10 @@ const Insolvencia = () => {
                         {deuda.documentoSoporte}
                       </td>
                       <td className="tableCell" key={index}>
-                        {deuda.capital}
+                        {formatNumero(deuda.capital)}
                       </td>
                       <td className="tableCell" key={index}>
-                        {deuda.intereses}
+                        {formatNumero(deuda.intereses)}
                       </td>
                       <td className="tableCell" key={index}>
                         {deuda.clasificacion}
@@ -1226,7 +1225,7 @@ const Insolvencia = () => {
                   bienes.map((bien, index) => (
                     <tr key={index}>
                       <td className="tableCell">{bien.tipoBien}</td>
-                      <td className="tableCell">{bien.valor}</td>
+                      <td className="tableCell">{formatNumero(bien.valor)}</td>
                       <td className="tableCell">{bien.tipoAfectacion}</td>
                       <td className="tableCell">{bien.descripcionBien}</td>
                     </tr>
@@ -1251,7 +1250,7 @@ const Insolvencia = () => {
                         {ingreso.concepto}
                       </td>
                       <td className="tableCell" key={index}>
-                        {ingreso.valor}
+                        {formatNumero(ingreso.valor)}
                       </td>
                     </tr>
                   ))
@@ -1298,7 +1297,7 @@ const Insolvencia = () => {
                 {gastos.length > 0 ? (
                   gastos.map((gasto, index) => (
                     <td className="tableCell" key={index}>
-                      {gasto.energia}
+                      {formatNumero(gasto.energia)}
                     </td>
                   ))
                 ) : (
@@ -1310,7 +1309,7 @@ const Insolvencia = () => {
                 {gastos.length > 0 ? (
                   gastos.map((gasto, index) => (
                     <td className="tableCell" key={index}>
-                      {gasto.aguaAlcAseo}
+                      {formatNumero(gasto.aguaAlcAseo)}
                     </td>
                   ))
                 ) : (
@@ -1322,7 +1321,7 @@ const Insolvencia = () => {
                 {gastos.length > 0 ? (
                   gastos.map((gasto, index) => (
                     <td className="tableCell" key={index}>
-                      {gasto.gas}
+                      {formatNumero(gasto.gas)}
                     </td>
                   ))
                 ) : (
@@ -1334,7 +1333,7 @@ const Insolvencia = () => {
                 {gastos.length > 0 ? (
                   gastos.map((gasto, index) => (
                     <td className="tableCell" key={index}>
-                      {gasto.television}
+                      {formatNumero(gasto.television)}
                     </td>
                   ))
                 ) : (
@@ -1346,7 +1345,7 @@ const Insolvencia = () => {
                 {gastos.length > 0 ? (
                   gastos.map((gasto, index) => (
                     <td className="tableCell" key={index}>
-                      {gasto.telecomunicaciones}
+                      {formatNumero(gasto.telecomunicaciones)}
                     </td>
                   ))
                 ) : (
@@ -1358,7 +1357,7 @@ const Insolvencia = () => {
                 {gastos.length > 0 ? (
                   gastos.map((gasto, index) => (
                     <td className="tableCell" key={index}>
-                      {gasto.arriendo}
+                      {formatNumero(gasto.arriendo)}
                     </td>
                   ))
                 ) : (
@@ -1370,7 +1369,7 @@ const Insolvencia = () => {
                 {gastos.length > 0 ? (
                   gastos.map((gasto, index) => (
                     <td className="tableCell" key={index}>
-                      {gasto.seguros}
+                      {formatNumero(gasto.seguros)}
                     </td>
                   ))
                 ) : (
@@ -1382,7 +1381,7 @@ const Insolvencia = () => {
                 {gastos.length > 0 ? (
                   gastos.map((gasto, index) => (
                     <td className="tableCell" key={index}>
-                      {gasto.alimentacion}
+                      {formatNumero(gasto.alimentacion)}
                     </td>
                   ))
                 ) : (
@@ -1412,7 +1411,7 @@ const Insolvencia = () => {
                         {propuesta.tasaIntereses}
                       </td>
                       <td className="tableCell" key={index}>
-                        {propuesta.valorCuota}
+                        {formatNumero(propuesta.valorCuota)}
                       </td>
                       <td className="tableCell" key={index}>
                         {propuesta.numeroCuotas}

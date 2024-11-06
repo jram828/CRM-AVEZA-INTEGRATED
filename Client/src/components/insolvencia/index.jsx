@@ -775,19 +775,11 @@ const Insolvencia = () => {
                     Valor :
                   </label>
                   <input
-                    type="number"
-                    className="cajaingresos"
-                    name="valor"
-                    id="valor"
-                    value={ingreso.alor}
-                    onChange={(event) => handleIngresoChange(event)}
-                  />
-                  <input
                     type="text"
                     className="cajaingresos"
                     name="Valor"
                     id="valor"
-                    onChange={(event) => handleDeudaChange(event)}
+                    onChange={(event) => handleIngresoChange(event)}
                     value={
                       editingField === "Valor"
                         ? ingreso.Valor

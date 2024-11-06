@@ -1,6 +1,5 @@
 import "../../App.css";
-// import logo from "../../img/logoAveza.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../insolvencia/insolvencia.css";
 import { Button } from "../Mystyles";
@@ -398,6 +397,12 @@ const Insolvencia = () => {
             [name]: parseNumero(propuesta[name]), // Formatea el valor solo cuando se presiona Enter
           });
           break;
+        default:
+          setGasto({
+            ...gasto,
+            [name]: parseNumero(gasto[name]), // Formatea el valor solo cuando se presiona Enter
+          });
+          break;
       }
 
       setEditingField(null);
@@ -783,7 +788,7 @@ const Insolvencia = () => {
                     value={
                       editingField === "Valor"
                         ? ingreso.Valor
-                        : formatNumero(datosDeuda.Valor)
+                        : formatNumero(ingreso.Valor)
                     }
                     onKeyDown={handleKeyPress}
                   />
@@ -810,12 +815,17 @@ const Insolvencia = () => {
                     Energía:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="energia"
                     id="energia"
-                    value={gasto.energia}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "energia"
+                        ? gasto.energia
+                        : formatNumero(gasto.energia)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">
@@ -823,12 +833,17 @@ const Insolvencia = () => {
                     Agua, alcantarillado y aseo:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="aguaAlcAseo"
                     id="agua"
-                    value={gasto.aguaAlcAseo}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "aguaAlcAseo"
+                        ? gasto.aguaAlcAseo
+                        : formatNumero(gasto.aguaAlcAseo)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">
@@ -836,26 +851,35 @@ const Insolvencia = () => {
                     Gas:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="gas"
                     id="gas"
-                    value={gasto.gas}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "gas"
+                        ? gasto.gas
+                        : formatNumero(gasto.gas)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
-
                 <div className="infodetailingresos">
                   <label htmlFor="telecomunicaciones" className="labelingresos">
                     Telecomunicaciones :
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="telecomunicaciones"
                     id="telecomunicaciones"
-                    value={gasto.telecomunicaciones}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "telecomunicaciones"
+                        ? gasto.telecomunicaciones
+                        : formatNumero(gasto.telecomunicaciones)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">
@@ -863,12 +887,17 @@ const Insolvencia = () => {
                     Televisión:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="television"
                     id="television"
-                    value={gasto.television}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "television"
+                        ? gasto.television
+                        : formatNumero(gasto.television)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">
@@ -876,12 +905,17 @@ const Insolvencia = () => {
                     Arriendo:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="arriendo"
                     id="arriendo"
-                    value={gasto.arriendo}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "arriendo"
+                        ? gasto.arriendo
+                        : formatNumero(gasto.arriendo)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">
@@ -889,12 +923,17 @@ const Insolvencia = () => {
                     Seguros:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="seguros"
                     id="seguros"
-                    value={gasto.seguros}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "seguros"
+                        ? gasto.seguros
+                        : formatNumero(gasto.seguros)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">
@@ -902,12 +941,17 @@ const Insolvencia = () => {
                     Alimentación:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="alimentacion"
                     id="alimentacion"
-                    value={gasto.alimentacion}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "alimentacion"
+                        ? gasto.alimentacion
+                        : formatNumero(gasto.alimentacion)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">
@@ -915,12 +959,17 @@ const Insolvencia = () => {
                     Transporte:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="transporte"
                     id="transporte"
-                    value={gasto.transporte}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "transporte"
+                        ? gasto.transporte
+                        : formatNumero(gasto.transporte)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">
@@ -928,12 +977,17 @@ const Insolvencia = () => {
                     Otros gastos:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajaingresos"
                     name="otros"
                     id="otros"
-                    value={gasto.otros}
                     onChange={(event) => handleGastoChange(event)}
+                    value={
+                      editingField === "otros"
+                        ? gasto.otros
+                        : formatNumero(gasto.otros)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
 
@@ -943,7 +997,6 @@ const Insolvencia = () => {
               </div>
             </div>
             <div className="formpropuesta">
-              {/* <br /> */}
               <div className="infoseccion">
                 <div className="encabezadopropuesta">
                   <h6 className="titulo">Propuesta de pago</h6>
@@ -994,7 +1047,6 @@ const Insolvencia = () => {
                     }
                     onKeyDown={handleKeyPress}
                   />
-
                 </div>
                 <div className="infodetailpropuesta">
                   <label htmlFor="numeroCuotas" className="labeldetaildeudas">
@@ -1377,7 +1429,7 @@ const Insolvencia = () => {
             <table className="informationTable">
               <thead>
                 <tr>
-                  <th className="tableCell">Nombres y Apellidos</th>
+                  <th className="tableCell">Nombres y Apellidos cónyuge</th>
                   <th className="tableCell">Identificación</th>
                 </tr>
               </thead>
@@ -1397,7 +1449,7 @@ const Insolvencia = () => {
             <table className="informationTable">
               <thead>
                 <tr>
-                  <th className="tableCell">Nombres y Apellidos</th>
+                  <th className="tableCell">Nombres y Apellidos hijo(s)</th>
                   <th className="tableCell">No. Identificación</th>
                 </tr>
               </thead>

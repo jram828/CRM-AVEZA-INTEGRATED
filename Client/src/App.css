@@ -1,29 +1,25 @@
 .App {
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   justify-content: center;
-   min-height: 99%;
-   min-width: 100vw;
-   background-color: rgb(81, 115, 238, 0.75);
-   position: absolute;
-   }
-
-
-
-
-.errores{
-   font-size: 100%;
-   color: red
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 99%;
+  min-width: 100vw;
+  background-color: rgb(81, 115, 238, 0.75);
 }
 
-.label{
-   font-size: 120%;
-   color: black;
-   margin: 10px;
+.errores {
+  font-size: 100%;
+  color: red;
 }
 
-   .logo-aveza {
+.label {
+  font-size: 120%;
+  color: black;
+  margin: 10px;
+}
+
+.logo-aveza {
   text-align: center;
 }
 
@@ -44,7 +40,6 @@
 .verificacion {
   text-align: center;
 }
-
 
 .tipo-de-caso {
   text-align: center;
@@ -67,8 +62,6 @@
 .tipo-de-recordatorio {
   text-align: center;
 }
-
-
 
 .ingresousuario {
   display: flex;
@@ -94,7 +87,6 @@
   justify-content: center;
 }
 
-
 .contenedor-form {
   border-radius: 1%;
   border-color: black;
@@ -115,8 +107,6 @@
   font-family: Arial, Helvetica, sans-serif;
   color: black;
 }
-
-
 
 .cajausuario {
   height: 20px;
@@ -188,7 +178,6 @@
   display: flex;
   justify-content: center;
 }
-
 
 /* css para documentos legales */
 .documentoagenerar {
@@ -279,13 +268,10 @@
 
 /* estilos registro cliente */
 
-
 .nombreapellidos {
   display: flex;
   justify-content: center;
 }
-
-
 
 .numerocedula {
   display: flex;
@@ -368,73 +354,67 @@
   background-color: rgb(75, 127, 231);
 }
 
-
 /* clases generar contrato */
-   .tituloo{
-      font-size: 100%;
-      text-align:justify;
-      text-align: center;
-   }
+.tituloo {
+  font-size: 100%;
+  text-align: justify;
+  text-align: center;
+}
 
-   .cajacliente{
-      border: 0;
-      background-color:white;
-      outline: none;
-      text-align: center;
-      width: 190px;
-      /* font-weight: bold; */
-      font-size: 15px;
-      vertical-align: top;    
+.cajacliente {
+  border: 0;
+  background-color: white;
+  outline: none;
+  text-align: center;
+  width: 190px;
+  /* font-weight: bold; */
+  font-size: 15px;
+  vertical-align: top;
+}
+.cajacedulacliente {
+  border: 0;
+  /* background-color: #eee; */
+  outline: none;
+}
 
-   }
-   .cajacedulacliente{
-      border: 0;
-      /* background-color: #eee; */
-      outline: none;
+.valordeuda {
+  border: 0;
+  /* background-color: #eee; */
+  outline: none;
+}
 
-   }
+.abogado {
+  border: 0;
+  /* background-color: #eee; */
+  outline: none;
+}
+.cedulaabogado {
+  border: 0;
+  /* background-color: #eee; */
+  outline: none;
+}
+.Notarjetaprofecional {
+  border: 0;
+  /* background-color: #eee; */
+  outline: none;
+}
 
-   .valordeuda{
-      border: 0;
-      /* background-color: #eee; */
-      outline: none;
-   }
+.margi {
+  right: 15px;
+}
 
-   .abogado{
-      border: 0;
-      /* background-color: #eee; */
-      outline: none;
- }
- .cedulaabogado{
-      border: 0;
-      /* background-color: #eee; */
-      outline: none;
- }
-  .Notarjetaprofecional{
-      border: 0;
-      /* background-color: #eee; */
-      outline: none;
+.containerLogin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  }
-   
-   .margi{
-      right: 15px; ;
-   }
-   
+.celdas {
+  text-align: center;
+  width: 100px;
+}
 
-
-   .containerLogin{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-   }
-   
-   .celdas{
-      text-align: center;
-      width: 100px;
-   }
-
-   table.deudas {
+table.deudas {
   width: 40%;
   border-collapse: collapse;
 }
@@ -449,7 +429,7 @@ table.deudas td {
   background-color: #f2f2f2;
 } */
 .insolvencia {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica,  sans-serif;
 }
 table.deudas2 {
   width: 40%;
@@ -458,76 +438,69 @@ table.deudas2 {
 
 table.deudas2 th,
 table.deudas2 td {
-padding: 8px;
+  padding: 8px;
 }
-   
 
-footer{
+footer {
   font-size: 1.4rem;
   color: rgb(12, 12, 12);
   font-family: Arial, Helvetica, sans-serif;
   margin: 20px;
   text-align: right;
-
 }
 
-   .tituloautorizacion{
-    text-align: center;
-    font-size: 18px;
-   }
+.tituloautorizacion {
+  text-align: center;
+  font-size: 18px;
+}
 
-      .pieautorizacion{
-    text-align: center;
-    font-size: 12px;
-   }
+.pieautorizacion {
+  text-align: center;
+  font-size: 12px;
+}
 
-   .autorizacion{
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      border-radius: 10px;
-      text-align: justify;
-      /* background-color:white; */
-      margin-bottom: 40px;
-      padding: 20px;
-      width: 60%;
-   }
+.autorizacion {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  text-align: justify;
+  /* background-color:white; */
+  margin-bottom: 40px;
+  padding: 20px;
+  width: 60%;
+}
 
-  .contenedorautorizacion{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    /* background-color: green; */
-    align-items: center;
-   }
+.contenedorautorizacion {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* background-color: green; */
+  align-items: center;
+}
 
+.poder {
+  border-radius: 10px;
+  opacity: 0.85;
+  text-align: justify;
+  background-color: white;
+  /* border-style: solid; */
+  margin: 20px;
+  padding: 20px;
+  width: 70%;
+  font-size: 14px;
+  justify-content: center;
+}
 
+.divToPrint {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* background-color: red; */
+  align-items: center;
+}
 
-   .poder{
-      border-radius: 10px;
-      opacity: 0.85;
-      text-align: justify;
-      background-color:white;
-      /* border-style: solid; */
-      margin: 20px;
-      padding: 20px;
-      width: 70%;
-      font-size: 14px;
-      justify-content: center;
-   }
-
-
-
-      .divToPrint{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    /* background-color: red; */
-    align-items: center;
-   }
-
-   .linkdetailcliente :hover{
-     color:blue;
-     cursor: pointer;
-   }
-   
+.linkdetailcliente :hover {
+  color: blue;
+  cursor: pointer;
+}

@@ -62,7 +62,7 @@ const Insolvencia = () => {
 
   const initIngreso = {
     concepto: "",
-    valor: "",
+    Valor: "",
   };
 
   const initBien = {
@@ -143,6 +143,7 @@ const Insolvencia = () => {
       ...datosDeuda,
       [e.target.name]: e.target.value,
     });
+    setEditingField(e.target.name);
   };
 
   const handlePropuestaChange = (e) => {
@@ -150,6 +151,7 @@ const Insolvencia = () => {
       ...propuesta,
       [e.target.name]: e.target.value,
     });
+    setEditingField(e.target.name);
   };
 
   const handleMotivosChange = (e) => {
@@ -233,6 +235,7 @@ const Insolvencia = () => {
       ...ingreso,
       [e.target.name]: e.target.value,
     });
+    setEditingField(e.target.name);
   };
 
   const handleGastoChange = (e) => {
@@ -240,6 +243,7 @@ const Insolvencia = () => {
       ...gasto,
       [e.target.name]: e.target.value,
     });
+    setEditingField(e.target.name);
   };
 
   const handleBienChange = (e) => {
@@ -363,12 +367,39 @@ const Insolvencia = () => {
     if (e.key === "Enter") {
       const { name } = e.target;
 
-      if (editingField === "valor") {
-        setBien({
-          ...bien,
-          [name]: parseNumero(bien[name]), // Formatea el valor solo cuando se presiona Enter
-        });
+      switch (editingField) {
+        case "valor":
+          setBien({
+            ...bien,
+            [name]: parseNumero(bien[name]), // Formatea el valor solo cuando se presiona Enter
+          });
+          break;
+        case "capital":
+          setDatosDeuda({
+            ...datosDeuda,
+            [name]: parseNumero(datosDeuda[name]), // Formatea el valor solo cuando se presiona Enter
+          });
+          break;
+        case "intereses":
+          setDatosDeuda({
+            ...datosDeuda,
+            [name]: parseNumero(datosDeuda[name]), // Formatea el valor solo cuando se presiona Enter
+          });
+          break;
+        case "Valor":
+          setIngreso({
+            ...ingreso,
+            [name]: parseNumero(ingreso[name]), // Formatea el valor solo cuando se presiona Enter
+          });
+          break;
+        case "valorCuota":
+          setPropuesta({
+            ...propuesta,
+            [name]: parseNumero(propuesta[name]), // Formatea el valor solo cuando se presiona Enter
+          });
+          break;
       }
+
       setEditingField(null);
     }
   };
@@ -508,12 +539,17 @@ const Insolvencia = () => {
                     Capital :
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajadeudas"
                     name="capital"
                     id="capital"
-                    value={datosDeuda.capital}
                     onChange={(event) => handleDeudaChange(event)}
+                    value={
+                      editingField === "capital"
+                        ? datosDeuda.capital
+                        : formatNumero(datosDeuda.capital)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetaildeudas">
@@ -521,12 +557,17 @@ const Insolvencia = () => {
                     Valor intereses:
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajadeudas"
                     name="intereses"
                     id="intereses"
-                    value={datosDeuda.intereses}
                     onChange={(event) => handleDeudaChange(event)}
+                    value={
+                      editingField === "intereses"
+                        ? datosDeuda.intereses
+                        : formatNumero(datosDeuda.intereses)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetaildeudas">
@@ -738,8 +779,21 @@ const Insolvencia = () => {
                     className="cajaingresos"
                     name="valor"
                     id="valor"
-                    value={ingreso.valor}
+                    value={ingreso.alor}
                     onChange={(event) => handleIngresoChange(event)}
+                  />
+                  <input
+                    type="text"
+                    className="cajaingresos"
+                    name="Valor"
+                    id="valor"
+                    onChange={(event) => handleDeudaChange(event)}
+                    value={
+                      editingField === "Valor"
+                        ? ingreso.Valor
+                        : formatNumero(datosDeuda.Valor)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
 
@@ -936,13 +990,19 @@ const Insolvencia = () => {
                     Valor de la cuota :
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     className="cajadeudas"
                     name="valorCuota"
-                    id="valorcuota"
-                    value={propuesta.valorCuota}
+                    id="valorCuota"
                     onChange={(event) => handlePropuestaChange(event)}
+                    value={
+                      editingField === "valorCuota"
+                        ? propuesta.valorCuota
+                        : formatNumero(propuesta.valorCuota)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
+
                 </div>
                 <div className="infodetailpropuesta">
                   <label htmlFor="numeroCuotas" className="labeldetaildeudas">

@@ -247,6 +247,7 @@ const Insolvencia = () => {
       ...bien,
       [e.target.name]: e.target.value,
     });
+    setEditingField(e.target.name);
   };
 
   const handleProcesoChange = (e) => {

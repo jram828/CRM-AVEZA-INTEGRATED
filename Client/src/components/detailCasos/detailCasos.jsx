@@ -12,6 +12,7 @@ import { Button, Buttonf } from "../Mystyles";
 import { getCasoById } from "../../handlers/detailCaso";
 import { numeroALetras } from "../convertiraletras";
 import { generarDocumentos } from "../../handlers/generarDocumentos";
+import { formatNumero } from "../../utils/formatNumero";
 // import { generarSolicitud } from "../../handlers/generarSolicitud";
 
 function DetailCasos() {
@@ -75,19 +76,6 @@ function DetailCasos() {
   // const valor_pretensiones = Number(casoDetail.valor_pretensiones).toLocaleString();
   const honorarios_letras = numeroALetras(Number(casoDetail.honorarios));
   // const honorarios = Number(casoDetail.honorarios).toLocaleString();
-
-  const formatNumero = (numero) => {
-    if (!numero) return "";
-
-    // Convertir a número flotante para manejar decimales
-    const num = parseFloat(numero.toString().replace(/,/g, "."));
-
-    // Formatear el número con separadores de miles y mantener dos decimales
-    return num.toLocaleString("es-CO", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
 
   const parseNumero = (numeroFormateado) => {
     return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(",", "."));
@@ -258,9 +246,10 @@ function DetailCasos() {
               />
             </div>
             {casoDetail.TipoDeCaso.descripcion === "Insolvencia" && (
-            <div className="infodetailcaso">
-              <Buttonf onClick={handlerSolicitud}>Solicitud</Buttonf>
-            </div>)}
+              <div className="infodetailcaso">
+                <Buttonf onClick={handlerSolicitud}>Solicitud</Buttonf>
+              </div>
+            )}
             <div className="infodetailcaso">
               <label htmlFor="etapa" className="labeldetailcaso">
                 Etapa:
@@ -314,7 +303,7 @@ function DetailCasos() {
 
             <div className="infodetailcaso">
               <label htmlFor="valor_pretensiones" className="labeldetailcaso">
-                Valor pretensiones: $
+                Valor pretensiones:            $
               </label>
               <input
                 type="text"
@@ -332,7 +321,7 @@ function DetailCasos() {
             </div>
             <div className="infodetailcaso">
               <label htmlFor="honorarios" className="labeldetailcaso">
-                Valor honorarios: $
+                Valor honorarios:             $
               </label>
               <input
                 type="text"

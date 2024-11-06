@@ -8,6 +8,7 @@ import { listaacreedores } from "../../utils/acreedores.js";
 import { generarSolicitud } from "../../handlers/generarSolicitud.jsx";
 import { juzgados } from "../../utils/juzgados.js";
 import { crearSolicitud } from "../../redux/actions.js";
+import { formatNumero } from "../../utils/formatNumero.js";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);
@@ -114,8 +115,8 @@ const Insolvencia = () => {
   const [propuesta, setPropuesta] = useState(initPropuesta);
   const [acreedorFilt, setAcreedorFilt] = useState(initAcreedorFilt);
   const [motivos, setMotivos] = useState(initMotivos);
-  //  const [datosAcreedor, setDatosAcreedor] = useState(initGastos);
   const [listaAcreedores, setListaAcreedores] = useState(listaAcreedoresObj);
+  const [editingField, setEditingField] = useState(null);
 
   const addDeuda = (deuda) => {
     setDeudas([...deudas, deuda]);
@@ -176,7 +177,6 @@ const Insolvencia = () => {
 
   const handleSubmitMotivos = async (e) => {
     e.preventDefault();
-
   };
 
   const addIngreso = (ingreso) => {
@@ -299,29 +299,6 @@ const Insolvencia = () => {
     addSociedad(sociedad);
   };
 
-  const handleSearchAcreedor = (e) => {
-    e.preventDefault();
-
-    const resultado = listaacreedores.find((acreedor) => {
-      return acreedor.nombre.includes(datosDeuda.acreedorBuscado);
-    });
-    let resultados = listaacreedores.filter((acreedor) => {
-      return acreedor.nombre.includes(datosDeuda.acreedorBuscado);
-    });
-    if (resultados) {
-      console.log("Elemento encontrado:", resultado);
-      setAcreedorFilt(resultados);
-    } else {
-      console.log("No se encontró ningún elemento con ese nombre.");
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      // handleSearch();
-    }
-  };
-
   const handlerGenerarSolicitud = () => {
     const datosinsolvencia = generarSolicitud(
       ingresos,
@@ -375,6 +352,24 @@ const Insolvencia = () => {
     );
     console.log("Acreedores encontrados:", foundAcreedor);
     setAcreedorFilt(foundAcreedor);
+  };
+
+  const parseNumero = (numeroFormateado) => {
+    return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(",", "."));
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      const { name } = e.target;
+
+      if (editingField === "valor") {
+        setBien({
+          ...bien,
+          [name]: parseNumero(bien[name]), // Formatea el valor solo cuando se presiona Enter
+        });
+      }
+      setEditingField(null);
+    }
   };
 
   return (
@@ -593,8 +588,13 @@ const Insolvencia = () => {
                     className="cajaingresos"
                     name="valor"
                     id="valorBien"
-                    value={bien.valor}
                     onChange={(event) => handleBienChange(event)}
+                    value={
+                      editingField === "valor"
+                        ? bien.valor
+                        : formatNumero(bien.valor)
+                    }
+                    onKeyDown={handleKeyPress}
                   />
                 </div>
                 <div className="infodetailingresos">

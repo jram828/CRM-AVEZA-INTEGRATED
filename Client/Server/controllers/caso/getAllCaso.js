@@ -20,9 +20,9 @@ const getAllCaso = async (filters) => {
   // Consulta a la base de datos
   if (todos === "verdadero") {
     getAllCasoBd = await Caso.findAll({
-      where: {
-        activo: true,
-      },
+      // where: {
+      //   activo: true,
+      // },
       attributes: ["idCaso", "fecha", "descripcion"],
       include: [
         {

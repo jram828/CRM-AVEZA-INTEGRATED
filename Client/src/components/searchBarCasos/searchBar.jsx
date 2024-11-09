@@ -40,19 +40,18 @@ const SearchBar = ({ onFilter }) => {
   //    handleSearch(tipoCaso);
   //  }, [tipoCaso]);
 
+  // const todos = pages?.datosPagina || [];
+  // const totalPages = Math.ceil(todos.length / 9);
 
-    // const todos = pages?.datosPagina || [];
-    // const totalPages = Math.ceil(todos.length / 9);
+  // console.log(totalPages);
 
-    // console.log(totalPages);
+  // console.log("pages", pages);
 
-    // console.log("pages", pages);
+  // useEffect(() => {
+  //    dispatch(getCasos(currentPage));
+  // }, [dispatch, currentPage]);
 
-    // useEffect(() => {
-    //    dispatch(getCasos(currentPage));    
-    // }, [dispatch, currentPage]);
-
-    // console.log("order", order, "currentpage", currentPage);
+  // console.log("order", order, "currentpage", currentPage);
 
   const handleInputChange = (e, setValue) => {
     setValue(e.target.value);
@@ -84,13 +83,21 @@ const SearchBar = ({ onFilter }) => {
     console.log("Parametro search: ", searchParam);
 
     const select = JSON.parse(localStorage.getItem("select"));
-    console.log('Select: ', select)
+    console.log("Select: ", select);
 
-    if (select === "estado") {
-      queryParts.push(`todos=${searchParam}`);
-    } else {
-      queryParts.push(`tipoCaso=${searchParam}`);
+    switch (select) {
+      case "estado":
+        queryParts.push(`todos=${searchParam}`);
+        break;
+      case "TipoDeCasoid":
+        queryParts.push(`todos=${searchParam}`);
+        break;
     }
+    // if (select === "estado") {
+    //   queryParts.push(`todos=${searchParam}`);
+    // } else {
+    //   queryParts.push(`tipoCaso=${searchParam}`);
+    // }
 
     if (apellidoAbogado)
       queryParts.push(`apellidosAbogado=${formatInputValue(apellidoAbogado)}`);

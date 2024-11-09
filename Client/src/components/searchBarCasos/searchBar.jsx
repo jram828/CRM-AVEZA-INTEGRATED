@@ -102,7 +102,7 @@ const SearchBar = ({ onFilter }) => {
 
     if (queryString) {
       onFilter(queryString);
-      dispatch(filterCasos(queryString));
+      // dispatch(filterCasos(queryString));
     } else {
       console.log("Por favor ingrese al menos un valor de búsqueda");
     }

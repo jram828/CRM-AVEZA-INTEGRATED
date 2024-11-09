@@ -90,7 +90,7 @@ const SearchBar = ({ onFilter }) => {
         queryParts.push(`todos=${searchParam}`);
         break;
       case "tipoCaso":
-        queryParts.push(`todos=${searchParam}`);
+        queryParts.push(`tipoCaso=${searchParam}`);
         break;
     }
     // if (select === "estado") {

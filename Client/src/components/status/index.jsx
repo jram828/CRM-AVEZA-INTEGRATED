@@ -58,95 +58,95 @@ function Status() {
 
   return (
     // <div className="comprobante">
-    
-      <div
-      className="flex flex-col items-center justify-center rounded-lg min-h-screen p-6 bg-white text-black"
-      >
-        <div id="comprobante" className="space-y-6 w-full max-w-xl h-full p-6 bg-secondary rounded-lg shadow-md text-black">
-          
-            <h1 className="text-2xl font-bold text-black text-center">Estado de la transacción</h1>
-          
 
-          <div className="flex flex-col space-y-3 items-center">
-            
-             
-                <label className="input input-sm !border-black input-secondary flex items-center max-w-xs !text-black text-xs">
-                  ID de pago:  
-                  <input value={datosPago.id} className="grow ml-2 text-black" disabled />
-                </label>
-              
+    <div className="contenedorstatus">
+      <div className="encabezado">
+        <h1 className="titulo">Estado de la transacción</h1>
+      </div>
+      <div className="infopago">
+        <div className="pagoinput">
+          <label className="label-pago">
+            ID de pago:
+          </label>
+          <input
+            value={datosPago.id}
+            className="cajapago"
+            disabled
+          />
+        </div>
+        <div className="pagoinput">
+          <label className="label-pago">
+            Estado:
+          </label>
+          <input
+            value={datosPago.status}
+            className="cajapago"
+            disabled
+          />
+        </div>
+        <div className="pagoinput">
+          <label className="label-pago">
+            Valor:
+          </label>
+          <input
+            value={datosPago.transaction_amount}
+            className="cajapago"
+            disabled
+          />
+        </div>
+        <div className="pagoinput">
+          <label className="label-pago">
+            Método de pago:
+          </label>
+          <input
+            value={datosPago.payment_type_id}
+            className="cajapago"
+            disabled
+          />
+        </div>
+        <div className="pagoinput">
+          <label className="label-pago">
+            Fecha:
+          </label>
+          <input
+            type="text"
+            value={datosPago.date_approved}
+            className="cajapago"
+            disabled
+          />
+        </div>
+        <div className="pagoinput">
+          <label className="label-pago">Descripción:</label>
+          <input
+            value={datosPago.description}
+            type="text"
+            className="cajapago"
+          />
+        </div>
+      </div>
 
-              
-                <label className="input input-sm !border-black input-secondary flex items-center max-w-xs !text-black text-xs">
-                  Estado:  
-                  <input value={datosPago.status} className="grow ml-2 text-black" disabled />
-                </label>
-              
-                <label className="input input-sm !border-black input-secondary flex items-center max-w-xs !text-black text-xs">
-                  Valor:  
-                  <input
-                    value={datosPago.transaction_amount}
-                    className="grow ml-2 text-black" disabled
-                  />
-                </label>
-              
-              
-                <label className="input input-sm !border-black input-secondary flex items-center max-w-xs !text-black text-xs">
-                  {" "}
-                  Método de pago:  
-                  <input
-                    value={datosPago.payment_type_id}
-                    className="grow ml-2 text-black" disabled
-                  />
-                </label>
-            
-              
-                <label className="input input-sm !border-black input-secondary flex items-center max-w-xs !text-black text-xs">
-                  Fecha:  
-                  <input
-                    type="text"
-                    value={datosPago.date_approved}
-                    className="grow ml-2 text-black" disabled
-                  />
-                </label>
-            
-              
-                <label className="">
-                   
-                  <input
-                    value={datosPago.description}
-                    type="text"
-                    className="textarea !w-80 !border-black !text-black text-xs h-24"
-                    placeholder="Descripcion..."
-                    disabled
-                  />
-                </label>
-             
-          </div>
-        
-
-        <div className="mt-6 flex justify-center gap-2">
-          {/* <Link to="/home">
+      <div className="mt-6 flex justify-center gap-2">
+        {/* <Link to="/home">
           <button className="btn btn-xs border border-accent bg-white hover:bg-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 512 512"><path fill="none" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth={50.5} d="M244 400L100 256l144-144M120 256h292"></path></svg>
               Volver
               </button>
             </Link> */}
-              
-            <Link to="/home/payments">
-              <button className="btn btn-xs bg-white text-black  border-error w-35 flex items-center justify-center">
-                Reintentar pago
-              </button>
-            </Link>
 
-            <button onClick={generatePDF} className="btn btn-xs  bg-white text-black  border-success w-35 flex items-center justify-center">
-              Guardar comprobante
-            </button>
-          
-        </div>
+        {/* <Link to="/home/payments">
+          <button className="btn btn-xs bg-white text-black  border-error w-35 flex items-center justify-center">
+            Reintentar pago
+          </button>
+        </Link> */}
+
+        <button
+          onClick={generatePDF}
+          className="btn btn-xs  bg-white text-black  border-success w-35 flex items-center justify-center"
+        >
+          Guardar comprobante
+        </button>
       </div>
-   
-     </div>
+    </div>
   );
 }
 

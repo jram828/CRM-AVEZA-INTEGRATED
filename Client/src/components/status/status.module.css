@@ -1,11 +1,11 @@
-.status-container {
-    background-color: var(--color-two);
+/* .status-container {
+    background-color: white;
     opacity: 0.9;
     border-radius: 10px;
     padding: 20px;
     margin-top: 50px;
     width: 100%;
-    color: white;
+    color: black;
     font-family: "Outfit", sans-serif;
   }
   
@@ -67,4 +67,53 @@
   .logo-legaltech{
     width: 60px;
     height:60px
+  } */
+
+  .contenedorstatus {
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    width: 400px;
+    margin: 0 auto;
+    color: black;
+    font-family: "Outfit", sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .label-pago {
+    font-size: 16px;
+    font-weight: bold;
+    align-content: center;
+  }
+  
+  /* .recordar-password {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    align-content: center;
+  } */
+  
+  .pagoinput {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .cajapago {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 10px;
+    background-color: transparent;
+    color:black;
+    font-family: "Outfit", sans-serif;
+    outline: none;
+  }
+  
+  .encabezado img {
+    width: 70%;
+    height: 30%;
   }

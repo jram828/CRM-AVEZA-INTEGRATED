@@ -12,7 +12,6 @@ function Payments() {
       <div className="encabezado">
         <h1 className="titulo">Pagos</h1>
       </div>
-      <br />
       {user.cedulaCliente ? (
         <RealizarPago></RealizarPago>
       ) : (

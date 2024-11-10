@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { verificarPago } from "../../handlers/verificarPago";
 
 import { printDivContent } from "../../utils/printDivContent";
+import { Button } from "../Mystyles";
 // const ACCESSTOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 function Status() {
@@ -59,7 +60,7 @@ function Status() {
   return (
     // <div className="comprobante">
 
-    <div className="contenedorstatus">
+    <div id="contenedorstatus" className="contenedorstatus">
       <div className="encabezado">
         <h1 className="titulo">Estado de la transacción</h1>
       </div>
@@ -139,12 +140,12 @@ function Status() {
           </button>
         </Link> */}
 
-        <button
+        <Button
           onClick={generatePDF}
           className="btn btn-xs  bg-white text-black  border-success w-35 flex items-center justify-center"
         >
           Guardar comprobante
-        </button>
+        </Button>
       </div>
     </div>
   );

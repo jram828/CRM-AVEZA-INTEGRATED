@@ -131,7 +131,7 @@ localStorage.removeItem("pagosFilter");
                 </div>
                 <div className="infopagotarjeta">
                   <div className="labelverpago">Descripción: </div>
-                  <div className="textopago">{pago?.descripcion}</span>
+                  <div className="textopago">{pago?.descripcion}</div>
                 </div>
               </div>
             ))}

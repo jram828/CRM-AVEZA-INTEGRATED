@@ -32,32 +32,32 @@ const getAllPagosClientes = async (filters) => {
   const offset = (filters.pagina - 1) * parseInt(limit2);
 
   const getAllPagosClientesBd = await PagosCliente.findAll(
-    // {
-  //   where: {
-  //     // activo: true,
-  //     ...newFilters,
-  //   },
-  //   include: [
-  //     {
-  //       model: Caso,
-  //       attributes: ["descripcion"],
-  //       include: [
-  //         {
-  //           model: Abogado,
-  //           attributes: ["apellidos", "nombres"],
-  //         },
-  //         {
-  //           model: Cliente,
-  //           attributes: ["apellidos", "nombres"],
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   order,
-  //   offset: offset || 0,
+    {
+    where: {
+      // activo: true,
+      ...newFilters,
+    },
+    include: [
+      {
+        model: Caso,
+        attributes: ["descripcion"],
+        include: [
+          {
+            model: Abogado,
+            attributes: ["apellidos", "nombres"],
+          },
+          {
+            model: Cliente,
+            attributes: ["apellidos", "nombres"],
+          },
+        ],
+      },
+    ],
+    order,
+    offset: offset || 0,
 
-  //   limit: limit2 || 6,
-  // }
+    limit: limit2 || 6,
+  }
   );
  console.log("Pagos controller:", getAllPagosClientesBd);
   return getAllPagosClientesBd;

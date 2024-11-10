@@ -1,4 +1,4 @@
-{
+const data1 = {
   "codigos": [
     {
       "codigo_departamento": "5",
@@ -145,7 +145,7 @@
   ]
 }
 
-{
+const data = {
   "codigos": [
    {"codigo_ciudad":"5001","nombre_ciudad": "MEDELLÍN","codigo_departamento":"5"},
 {"codigo_ciudad":"5002","nombre_ciudad": "ABEJORRAL","codigo_departamento":"5"},

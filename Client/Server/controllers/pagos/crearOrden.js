@@ -1,22 +1,15 @@
 import { MercadoPagoConfig, Preference } from "mercadopago";
 import dotenv from 'dotenv'
 dotenv.config();
-const { ACCESSTOKEN } = process.env;
+const { ACCESSTOKEN, VITE_URL } = process.env;
 
 
 const crearOrden = async (item) => {
   // SDK de Mercado Pago
-
-  // Agrega credenciales
-  // const client = new MercadoPagoConfig({
-  //   accessToken:
-  //     ACCESSTOKEN,
-  // });
-  const client = new MercadoPagoConfig({accessToken: process.env.ACCESSTOKEN || ""})
+  const client = new MercadoPagoConfig({accessToken: ACCESSTOKEN || ""})
 
   //console.log('Estoy en el controller')
   //console.log('Body crear orden: ',item)
-
   
   try {
 
@@ -35,34 +28,18 @@ const crearOrden = async (item) => {
         // email: item.email,
         email: "test_user_1490493949@testuser.com",
       },
-      // Asi lo implemento Julian
-      // payment_methods: {
-      //   excluded_payment_methods: [],
-      //   excluded_payment_types: [],
-      //   installments: 12,
-      // },
-      //Implementacion Gustavo
       payment_methods: {
-        // excluded_payment_types: [
-        //   {
-        //     id: 'ticket', // Excluir métodos de pago no deseados
-        //   },
-        // ],
         installments: 12,
       },
       back_urls: {
-        success: "https://crm-aveza-kappa.vercel.app/pagos/status",
-        failure: "https://crm-aveza-kappa.vercel.app/pagos",
-        pending: "https://crm-aveza-kappa.vercel.app/pagos",
+        success: `${VITE_URL}/pagos/status`,
+        failure: `${VITE_URL}/pagos`,
+        pending: `${VITE_URL}/pagos`,
       },
-      notification_url: "https://crm-aveza.onrender.com/pagos/webhook",
+      notification_url: `${VITE_URL}/pagos/webhook`,
       auto_return: "approved",
     };
 
-    //await preference.create() Asi llamaba Julian la API
-
-    //Agregado por Gustavo
-    //const preference= new Preference(client)
     const preference = new Preference(client);
     console.log('Estoy por crear la preferencia')
     const response = await preference.create({body});
@@ -72,8 +49,6 @@ const crearOrden = async (item) => {
     console.log('Error en el controller')
     return error
 }
-
-
 };
 
 export { crearOrden };

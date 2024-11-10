@@ -107,13 +107,18 @@ localStorage.removeItem("pagosFilter");
                 <div className="titulopago">
                   Caso N°: {pago?.idCaso}
                 </div>
-                <div className="textopago">
+                <div className="titulopago">
                   {pago?.Caso?.descripcion}
                 </div>
                 <div className="infopagotarjeta">
                   <div className="labelverpago">Cliente: </div>
                   <div className="textopago">
-                    {pago?.Caso?.Cliente?.nombres}{" "}
+                    {pago?.Caso?.Cliente?.nombres}
+                    {pago?.Caso?.Cliente?.apellidos}
+                  </div>
+                </div>
+                <div className="infopagotarjeta">
+                  <div className="textopago">
                     {pago?.Caso?.Cliente?.apellidos}
                   </div>
                 </div>

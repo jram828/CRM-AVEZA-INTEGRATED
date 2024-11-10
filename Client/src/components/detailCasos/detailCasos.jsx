@@ -16,7 +16,7 @@ import { formatNumero } from "../../utils/formatNumero";
 // import { generarSolicitud } from "../../handlers/generarSolicitud";
 
 function DetailCasos() {
-  // const user = JSON.parse(localStorage.getItem("loggedUser"));
+  const user = JSON.parse(localStorage.getItem("loggedUser"));
   const { id } = useParams(); // Obtener el id de los parámetros de la ruta
   console.log("Id detail:", id);
   const dispatch = useDispatch();
@@ -153,55 +153,82 @@ function DetailCasos() {
         <div className="encabezado">
           <h5 className="titulo">Detalles del caso</h5>
         </div>
-        <div className="menu-detail">
-          <input type="file" id="doc" />
-          <Button
-            className="botonesiniciosesion"
-            onClick={handlerGenerarDocumentos}
-          >
-            Generar documentos
-          </Button>
-          <Button onClick={handleUpdateCaso} className="botonesiniciosesion">
-            Actualizar
-          </Button>
-          <Button
-            className="btn btn-sm w-35 border border-error bg-white hover:bg-white"
-            onClick={handleDelete}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1.2em"
-              height="1.2em"
-              viewBox="0 0 24 24"
+
+        {user.cedulaCliente ? (
+          <div className="menu-detail">
+            <Link to="/casos">
+              <Button className="btn btn-sm w-35 border border-accent bg-white hover:bg-white">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.2em"
+                  height="1.2em"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="none"
+                    stroke="black"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={50.5}
+                    d="M244 400L100 256l144-144M120 256h292"
+                  ></path>
+                </svg>
+                Volver
+              </Button>
+            </Link>
+          </div>
+        ) : (
+          <div className="menu-detail">
+            <input type="file" id="doc" />
+            <Button
+              className="botonesiniciosesion"
+              onClick={handlerGenerarDocumentos}
             >
-              <path
-                fill="black"
-                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
-              ></path>
-            </svg>
-            Eliminar
-          </Button>
-          <Link to="/casos">
-            <Button className="btn btn-sm w-35 border border-accent bg-white hover:bg-white">
+              Generar documentos
+            </Button>
+            <Button onClick={handleUpdateCaso} className="botonesiniciosesion">
+              Actualizar
+            </Button>
+            <Button
+              className="btn btn-sm w-35 border border-error bg-white hover:bg-white"
+              onClick={handleDelete}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1.2em"
                 height="1.2em"
-                viewBox="0 0 512 512"
+                viewBox="0 0 24 24"
               >
                 <path
-                  fill="none"
-                  stroke="black"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={50.5}
-                  d="M244 400L100 256l144-144M120 256h292"
+                  fill="black"
+                  d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
                 ></path>
               </svg>
-              Volver
+              Eliminar
             </Button>
-          </Link>
-        </div>
+            <Link to="/casos">
+              <Button className="btn btn-sm w-35 border border-accent bg-white hover:bg-white">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.2em"
+                  height="1.2em"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="none"
+                    stroke="black"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={50.5}
+                    d="M244 400L100 256l144-144M120 256h292"
+                  ></path>
+                </svg>
+                Volver
+              </Button>
+            </Link>
+          </div>
+        )}
+
         <div className="infotodos">
           <div className="infocaso">
             <br />
@@ -303,7 +330,7 @@ function DetailCasos() {
 
             <div className="infodetailcaso">
               <label htmlFor="valor_pretensiones" className="labeldetailcaso">
-                Valor pretensiones:            $
+                Valor pretensiones: $
               </label>
               <input
                 type="text"
@@ -321,7 +348,7 @@ function DetailCasos() {
             </div>
             <div className="infodetailcaso">
               <label htmlFor="honorarios" className="labeldetailcaso">
-                Valor honorarios:             $
+                Valor honorarios: $
               </label>
               <input
                 type="text"

@@ -61,7 +61,7 @@ const createAbogadoBd = async (
     client.messages
       .create({
         body: "Se ha creado un nuevo Abogado en CRM AVEZA!",
-        from: "+18148134611",
+        from: NUMBER,
         to: telefono,
       })
       .then((message) => console.log(message.sid))

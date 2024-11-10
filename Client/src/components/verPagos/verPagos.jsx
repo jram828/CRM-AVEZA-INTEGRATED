@@ -1,7 +1,7 @@
 import "./verPagos.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPagos} from "../../redux/actions";
+import { filterCasos, getCasos, getPagos} from "../../redux/actions";
 import loading from "../../assets/loading.gif";
 import SearchBar from "../../components/searchBarPagos/searchBar";
 import { Button, Button2, Button3 } from "../Mystyles";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./status.css";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 // import axios from "axios";
 import { verificarPago } from "../../handlers/verificarPago";
 
@@ -34,7 +34,7 @@ function Status() {
   console.log("Payment id: ", queries.payment_id);
 
   function generatePDF() {
-    printDivContent("contenedorstatus");
+    printDivContent("comprobante");
   }
 
   // if (queries.payment_id) {
@@ -58,13 +58,12 @@ function Status() {
   };
 
   return (
-    // <div className="comprobante">
-
-    <div id="contenedorstatus" className="contenedorstatus">
+    <div  className="contenedorstatus">
+      
+      <div id="comprobante" className="infopago">
       <div className="encabezado">
         <h1 className="titulo">Estado de la transacción</h1>
       </div>
-      <div className="infopago">
         <div className="pagoinput">
           <label className="label-pago">
             ID de pago:

@@ -37,7 +37,10 @@
   justify-content: center;
 }
 
-.encabezado img {
-  width: 70%;
-  height: 30%;
+.encabezado{
+ margin: 20px;
 }
+
+.infopago{
+  margin: 20px;
+ }

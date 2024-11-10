@@ -33,7 +33,7 @@ function Status() {
   console.log("Payment id: ", queries.payment_id);
 
   function generatePDF() {
-    printDivContent("comprobante");
+    printDivContent("contenedorstatus");
   }
 
   // if (queries.payment_id) {

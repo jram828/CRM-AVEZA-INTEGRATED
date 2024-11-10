@@ -44,9 +44,11 @@
 .labelverpago {
   font-size: medium;
   font-weight: bold;
-  min-width: 90px;
+  min-width: 150px;
   align-items: center;
   height: 30px;
+  align-content: center;
+  color: black;
 }
 
 .textopago {
@@ -98,8 +100,13 @@
 .titulopago {
   font-size: large;
   font-weight: bold;
-  min-width: 90px;
+  min-width: 150px;
   align-items: center;
   height: 30px;
   text-align: center;
+  color: black;
+  align-content: center;
 }
+
+
+

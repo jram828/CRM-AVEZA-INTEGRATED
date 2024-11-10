@@ -3,6 +3,7 @@ import "./detailConsulta.css";
 import {  useNavigate} from "react-router-dom";
 import { useDispatch} from "react-redux";
 import { deleteConsulta} from "../../redux/actions";
+import PropTypes from 'prop-types';
 
 function DetailConsulta({consulta}) {
 
@@ -62,5 +63,18 @@ function DetailConsulta({consulta}) {
     </div>
   );
 }
+DetailConsulta.propTypes = {
+  consulta: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    activo: PropTypes.bool.isRequired,
+    nombre: PropTypes.string.isRequired,
+    apellido: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    correo: PropTypes.string.isRequired,
+    telefono: PropTypes.string.isRequired,
+    consulta: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default DetailConsulta;
+

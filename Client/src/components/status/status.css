@@ -1,0 +1,42 @@
+.contenedorstatus{
+  background-color: white;
+  opacity: 0.85;
+  border-radius: 10px;
+  padding: 20px;
+  height: 90vh;
+  width: 70vw;
+  margin-left: 40px;
+  color: black;
+  display: flex;
+  align-items: center;
+}
+
+.label-pago {
+  font-size: 16px;
+  font-weight: bold;
+  align-content: center;
+  text-align: left;
+  width: 180px;
+  margin-right: 5px;
+}
+
+.pagoinput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.cajapago {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid;
+  border-radius: 10px;
+  color: black;
+  outline: none;
+  justify-content: center;
+}
+
+.encabezado img {
+  width: 70%;
+  height: 30%;
+}

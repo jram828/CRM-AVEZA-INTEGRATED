@@ -90,7 +90,7 @@ function CrearCaso() {
     try {
       await postCaso(userDataRegistro);
 
-      if (userDataRegistro.TipoDeCasoid === "2") {
+      if (userDataRegistro.TipoDeCasoid === "1") {
             const isConfirmed = window.confirm(
               "¿Desea ingresar los datos para la solicitud de insolvencia?"
             );

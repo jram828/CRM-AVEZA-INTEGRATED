@@ -104,18 +104,18 @@ localStorage.removeItem("pagosFilter");
           <div className="divpagos">
             {pagos.map((pago) => (
               <div key={pago?.pagoId} className="cardpagos">
-                <div className="titulopago">
-                  Caso N°: {pago?.idCaso} {pago?.Caso?.descripcion}
-                </div>
-                <div className="titulopago">
+                <span className="titulopago">
+                  Caso N°: {pago?.idCaso}
+                </span>
+                <span className="titulopago">
                   {pago?.Caso?.descripcion}
-                </div>
+                </span>
                 <div className="infopagotarjeta">
-                  <div className="labelverpago">Cliente: </div>
-                  <div className="textopago">
+                  <span className="labelverpago">Cliente: </span>
+                  <span className="textopago">
                     {pago?.Caso?.Cliente?.nombres}{" "}
                     {pago?.Caso?.Cliente?.apellidos}
-                  </div>
+                  </span>
                 </div>
                 <div className="infopagotarjeta">
                   <span className="labelverpago">Fecha: </span>

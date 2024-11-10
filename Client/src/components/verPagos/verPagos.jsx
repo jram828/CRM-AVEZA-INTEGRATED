@@ -104,34 +104,34 @@ localStorage.removeItem("pagosFilter");
           <div className="divpagos">
             {pagos.map((pago) => (
               <div key={pago?.pagoId} className="cardpagos">
-                <span className="titulopago">
+                <div className="titulopago">
                   Caso N°: {pago?.idCaso}
-                </span>
-                <span className="titulopago">
+                </div>
+                <div className="textopago">
                   {pago?.Caso?.descripcion}
-                </span>
+                </div>
                 <div className="infopagotarjeta">
-                  <span className="labelverpago">Cliente: </span>
-                  <span className="textopago">
+                  <div className="labelverpago">Cliente: </div>
+                  <div className="textopago">
                     {pago?.Caso?.Cliente?.nombres}{" "}
                     {pago?.Caso?.Cliente?.apellidos}
-                  </span>
+                  </div>
                 </div>
                 <div className="infopagotarjeta">
-                  <span className="labelverpago">Fecha: </span>
-                  <span className="textopago">
+                  <div className="labelverpago">Fecha: </div>
+                  <div className="textopago">
                     {formatearFecha(pago?.fechaDeAprobacion)}
-                  </span>
+                  </div>
                 </div>
                 <div className="infopagotarjeta">
-                  <span className="labelverpago">Valor: </span>
-                  <span className="textopago">
+                  <div className="labelverpago">Valor: </div>
+                  <div className="textopago">
                     {pago?.importeDeLaTransaccion}
-                  </span>
+                  </div>
                 </div>
                 <div className="infopagotarjeta">
-                  <span className="labelverpago">Descripción: </span>
-                  <span className="textopago">{pago?.descripcion}</span>
+                  <div className="labelverpago">Descripción: </div>
+                  <div className="textopago">{pago?.descripcion}</span>
                 </div>
               </div>
             ))}

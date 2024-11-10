@@ -32,9 +32,9 @@ const crearOrden = async (item) => {
         installments: 12,
       },
       back_urls: {
-        success: `${VITE_URL}/pagos/status`,
-        failure: `${VITE_URL}/pagos`,
-        pending: `${VITE_URL}/pagos`,
+        success: `https://crm-aveza-integrated.onrender.com/#/pagos/status`,
+        failure: `https://crm-aveza-integrated.onrender.com/#/pagos`,
+        pending: `https://crm-aveza-integrated.onrender.com/#/pagos`,
       },
       notification_url: `${VITE_URL}/pagos/webhook`,
       auto_return: "approved",

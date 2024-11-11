@@ -98,7 +98,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
       television: gastos[0].television,
       arriendo: gastos[0].arriendo,
       seguros: gastos[0].seguros,
-      alimentación: gastos[0].alimentación,
+      alimentacion: gastos[0].alimentacion,
       transporte: gastos[0].transporte,
       otros: gastos[0].otros,
     });

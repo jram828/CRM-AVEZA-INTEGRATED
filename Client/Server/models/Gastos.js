@@ -17,7 +17,7 @@ export default (sequelize) => {
       television: { type: DataTypes.BIGINT, allowNull: false },
       arriendo: { type: DataTypes.BIGINT, allowNull: false },
       seguros: { type: DataTypes.BIGINT, allowNull: false },
-      alimentación: { type: DataTypes.BIGINT, allowNull: false },
+      alimentacion: { type: DataTypes.BIGINT, allowNull: false },
       transporte: { type: DataTypes.BIGINT, allowNull: false },
       otros: { type: DataTypes.BIGINT, allowNull: false },
     },

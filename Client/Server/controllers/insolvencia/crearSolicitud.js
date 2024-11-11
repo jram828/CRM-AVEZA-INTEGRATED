@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import { models } from "../../DB.js";
 
 const {
@@ -47,8 +48,11 @@ export const crearSolicitud = async (datosInsolvencia) => {
   // });
 
   try {
+
+    foundCliente = await Cliente.findOne({where: {cedula: cedulaCliente}});
+
     var newSolicitud = await Solicitud.create();
-    newSolicitud.addCliente(cedulaCliente);
+    newSolicitud.addCliente(foundCliente);
 
     for (let bien of bienes) {
       var newBien = await Bien.create({
@@ -85,10 +89,6 @@ export const crearSolicitud = async (datosInsolvencia) => {
       newIngreso.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Ingreso: ", newIngreso);
-
-    for (let acreedor of acreedores) {
-      foundCliente.addAcreedor(acreedor.idAcreedor);
-    }
 
     var newGastos = await Gastos.create({
       energia: gastos.energia,

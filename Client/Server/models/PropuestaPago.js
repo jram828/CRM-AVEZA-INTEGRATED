@@ -10,12 +10,12 @@ export default (sequelize) => {
         defaultValue: uuidv4,
         primaryKey: true,
       },
-      clase: {
+      Clasificacion: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      interes: { type: DataTypes.BIGINT, allowNull: false },
-      valor: { type: DataTypes.BIGINT, allowNull: false },
+      tasaIntereses: { type: DataTypes.BIGINT, allowNull: false },
+      valorCuota: { type: DataTypes.BIGINT, allowNull: false },
       numeroCuotas: { type: DataTypes.BIGINT, allowNull: false },
     },
     { timestamps: false }

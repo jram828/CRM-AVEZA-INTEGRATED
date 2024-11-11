@@ -135,9 +135,9 @@ export const crearSolicitud = async (datosInsolvencia) => {
 
     for (let propuesta of propuestas) {
       var newPropuesta = await PropuestaPago.create({
-        clase: propuesta.clase,
-        interes: propuesta.interes,
-        valor: propuesta.valor,
+        Clasificacon: propuesta.Clasificacon,
+        tasaIntereses: propuesta.tasaIntereses,
+        valorCuota: propuesta.valorCuota,
         numeroCuotas: propuesta.numeroCuotas,  
       });
 

@@ -124,7 +124,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
         documentoSoporte: deuda.documentoSoporte,
         capital: deuda.capital,
         intereses: deuda.intereses,
-        cuantiaTotal: deuda.cuantiaTotal,
+        cuantiaTotal: Number(deuda.capital)+Number(deuda.intereses),
         clasificacion: deuda.clasificacion,
         diasMora: deuda.diasMora,
       });

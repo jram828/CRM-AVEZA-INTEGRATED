@@ -536,7 +536,7 @@ export const getClientesTodos = () => {
 
 export  const crearSolicitud = (datosInsolvencia) => {
   return async (dispatch) => {
-    const { data } = await axios.post('/insolvencia/crearsolicitud',datosInsolvencia);
+    const { data } = await axios.post('/insolvencia/crearsolicitud', datosInsolvencia);
     console.log('Data Crear Solicitud:',data)
     try {
       return dispatch({

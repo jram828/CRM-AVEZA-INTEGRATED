@@ -15,8 +15,8 @@ const {
   Solicitud
 } = models;
 
-export const crearSolicitud = async (req, res) => {
- console.log("Body solicitud:", req.body);
+export const crearSolicitud = async (datosInsolvencia) => {
+ console.log("Body solicitud:", datosInsolvencia);
 
   const {
     acreedores,
@@ -30,21 +30,21 @@ export const crearSolicitud = async (req, res) => {
     ingresos,
     propuestas,
     cedulaCliente,
-  } = req.body;
+  } = datosInsolvencia;
 
-  console.log("Body crear solicitud:", {
-    acreedores,
-    bienes, //yaa
-    procesos, //yaa
-    sociedades, //yaa
-    obligaciones, //yaa
-    gastos, //yaa
-    motivos,
-    deudas, //yaa
-    ingresos, //yaa
-    propuestas, //yaa
-    cedulaCliente,
-  });
+  // console.log("Body crear solicitud:", {
+  //   acreedores,
+  //   bienes, //yaa
+  //   procesos, //yaa
+  //   sociedades, //yaa
+  //   obligaciones, //yaa
+  //   gastos, //yaa
+  //   motivos,
+  //   deudas, //yaa
+  //   ingresos, //yaa
+  //   propuestas, //yaa
+  //   cedulaCliente,
+  // });
 
   try {
     var newSolicitud = await Solicitud.create();

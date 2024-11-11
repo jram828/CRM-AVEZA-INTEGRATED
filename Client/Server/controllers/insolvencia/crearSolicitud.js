@@ -16,7 +16,7 @@ const {
 } = models;
 
 export const crearSolicitud = async (req, res) => {
-  // console.log("Acreedores:", acreedores);
+ console.log("Body solicitud:", req.body);
 
   const {
     acreedores,

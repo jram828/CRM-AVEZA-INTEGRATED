@@ -33,19 +33,19 @@ export const crearSolicitud = async (datosInsolvencia) => {
     cliente,
   } = datosInsolvencia;
 
-  // console.log("Body crear solicitud:", {
-  //   acreedores,
-  //   bienes, //yaa
-  //   procesos, //yaa
-  //   sociedades, //yaa
-  //   obligaciones, //yaa
-  //   gastos, //yaa
-  //   motivos,
-  //   deudas, //yaa
-  //   ingresos, //yaa
-  //   propuestas, //yaa
-  //   cedulaCliente,
-  // });
+  console.log("Body crear solicitud:", {
+    acreedores,
+    bienes, //yaa
+    procesos, //yaa
+    sociedades, //yaa
+    obligaciones, //yaa
+    gastos, //yaa
+    motivos,
+    deudas, //yaa
+    ingresos, //yaa
+    propuestas, //yaa
+    cliente,
+  });
 
   try {
 
@@ -91,16 +91,16 @@ export const crearSolicitud = async (datosInsolvencia) => {
     console.log("Ultimo Ingreso: ", newIngreso);
 
     var newGastos = await Gastos.create({
-      energia: gastos.energia,
-      agua: gastos.agua,
-      gas: gastos.gas,
-      telecomunicaciones: gastos.telecomunicaciones,
-      television: gastos.television,
-      arriendo: gastos.arriendo,
-      seguros: gastos.seguros,
-      alimentación: gastos.alimentación,
-      transporte: gastos.transporte,
-      otros: gastos.otros,
+      energia: gastos[0].energia,
+      agua: gastos[0].aguaAlcAseo,
+      gas: gastos[0].gas,
+      telecomunicaciones: gastos[0].telecomunicaciones,
+      television: gastos[0].television,
+      arriendo: gastos[0].arriendo,
+      seguros: gastos[0].seguros,
+      alimentación: gastos[0].alimentación,
+      transporte: gastos[0].transporte,
+      otros: gastos[0].otros,
     });
 
     newGastos.addSolicitud(newSolicitud);

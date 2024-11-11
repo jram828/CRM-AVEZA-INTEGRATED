@@ -30,7 +30,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
     deudas,
     ingresos,
     propuestas,
-    cedulaCliente,
+    cliente,
   } = datosInsolvencia;
 
   // console.log("Body crear solicitud:", {
@@ -49,7 +49,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
 
   try {
 
-    foundCliente = await Cliente.findOne({where: {cedulaCliente: cedulaCliente}});
+    foundCliente = await Cliente.findOne({where: {cedulaCliente: cliente.cedula}});
 
     var newSolicitud = await Solicitud.create();
     newSolicitud.addCliente(foundCliente);

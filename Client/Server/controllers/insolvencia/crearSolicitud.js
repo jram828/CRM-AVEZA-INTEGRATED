@@ -138,7 +138,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
         clase: propuesta.clase,
         interes: propuesta.interes,
         valor: propuesta.valor,
-        plazo: propuesta.plazo,
+        numeroCuotas: propuesta.numeroCuotas,  
       });
 
       newPropuesta.addSolicitud(newSolicitud);

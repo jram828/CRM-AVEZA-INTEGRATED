@@ -16,7 +16,7 @@ export default (sequelize) => {
       },
       interes: { type: DataTypes.BIGINT, allowNull: false },
       valor: { type: DataTypes.BIGINT, allowNull: false },
-      plazo: { type: DataTypes.BIGINT, allowNull: false },
+      numeroCuotas: { type: DataTypes.BIGINT, allowNull: false },
     },
     { timestamps: false }
   );

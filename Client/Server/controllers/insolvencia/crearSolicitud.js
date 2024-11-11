@@ -66,7 +66,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
       var newAcreedor = await Acreedor.create({
         NIT: acreedor.NIT,
         email: acreedor.email,
-        nombre: acreedor.nombre,
+        nombre: acreedor.nombreAcreeedor,
         direccion: acreedor.direccion,
         ciudad: acreedor.ciudad,
         telefono: acreedor.telefono,

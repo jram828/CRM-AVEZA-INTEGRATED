@@ -49,7 +49,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
 
   try {
 
-    foundCliente = await Cliente.findOne({where: {cedula: cedulaCliente}});
+    foundCliente = await Cliente.findOne({where: {cedulaCliente: cedulaCliente}});
 
     var newSolicitud = await Solicitud.create();
     newSolicitud.addCliente(foundCliente);

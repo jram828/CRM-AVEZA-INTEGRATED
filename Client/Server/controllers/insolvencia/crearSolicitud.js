@@ -79,7 +79,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
     for (let ingreso of ingresos) {
       var newIngreso = await Ingreso.create({
         concepto: ingreso.concepto,
-        valor: ingreso.valor,
+        valor: ingreso.Valor,
       });
 
       newIngreso.addSolicitud(newSolicitud);

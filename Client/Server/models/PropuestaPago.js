@@ -14,7 +14,7 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      tasaIntereses: { type: DataTypes.BIGINT, allowNull: false },
+      tasaIntereses: { type: DataTypes.FLOAT, allowNull: false },
       valorCuota: { type: DataTypes.BIGINT, allowNull: false },
       numeroCuotas: { type: DataTypes.BIGINT, allowNull: false },
     },

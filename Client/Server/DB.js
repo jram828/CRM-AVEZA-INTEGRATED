@@ -32,6 +32,7 @@ import deudaModel from "./models/Deuda.js";
 import sociedadModel from "./models/Sociedad.js";
 import obligacionAlimentariaModel from "./models/ObligacionAlimentaria.js";
 import motivosModel from "./models/Motivos.js";
+import solicitudModel from "./models/Solicitud.js";
 
 config(); // Cargar variables de entorno desde el archivo .env
 
@@ -90,7 +91,7 @@ const Deuda = deudaModel(sequelize);
 const Sociedad = sociedadModel(sequelize);
 const ObligacionAlimentaria = obligacionAlimentariaModel(sequelize);
 const Motivos = motivosModel(sequelize);
-
+const Solicitud = solicitudModel(sequelize);
 
 TipoDeCaso.belongsToMany(DocumentoTemplate, {
   through: "TipoDeCasoDocumentoTemplate",
@@ -159,59 +160,38 @@ Ciudad.belongsToMany(Abogado, { through: "abogado_ciudad" });
 Usuario.belongsToMany(Ciudad, { through: "usuario_ciudad" });
 Ciudad.belongsToMany(Usuario, { through: "usuario_ciudad" });
 
-Cliente.belongsToMany(Acreedor, { through: "cliente_acreedor" });
-Acreedor.belongsToMany(Cliente, { through: "cliente_acreedor" });
+Solicitud.belongsToMany(Acreedor, { through: "solicitud_acreedor" });
+Acreedor.belongsToMany(Solicitud, { through: "solicitud_acreedor" });
 
-Cliente.belongsToMany(Ingreso, { through: "cliente_Ingreso" });
-Ingreso.belongsToMany(Cliente, { through: "cliente_Ingreso" });
+Solicitud.belongsToMany(Ingreso, { through: "solicitud_Ingreso" });
+Ingreso.belongsToMany(Solicitud, { through: "solicitud_Ingreso" });
 
-Cliente.belongsToMany(Bien, { through: "cliente_Bien" });
-Bien.belongsToMany(Cliente, { through: "cliente_Bien" });
+Solicitud.belongsToMany(Bien, { through: "solicitud_Bien" });
+Bien.belongsToMany(Solicitud, { through: "solicitud_Bien" });
 
-Cliente.belongsToMany(Proceso, { through: "cliente_Proceso" });
-Proceso.belongsToMany(Cliente, { through: "cliente_Proceso" });
+Solicitud.belongsToMany(Proceso, { through: "solicitud_Proceso" });
+Proceso.belongsToMany(Solicitud, { through: "solicitud_Proceso" });
 
-Cliente.belongsToMany(Gastos, { through: "cliente_Gastos" });
-Gastos.belongsToMany(Cliente, { through: "cliente_Gastos" });
+Solicitud.belongsToMany(Gastos, { through: "solicitud_Gastos" });
+Gastos.belongsToMany(Solicitud, { through: "solicitud_Gastos" });
 
-Cliente.belongsToMany(PropuestaPago, { through: "cliente_PropuestaPago" });
-PropuestaPago.belongsToMany(Cliente, { through: "cliente_PropuestaPago" });
+Solicitud.belongsToMany(PropuestaPago, { through: "solicitud_PropuestaPago" });
+PropuestaPago.belongsToMany(Solicitud, { through: "solicitud_PropuestaPago" });
 
-Cliente.belongsToMany(Deuda, { through: "cliente_Deuda" });
-Deuda.belongsToMany(Cliente, { through: "cliente_Deuda" });
+Solicitud.belongsToMany(Deuda, { through: "solicitud_Deuda" });
+Deuda.belongsToMany(Solicitud, { through: "solicitud_Deuda" });
 
-Cliente.belongsToMany(Sociedad, { through: "cliente_Sociedad" });
-Sociedad.belongsToMany(Cliente, { through: "cliente_Sociedad" });
+Solicitud.belongsToMany(Sociedad, { through: "solicitud_Sociedad" });
+Sociedad.belongsToMany(Solicitud, { through: "solicitud_Sociedad" });
 
-Cliente.belongsToMany(ObligacionAlimentaria, { through: "cliente_ObligacionAlimentaria" });
-ObligacionAlimentaria.belongsToMany(Cliente, { through: "cliente_ObligacionAlimentaria" });
+Solicitud.belongsToMany(ObligacionAlimentaria, { through: "solicitud_ObligacionAlimentaria" });
+ObligacionAlimentaria.belongsToMany(Solicitud, { through: "solicitud_ObligacionAlimentaria" });
 
-Cliente.belongsToMany(Motivos, { through: "cliente_Motivos" });
-Motivos.belongsToMany(Cliente, { through: "cliente_Motivos" });
+Solicitud.belongsToMany(Motivos, { through: "solicitud_Motivos" });
+Motivos.belongsToMany(Solicitud, { through: "solicitud_Motivos" });
 
-// Departamento.hasMany(Cliente);
-// Cliente.belongsTo(Departamento);
-
-// Pais.hasMany(Cliente);
-// Cliente.belongsTo(Pais);
-
-// Ciudad.hasMany(Abogado);
-// Abogado.belongsTo(Ciudad);
-
-// Departamento.hasMany(Abogado);
-// Abogado.belongsTo(Departamento);
-
-// Pais.hasMany(Abogado);
-// Abogado.belongsTo(Pais);
-
-// Ciudad.hasMany(Usuario);
-// Usuario.belongsTo(Ciudad);
-
-// Departamento.hasMany(Usuario);
-// Usuario.belongsTo(Departamento);
-
-// Pais.hasMany(Usuario);
-// Usuario.belongsTo(Pais);
+Solicitud.belongsToMany(Cliente, { through: "solicitud_solicitud" });
+Cliente.belongsToMany(Solicitud, { through: "solicitud_solicitud" });
 
 TipoUsuario.hasMany(Cliente);
 Cliente.belongsTo(TipoUsuario);
@@ -220,7 +200,7 @@ const models = {
   ...sequelize.models,
   conn: sequelize,
 };
-// console.log("Modelos:", models);
+
 export { models };
 
 

@@ -12,6 +12,7 @@ const {
   ObligacionAlimentaria,
   PropuestaPago,
   Sociedad,
+  Solicitud
 } = models;
 
 export const crearSolicitud = async (req, res) => {
@@ -46,6 +47,9 @@ export const crearSolicitud = async (req, res) => {
   });
 
   try {
+    var newSolicitud = await Solicitud.create();
+    newSolicitud.addCliente(cedulaCliente);
+
     for (let bien of bienes) {
       var newBien = await Bien.create({
         tipoBien: bien.tipoBien,
@@ -54,9 +58,23 @@ export const crearSolicitud = async (req, res) => {
         descripcionBien: bien.descripcionBien,
       });
 
-      newBien.addCliente(cedulaCliente);
+      newBien.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Bien: ", newBien);
+
+    for (let acreedor of acreedores) {
+      var newAcreedor = await Acreedor.create({
+        NIT: acreedor.NIT,
+        email: acreedor.email,
+        nombre: acreedor.nombre,
+        direccion: acreedor.direccion,
+        ciudad: acreedor.ciudad,
+        telefono: acreedor.telefono,
+      });
+
+      newAcreedor.addSolicitud(newSolicitud);
+    }
+    console.log("Ultimo Acreedor: ", newBien);
 
     for (let ingreso of ingresos) {
       var newIngreso = await Ingreso.create({
@@ -64,7 +82,7 @@ export const crearSolicitud = async (req, res) => {
         valor: ingreso.valor,
       });
 
-      newIngreso.addCliente(cedulaCliente);
+      newIngreso.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Ingreso: ", newIngreso);
 
@@ -85,7 +103,7 @@ export const crearSolicitud = async (req, res) => {
       otros: gastos.otros,
     });
 
-    newGastos.addCliente(cedulaCliente);
+    newGastos.addSolicitud(newSolicitud);
 
     for (let proceso of procesos) {
       var newProceso = await Proceso.create({
@@ -95,7 +113,7 @@ export const crearSolicitud = async (req, res) => {
         tipoProceso: proceso.tipoProceso,
       });
 
-      newProceso.addCliente(cedulaCliente);
+      newProceso.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Proceso: ", newProceso);
 
@@ -111,7 +129,7 @@ export const crearSolicitud = async (req, res) => {
         diasMora: deuda.diasMora,
       });
 
-      newDeuda.addCliente(cedulaCliente);
+      newDeuda.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Deuda: ", newDeuda);
 
@@ -123,7 +141,7 @@ export const crearSolicitud = async (req, res) => {
         plazo: propuesta.plazo,
       });
 
-      newPropuesta.addCliente(cedulaCliente);
+      newPropuesta.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Propuesta: ", newPropuesta);
 
@@ -133,7 +151,7 @@ export const crearSolicitud = async (req, res) => {
         cedulaConyuge: sociedad.idConyuge,
       });
 
-      newSociedad.addCliente(cedulaCliente);
+      newSociedad.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Sociedad: ", newSociedad);
 
@@ -143,7 +161,7 @@ export const crearSolicitud = async (req, res) => {
         idHijo: obligacion.idHijo,
       });
 
-      newObligacion.addCliente(cedulaCliente);
+      newObligacion.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Obligacion: ", newObligacion);
 

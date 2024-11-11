@@ -1,4 +1,5 @@
 import { crearAcreedores } from "../controllers/insolvencia/crearAcreedores.js";
+import { crearSolicitud } from "../controllers/insolvencia/crearSolicitud.js";
 import { getAllAcreedores } from "../controllers/insolvencia/getAllAcreedores.js";
 
 

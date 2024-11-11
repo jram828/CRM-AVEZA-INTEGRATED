@@ -114,7 +114,6 @@ localStorage.removeItem("pagosFilter");
                   <div className="labelverpago">Cliente: </div>
                   <div className="textopago">
                     {pago?.Caso?.Cliente?.nombres}
-                    {pago?.Caso?.Cliente?.apellidos}
                   </div>
                 </div>
                 <div className="infopagotarjeta">

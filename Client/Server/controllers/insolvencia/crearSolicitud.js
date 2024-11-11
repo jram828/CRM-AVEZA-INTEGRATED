@@ -62,19 +62,19 @@ export const crearSolicitud = async (datosInsolvencia) => {
     }
     console.log("Ultimo Bien: ", newBien);
 
-    for (let acreedor of acreedores) {
-      var newAcreedor = await Acreedor.create({
-        NIT: acreedor.NIT,
-        email: acreedor.emailAcreeedor,
-        nombre: acreedor.nombreAcreeedor,
-        direccion: acreedor.direccionAcreeedor,
-        ciudad: acreedor.ciudadAcreeedor,
-        telefono: acreedor.telefono,
-      });
+    // for (let acreedor of acreedores) {
+    //   var newAcreedor = await Acreedor.create({
+    //     NIT: acreedor.NIT,
+    //     email: acreedor.emailAcreeedor,
+    //     nombre: acreedor.nombreAcreeedor,
+    //     direccion: acreedor.direccionAcreeedor,
+    //     ciudad: acreedor.ciudadAcreeedor,
+    //     telefono: acreedor.telefono,
+    //   });
 
-      newAcreedor.addSolicitud(newSolicitud);
-    }
-    console.log("Ultimo Acreedor: ", newBien);
+    //   newAcreedor.addSolicitud(newSolicitud);
+    // }
+    // console.log("Ultimo Acreedor: ", newBien);
 
     for (let ingreso of ingresos) {
       var newIngreso = await Ingreso.create({

@@ -13,11 +13,11 @@ const {
   ObligacionAlimentaria,
   PropuestaPago,
   Sociedad,
-  Solicitud
+  Solicitud,
 } = models;
 
 export const crearSolicitud = async (datosInsolvencia) => {
- console.log("Body solicitud:", datosInsolvencia);
+  console.log("Body solicitud:", datosInsolvencia);
 
   const {
     acreedores,
@@ -48,8 +48,9 @@ export const crearSolicitud = async (datosInsolvencia) => {
   });
 
   try {
-
-    const foundCliente = await Cliente.findOne({where: {cedulaCliente: cliente.cedula}});
+    const foundCliente = await Cliente.findOne({
+      where: { cedulaCliente: cliente.cedula },
+    });
 
     var newSolicitud = await Solicitud.create();
     newSolicitud.addCliente(foundCliente);
@@ -65,20 +66,6 @@ export const crearSolicitud = async (datosInsolvencia) => {
       newBien.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Bien: ", newBien);
-
-    // for (let acreedor of acreedores) {
-    //   var newAcreedor = await Acreedor.create({
-    //     NIT: acreedor.NIT,
-    //     email: acreedor.emailAcreeedor,
-    //     nombre: acreedor.nombreAcreeedor,
-    //     direccion: acreedor.direccionAcreeedor,
-    //     ciudad: acreedor.ciudadAcreeedor,
-    //     telefono: acreedor.telefono,
-    //   });
-
-    //   newAcreedor.addSolicitud(newSolicitud);
-    // }
-    // console.log("Ultimo Acreedor: ", newBien);
 
     for (let ingreso of ingresos) {
       var newIngreso = await Ingreso.create({
@@ -124,7 +111,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
         documentoSoporte: deuda.documentoSoporte,
         capital: deuda.capital,
         intereses: deuda.intereses,
-        cuantiaTotal: Number(deuda.capital)+Number(deuda.intereses),
+        cuantiaTotal: Number(deuda.capital) + Number(deuda.intereses),
         clasificacion: deuda.clasificacion,
         diasMora: deuda.diasMora,
       });
@@ -138,7 +125,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
         Clasificacion: propuesta.Clasificacion,
         tasaIntereses: propuesta.tasaIntereses,
         valorCuota: propuesta.valorCuota,
-        numeroCuotas: propuesta.numeroCuotas,  
+        numeroCuotas: propuesta.numeroCuotas,
       });
 
       newPropuesta.addSolicitud(newSolicitud);
@@ -164,6 +151,20 @@ export const crearSolicitud = async (datosInsolvencia) => {
       newObligacion.addSolicitud(newSolicitud);
     }
     console.log("Ultimo Obligacion: ", newObligacion);
+
+    for (let acreedor of acreedores) {
+      var newAcreedor = await Acreedor.create({
+        NIT: acreedor.NIT,
+        email: acreedor.emailAcreeedor,
+        nombre: acreedor.nombreAcreeedor,
+        direccion: acreedor.direccionAcreeedor,
+        ciudad: acreedor.ciudadAcreeedor,
+        telefono: acreedor.telefono,
+      });
+
+      newAcreedor.addSolicitud(newSolicitud);
+    }
+    console.log("Ultimo Acreedor: ", newAcreedor);
 
     // return newAcreedor.dataValues;
   } catch (error) {

@@ -155,10 +155,10 @@ export const crearSolicitud = async (datosInsolvencia) => {
     for (let acreedor of acreedores) {
       var newAcreedor = await Acreedor.create({
         NIT: acreedor.NIT,
-        email: acreedor.emailAcreeedor,
-        nombre: acreedor.nombreAcreeedor,
-        direccion: acreedor.direccionAcreeedor,
-        ciudad: acreedor.ciudadAcreeedor,
+        email: acreedor.emailAcreedor,
+        nombre: acreedor.nombreAcreedor,
+        direccion: acreedor.direccionAcreedor,
+        ciudad: acreedor.ciudadAcreedor,
         telefono: acreedor.telefono,
       });
 

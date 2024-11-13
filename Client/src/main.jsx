@@ -12,7 +12,7 @@ const GOOGLE_ID = import.meta.env.GOOGLE_ID;
 
 root.render(
 
-    <GoogleOAuthProvider clientId={GOOGLE_ID}>
+    <GoogleOAuthProvider clientId="844309234209-e072sos6qgabufkk0tmgv74900fknd62.apps.googleusercontent.com">
       <Provider store={store}>
         <HashRouter>
           <App />

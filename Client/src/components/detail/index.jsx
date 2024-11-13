@@ -149,7 +149,10 @@ const Detail = () => {
             </svg>
             Eliminar
           </Button>
-          <GooglePicker></GooglePicker>
+          <GooglePicker>
+          
+          
+          </GooglePicker>
           {datos?.tarjetaProf ? (
             <Link to="/abogados">
               <Button>

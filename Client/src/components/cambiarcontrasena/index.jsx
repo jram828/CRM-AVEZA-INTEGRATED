@@ -76,7 +76,7 @@ const CambiarContrasena = () => {
         </label>
         <input
           className="emailrecordatorio"
-          type="text"
+          type="password"
           name="newPassword"
           id="newPassword"
           onChange={handleChange}
@@ -88,7 +88,7 @@ const CambiarContrasena = () => {
         </label>
         <input
           className="emailrecordatorio"
-          type="text"
+          type="password"
           name="confirmPassword"
           id="confirmPassword"
           onChange={handleChange}

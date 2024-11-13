@@ -8,10 +8,11 @@ import "./index.css";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
+const GOOGLE_ID = import.meta.env.GOOGLE_ID;
 
 root.render(
 
-    <GoogleOAuthProvider clientId="844309234209-e072sos6qgabufkk0tmgv74900fknd62.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={GOOGLE_ID}>
       <Provider store={store}>
         <HashRouter>
           <App />

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../Mystyles";
 import "../detail/detail.css";
 import { deleteAbogado, deleteCliente, modificarDatos, modificarDatosAbogado} from "../../redux/actions";
+import GooglePicker from "../../utils/googlePicker";
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -148,7 +149,7 @@ const Detail = () => {
             </svg>
             Eliminar
           </Button>
-
+          <GooglePicker></GooglePicker>
           {datos?.tarjetaProf ? (
             <Link to="/abogados">
               <Button>
@@ -191,6 +192,7 @@ const Detail = () => {
                 Volver
               </Button>
             </Link>
+            
           )}
           {/* <Button className="botonesiniciosesion" onClick={generarContrato}>
             Generar Documentos

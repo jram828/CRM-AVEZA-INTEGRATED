@@ -1,8 +1,11 @@
 import useDrivePicker from 'react-google-drive-picker'
-const GOOGLE_ID = import.meta.env.GOOGLE_ID;
-const GOOGLE_API_KEY = import.meta.env.GOOGLE_API_KEY;
+const GOOGLE_ID = import.meta.env.VITE_GOOGLE_ID;
+const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
 function GooglePicker() {
+  console.log('Google ID:', GOOGLE_ID)
+  console.log('Google API Key:', GOOGLE_API_KEY)
+
   const [openPicker, authResponse] = useDrivePicker();  
   const handleOpenPicker = () => {
     openPicker({

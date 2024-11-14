@@ -23,7 +23,7 @@ export const uploadToGoogleDrive = async (file, auth) => {
 
   const media = {
     mimeType: file.mimetype,
-    body: fs.createReadStream(file.path),
+    body: file.buffer,
   };
 
   const driveService = google.drive({ version: "v3", auth });

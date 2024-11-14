@@ -9,7 +9,6 @@ export const uploadHandler = async (req, res, next) => {
     }
     const auth = authenticateGoogle();
     const response = await uploadToGoogleDrive(req.file, auth);
-    deleteFile(req.file.path);
     res.status(200).json({ response });
   } catch (err) {
     console.log(err);

@@ -1,4 +1,4 @@
-import { authenticateGoogle, deleteFile, uploadToGoogleDrive } from "../controllers/upload/upload";
+import { authenticateGoogle, deleteFile, uploadToGoogleDrive } from "../controllers/upload/upload.js";
 
 const uploadHandler = async (req, res, next) => {
   try {

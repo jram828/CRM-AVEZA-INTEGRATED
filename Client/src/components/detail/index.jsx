@@ -5,6 +5,7 @@ import { Button } from "../Mystyles";
 import "../detail/detail.css";
 import { deleteAbogado, deleteCliente, modificarDatos, modificarDatosAbogado} from "../../redux/actions";
 import GooglePicker from "../../utils/googlePicker";
+import GoogleDriveFileUploader from "../../utils/googlePicker";
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -149,10 +150,7 @@ const Detail = () => {
             </svg>
             Eliminar
           </Button>
-          <GooglePicker>
-          
-          
-          </GooglePicker>
+          <GoogleDriveFileUploader/>
           {datos?.tarjetaProf ? (
             <Link to="/abogados">
               <Button>

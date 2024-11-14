@@ -1,7 +1,7 @@
 import { google } from "googleapis";
 import {config} from "dotenv";
 import fs from 'fs';
-
+// Folder ID const response = await drive.files.list(params);
 config();
 
 export const authenticateGoogle = () => {
@@ -18,7 +18,7 @@ export const authenticateGoogle = () => {
 export const uploadToGoogleDrive = async (file, auth) => {
   const fileMetadata = {
     name: file.originalname,
-    parents: ["1fVi187njfYMXq_f1J2xWO75ghU8hL0Ed"], // Folder ID const response = await drive.files.list(params);
+    parents: ["1fVi187njfYMXq_f1J2xWO75ghU8hL0Ed"], 
   };
 
   const media = {

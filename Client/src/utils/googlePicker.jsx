@@ -48,10 +48,7 @@ function GoogleDriveFileUploader() {
     e.preventDefault();
     let formData = new FormData();
     formData.append("file", file.data);
-    const response = await axios.post("/storefile/upload", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await axios.post("/storefile/upload", formData);
 
     const responseWithBody = await response.json();
     if (response) setUrl(responseWithBody.publicUrl);

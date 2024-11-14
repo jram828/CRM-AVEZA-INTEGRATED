@@ -1,6 +1,7 @@
 import { authenticateGoogle, deleteFile, uploadToGoogleDrive } from "../controllers/upload/upload.js";
 
 export const uploadHandler = async (req, res, next) => {
+    console.log("FILE",req);
   try {
     if (!req.file) {
       res.status(400).send("No file uploaded.");

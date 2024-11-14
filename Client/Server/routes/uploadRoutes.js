@@ -9,9 +9,8 @@ const multer = Multer({
   },
 });
 
-const upload = multer({ dest: 'uploads/' });
 const uploadRouter = Router();
 
-uploadRouter.post("/upload", upload.single("file"), uploadHandler);
+uploadRouter.post("/upload", multer.single("file"), uploadHandler);
 
 export default uploadRouter;

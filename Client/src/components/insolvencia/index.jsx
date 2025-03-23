@@ -1,17 +1,21 @@
 import "../../App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../insolvencia/insolvencia.css";
 import { Button } from "../Mystyles";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarSolicitud } from "../../handlers/generarSolicitud.jsx";
 import { juzgados } from "../../utils/juzgados.js";
-import { crearSolicitud } from "../../redux/actions.js";
+import { crearSolicitud, obtenerSolicitud } from "../../redux/actions.js";
 import { formatNumero } from "../../utils/formatNumero.js";
+import { use } from "react";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);
   console.log("Cliente insolvencia:", cliente);
+
+  const solicitud = useSelector((state) => state.solicitud);
+  console.log("Solicitud insolvencia:", solicitud);
 
   const dispatch = useDispatch();
 
@@ -321,6 +325,10 @@ const Insolvencia = () => {
     console.log("Datos insolvencia para back:", datosinsolvencia);
     dispatch(crearSolicitud(datosinsolvencia));
   };
+
+  useEffect(() => {
+    dispatch(obtenerSolicitud(cliente.cedulaCliente));
+  }, [cliente.cedulaCliente, dispatch]);
 
   const [filteredJuzgado, setFilteredJuzgado] = useState([]);
 

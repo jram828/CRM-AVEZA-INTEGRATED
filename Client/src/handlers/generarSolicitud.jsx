@@ -44,6 +44,7 @@ export const generarSolicitud = (
 
   const sumaCapitalDeudas = formatNumero(deudas.reduce((acumulador, deuda) => acumulador + deuda.capital, 0));
   const sumaGastos = formatNumero(Number(gastos.energia) + Number(gastos.gas) + Number(gastos.aguaAlcAseo) + Number(gastos.telecomunicaciones) + Number(gastos.television) + Number(gastos.arriendo) + Number(gastos.seguros) + Number(gastos.alimentacion) + Number(gastos.transporte) + Number(gastos.otros));
+  console.log("Suma gastos:", sumaGastos);
   const datosinsolvencia = {
     ingresos,
     gastos,

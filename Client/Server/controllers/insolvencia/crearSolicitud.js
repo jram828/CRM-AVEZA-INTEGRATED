@@ -152,6 +152,15 @@ export const crearSolicitud = async (datosInsolvencia) => {
     }
     console.log("Ultimo Obligacion: ", newObligacion);
 
+    var newMotivos = await Motivos.create({
+      descripcion: motivos.motivos,
+    });
+
+    newMotivos.addSolicitud(newSolicitud);
+
+    console.log("Motivos: ", newMotivos);
+
+
     for (let acreedor of acreedores) {
       var newAcreedor = await Acreedor.create({
         NIT: acreedor.NIT,

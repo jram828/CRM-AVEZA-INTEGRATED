@@ -41,6 +41,7 @@ export const GET_CLIENTES_TODOS = "GET_CLIENTES_TODOS";
 export const MODIFICAR_CASO = "MODIFICAR_CASO";
 export const DELETE_CONSULTA = "DELETE_CONSULTA";
 export const POST_INSOLVENCIA = "POST_INSOLVENCIA";
+export const GET_SOLICITUD_BY_CEDULA = "GET_SOLICITUD_BY_CEDULA";
 
 export const clienteActual = (cliente) => {
   console.log("Cliente Action:", cliente);
@@ -548,3 +549,18 @@ export  const crearSolicitud = (datosInsolvencia) => {
     }
   };
   };
+
+  export  const obtenerSolicitud = (cedula) => {
+    return async (dispatch) => {
+      const { data } = await axios.get(`/insolvencia/obtenersolicitud/${cedula}`);
+      console.log('Data Obtener Solicitud:',data)
+      try {
+        return dispatch({
+          type: GET_SOLICITUD_BY_CEDULA,
+          payload: data,
+        });
+      } catch (error) {
+        window.alert("No fue posible obtener la solicitud de insolvencia!");
+      }
+    };
+    };

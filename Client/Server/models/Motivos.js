@@ -14,7 +14,7 @@ export default (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
-          len: [1, 3000],
+          len: [1, 10000],
         },
       },
     },

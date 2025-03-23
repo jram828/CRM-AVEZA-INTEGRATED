@@ -190,8 +190,8 @@ ObligacionAlimentaria.belongsToMany(Solicitud, { through: "solicitud_ObligacionA
 Solicitud.belongsToMany(Motivos, { through: "solicitud_Motivos" });
 Motivos.belongsToMany(Solicitud, { through: "solicitud_Motivos" });
 
-Solicitud.belongsToMany(Cliente, { through: "solicitud_solicitud" });
-Cliente.belongsToMany(Solicitud, { through: "solicitud_solicitud" });
+Solicitud.belongsToMany(Cliente, { through: "solicitud_cliente" });
+Cliente.belongsToMany(Solicitud, { through: "solicitud_cliente" });
 
 TipoUsuario.hasMany(Cliente);
 Cliente.belongsTo(TipoUsuario);

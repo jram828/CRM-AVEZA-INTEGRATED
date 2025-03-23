@@ -48,7 +48,8 @@ import {
   FILTER_CITAS,
   SET_FILTRO,
   DELETE_CONSULTA,
-  POST_INSOLVENCIA
+  POST_INSOLVENCIA,
+  GET_SOLICITUD_BY_CEDULA,
 } from "./actions";
 
 let initialState = {
@@ -64,13 +65,14 @@ let initialState = {
   caso: {},
   cita: [],
   citas: [],
-  filtro:[],
+  filtro: [],
   consultas: [],
   pagos: [],
   source: "cliente",
   reviews: [],
   pages: [],
-  insolvencia:[],
+  insolvencia: [],
+  solicitud: {},
   reviewError: "",
   // userGit: null,
   loginError: "",
@@ -267,13 +269,18 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         pagos: action.payload,
       };
-      case POST_INSOLVENCIA:
-        return {
-          ...state,
-          insolvencia: action.payload,
-        };
-      case CLEAN_USER:
-        return initialState;
+    case POST_INSOLVENCIA:
+      return {
+        ...state,
+        insolvencia: action.payload,
+      };
+    case GET_SOLICITUD_BY_CEDULA:
+      return {
+        ...state,
+        solicitud: action.payload,
+      };
+    case CLEAN_USER:
+      return initialState;
     // case LOGIN:
     //   return {
     //     ...state,

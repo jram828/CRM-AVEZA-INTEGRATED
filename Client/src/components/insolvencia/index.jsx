@@ -327,8 +327,8 @@ const Insolvencia = () => {
   };
 
   useEffect(() => {
-    dispatch(obtenerSolicitud(cliente.cedulaCliente));
-  }, [cliente.cedulaCliente, dispatch]);
+    dispatch(obtenerSolicitud(cliente.cedula));
+  }, [cliente.cedula, dispatch]);
 
   const [filteredJuzgado, setFilteredJuzgado] = useState([]);
 

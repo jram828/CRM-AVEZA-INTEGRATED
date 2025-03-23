@@ -1,6 +1,7 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
+import { formatNumero } from "../utils/formatNumero";
 
 export const generarSolicitud = (
   ingresos,
@@ -41,6 +42,8 @@ export const generarSolicitud = (
     emailAcreedor: acreedor.email,
   }));
 
+  const sumaCapitalDeudas = deudas.reduce((acumulador, deuda) => acumulador + deuda.capital, 0);
+  const sumaGastos = gastos.energia + gastos.gas + gastos.aguaAlcAseo + gastos.telecomunicaciones + gastos.television + gastos.arriendo + gastos.seguros + gastos.alimentacion + gastos.transporte + gastos.otros;
   const datosinsolvencia = {
     ingresos,
     gastos,
@@ -54,6 +57,7 @@ export const generarSolicitud = (
     cliente,
     ciudad: cliente.Ciudads[0].nombre_ciudad,
     acreedores: newAcreedores,
+    sumaCapitalDeudas,
   };
 
   const reader = new FileReader();
@@ -90,8 +94,10 @@ export const generarSolicitud = (
       sociedades: sociedades,
       acreedores: newAcreedores,
       deudas: deudas,
+      totaldeudas: sumaCapitalDeudas,
+      totalgastos: sumaGastos,
       propuestas: propuestas,
-      energia: Number(gastos[0].energia).toLocaleString(),
+      energia: formatNumero(Number(gastos[0].energia)),
       gas: Number(gastos[0].gas).toLocaleString(),
       agua: Number(gastos[0].aguaAlcAseo).toLocaleString(),
       telecomunicaciones: Number(gastos[0].telecomunicaciones).toLocaleString(),

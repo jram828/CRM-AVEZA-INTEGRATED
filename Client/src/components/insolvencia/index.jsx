@@ -1388,6 +1388,30 @@ const Insolvencia = () => {
                   <td>&nbsp;</td>
                 )}
               </tr>
+              <tr>
+                <th className="tableCell">Transporte:</th>
+                {gastos.length > 0 ? (
+                  gastos.map((gasto, index) => (
+                    <td className="tableCell" key={index}>
+                      {formatNumero(gasto.transporte)}
+                    </td>
+                  ))
+                ) : (
+                  <td>&nbsp;</td>
+                )}
+              </tr>
+              <tr>
+                <th className="tableCell">Otros gastos:</th>
+                {gastos.length > 0 ? (
+                  gastos.map((gasto, index) => (
+                    <td className="tableCell" key={index}>
+                      {formatNumero(gasto.otros)}
+                    </td>
+                  ))
+                ) : (
+                  <td>&nbsp;</td>
+                )}
+              </tr>
             </table>
             <br />
             <br />

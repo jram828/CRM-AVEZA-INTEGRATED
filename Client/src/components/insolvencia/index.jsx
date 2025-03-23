@@ -1250,7 +1250,7 @@ const Insolvencia = () => {
                         {ingreso.concepto}
                       </td>
                       <td className="tableCell" key={index}>
-                        {formatNumero(ingreso.valor)}
+                        {formatNumero(ingreso.Valor)}
                       </td>
                     </tr>
                   ))

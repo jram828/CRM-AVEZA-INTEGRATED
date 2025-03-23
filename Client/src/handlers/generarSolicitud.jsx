@@ -42,8 +42,8 @@ export const generarSolicitud = (
     emailAcreedor: acreedor.email,
   }));
 
-  const sumaCapitalDeudas = deudas.reduce((acumulador, deuda) => acumulador + deuda.capital, 0);
-  const sumaGastos = gastos.energia + gastos.gas + gastos.aguaAlcAseo + gastos.telecomunicaciones + gastos.television + gastos.arriendo + gastos.seguros + gastos.alimentacion + gastos.transporte + gastos.otros;
+  const sumaCapitalDeudas = formatNumero(deudas.reduce((acumulador, deuda) => acumulador + deuda.capital, 0));
+  const sumaGastos = formatNumero(Number(gastos.energia) + Number(gastos.gas) + Number(gastos.aguaAlcAseo) + Number(gastos.telecomunicaciones) + Number(gastos.television) + Number(gastos.arriendo) + Number(gastos.seguros) + Number(gastos.alimentacion) + Number(gastos.transporte) + Number(gastos.otros));
   const datosinsolvencia = {
     ingresos,
     gastos,
@@ -77,7 +77,26 @@ export const generarSolicitud = (
       paragraphLoop: true,
       linebreaks: true,
     });
+    
+    const newDeudas= deudas.map(deuda => ({
+      ...deuda,
+      capital: formatNumero(deuda.capital)
+    }));
+    
+    const newBienes= bienes.map(bien => ({
+      ...bien,
+      valor: formatNumero(bien.valor)
+    }));
 
+    const newIngresos= ingresos.map(ingreso => ({
+      ...ingreso,
+      Valor: formatNumero(ingreso.Valor)
+    }));
+
+    const newPropuestas= propuestas.map(propuesta => ({
+      ...propuesta,
+      valorCuota: formatNumero(propuesta.valorCuota)
+    }));
     // !Reemplazar contenido de array en una tabla
     doc.render({
       nombre: cliente.nombres,
@@ -86,27 +105,27 @@ export const generarSolicitud = (
       cedula: cliente.cedula,
       direccion: cliente.direccion,
       ciudad: cliente.Ciudads[0].nombre_ciudad,
-      ingresos: ingresos,
+      ingresos: newIngresos,
       motivos: motivos.motivos,
-      bienes: bienes,
+      bienes: newBienes,
       procesos: procesos,
       obligaciones: obligaciones,
       sociedades: sociedades,
       acreedores: newAcreedores,
-      deudas: deudas,
+      deudas: newDeudas,
       totaldeudas: sumaCapitalDeudas,
       totalgastos: sumaGastos,
-      propuestas: propuestas,
+      propuestas: newPropuestas,
       energia: formatNumero(Number(gastos[0].energia)),
-      gas: Number(gastos[0].gas).toLocaleString(),
-      agua: Number(gastos[0].aguaAlcAseo).toLocaleString(),
-      telecomunicaciones: Number(gastos[0].telecomunicaciones).toLocaleString(),
-      television: Number(gastos[0].television).toLocaleString(),
-      arriendo: Number(gastos[0].arriendo).toLocaleString(),
-      seguros: Number(gastos[0].seguros).toLocaleString(),
-      alimentacion: Number(gastos[0].alimentacion).toLocaleString(),
-      transporte: Number(gastos[0].transporte).toLocaleString(),
-      otros: Number(gastos[0].otros).toLocaleString(),
+      gas: formatNumero(Number(gastos[0].gas)),
+      agua: formatNumero(Number(gastos[0].aguaAlcAseo)),
+      telecomunicaciones: formatNumero(Number(gastos[0].telecomunicaciones)),
+      television: formatNumero(Number(gastos[0].television)),
+      arriendo: formatNumero(Number(gastos[0].arriendo)),
+      seguros: formatNumero(Number(gastos[0].seguros)),
+      alimentacion: formatNumero(Number(gastos[0].alimentacion)),
+      transporte: formatNumero(Number(gastos[0].transporte)),
+      otros: formatNumero(Number(gastos[0].otros)),
     });
 
     const blob = doc.getZip().generate({

@@ -36,6 +36,8 @@ import Payments from "./components/payments/payments.component.jsx";
 import { crearUsuario } from "./handlers/crearUsuario.jsx";
 import Status from "./components/status/index.jsx";
 import CambiarContrasena from "./components/cambiarcontrasena/index.jsx";
+// import EditarInsolvencia from "./components/editarinsolvencia/index.jsx";
+
 
 const URL = import.meta.env.VITE_URL;
 // const { URL } = process.env;
@@ -162,6 +164,7 @@ function App() {
         <Route path="poder" element={<Poder />} />
         <Route path="PDF" element={<PDF />} />
         <Route path="insolvencia" element={<Insolvencia />} />
+        {/* <Route path="editarinsolvencia" element={<EditarInsolvencia />} /> */}
         <Route path="registrocliente" element={<RegistroCliente />} />
         <Route path="registroabogado" element={<RegistroAbogado />} />
         <Route path="detail" element={<Detail />} />

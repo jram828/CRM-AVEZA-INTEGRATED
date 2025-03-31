@@ -17,7 +17,7 @@ export default (sequelize) => {
       apellidos: { type: DataTypes.STRING, allowNull: false },
       direccion: { type: DataTypes.STRING, allowNull: false },
       celular: { type: DataTypes.BIGINT, allowNull: false },
-      comentarios: { type: DataTypes.TEXT, allowNull: false },
+      comentarios: { type: DataTypes.TEXT, allowNull: true },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

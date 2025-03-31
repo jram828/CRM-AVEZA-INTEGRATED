@@ -138,6 +138,16 @@ function DetailCasos() {
     navigate("/insolvencia");
   };
 
+  const handlerCotizacion = () => {
+    dispatch(
+      clienteActual({
+        ...casoDetail.Cliente,
+        cedula: casoDetail.ClienteCedulaCliente,
+      })
+    );
+    navigate("/cotizacion");
+  };
+
   const handleUpdateDetailCaso = (e) => {
     setCasoDetail({
       ...casoDetail,
@@ -246,6 +256,7 @@ function DetailCasos() {
                 disabled
               />
             </div>
+            {casoDetail.TipoDeCaso.descripcion !== "Insolvencia" && (
             <div className="infodetailcaso">
               <label htmlFor="radicado" className="labeldetailcaso">
                 N° Radicado Juzgado:
@@ -259,6 +270,7 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
               />
             </div>
+            )}
             <div className="infodetailcaso">
               <label htmlFor="nombres" className="labeldetailcaso">
                 Tipo de caso:
@@ -273,8 +285,13 @@ function DetailCasos() {
               />
             </div>
             {casoDetail.TipoDeCaso.descripcion === "Insolvencia" && (
-              <div className="infodetailcaso">
-                <Buttonf onClick={handlerSolicitud}>Solicitud</Buttonf>
+              <div>
+                <div className="infodetailcaso">
+                  <Buttonf onClick={handlerSolicitud}>Solicitud</Buttonf>
+                </div>
+                <div className="infodetailcaso">
+                  <Buttonf onClick={handlerCotizacion}> Cotización</Buttonf>
+                </div>
               </div>
             )}
             <div className="infodetailcaso">

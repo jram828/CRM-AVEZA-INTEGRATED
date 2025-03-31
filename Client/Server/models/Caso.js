@@ -11,13 +11,16 @@ export default (sequelize) => {
       },
       radicado: {
         type: DataTypes.STRING,
+        defaultValue: "No aplica",
       },
       juzgado: {
         type: DataTypes.STRING,
+        defaultValue: "No aplica",
       },
       fecha: {
         type: DataTypes.DATE,
         allowNull: false,
+        defaultValue: DataTypes.NOW,
       },
       fechaFin: {
         type: DataTypes.DATE,
@@ -25,19 +28,21 @@ export default (sequelize) => {
       },
       descripcion: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         validate: {
           len: [1, 3000],
         },
       },
-      valor_pretensiones: { type: DataTypes.BIGINT, allowNull: false },
+      valor_pretensiones: { type: DataTypes.BIGINT, allowNull: false, defaultValue: 0 },
       aceptacion_cotizacion: {
         type: DataTypes.STRING,
         defaultValue: "No",
       },
-      honorarios: { type: DataTypes.BIGINT, allowNull: false },
+      honorarios: { type: DataTypes.BIGINT, allowNull: false,
+        defaultValue: 0 },
       cuotas: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 1 },
-      forma_de_pago: { type: DataTypes.STRING, allowNull: false },
+      forma_de_pago: { type: DataTypes.STRING, allowNull: false,
+        defaultValue: "Contado" },
       etapa: {
         type: DataTypes.STRING,
         defaultValue: "prospecto",

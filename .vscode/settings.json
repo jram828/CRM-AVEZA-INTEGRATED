@@ -8,6 +8,8 @@
         "Navbar",
         "SMS Notification",
         "Pagos",
-        "Google Drive"
-    ]
+        "Google Drive",
+        "Cotizacion"
+    ],
+    "postman.settings.dotenv-detection-notification-visibility": false
 }

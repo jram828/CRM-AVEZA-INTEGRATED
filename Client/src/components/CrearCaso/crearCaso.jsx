@@ -16,7 +16,7 @@ function CrearCaso() {
     fecha: "",
     fechaFin: "",
     descripcion: "",
-    TipoDeCasoid: "",
+    TipoDeCasoid: 1,
   });
   // console.log(userDataRegistro);
 
@@ -72,7 +72,7 @@ function CrearCaso() {
         console.error("Error al obtener los tipos de casos:", error);
       }
     };
-
+ 
     obtenerTipos();
   }, []);
 
@@ -84,25 +84,23 @@ function CrearCaso() {
     }));
   };
 
-
   const submitHandlerRegistro = async (e) => {
     e.preventDefault();
     try {
       await postCaso(userDataRegistro);
 
       if (userDataRegistro.TipoDeCasoid === "1") {
-            const isConfirmed = window.confirm(
-              "¿Desea ingresar los datos para la solicitud de insolvencia?"
-            );
+        const isConfirmed = window.confirm(
+          "¿Desea ingresar los datos para la solicitud de insolvencia?"
+        );
 
-            if (isConfirmed) {
-              // dispatch(deleteCaso(id));
-              // dispatch(getCasos());
-              // console.log("id", id);
-              navigate("/insolvencia");
-            }
+        if (isConfirmed) {
+          // dispatch(deleteCaso(id));
+          // dispatch(getCasos());
+          // console.log("id", id);
+          navigate("/insolvencia");
+        }
       } else {
-        
         navigate("/casos");
       }
       // window.alert("Caso creado con éxito");
@@ -142,71 +140,79 @@ function CrearCaso() {
               </option>
             ))}
           </select>
-          <label htmlFor="numerocedula" className="labelcrearcaso">
-            Valor pretensiones:
-          </label>
-          <input
-            type="number"
-            className="cajacrearcaso"
-            name="valor_pretensiones"
-            id="valorpretensiones"
-            value={userDataRegistro.valor_pretensiones}
-            onChange={handleChangeRegistro}
-          />
+          {userDataRegistro.TipoDeCasoid === 1 && (
+            <>
+              <label htmlFor="numerocedula" className="labelcrearcaso">
+                Valor pretensiones:
+              </label>
+              <input
+                type="number"
+                className="cajacrearcaso"
+                name="valor_pretensiones"
+                id="valorpretensiones"
+                value={userDataRegistro.valor_pretensiones}
+                onChange={handleChangeRegistro}
+              />
+            </>
+          )}
         </div>
+        {userDataRegistro.TipoDeCasoid === 1 && (
+          <>
+            <div className="inputcrearcaso">
+              <label htmlFor="fecha" className="labelcrearcaso">
+                Fecha inicio:
+              </label>
+              <input
+                className="cajacrearcaso"
+                name="fecha"
+                id="fecha"
+                type="date"
+                value={userDataRegistro.fecha}
+                onChange={handleChangeRegistro}
+              />
+              <label htmlFor="honorarios" className="labelcrearcaso">
+                Honorarios:
+              </label>
+              <input
+                type="number"
+                className="cajacrearcaso"
+                name="honorarios"
+                id="honorarios"
+                value={userDataRegistro.honorarios}
+                onChange={handleChangeRegistro}
+              />
+            </div>
 
-        <div className="inputcrearcaso">
-          <label htmlFor="fecha" className="labelcrearcaso">
-            Fecha inicio:
-          </label>
-          <input
-            className="cajacrearcaso"
-            name="fecha"
-            id="fecha"
-            type="date"
-            value={userDataRegistro.fecha}
-            onChange={handleChangeRegistro}
-          />
-          <label htmlFor="honorarios" className="labelcrearcaso">
-            Honorarios:
-          </label>
-          <input
-            type="number"
-            className="cajacrearcaso"
-            name="honorarios"
-            id="honorarios"
-            value={userDataRegistro.honorarios}
-            onChange={handleChangeRegistro}
-          />
-        </div>
+            <div className="inputcrearcaso">
+              <label htmlFor="fechaFin" className="labelcrearcaso">
+                Fecha final:
+              </label>
+              <input
+                className="cajacrearcaso"
+                name="fechaFin"
+                id="fechaFin"
+                type="date"
+                value={userDataRegistro.fechaFin}
+                onChange={handleChangeRegistro}
+              />
+              <label htmlFor="tipodeusuario" className="labelcrearcaso">
+                Forma de pago:
+              </label>
+              <select
+                className="cajacrearcaso"
+                name="forma_de_pago"
+                id="idusuario"
+                onChange={handleChangeRegistro}
+                value={userDataRegistro.forma_de_pago}
+              >
+                <option value="">Elija una opcion</option>
+                <option value="Contado">Contado</option>
+                <option value="Crédito">Crédito</option>
+              </select>
+            </div>
+          </>
+        )}
 
-        <div className="inputcrearcaso">
-          <label htmlFor="fechaFin" className="labelcrearcaso">
-            Fecha final:
-          </label>
-          <input
-            className="cajacrearcaso"
-            name="fechaFin"
-            id="fechaFin"
-            type="date"
-            value={userDataRegistro.fechaFin}
-            onChange={handleChangeRegistro}
-          />
-          <label htmlFor="tipodeusuario" className="labelcrearcaso">
-            Forma de pago:
-          </label>
-          <select
-            className="cajacrearcaso"
-            name="forma_de_pago"
-            id="idusuario"
-            onChange={handleChangeRegistro}
-            value={userDataRegistro.forma_de_pago}
-          >
-            <option value="">Elija una opcion</option>
-            <option value="Contado">Contado</option>
-            <option value="Crédito">Crédito</option>
-          </select>
-        </div>
         <div className="inputcrearcaso">
           <label htmlFor="Abogado" className="labelcrearcaso">
             Selecciona el abogado:
@@ -230,18 +236,21 @@ function CrearCaso() {
               </option>
             ))}
           </select>
-
-          <label htmlFor="cuotas" className="labelcrearcaso">
-            Numero de cuotas:
-          </label>
-          <input
-            type="number"
-            className="cajacrearcaso"
-            name="cuotas"
-            id="cuotas"
-            value={userDataRegistro.cuotas}
-            onChange={handleChangeRegistro}
-          />
+          {userDataRegistro.TipoDeCasoid === 1 && (
+            <>
+              <label htmlFor="cuotas" className="labelcrearcaso">
+                Numero de cuotas:
+              </label>
+              <input
+                type="number"
+                className="cajacrearcaso"
+                name="cuotas"
+                id="cuotas"
+                value={userDataRegistro.cuotas}
+                onChange={handleChangeRegistro}
+              />
+            </>
+          )}
         </div>
 
         <div className="inputcrearcaso">
@@ -267,17 +276,21 @@ function CrearCaso() {
               </option>
             ))}
           </select>
-          <label htmlFor="radicado" className="labelcrearcaso">
-            N° Radicado juzgado:
-          </label>
-          <input
-            type="number"
-            className="cajacrearcaso"
-            name="radicado"
-            id="radicado"
-            value={userDataRegistro.radicado}
-            onChange={handleChangeRegistro}
-          />
+          {userDataRegistro.TipoDeCasoid === 1 && (
+            <>
+              <label htmlFor="radicado" className="labelcrearcaso">
+                N° Radicado juzgado:
+              </label>
+              <input
+                type="number"
+                className="cajacrearcaso"
+                name="radicado"
+                id="radicado"
+                value={userDataRegistro.radicado}
+                onChange={handleChangeRegistro}
+              />
+            </>
+          )}
         </div>
 
         <div className="inputcrearcaso">
@@ -295,6 +308,8 @@ function CrearCaso() {
             rows="8"
             className="textareacrear"
           ></textarea>
+          {userDataRegistro.TipoDeCasoid === 1 && (
+            <>
           <label htmlFor="juzgado" className="labelcrearcaso">
             Nombre juzgado:
           </label>
@@ -306,6 +321,8 @@ function CrearCaso() {
             value={userDataRegistro.juzgado}
             onChange={handleChangeRegistro}
           />
+          </>
+          )}
         </div>
 
         <div className="botonescrearcaso">

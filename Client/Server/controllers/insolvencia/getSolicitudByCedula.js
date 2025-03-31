@@ -21,7 +21,7 @@ const getSolicitudCedula = async (cedula) => {
   console.log(cedula)
 
   const cliente = await Cliente.findOne({
-    where: { cedulaCliente },
+    where: { cedulaCliente:cedula },
     include: [
         {
             model: Solicitud,
@@ -40,7 +40,7 @@ const getSolicitudCedula = async (cedula) => {
         }
     ]
 });
-
+ console.log('Cliente encontrado obtner solicitud:', cliente)
   if (!cliente) throw Error("Cliente no existe");
   return cliente;
 };

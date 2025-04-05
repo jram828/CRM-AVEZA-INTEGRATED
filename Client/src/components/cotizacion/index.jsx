@@ -33,7 +33,41 @@ const Cotizacion = () => {
     totalDeudas: "",
     totalVotoClase: "",
     totalDerechoVoto: "",
+    'Primera Clase': {
+      tasa: "", 
+      cuotas: "",
+      valorCuota: "",
+    },
+    'Segunda Clase': {
+      tasa: "", 
+      cuotas: "",
+      valorCuota: "",
+    },  'Tercera Clase': {
+      tasa: "", 
+      cuotas: "",
+      valorCuota: "",
+    },
+    'Cuarta Clase': {
+      tasa: "", 
+      cuotas: "",
+      valorCuota: "",
+    },  'Quinta Clase': {
+      tasa: "", 
+      cuotas: "",
+      valorCuota: "",
+    },
+
+    tasa:"",
+    cuotas:"",    
+    valorCuota:"",
   };
+
+  const initHonorarios = {
+    inicial: "",
+    cuotasHonorarios: "",
+    valorHonorarios: "",
+  };
+
   const initPropuesta = {
     Clasificacion: "",
     tasaIntereses: "",
@@ -94,7 +128,18 @@ const Cotizacion = () => {
   const [listaAcreedores, setListaAcreedores] = useState(listaAcreedoresObj);
   const [editingField, setEditingField] = useState(null);
   const [posibleCuota, setPosibleCuota] = useState(initPosibleCuota);
-  const [resultadosCotizacion, setResultadosCotizacion] = useState(initResultadosCotizacion);
+  const [resultadosCotizacion, setResultadosCotizacion] = useState(
+    initResultadosCotizacion
+  );
+  const [honorarios, setHonorarios] = useState(initHonorarios);
+  const [formData, setFormData] = useState(
+    resultadosCotizacion.totalesPorTipo && Object.keys(resultadosCotizacion.totalesPorTipo).reduce((acc, tipo) => {
+      acc[tipo] = { tasa: '', cuotas: '', valorCuota: '' };
+      return acc;
+    }, {})
+  );
+
+ console.log("FormData:", formData);
 
   const addDeuda = (deuda) => {
     setDeudas([...deudas, deuda]);
@@ -109,43 +154,9 @@ const Cotizacion = () => {
     setPropuestas([...propuestas, initPropuesta]);
   };
 
-  useEffect(() => {
-    // Cálculo de totales por tipo de deuda
-const totalesPorTipo = deudas.reduce((acc, deuda) => {
-  acc[deuda.tipoDeuda] = (acc[deuda.tipoDeuda] || 0) + deuda.capital;
-  return acc;
-}, {});
- console.log("Totales por tipo:", totalesPorTipo);  
-// Cálculo del total general
-const totalDeudas = deudas.reduce((acc, deuda) => acc + deuda.capital, 0);
-console.log("Total de deudas:", totalDeudas); 
-// Cálculo de porcentajes 
+  // useEffect(() => {
 
-const resultados = deudas.map(deuda => {
-  const derechoVoto = (deuda.capital / totalDeudas) * 100;
-  const votoClase = (deuda.capital / totalesPorTipo[deuda.tipoDeuda]) * 100;
-  
-
-  return {
-    ...deuda,
-    derechoVoto,
-    votoClase,
-  };
-});
-
-console.log("Resultados:", resultados);
-// Suma de porcentajes
-const sumaDerechoVoto = resultados.reduce((acc, deuda) => acc + deuda.derechoVoto, 0);
-const sumaVotoClase = resultados.reduce((acc, deuda) => acc + deuda.votoClase, 0);
-
-console.log("Suma derecho de voto:", sumaDerechoVoto);
-console.log("Suma voto clase:", sumaVotoClase);
-
-// Actualizar el estado con los resultados    
-setResultadosCotizacion({...resultadosCotizacion, totalDeudas, totalDerechoVoto: sumaDerechoVoto, totalVotoClase: sumaVotoClase});
-
-
-  }, [deudas]);
+  // }, [deudas]);
 
   console.log("Deudas:", deudas);
   console.log("Datos deuda:", datosDeuda);
@@ -156,8 +167,89 @@ setResultadosCotizacion({...resultadosCotizacion, totalDeudas, totalDerechoVoto:
   const handleDeudaChange = (index, event) => {
     const { name, value } = event.target;
     const updatedDeudas = [...deudas];
-    updatedDeudas[index][name] = Number(value);
+    updatedDeudas[index][name] = value;
     setDeudas(updatedDeudas);
+
+    if (name === "capital") {
+      // Cálculo de totales por tipo de deuda
+      const totalesPorTipo = deudas.reduce((acc, deuda) => {
+        acc[deuda.tipoDeuda] =
+          (acc[deuda.tipoDeuda] || 0) + parseFloat(deuda.capital);
+        return acc;
+      }, {});
+      console.log("Totales por tipo:", totalesPorTipo);
+
+      // Cálculo del total general
+      const totalDeudas = deudas.reduce(
+        (acc, deuda) => acc + parseFloat(deuda.capital),
+        0
+      );
+      console.log("Total de deudas:", totalDeudas);
+      // Cálculo de porcentajes
+
+      // const derechoVotoPorTipo = deudas.reduce((acc, deuda) => {
+      //   acc[deuda.tipoDeuda] =
+      //     (acc[deuda.tipoDeuda] || 0) + deuda.derechoVoto;
+      //   return acc;
+      // }, {});
+      // console.log("Derecho voto por tipo:", derechoVotoPorTipo);
+
+      let derechoVotoPorTipo = {};
+
+      // Calcular los porcentajes usando forEach
+      Object.entries(totalesPorTipo).forEach(([key, valor]) => {
+        derechoVotoPorTipo[key] = ((valor / totalDeudas) * 100).toFixed(2);
+      });
+
+      console.log("Derecho voto por tipo:", derechoVotoPorTipo);
+
+      const votoClasePorTipo = deudas.reduce((acc, deuda) => {
+        acc[deuda.tipoDeuda] =
+          (acc[deuda.tipoDeuda] || 0) + parseFloat(deuda.votoClase);
+        return acc;
+      }, {});
+      console.log("Voto clase por tipo:", votoClasePorTipo);
+
+      const resultados = deudas.map((deuda) => {
+        const derechoVoto =
+          Math.floor((parseFloat(deuda.capital) / totalDeudas) * 100 * 100) /
+          100;
+        const votoClase =
+          Math.floor(
+            (parseFloat(deuda.capital) / totalesPorTipo[deuda.tipoDeuda]) *
+              100 *
+              100
+          ) / 100;
+
+        return {
+          ...deuda,
+          derechoVoto,
+          votoClase,
+        };
+      });
+      setDeudas(resultados);
+      console.log("Resultados:", resultados);
+      // Suma de porcentajes
+      const sumaDerechoVoto = resultados.reduce(
+        (acc, deuda) => acc + deuda.derechoVoto,
+        0
+      );
+
+      console.log("Suma derecho de voto:", sumaDerechoVoto);
+
+      // Actualizar el estado con los resultados
+      setResultadosCotizacion({
+        ...resultadosCotizacion,
+        totalDeudas,
+        totalDerechoVoto: sumaDerechoVoto,
+        derechoVotoPorTipo,
+        totalesPorTipo,
+      });
+    }
+ console.log("Resultados cotizacion:", resultadosCotizacion);
+    console.log("index:", index);
+    console.log("name:", name);
+    console.log("value:", value);
     setEditingField(name);
     setAcreedorFilt(initAcreedorFilt);
   };
@@ -338,6 +430,30 @@ setResultadosCotizacion({...resultadosCotizacion, totalDeudas, totalDerechoVoto:
     }
   };
 
+  const handleCuotasChange = (tipo, field, value) => {
+    const updatedData = { ...resultadosCotizacion };
+    console.log("Updated data:", updatedData);
+    console.log("Tipo:", tipo); 
+    console.log("Field:", field);
+    console.log("Value:", value);
+    updatedData[tipo][field] = value;
+
+    // Calcular el valor de la cuota
+    if (field === 'tasa' || field === 'cuotas') {
+      const tasa = parseFloat(updatedData[tipo].tasa) || 0;
+      const cuotas = parseInt(updatedData[tipo].cuotas, 10) || 0;
+      const totalPorTipo = resultadosCotizacion.totalesPorTipo[tipo];
+      console.log("Total por tipo:", totalPorTipo);
+      console.log("Tasa:", tasa); 
+      console.log("Cuotas:", cuotas);
+      updatedData[tipo].valorCuota = cuotas > 0 ? Math.round(totalPorTipo * (tasa/100)) / (1 - Math.pow(1 + (tasa/100), -cuotas)) : '';
+    }
+     
+   
+    setResultadosCotizacion(updatedData);
+  };
+
+
   return (
     <div className="contenedorcotizacion">
       <div className="encabezado">
@@ -468,22 +584,128 @@ setResultadosCotizacion({...resultadosCotizacion, totalDeudas, totalDerechoVoto:
                   </div>
                 </div>
                 <div className="resumenresultados">
-                  {/* <div className="infoseccion">
-                    <div className="encabezadodeudas">
-                      <h6 className="titulocotizacion">Deudas</h6>
+                  <div className="infoseccioncotizacion">
+                    <div className="encabezadoingresos">
+                      <h6 className="titulocotizacion">Honorarios</h6>
                     </div>
-                    <div className="encabezadopropuesta">
-                      <h6 className="titulocotizacion">Tipo de Deuda</h6>
-                      <h6 className="titulocotizacion">Subtotal Capital</h6>
-                      <h6 className="titulocotizacion"> Subtotal Derecho de voto</h6>
-                      <h6 className="titulocotizacion">
-                         Subtotal Derecho de voto por clase
-                      </h6>
+
+                    <div className="infodeudascotizacion">
+                      <div className="infodetailingresos">
+                        <h6 className="titulocotizacion">Valor</h6>
+                        <input
+                          type="number"
+                          className="cajaingresos"
+                          name="valorHonorarios"
+                          id="valorHonorarios"
+                          onChange={(event) => handleIngresoChange(event)}
+                          value={
+                            editingField === "valorHonorarios"
+                              ? honorarios.valorHonorarios
+                              : formatNumero(honorarios.valorHonorarios)
+                          }
+                          onKeyDown={handleKeyPress}
+                        />
+                      </div>
                     </div>
-                  </div> */}
+
+                    <div className="infodeudascotizacion">
+                      <div className="infodetailingresos">
+                        <h6 className="titulocotizacion">
+                          Porcentaje inicial:
+                        </h6>
+                        <input
+                          type="number"
+                          className="cajaingresos"
+                          name="inicial"
+                          id="inicial"
+                          onChange={(event) => handleIngresoChange(event)}
+                          value={
+                            editingField === "inicial"
+                              ? honorarios.inicial
+                              : formatNumero(honorarios.inicial)
+                          }
+                          onKeyDown={handleKeyPress}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="infodeudascotizacion">
+                      <div className="infodetailingresos">
+                        <h6 className="titulocotizacion">Numero de cuotas:</h6>
+                        <input
+                          type="number"
+                          className="cajaingresos"
+                          name="cuotasHonorarios"
+                          id="cuotasHonorarios"
+                          onChange={(event) => handleIngresoChange(event)}
+                          value={
+                            editingField === "cuotasHonorarios"
+                              ? honorarios.cuotasHonorarios
+                              : formatNumero(honorarios.cuotasHonorarios)
+                          }
+                          onKeyDown={handleKeyPress}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <div className="formingresos">
+              <div className="infoseccion">
+                <div className="encabezadodeudas">
+                  <h6 className="titulocotizacion">Propuesta de pago</h6>
+                </div>
+                <div className="encabezadopropuesta">
+                <h6 className="titulocotizacion">Clasificación del crédito</h6>
+                  <h6 className="titulocotizacion">Subtotal clase</h6>
+                  <h6 className="titulocotizacion">Derecho de voto</h6>
+                  <h6 className="titulocotizacion">Tasa de interés</h6>
+                  <h6 className="titulocotizacion">Número de cuotas</h6>
+                  <h6 className="titulocotizacion">Valor de la cuota</h6>
+                </div>
+                {resultadosCotizacion.totalesPorTipo && Object.entries(resultadosCotizacion.totalesPorTipo).map((tipo, valor) => (
+                  <div className="infodeudascotizacion" key={tipo}>
+                    <h6 className="titulocotizacion">{tipo[0]}</h6>
+                    <input
+            type="text"
+            value={resultadosCotizacion.totalesPorTipo[tipo[0]]}
+            className="inputDerechoVoto"
+            readOnly
+          />
+                    <input
+            type="text"
+            value={resultadosCotizacion.derechoVotoPorTipo[tipo[0]]}
+            className="inputDerechoVoto"
+            readOnly
+          />
+          <input
+            type="number"
+            placeholder="Tasa (%)"
+            value={resultadosCotizacion&&resultadosCotizacion[tipo[0]].tasa||''}
+            onChange={(e) => handleCuotasChange(tipo[0], 'tasa', e.target.value)}
+            className="inputTasa"
+          />
+          <input
+            type="number"
+            placeholder="Cuotas"
+            value={resultadosCotizacion[tipo[0]].cuotas}
+            onChange={(e) => handleCuotasChange(tipo[0], 'cuotas', e.target.value)}
+            className="inputCuotas"
+          />
+          <input
+            type="text"
+            placeholder="Valor Cuota"
+            value={formatNumero(Math.round(resultadosCotizacion[tipo[0]].valorCuota))}
+            readOnly
+            className="inputValorCuota"
+          />
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="formingresos">
               <div className="infoseccion">
                 <div className="encabezadodeudas">
@@ -542,7 +764,7 @@ setResultadosCotizacion({...resultadosCotizacion, totalDeudas, totalDerechoVoto:
                       className="cajadeudas"
                       name="capital"
                       id={`capital-${index}`}
-                      value={Number(deuda.capital)}
+                      value={Number.parseFloat(deuda.capital)}
                       onChange={(event) => handleDeudaChange(index, event)}
                     />
                     <input
@@ -550,7 +772,7 @@ setResultadosCotizacion({...resultadosCotizacion, totalDeudas, totalDerechoVoto:
                       className="cajadeudas"
                       name="derechoVoto"
                       id={`derechoVoto-${index}`}
-                      value={deuda.derechoVoto}
+                      value={Number.parseFloat(deuda.derechoVoto).toFixed(2)}
                       onChange={(event) => handleDeudaChange(index, event)}
                     />
                     <input
@@ -558,7 +780,7 @@ setResultadosCotizacion({...resultadosCotizacion, totalDeudas, totalDerechoVoto:
                       className="cajadeudas"
                       name="votoClase"
                       id={`votoClase-${index}`}
-                      value={deuda.votoClase}
+                      value={Number.parseFloat(deuda.votoClase).toFixed(2)}
                       onChange={(event) => handleDeudaChange(index, event)}
                     />
                   </div>
@@ -567,80 +789,6 @@ setResultadosCotizacion({...resultadosCotizacion, totalDeudas, totalDerechoVoto:
                   Agregar deuda
                 </Button>
               </div>
-            </div>
-            <div className="formpropuesta">
-              <div className="encabezadopropuesta">
-                <h6 className="titulocotizacion">Propuesta de pago</h6>
-              </div>
-              <div className="encabezadopropuesta">
-                <h6 className="titulocotizacion">Clasificación del crédito</h6>
-                <h6 className="titulocotizacion">Subtotal clase</h6>
-                <h6 className="titulocotizacion">Tasa de interés</h6>
-                <h6 className="titulocotizacion">Número de cuotas </h6>
-                <h6 className="titulocotizacion">Valor de la cuota</h6>
-              </div>
-
-              {propuestas.map((propuesta, index) => (
-                <div key={index} className="infodeudascotizacion">
-                  <select
-                    name="Clasificacion"
-                    id="Clasificacion"
-                    className="cajaingresos"
-                    onChange={(event) => handlePropuestaChange(index, event)}
-                    value={propuesta.Clasificacion}
-                  >
-                    <option value="" className="cajaingresos">
-                      Seleccione tipo de deuda
-                    </option>
-                    <option value="Primera Clase" className="cajaingresos">
-                      Primera Clase
-                    </option>
-                    <option value="Segunda Clase" className="cajaingresos">
-                      Segunda Clase
-                    </option>
-                    <option value="Tercera Clase" className="cajaingresos">
-                      Tercera Clase
-                    </option>
-                    <option value="Cuarta Clase" className="cajaingresos">
-                      Cuarta Clase
-                    </option>
-                    <option value="Quinta Clase" className="cajaingresos">
-                      Quinta Clase
-                    </option>
-                  </select>
-                  <input
-                    type="number"
-                    className="cajadeudas"
-                    name="subtotal"
-                    value={propuesta.subtotal}
-                    onChange={(event) => handlePropuestaChange(index, event)}
-                  />
-                  <input
-                    type="number"
-                    className="cajadeudas"
-                    name="tasaIntereses"
-                    value={propuesta.tasaIntereses}
-                    onChange={(event) => handlePropuestaChange(index, event)}
-                  />
-                  <input
-                    type="number"
-                    className="cajadeudas"
-                    name="numeroCuotas"
-                    value={propuesta.numeroCuotas}
-                    onChange={(event) => handlePropuestaChange(index, event)}
-                  />
-                  <input
-                    type="number"
-                    className="cajadeudas"
-                    name="valorCuota"
-                    value={propuesta.valorCuota}
-                    onChange={(event) => handlePropuestaChange(index, event)}
-                  />
-                </div>
-              ))}
-              <Button onClick={handleAddPropuesta} value="Guardarpropuesta">
-                Agregar propuesta
-              </Button>
             </div>
           </div>
         </div>

@@ -58,6 +58,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .resultadostodos {
@@ -85,7 +86,7 @@
 }
 
 .cajadeudas {
-  width: 50%;
+  width: 110px;
   padding: 2px;
   margin: 10px;
   border: 1px solid black; /* Color del borde */
@@ -98,8 +99,8 @@
 }
 
 .titulocotizacion {
-  width: 170px;
-font-size: large;
+  width: 130px;
+font-size: medium;
 font-weight: bold;
   margin: 10px;
   background-color: transparent; /* Fondo transparente */
@@ -110,7 +111,7 @@ font-weight: bold;
 }
 
 .cajaingresos {
-  width: 50%;
+  width: 110px;
   padding: 2px;
   margin: 10px;
   border: 1px solid black; /* Color del borde */
@@ -124,7 +125,7 @@ font-weight: bold;
 
 .labeldetaildeudas {
   height: 25px;
-  width: 250px;
+  width: 240px;
   font-size: 100;
   padding-left: 15px;
   font-family: Arial, Helvetica, sans-serif;
@@ -135,7 +136,7 @@ font-weight: bold;
 
 .labelingresos {
   height: 25px;
-  width: 250px;
+  width: 240px;
   font-size: 100;
   padding-left: 15px;
   font-family: Arial, Helvetica, sans-serif;
@@ -192,12 +193,17 @@ font-weight: bold;
   display: flex;
   flex-direction:row;
   align-items: center;
+  width: 95%;
+  margin: 10px;
+  justify-content: space-around;
 }
 
 .formingresos {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width:95%;  
+  margin: 10px;
 }
 
 .formbienes {
@@ -218,7 +224,7 @@ font-weight: bold;
 }
 .resumenresultados {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
 }
 

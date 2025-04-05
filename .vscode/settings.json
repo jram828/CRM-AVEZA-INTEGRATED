@@ -9,7 +9,8 @@
         "SMS Notification",
         "Pagos",
         "Google Drive",
-        "Cotizacion"
+        "Cotizacion",
+        "Casos"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

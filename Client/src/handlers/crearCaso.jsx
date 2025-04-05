@@ -17,6 +17,19 @@ export async function postCaso(data) {
   } = data;
   console.log("data del post", data);
 
+  const fechaValida = new Date(fecha);
+ var fechaVer; 
+    // Comprobar si la fecha es inválida
+    if (isNaN(fechaValida.getTime())) {
+        // Si no es válida, asignar la fecha actual
+        const hoy = new Date();
+        fechaVer = hoy.toISOString()//.split('T')[0]; // Retornar solo la fecha en formato YYYY-MM-DD
+    } else {
+        // Si la fecha es válida, retornar la fecha existente
+       fechaVer = fechaValida.toISOString()//.split('T')[0];
+    }
+
+
   const URL = "/casos";
   try {
     await axios.post(URL, {
@@ -24,7 +37,7 @@ export async function postCaso(data) {
       juzgado: `${juzgado}`,
       cedulaCliente: `${cedulaCliente}`,
       cedulaAbogado: `${cedulaAbogado}`,
-      fecha: `${fecha}`,
+      fecha: `${fechaVer}`,
       fechaFin: `${fechaFin}`,
       descripcion: `${descripcion}`,
       TipoDeCasoid: `${TipoDeCasoid}`,

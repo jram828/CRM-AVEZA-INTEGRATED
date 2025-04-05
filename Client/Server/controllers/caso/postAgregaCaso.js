@@ -77,7 +77,30 @@ const createCaso = async (
       mensaje: "Tipo de Caso no encontrado o Tipo de Caso eliminado",
     });
   const fechaUTC = moment(fecha).utc().toDate();
+  
+  var pretensiones;
 
+  if (typeof(valor_pretensiones) === "number") {
+    pretensiones = valor_pretensiones;
+  } else {
+    pretensiones = 0;
+  }
+
+  var vhonorarios;
+
+  if (typeof(honorarios) === "number") {
+    vhonorarios = honorarios;
+  } else {
+    vhonorarios = 0;
+  }
+
+  var vcuotas;
+
+  if (typeof(cuotas) === "number") {
+    vcuotas = cuotas;
+  } else {
+    vcuotas = 0;
+  }
   console.log("Radicado controller:", radicado);
   const newCaso = await Caso.create({
     radicado: radicado,
@@ -87,10 +110,10 @@ const createCaso = async (
     TipoDeCasoTipoDeCasoid: TipoDeCasoid,
     ClienteCedulaCliente: cedulaCliente,
     AbogadoCedulaAbogado: cedulaAbogado,
-    honorarios: honorarios,
+    honorarios: vhonorarios,
     forma_de_pago: forma_de_pago,
-    valor_pretensiones: valor_pretensiones,
-    cuotas: cuotas,
+    valor_pretensiones: pretensiones,
+    cuotas: vcuotas,
   });
 
   //  newAbogado.addCliente(clientes);

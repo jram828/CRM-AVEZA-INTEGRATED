@@ -110,33 +110,33 @@ const deleteCasoHandler = async (req, res) => {
 
 const postActualizaCaso = async (req, res) => {
   const {
-    cedulanew,
-    nombres,
-    apellidos,
-    email,
-    celular,
-    direccion,
-    ciudad,
-    ciudad_anterior,
-    comentarios,
-    cedula_anterior,
+  etapa,
+  idCaso,
+  valor_pretensiones,
+  honorarios,
+  aceptacion_cotizacion,
+  tiene_contrato,
+  forma_de_pago,
+  descripcion,
+  radicado,
+  juzgado,
+  cuotas
   } = req.body;
 
-  const cedula = cedulanew;
 
   try {
-    console.log("Cedula anterior handler:", cedula_anterior);
     const response = await actualizaCaso(
-      cedula,
-      nombres,
-      apellidos,
-      email,
-      celular,
-      direccion,
-      ciudad,
-      ciudad_anterior,
-      comentarios,
-      cedula_anterior
+      etapa,
+      idCaso,
+      parseInt(valor_pretensiones),
+      parseInt(honorarios),
+      aceptacion_cotizacion,
+      tiene_contrato,
+      forma_de_pago,
+      descripcion,
+      radicado,
+      juzgado,
+      parseInt(cuotas)
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el caso");

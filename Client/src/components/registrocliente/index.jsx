@@ -4,40 +4,61 @@ import "./registrocliente.css";
 import { Button } from "../Mystyles";
 import { useNavigate } from "react-router-dom";
 import { registroCliente } from "../../handlers/registroCliente";
+import { codigoCiudades } from "../../utils/codigoCiudades.js"; // Asegúrate de que la ruta sea correcta
 
 const RegistroCliente = () => {
-    const [userDataRegistro, setUserDataRegistro] = useState({
-      email: "",
-      nombres: "",
-      apellidos: "",
-      cedulaCliente: "",
-      celular: "",
-      direccion: "",
-      nombre_ciudad: "",
-      tipo_usuario: "3",
-      tipo_de_caso: "",
-      forma_de_pago: "",
-      honorarios: "",
-      cuotas:"",
-      // password: "",
-      comentarios: "",
-      valor_pretensiones:""
-      
-    });
+  const [userDataRegistro, setUserDataRegistro] = useState({
+    email: "",
+    nombres: "",
+    apellidos: "",
+    cedulaCliente: "",
+    celular: "",
+    direccion: "",
+    nombre_ciudad: "",
+    tipo_usuario: "3",
+    tipo_de_caso: "",
+    forma_de_pago: "",
+    honorarios: "",
+    cuotas: "",
+    // password: "",
+    comentarios: "",
+    valor_pretensiones: "",
+  });
+
+  const initCiudadFilt = {
+    ciudades: [],
+  };
+
+  const [ciudadFilt, setCiudadFilt] = useState(initCiudadFilt);
   const navigate = useNavigate();
 
-    const handleChangeRegistro = (e) => {
-      setUserDataRegistro({
-        ...userDataRegistro,
-        [e.target.name]: e.target.value, // Sintaxis ES6 para actualizar la key correspondiente
-      });
-    };
+  const handleChangeRegistro = (e) => {
+    setUserDataRegistro({
+      ...userDataRegistro,
+      [e.target.name]: e.target.value, // Sintaxis ES6 para actualizar la key correspondiente
+    });
+  };
 
-    const submitHandlerRegistro = (e) => {
-      e.preventDefault();
-      registroCliente(userDataRegistro);
-      navigate('/clientes');
-    };
+  const submitHandlerRegistro = (e) => {
+    e.preventDefault();
+    registroCliente(userDataRegistro);
+    navigate("/clientes");
+  };
+
+  const handleCiudadChange = (e) => {
+    e.preventDefault();
+
+    setUserDataRegistro({
+      ...userDataRegistro,
+      [e.target.name]: e.target.value,
+    });
+
+    const foundCiudad = codigoCiudades.filter((ciudad) =>
+      ciudad.nombre_ciudad.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    console.log("Ciudades encontradas:", foundCiudad);
+    setCiudadFilt(foundCiudad);
+  };
   return (
     <div className="contenedorregistro">
       <form className="datos" method="post" onSubmit={submitHandlerRegistro}>
@@ -135,8 +156,30 @@ const RegistroCliente = () => {
             id="ciudad"
             className="cajaregistrocliente"
             value={userDataRegistro.nombre_ciudad}
-            onChange={handleChangeRegistro}
+            onChange={handleCiudadChange}
+            placeholder="Buscar ciudad..."
           />
+
+          <select
+            name="nombre_ciudad"
+            id="ciudad"
+            className="cajaregistrocliente"
+            onChange={(event) => handleChangeRegistro(event)}
+          >
+            <option value="" className="opcionescuidades">
+              Ciudades encontradas
+            </option>
+            {ciudadFilt.length > 0 &&
+              ciudadFilt.map((ciudad) => (
+                <option
+                  key={ciudad.codigo_ciudad}
+                  value={ciudad.nombre_ciudad}
+                  className="opcionesciudades"
+                >
+                  {ciudad.nombre_ciudad}
+                </option>
+              ))}
+          </select>
         </div>
         <div className="comentarios">
           <br />

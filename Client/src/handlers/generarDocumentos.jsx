@@ -7,6 +7,7 @@ export const generarDocumentos = (
   valor_pretensiones_letras,
   honorarios_letras
 ) => {
+  console.log("caso generar documentos", caso);
   const docs = document.getElementById("doc");
 
   const reader = new FileReader();
@@ -39,7 +40,7 @@ export const generarDocumentos = (
       cedula: Number(caso.ClienteCedulaCliente).toLocaleString(),
       celular: caso.Cliente.celular,
       correo: caso.Cliente.email,
-      // ciudad: caso.Ciudads[0].nombre_ciudad,
+      ciudad: caso.Cliente.Ciudads[0].nombre_ciudad,
       direccion: caso.Cliente.direccion,
       pretensiones: Number(caso.valor_pretensiones).toLocaleString(),
       pretensiones_letras: valor_pretensiones_letras.toUpperCase(),

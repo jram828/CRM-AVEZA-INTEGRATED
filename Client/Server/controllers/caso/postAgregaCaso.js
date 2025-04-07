@@ -103,7 +103,6 @@ const createCaso = async (
   }
   console.log("Radicado controller:", radicado);
   const newCaso = await Caso.create({
-    radicado: radicado,
     juzgado: juzgado,
     fecha: fechaUTC,
     descripcion: descripcion,
@@ -113,7 +112,8 @@ const createCaso = async (
     honorarios: vhonorarios,
     forma_de_pago: forma_de_pago,
     valor_pretensiones: pretensiones,
-    cuotas: vcuotas,
+    cuotas: vcuotas,radicado: radicado,
+    
   });
 
   //  newAbogado.addCliente(clientes);

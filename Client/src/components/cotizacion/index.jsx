@@ -33,33 +33,37 @@ const Cotizacion = () => {
     totalDeudas: "",
     totalVotoClase: "",
     totalDerechoVoto: "",
-    'Primera Clase': {
-      tasa: "", 
+    "Primera Clase": {
+      tasa: "",
       cuotas: "",
       valorCuota: "",
     },
-    'Segunda Clase': {
-      tasa: "", 
-      cuotas: "",
-      valorCuota: "",
-    },  'Tercera Clase': {
-      tasa: "", 
+    "Segunda Clase": {
+      tasa: "",
       cuotas: "",
       valorCuota: "",
     },
-    'Cuarta Clase': {
-      tasa: "", 
+    "Tercera Clase": {
+      tasa: "",
       cuotas: "",
       valorCuota: "",
-    },  'Quinta Clase': {
-      tasa: "", 
+    },
+    "Cuarta Clase": {
+      tasa: "",
+      cuotas: "",
+      valorCuota: "",
+    },
+    "Quinta Clase": {
+      tasa: "",
       cuotas: "",
       valorCuota: "",
     },
 
-    tasa:"",
-    cuotas:"",    
-    valorCuota:"",
+    tasa: "",
+    cuotas: "",
+    valorCuota: "",
+    sumaCuotas: "",
+    sumaValorCuota: "",
   };
 
   const initHonorarios = {
@@ -133,22 +137,14 @@ const Cotizacion = () => {
   );
   const [honorarios, setHonorarios] = useState(initHonorarios);
   const [formData, setFormData] = useState(
-    resultadosCotizacion.totalesPorTipo && Object.keys(resultadosCotizacion.totalesPorTipo).reduce((acc, tipo) => {
-      acc[tipo] = { tasa: '', cuotas: '', valorCuota: '' };
-      return acc;
-    }, {})
+    resultadosCotizacion.totalesPorTipo &&
+      Object.keys(resultadosCotizacion.totalesPorTipo).reduce((acc, tipo) => {
+        acc[tipo] = { tasa: "", cuotas: "", valorCuota: "" };
+        return acc;
+      }, {})
   );
 
- console.log("FormData:", formData);
-
-  const addDeuda = (deuda) => {
-    setDeudas([...deudas, deuda]);
-    setDatosDeuda(initDeuda);
-  };
-
-  const addAcreedor = (acreedor) => {
-    setListaAcreedores([...listaAcreedores, acreedor]);
-  };
+  console.log("FormData:", formData);
 
   const addPropuesta = () => {
     setPropuestas([...propuestas, initPropuesta]);
@@ -180,19 +176,11 @@ const Cotizacion = () => {
       console.log("Totales por tipo:", totalesPorTipo);
 
       // Cálculo del total general
-      const totalDeudas = deudas.reduce(
+      let totalDeudas = deudas.reduce(
         (acc, deuda) => acc + parseFloat(deuda.capital),
         0
       );
       console.log("Total de deudas:", totalDeudas);
-      // Cálculo de porcentajes
-
-      // const derechoVotoPorTipo = deudas.reduce((acc, deuda) => {
-      //   acc[deuda.tipoDeuda] =
-      //     (acc[deuda.tipoDeuda] || 0) + deuda.derechoVoto;
-      //   return acc;
-      // }, {});
-      // console.log("Derecho voto por tipo:", derechoVotoPorTipo);
 
       let derechoVotoPorTipo = {};
 
@@ -236,7 +224,18 @@ const Cotizacion = () => {
       );
 
       console.log("Suma derecho de voto:", sumaDerechoVoto);
+      let vHonorarios;
+      console.log("Total deudas para honorarios:", resultadosCotizacion.totalDeudas);
+      if(0.1 * resultadosCotizacion.totalDeudas > 50000000){
+        vHonorarios = 50000000;
+        setHonorarios({...honorarios, valorHonorarios: vHonorarios});
+      } else {
+        vHonorarios = 0.1 * resultadosCotizacion.totalDeudas;
+        setHonorarios({...honorarios, valorHonorarios: vHonorarios});
+      }
 
+      console.log("vHonorarios:", vHonorarios);
+      console.log("Honorarios:", honorarios);
       // Actualizar el estado con los resultados
       setResultadosCotizacion({
         ...resultadosCotizacion,
@@ -246,13 +245,42 @@ const Cotizacion = () => {
         totalesPorTipo,
       });
     }
- console.log("Resultados cotizacion:", resultadosCotizacion);
+    console.log("Resultados cotizacion:", resultadosCotizacion);
     console.log("index:", index);
     console.log("name:", name);
     console.log("value:", value);
     setEditingField(name);
     setAcreedorFilt(initAcreedorFilt);
   };
+
+  const handleBienChange = (index, event) => {
+    const { name, value } = event.target;
+    console.log("Bienes handle bien change:", bienes);
+    const updatedBienes = [...bienes];
+    updatedBienes[index][name] = value;
+    setBienes(updatedBienes);
+ console.log("Bienes:", bienes);
+    if (name === "valor") {
+      
+      // Cálculo del total
+      let totalBienes = bienes.reduce(
+        (acc, bien) => acc + parseFloat(bien.valor),
+        0
+      );
+      console.log("Total de bienes:", totalBienes);
+      // Actualizar el estado con los resultados
+      setResultadosCotizacion({
+        ...resultadosCotizacion,
+        totalBienes,
+      });
+    }
+    console.log("Resultados cotizacion:", resultadosCotizacion);
+    console.log("index:", index);
+    console.log("name:", name);
+    console.log("value:", value);
+    setEditingField(name);
+  };
+
 
   const handlePropuestaChange = (index, event) => {
     const { name, value } = event.target;
@@ -290,7 +318,7 @@ const Cotizacion = () => {
     setGasto(initGastos);
   };
 
-  const addBien = (bien) => {
+  const handleAddBien = (bien) => {
     setBienes([...bienes, bien]);
     setBien(initBien);
   };
@@ -328,20 +356,9 @@ const Cotizacion = () => {
     setEditingField(e.target.name);
   };
 
-  const handleBienChange = (event) => {
-    const { name, value } = event.target;
-    setBien({ ...bien, [name]: value });
-    setEditingField(name);
-  };
-
   const handleSubmitIngreso = async (e) => {
     e.preventDefault();
     addIngreso(ingreso);
-  };
-
-  const handleAddBien = async (e) => {
-    e.preventDefault();
-    addBien(bien);
   };
 
   const handleSubmitGasto = async (e) => {
@@ -433,27 +450,41 @@ const Cotizacion = () => {
   const handleCuotasChange = (tipo, field, value) => {
     const updatedData = { ...resultadosCotizacion };
     console.log("Updated data:", updatedData);
-    console.log("Tipo:", tipo); 
+    console.log("Tipo:", tipo);
     console.log("Field:", field);
     console.log("Value:", value);
     updatedData[tipo][field] = value;
 
     // Calcular el valor de la cuota
-    if (field === 'tasa' || field === 'cuotas') {
+    if (field === "tasa" || field === "cuotas") {
       const tasa = parseFloat(updatedData[tipo].tasa) || 0;
       const cuotas = parseInt(updatedData[tipo].cuotas, 10) || 0;
       const totalPorTipo = resultadosCotizacion.totalesPorTipo[tipo];
       console.log("Total por tipo:", totalPorTipo);
-      console.log("Tasa:", tasa); 
+      console.log("Tasa:", tasa);
       console.log("Cuotas:", cuotas);
-      updatedData[tipo].valorCuota = cuotas > 0 ? Math.round(totalPorTipo * (tasa/100)) / (1 - Math.pow(1 + (tasa/100), -cuotas)) : '';
+      updatedData[tipo].valorCuota =
+        cuotas > 0
+          ? Math.round(totalPorTipo * (tasa / 100)) /
+            (1 - Math.pow(1 + tasa / 100, -cuotas))
+          : "";
     }
-     
-   
+    // Calcular la suma de cuotas y valorCuota
+    let totalCuotas = 0;
+    let totalValorCuota = 0;
+
+    Object.keys(updatedData).forEach((key) => {
+      const data = updatedData[key];
+      totalCuotas += parseInt(data.cuotas, 10) || 0;
+      totalValorCuota += parseFloat(data.valorCuota) || 0;
+    });
+    
+    updatedData.sumaCuotas = totalCuotas;
+    updatedData.sumaValorCuota = totalValorCuota;
+    console.log("Suma de cuotas:", totalCuotas);
     setResultadosCotizacion(updatedData);
   };
-
-
+   console.log("Honorarios:", honorarios);  
   return (
     <div className="contenedorcotizacion">
       <div className="encabezado">
@@ -493,14 +524,14 @@ const Cotizacion = () => {
                       name="tipoBien"
                       id="tipoBien"
                       value={bien.tipoBien}
-                      onChange={(event) => handleBienChange(event)}
+                      onChange={(event) => handleBienChange(index, event)}
                     />
                     <input
                       type="number"
                       className="cajaingresos"
                       name="valor"
                       id="valorBien"
-                      onChange={(event) => handleBienChange(event)}
+                      onChange={(event) => handleBienChange(index, event)}
                       value={
                         editingField === "valor"
                           ? bien.valor
@@ -601,7 +632,7 @@ const Cotizacion = () => {
                           value={
                             editingField === "valorHonorarios"
                               ? honorarios.valorHonorarios
-                              : formatNumero(honorarios.valorHonorarios)
+                              : formatNumero(parseInt(honorarios.valorHonorarios))
                           }
                           onKeyDown={handleKeyPress}
                         />
@@ -658,51 +689,84 @@ const Cotizacion = () => {
                   <h6 className="titulocotizacion">Propuesta de pago</h6>
                 </div>
                 <div className="encabezadopropuesta">
-                <h6 className="titulocotizacion">Clasificación del crédito</h6>
+                  <h6 className="titulocotizacion">
+                    Clasificación del crédito
+                  </h6>
                   <h6 className="titulocotizacion">Subtotal clase</h6>
                   <h6 className="titulocotizacion">Derecho de voto</h6>
                   <h6 className="titulocotizacion">Tasa de interés</h6>
                   <h6 className="titulocotizacion">Número de cuotas</h6>
                   <h6 className="titulocotizacion">Valor de la cuota</h6>
                 </div>
-                {resultadosCotizacion.totalesPorTipo && Object.entries(resultadosCotizacion.totalesPorTipo).map((tipo, valor) => (
-                  <div className="infodeudascotizacion" key={tipo}>
-                    <h6 className="titulocotizacion">{tipo[0]}</h6>
-                    <input
-            type="text"
-            value={resultadosCotizacion.totalesPorTipo[tipo[0]]}
-            className="inputDerechoVoto"
-            readOnly
-          />
-                    <input
-            type="text"
-            value={resultadosCotizacion.derechoVotoPorTipo[tipo[0]]}
-            className="inputDerechoVoto"
-            readOnly
-          />
-          <input
-            type="number"
-            placeholder="Tasa (%)"
-            value={resultadosCotizacion&&resultadosCotizacion[tipo[0]].tasa||''}
-            onChange={(e) => handleCuotasChange(tipo[0], 'tasa', e.target.value)}
-            className="inputTasa"
-          />
-          <input
-            type="number"
-            placeholder="Cuotas"
-            value={resultadosCotizacion[tipo[0]].cuotas}
-            onChange={(e) => handleCuotasChange(tipo[0], 'cuotas', e.target.value)}
-            className="inputCuotas"
-          />
-          <input
-            type="text"
-            placeholder="Valor Cuota"
-            value={formatNumero(Math.round(resultadosCotizacion[tipo[0]].valorCuota))}
-            readOnly
-            className="inputValorCuota"
-          />
-                  </div>
-                ))}
+                {resultadosCotizacion.totalesPorTipo &&
+                  Object.entries(resultadosCotizacion.totalesPorTipo).map(
+                    (tipo, valor) => (
+                      <div className="infodeudascotizacion" key={tipo}>
+                        <h6 className="titulocotizacion">{tipo[0]}</h6>
+                        <input
+                          type="text"
+                          value={resultadosCotizacion.totalesPorTipo[tipo[0]]}
+                          className="inputDerechoVoto"
+                          readOnly
+                        />
+                        <input
+                          type="text"
+                          value={
+                            resultadosCotizacion.derechoVotoPorTipo[tipo[0]]
+                          }
+                          className="inputDerechoVoto"
+                          readOnly
+                        />
+                        <input
+                          type="number"
+                          placeholder="Tasa (%)"
+                          value={
+                            (resultadosCotizacion &&
+                              resultadosCotizacion[tipo[0]].tasa) ||
+                            ""
+                          }
+                          onChange={(e) =>
+                            handleCuotasChange(tipo[0], "tasa", e.target.value)
+                          }
+                          className="inputTasa"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Cuotas"
+                          value={resultadosCotizacion[tipo[0]].cuotas}
+                          onChange={(e) =>
+                            handleCuotasChange(
+                              tipo[0],
+                              "cuotas",
+                              e.target.value
+                            )
+                          }
+                          className="inputCuotas"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Valor Cuota"
+                          value={formatNumero(
+                            Math.round(resultadosCotizacion[tipo[0]].valorCuota)
+                          )}
+                          readOnly
+                          className="inputValorCuota"
+                        />
+                      </div>
+                    )
+                  )}
+                <div className="encabezadopropuesta">
+                  <h6 className="titulocotizacion">TOTAL</h6>
+                  <h6 className="titulocotizacion">
+                    {formatNumero(resultadosCotizacion.totalDeudas)}
+                  </h6>
+                  <h6 className="titulocotizacion">
+                    {Math.round(resultadosCotizacion.totalDerechoVoto)}
+                  </h6>
+                  <h6 className="titulocotizacion">{'              '} </h6>
+                  <h6 className="titulocotizacion">{resultadosCotizacion.sumaCuotas}</h6>
+                  <h6 className="titulocotizacion">{formatNumero(Math.round(resultadosCotizacion.sumaValorCuota))}</h6>
+                </div>
               </div>
             </div>
 
@@ -756,7 +820,7 @@ const Cotizacion = () => {
                       id={`acreedor-${index}`}
                       className="cajaingresos"
                       placeholder="Buscar acreedor..."
-                      onChange={(event) => handleDeudaChange(index, event)}
+                      onChange={(event) => handleAcreedorChange(index, event)}
                     />
 
                     <input

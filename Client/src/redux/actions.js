@@ -524,8 +524,8 @@ export const setCliente = (source) => {
   };
 };
 
-export const getClientesTodos = () => {
-  const endpoint = `/clientes/conocimientolitigios?pagina=1&porPagina=24`;
+export const getClientesTodos = (currentPage,porPagina) => {
+  const endpoint = `/clientes/conocimientolitigios?pagina=${currentPage}&porPagina=${porPagina}`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
     return dispatch({

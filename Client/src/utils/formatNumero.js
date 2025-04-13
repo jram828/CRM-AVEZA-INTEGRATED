@@ -6,7 +6,7 @@ export const formatNumero = (numero) => {
 
     // Formatear el número con separadores de miles y mantener dos decimales
     return num.toLocaleString("es-CO", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     });
   };

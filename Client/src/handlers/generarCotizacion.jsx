@@ -4,61 +4,36 @@ import { saveAs } from "file-saver";
 import { formatNumero } from "../utils/formatNumero";
 
 export const generarCotizacion = (
-  ingresos,
-  gastos,
+  ingreso,
+  gasto,
   bienes,
-  procesos,
-  obligaciones,
-  sociedades,
   deudas,
   propuestas,
-  motivos,
   cliente,
-  listaAcreedores
+  honorarios,
+  resultadosCotizacion
 ) => {
   console.log("Datos cotizacion:", {
-    ingresos,
-    gastos,
+    ingreso,
+    gasto,
     bienes,
-    procesos,
-    obligaciones,
-    sociedades,
     deudas,
     propuestas,
-    motivos,
     cliente,
-    ciudad: cliente.Ciudads[0].nombre_ciudad,
-    listaAcreedores,
+    honorarios,
+    resultadosCotizacion,
   });
   const docs = document.getElementById("doc");
 
-  const newAcreedores = listaAcreedores.map((acreedor, index) => ({
-    contador: index + 1,
-    nombreAcreedor: acreedor.nombre,
-    NIT: acreedor.NIT,
-    direccionAcreedor: acreedor.direccion,
-    ciudadAcreedor: acreedor.ciudad,
-    telefono: acreedor.telefono,
-    emailAcreedor: acreedor.email,
-  }));
-
-  const sumaCapitalDeudas = formatNumero(deudas.reduce((acumulador, deuda) => acumulador + deuda.capital, 0));
-  const sumaGastos = formatNumero(Number(gastos.energia) + Number(gastos.gas) + Number(gastos.aguaAlcAseo) + Number(gastos.telecomunicaciones) + Number(gastos.television) + Number(gastos.arriendo) + Number(gastos.seguros) + Number(gastos.alimentacion) + Number(gastos.transporte) + Number(gastos.otros));
-  console.log("Suma gastos:", sumaGastos);
   const datoscotizacion = {
-    ingresos,
-    gastos,
+    ingreso,
+    gasto,
     bienes,
-    procesos,
-    obligaciones,
-    sociedades,
     deudas,
     propuestas,
-    motivos,
     cliente,
-    ciudad: cliente.Ciudads[0].nombre_ciudad,
-    acreedores: newAcreedores,
-    sumaCapitalDeudas,
+    honorarios,
+    resultadosCotizacion
   };
 
   const reader = new FileReader();
@@ -78,26 +53,26 @@ export const generarCotizacion = (
       paragraphLoop: true,
       linebreaks: true,
     });
-    
-    const newDeudas= deudas.map(deuda => ({
+
+    const newDeudas = deudas.map((deuda) => ({
       ...deuda,
-      capital: formatNumero(deuda.capital)
+      capital: formatNumero(deuda.capital),
+    }));
+
+    const newBienes = bienes.map((bien) => ({
+      ...bien,
+      valor: formatNumero(bien.valor),
     }));
     
-    const newBienes= bienes.map(bien => ({
-      ...bien,
-      valor: formatNumero(bien.valor)
-    }));
-
-    const newIngresos= ingresos.map(ingreso => ({
-      ...ingreso,
-      Valor: formatNumero(ingreso.Valor)
-    }));
-
-    const newPropuestas= propuestas.map(propuesta => ({
+    const newPropuestas = propuestas.map((propuesta) => ({
       ...propuesta,
-      valorCuota: formatNumero(propuesta.valorCuota)
+      valorCuota: formatNumero(propuesta.valorCuota),
     }));
+
+    const newHonorarios = (resultadosCotizacion.totalDeudas * 0.1 > 50000000
+      ? 50000000
+      : (resultadosCotizacion.totalDeudas * 0.1))
+    
     // !Reemplazar contenido de array en una tabla
     doc.render({
       nombre: cliente.nombres,
@@ -106,27 +81,21 @@ export const generarCotizacion = (
       cedula: cliente.cedula,
       direccion: cliente.direccion,
       ciudad: cliente.Ciudads[0].nombre_ciudad,
-      ingresos: newIngresos,
-      motivos: motivos.motivos,
+      fecha: new Date().toLocaleDateString("es-CO", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }),
+      ingresosMensuales: formatNumero(ingreso.Valor),
       bienes: newBienes,
-      procesos: procesos,
-      obligaciones: obligaciones,
-      sociedades: sociedades,
-      acreedores: newAcreedores,
       deudas: newDeudas,
-      totaldeudas: sumaCapitalDeudas,
-      totalgastos: sumaGastos,
+      honorarios: formatNumero(newHonorarios),
+      inicial: formatNumero(newHonorarios*(honorarios.inicial/100)),
+      numeroCuotas: honorarios.cuotasHonorarios,
+      totalDeudas: formatNumero(resultadosCotizacion.totalDeudas),
+      totalBienes: formatNumero(resultadosCotizacion.totalBienes),
+      gastosMensuales: formatNumero(gasto.gastosmensuales),
       propuestas: newPropuestas,
-      energia: formatNumero(Number(gastos[0].energia)),
-      gas: formatNumero(Number(gastos[0].gas)),
-      agua: formatNumero(Number(gastos[0].aguaAlcAseo)),
-      telecomunicaciones: formatNumero(Number(gastos[0].telecomunicaciones)),
-      television: formatNumero(Number(gastos[0].television)),
-      arriendo: formatNumero(Number(gastos[0].arriendo)),
-      seguros: formatNumero(Number(gastos[0].seguros)),
-      alimentacion: formatNumero(Number(gastos[0].alimentacion)),
-      transporte: formatNumero(Number(gastos[0].transporte)),
-      otros: formatNumero(Number(gastos[0].otros)),
     });
 
     const blob = doc.getZip().generate({
@@ -138,7 +107,7 @@ export const generarCotizacion = (
       compression: "DEFLATE",
     });
     // Output the document using Data-URI
-    saveAs(blob, `Solicitud Insolvencia.docx`);
+    saveAs(blob, `Cotización  ${cliente.nombres} ${cliente.apellidos}.docx`);
   };
 
   return datoscotizacion;

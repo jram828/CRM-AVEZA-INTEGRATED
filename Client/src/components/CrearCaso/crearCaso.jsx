@@ -326,19 +326,6 @@ function CrearCaso() {
         </div>
 
         <div className="botonescrearcaso">
-          {/* {userDataRegistro.TipoDeCasoid === 2 ? (
-            <div>
-              <Button type="submit" value="Guardar">
-                Deudas / Bienes
-              </Button>
-              <Button type="submit" value="Guardar">
-                Ingresos / Gastos
-              </Button>
-              <Button type="submit" value="Guardar">
-                Prouesta pago
-              </Button>
-            </div>
-          ) : undefined} */}
           <Button type="submit" value="Guardar">
             Guardar
           </Button>

@@ -86,16 +86,7 @@ const Cotizacion = () => {
   const listaAcreedoresObj = [];
 
   const initGastos = {
-    energia: "",
-    aguaAlcAseo: "",
-    gas: "",
-    telecomunicaciones: "",
-    television: "",
-    arriendo: "",
-    seguros: "",
-    alimentacion: "",
-    transporte: "",
-    otros: "",
+    gastosmensuales: "",
   };
 
   const initIngreso = {
@@ -160,6 +151,7 @@ const Cotizacion = () => {
   console.log("Propuestas:", propuestas);
   console.log("Propuesta:", propuesta);
 
+  console.log("Posible cuota:", posibleCuota);
   const handleDeudaChange = (index, event) => {
     const { name, value } = event.target;
     const updatedDeudas = [...deudas];
@@ -225,13 +217,18 @@ const Cotizacion = () => {
 
       console.log("Suma derecho de voto:", sumaDerechoVoto);
       let vHonorarios;
-      console.log("Total deudas para honorarios:", resultadosCotizacion.totalDeudas);
-      if(0.1 * resultadosCotizacion.totalDeudas > 50000000){
+      console.log(
+        "Total deudas para honorarios:",
+        resultadosCotizacion.totalDeudas
+      );
+
+      
+      if (0.1 * resultadosCotizacion.totalDeudas > 50000000) {
         vHonorarios = 50000000;
-        setHonorarios({...honorarios, valorHonorarios: vHonorarios});
+        setHonorarios({ ...honorarios, valorHonorarios: vHonorarios });
       } else {
         vHonorarios = 0.1 * resultadosCotizacion.totalDeudas;
-        setHonorarios({...honorarios, valorHonorarios: vHonorarios});
+        setHonorarios({ ...honorarios, valorHonorarios: vHonorarios });
       }
 
       console.log("vHonorarios:", vHonorarios);
@@ -259,9 +256,8 @@ const Cotizacion = () => {
     const updatedBienes = [...bienes];
     updatedBienes[index][name] = value;
     setBienes(updatedBienes);
- console.log("Bienes:", bienes);
+    console.log("Bienes:", bienes);
     if (name === "valor") {
-      
       // Cálculo del total
       let totalBienes = bienes.reduce(
         (acc, bien) => acc + parseFloat(bien.valor),
@@ -280,7 +276,6 @@ const Cotizacion = () => {
     console.log("value:", value);
     setEditingField(name);
   };
-
 
   const handlePropuestaChange = (index, event) => {
     const { name, value } = event.target;
@@ -318,9 +313,9 @@ const Cotizacion = () => {
     setGasto(initGastos);
   };
 
-  const handleAddBien = (bien) => {
-    setBienes([...bienes, bien]);
-    setBien(initBien);
+  const handleAddBien = async (e) => {
+    e.preventDefault();
+    setBienes([...bienes, initBien]);
   };
 
   console.log("Gastos:", gastos);
@@ -335,6 +330,14 @@ const Cotizacion = () => {
   const handleIngresoChange = (e) => {
     setIngreso({
       ...ingreso,
+      [e.target.name]: e.target.value,
+    });
+    setEditingField(e.target.name);
+  };
+
+  const handleHonorarioChange = (e) => {
+    setHonorarios({
+      ...honorarios,
       [e.target.name]: e.target.value,
     });
     setEditingField(e.target.name);
@@ -368,17 +371,18 @@ const Cotizacion = () => {
 
   const handlerGenerarCotizacion = () => {
     const datoscotizacion = generarCotizacion(
-      ingresos,
-      gastos,
+      ingreso,
+      gasto,
       bienes,
       deudas,
       propuestas,
       cliente,
-      listaAcreedores
+      honorarios,
+      resultadosCotizacion
     );
 
     console.log("Datos cotizacion:", datoscotizacion);
-    dispatch(crearSolicitud(datoscotizacion));
+    // dispatch(crearCotizacion(datoscotizacion));
   };
 
   const handleAcreedorChange = (e) => {
@@ -478,13 +482,13 @@ const Cotizacion = () => {
       totalCuotas += parseInt(data.cuotas, 10) || 0;
       totalValorCuota += parseFloat(data.valorCuota) || 0;
     });
-    
+
     updatedData.sumaCuotas = totalCuotas;
     updatedData.sumaValorCuota = totalValorCuota;
     console.log("Suma de cuotas:", totalCuotas);
     setResultadosCotizacion(updatedData);
   };
-   console.log("Honorarios:", honorarios);  
+  console.log("Honorarios:", honorarios);
   return (
     <div className="contenedorcotizacion">
       <div className="encabezado">
@@ -527,20 +531,25 @@ const Cotizacion = () => {
                       onChange={(event) => handleBienChange(index, event)}
                     />
                     <input
-                      type="number"
+                      type="text"
                       className="cajaingresos"
                       name="valor"
                       id="valorBien"
                       onChange={(event) => handleBienChange(index, event)}
                       value={
-                        editingField === "valor"
-                          ? bien.valor
-                          : formatNumero(bien.valor)
+                       bien.valor
                       }
                       onKeyDown={handleKeyPress}
                     />
                   </div>
                 ))}
+                <div className="encabezadopropuesta">
+                  <h6 className="titulocotizacion">TOTAL BIENES</h6>
+                  <h6 className="titulocotizacion">
+                    {formatNumero(resultadosCotizacion.totalBienes)}
+                  </h6>
+
+                </div>
                 <Button onClick={handleAddBien} value="Guardarbien">
                   Agregar bien
                 </Button>
@@ -559,11 +568,7 @@ const Cotizacion = () => {
                           name="Valor"
                           id="valor"
                           onChange={(event) => handleIngresoChange(event)}
-                          value={
-                            editingField === "Valor"
-                              ? ingreso.Valor
-                              : formatNumero(ingreso.Valor)
-                          }
+                          value={ingreso.Valor}
                           onKeyDown={handleKeyPress}
                         />
                       </div>
@@ -581,12 +586,8 @@ const Cotizacion = () => {
                         name="gastosmensuales"
                         id="gastosmensuales"
                         onChange={(event) => handleGastoChange(event)}
-                        value={
-                          editingField === "gastosmensuales"
-                            ? gasto.gastosmensuales
-                            : formatNumero(gasto.gastosmensuales)
-                        }
-                        onKeyDown={handleKeyPress}
+                        value={gasto.gastosmensuales}
+                       
                       />
                     </div>
                   </div>
@@ -604,10 +605,7 @@ const Cotizacion = () => {
                         name="mensual"
                         id="mensual"
                         onChange={(event) => handleCuotaChange(event)}
-                        value={
-                          editingField === "mensual"
-                            ? posibleCuota.mensual
-                            : formatNumero(posibleCuota.mensual)
+                        value={posibleCuota.mensual
                         }
                         onKeyDown={handleKeyPress}
                       />
@@ -623,19 +621,12 @@ const Cotizacion = () => {
                     <div className="infodeudascotizacion">
                       <div className="infodetailingresos">
                         <h6 className="titulocotizacion">Valor</h6>
-                        <input
-                          type="number"
-                          className="cajaingresos"
-                          name="valorHonorarios"
-                          id="valorHonorarios"
-                          onChange={(event) => handleIngresoChange(event)}
-                          value={
-                            editingField === "valorHonorarios"
-                              ? honorarios.valorHonorarios
-                              : formatNumero(parseInt(honorarios.valorHonorarios))
+                        <h6 className="titulocotizacion">{
+                            resultadosCotizacion.totalDeudas * 0.1 > 50000000
+                              ? formatNumero(50000000)
+                              : formatNumero(resultadosCotizacion.totalDeudas * 0.1)
                           }
-                          onKeyDown={handleKeyPress}
-                        />
+                          </h6>
                       </div>
                     </div>
 
@@ -649,12 +640,8 @@ const Cotizacion = () => {
                           className="cajaingresos"
                           name="inicial"
                           id="inicial"
-                          onChange={(event) => handleIngresoChange(event)}
-                          value={
-                            editingField === "inicial"
-                              ? honorarios.inicial
-                              : formatNumero(honorarios.inicial)
-                          }
+                          onChange={(event) => handleHonorarioChange(event)}
+                          value={honorarios.inicial}
                           onKeyDown={handleKeyPress}
                         />
                       </div>
@@ -668,12 +655,8 @@ const Cotizacion = () => {
                           className="cajaingresos"
                           name="cuotasHonorarios"
                           id="cuotasHonorarios"
-                          onChange={(event) => handleIngresoChange(event)}
-                          value={
-                            editingField === "cuotasHonorarios"
-                              ? honorarios.cuotasHonorarios
-                              : formatNumero(honorarios.cuotasHonorarios)
-                          }
+                          onChange={(event) => handleHonorarioChange(event)}
+                          value={ honorarios.cuotasHonorarios}
                           onKeyDown={handleKeyPress}
                         />
                       </div>
@@ -763,9 +746,15 @@ const Cotizacion = () => {
                   <h6 className="titulocotizacion">
                     {Math.round(resultadosCotizacion.totalDerechoVoto)}
                   </h6>
-                  <h6 className="titulocotizacion">{'              '} </h6>
-                  <h6 className="titulocotizacion">{resultadosCotizacion.sumaCuotas}</h6>
-                  <h6 className="titulocotizacion">{formatNumero(Math.round(resultadosCotizacion.sumaValorCuota))}</h6>
+                  <h6 className="titulocotizacion">{"              "} </h6>
+                  <h6 className="titulocotizacion">
+                    {resultadosCotizacion.sumaCuotas}
+                  </h6>
+                  <h6 className="titulocotizacion">
+                    {formatNumero(
+                      Math.round(resultadosCotizacion.sumaValorCuota)
+                    )}
+                  </h6>
                 </div>
               </div>
             </div>

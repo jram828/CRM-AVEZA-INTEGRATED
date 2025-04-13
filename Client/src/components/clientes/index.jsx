@@ -29,7 +29,7 @@ const Clientes = () => {
  const [order, setOrder] = useState("");
 
  useEffect(() => {
-   dispatch(getClientesTodos()); // Obtener el total de clientes
+   dispatch(getClientesTodos(1,24)); // Obtener el total de clientes
  }, [dispatch]);
 
  const totalPages = Math.ceil(pages?.length / 12);
@@ -124,8 +124,8 @@ const Clientes = () => {
         {clientes.length > 0 &&
           clientes.map((cliente) => {
             return (
-              <div>
-                <Cliente key={cliente.cedula} cliente={cliente} />
+              <div key={cliente.cedula}>
+                <Cliente cliente={cliente} />
               </div>
             );
           })}

@@ -10,6 +10,16 @@ export const generarDocumentos = (
   console.log("caso generar documentos", caso);
   const docs = document.getElementById("doc");
 
+
+  const planpagos = generarPlanPagos(totalDeuda, tasa, cuotas, totalCuota);
+  //console.log("Plan de pagos:", planpagos);
+  const datosresena = {
+    deudas,
+    cliente,
+    ciudad: cliente.Ciudads[0].nombre_ciudad,
+    planpagos,
+  };
+
   const reader = new FileReader();
   if (docs.files.length === 0) {
     alert("No files selected");

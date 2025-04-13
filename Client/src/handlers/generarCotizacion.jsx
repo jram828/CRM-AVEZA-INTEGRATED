@@ -73,6 +73,7 @@ export const generarCotizacion = (
       ? 50000000
       : (resultadosCotizacion.totalDeudas * 0.1))
     
+      
     // !Reemplazar contenido de array en una tabla
     doc.render({
       nombre: cliente.nombres,

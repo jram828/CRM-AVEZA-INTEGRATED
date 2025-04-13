@@ -32,6 +32,7 @@ function DetailCasos() {
     idCaso: "",
     valor_pretensiones: "",
     honorarios: "",
+    cuotas:"",
     aceptacion_cotizacion: "",
     tiene_contrato: "",
     forma_de_pago: "",
@@ -377,6 +378,24 @@ function DetailCasos() {
                   editingField === "honorarios"
                     ? casoDetail.honorarios
                     : formatNumero(casoDetail.honorarios)
+                }
+                onKeyDown={handleKeyPress}
+              />
+            </div>
+            <div className="infodetailcaso">
+              <label htmlFor="cuotas" className="labeldetailcaso">
+                Número de cuotas: $
+              </label>
+              <input
+                type="text"
+                className="cajadetail"
+                name="cuotas"
+                id="cuotas"
+                onChange={handleUpdateDetailCaso}
+                value={
+                  editingField === "cuotas"
+                    ? casoDetail.cuotas
+                    : formatNumero(casoDetail.cuotas)
                 }
                 onKeyDown={handleKeyPress}
               />

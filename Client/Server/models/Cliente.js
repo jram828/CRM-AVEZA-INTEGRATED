@@ -23,7 +23,7 @@ export default (sequelize) => {
         defaultValue: true,
       },
     },
-    { timestamps: false }
+    { timestamps: true }
   );
   return Cliente;
 };

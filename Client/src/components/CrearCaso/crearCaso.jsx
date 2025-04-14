@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { postCaso } from "../../handlers/crearCaso";
 import { getAbogados } from "../../handlers/todosAbogados";
-import { getClientes } from "../../handlers/todosClientes";
+import { getClientesCasos } from "../../handlers/todosClientes";
 import "./crearCaso.css";
 import { Link } from "react-router-dom";
 
@@ -17,6 +17,13 @@ function CrearCaso() {
     fechaFin: "",
     descripcion: "",
     TipoDeCasoid: 1,
+    porcentajeInicial: "",
+    honorarios: "",
+    valor_pretensiones: "",
+    cuotas: "",
+    forma_de_pago: "",
+    radicado: "",
+    juzgado: "",  
   });
   // console.log(userDataRegistro);
 
@@ -44,7 +51,7 @@ function CrearCaso() {
   useEffect(() => {
     const obtenerClientes = async () => {
       try {
-        const listaClientes = await getClientes();
+        const listaClientes = await getClientesCasos();
         setClientes(listaClientes);
       } catch (error) {
         console.error("Error al obtener los clientes:", error);
@@ -323,6 +330,21 @@ function CrearCaso() {
           />
           </>
           )}
+          {userDataRegistro.TipoDeCasoid === 1 && (
+          <>
+              <label htmlFor="cuotas" className="labelcrearcaso">
+                Porcentaje cuota inicial:
+              </label>
+              <input
+                type="number"
+                className="cajacrearcaso"
+                name="porcentajeInicial"
+                id="porcentajeInicial"
+                value={userDataRegistro.porcentajeInicial}
+                onChange={handleChangeRegistro}
+              />
+            </>
+            )}
         </div>
 
         <div className="botonescrearcaso">

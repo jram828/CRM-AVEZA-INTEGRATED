@@ -1,6 +1,7 @@
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
+import { generarPlanPagosHonorarios } from "../utils/planPagosHonorarios";
 
 export const generarDocumentos = (
   caso,
@@ -11,15 +12,9 @@ export const generarDocumentos = (
   const docs = document.getElementById("doc");
 
 
-  const planpagos = generarPlanPagos(totalDeuda, tasa, cuotas, totalCuota);
-  //console.log("Plan de pagos:", planpagos);
-  const datosresena = {
-    deudas,
-    cliente,
-    ciudad: cliente.Ciudads[0].nombre_ciudad,
-    planpagos,
-  };
-
+  const planpagos = generarPlanPagosHonorarios(caso.honorarios, caso.cuotas, caso.porcentajeInicial);
+  console.log("Plan de pagos:", planpagos);
+  
   const reader = new FileReader();
   if (docs.files.length === 0) {
     alert("No files selected");
@@ -56,6 +51,7 @@ export const generarDocumentos = (
       pretensiones_letras: valor_pretensiones_letras.toUpperCase(),
       honorarios: Number(caso.honorarios).toLocaleString(),
       honorarios_letras: honorarios_letras.toUpperCase(),
+      planpagos: planpagos,
     });
 
     const blob = doc.getZip().generate({

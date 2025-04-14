@@ -1,12 +1,20 @@
 export const formatNumero = (numero) => {
-    if (!numero) return "";
+  if (!numero) return "";
 
-    // Convertir a número flotante para manejar decimales
-    const num = parseFloat(numero.toString().replace(/,/g, "."));
+  // Eliminar separadores de miles ('.') y reemplazar la coma decimal con un punto
+  const numSinSeparador = numero.toString().replace(/\./g, "").replace(/,/g, ".");
 
-    // Formatear el número con separadores de miles y mantener dos decimales
-    return num.toLocaleString("es-CO", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
-  };
+  // Convertir a número flotante para manejar decimales
+  const num = parseFloat(numSinSeparador);
+
+  if (isNaN(num)) {
+    console.error("El valor proporcionado no es un número válido.");
+    return "";
+  }
+
+  // Formatear el número con separadores de miles y mantener dos decimales
+  return num.toLocaleString("es-CO", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};

@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const GET_CLIENTE_BY_CEDULA = "GET_CLIENTE_BY_CEDULA";
 export const GET_CLIENTES = "GET_CLIENTES"
+export const GET_CLIENTES_CASOS = "GET_CLIENTES_CASOS"
 export const SET_CLIENTE = "SET_CLIENTE";
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const SET_USERTOKEN = "SET_USERTOKEN";
@@ -77,7 +78,7 @@ export const getClienteByCedula = (cedula) => {
 
 export  const getClienteAll = () => {
 return async (dispatch) => {
-  const { data } = await axios.get('/clientes/conocimientolitigios');
+  const { data } = await axios.get('/clientes/clientescasos');
   console.log('Data Get clientes:',data)
   try {
     return dispatch({
@@ -89,6 +90,21 @@ return async (dispatch) => {
   }
 };
 };
+
+export  const getClienteAllCasos = () => {
+  return async (dispatch) => {
+    const { data } = await axios.get('/clientes/clientescasos');
+    console.log('Data Get clientes:',data)
+    try {
+      return dispatch({
+        type: GET_CLIENTES_CASOS,
+        payload: data,
+      });
+    } catch (error) {
+      window.alert("Clientes no encontrados!");
+    }
+  };
+  };
   
 export const setUserToken = (userToken) => {
   console.log("User token:", userToken);
@@ -107,7 +123,7 @@ export const setSource = (source) => {
 };
 
 export const getClientes = (page) => {
-  const endpoint = `/clientes/conocimientolitigios?pagina=${page}&porPagina=12`;
+  const endpoint = `/clientes/conocimientolitigios?pagina=${page}&porPagina=15`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
     return dispatch({

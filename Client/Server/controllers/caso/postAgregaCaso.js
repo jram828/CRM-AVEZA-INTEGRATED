@@ -15,7 +15,8 @@ const createCaso = async (
   honorarios,
   valor_pretensiones,
   cuotas,
-  forma_de_pago
+  forma_de_pago,
+  porcentajeInicial
 ) => {
   console.log(
     "radicado",
@@ -41,7 +42,9 @@ const createCaso = async (
     "cuotas",
     cuotas,
     "forma_de_pago",
-    forma_de_pago
+    forma_de_pago,
+    "porcentajeInicial",
+    porcentajeInicial
   );
 
   const estaCliente = await Cliente.findOne({
@@ -101,8 +104,17 @@ const createCaso = async (
   } else {
     vcuotas = 0;
   }
+
+  var porcentajeIni;
+
+  if (typeof(porcentajeInicial) === "number") {
+    porcentajeIni = porcentajeInicial;
+  } else {
+    porcentajeIni = 0;
+  }
   console.log("Radicado controller:", radicado);
   const newCaso = await Caso.create({
+    radicado: radicado,
     juzgado: juzgado,
     fecha: fechaUTC,
     descripcion: descripcion,
@@ -112,8 +124,8 @@ const createCaso = async (
     honorarios: vhonorarios,
     forma_de_pago: forma_de_pago,
     valor_pretensiones: pretensiones,
-    cuotas: vcuotas,radicado: radicado,
-    
+    cuotas: vcuotas,
+    porcentajeInicial: porcentajeIni,
   });
 
   //  newAbogado.addCliente(clientes);

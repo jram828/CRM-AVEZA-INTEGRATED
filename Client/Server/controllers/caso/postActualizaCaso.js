@@ -13,7 +13,8 @@ const actualizaCaso = async (
   descripcion,
   radicado,
   juzgado,
-  cuotas
+  cuotas,
+  porcentajeInicial
 ) => {
 
 
@@ -28,7 +29,8 @@ const actualizaCaso = async (
     descripcion,
     radicado,
     juzgado,
-    cuotas
+    cuotas,
+    porcentajeInicial
     },
     {
       where: {

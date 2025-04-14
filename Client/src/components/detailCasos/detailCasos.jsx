@@ -32,7 +32,7 @@ function DetailCasos() {
     idCaso: "",
     valor_pretensiones: "",
     honorarios: "",
-    cuotas:"",
+    cuotas: "",
     aceptacion_cotizacion: "",
     tiene_contrato: "",
     forma_de_pago: "",
@@ -150,10 +150,22 @@ function DetailCasos() {
   };
 
   const handleUpdateDetailCaso = (e) => {
-    setCasoDetail({
-      ...casoDetail,
-      [e.target.name]: e.target.value, // Sintaxis ES6 para actualizar la key correspondiente
-    });
+
+    if (e.target.name === "valor_pretensiones") {
+      const valor = parseNumero(e.target.value);
+      
+      setCasoDetail({
+        ...casoDetail,
+        [e.target.name]: e.target.value,
+        honorarios: valor*0.1 > 50000000 ? 50000000 : valor * 0.1,
+      });
+    } else {
+      setCasoDetail({
+        ...casoDetail,
+        [e.target.name]: e.target.value,
+      });
+    }
+ 
 
     setEditingField(e.target.name);
   };
@@ -258,19 +270,19 @@ function DetailCasos() {
               />
             </div>
             {casoDetail.TipoDeCaso.descripcion !== "Insolvencia" && (
-            <div className="infodetailcaso">
-              <label htmlFor="radicado" className="labeldetailcaso">
-                N° Radicado Juzgado:
-              </label>
-              <input
-                type="text"
-                className="cajadetail"
-                name="radicado"
-                id="radicado"
-                value={casoDetail.radicado}
-                onChange={handleUpdateDetailCaso}
-              />
-            </div>
+              <div className="infodetailcaso">
+                <label htmlFor="radicado" className="labeldetailcaso">
+                  N° Radicado Juzgado:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="radicado"
+                  id="radicado"
+                  value={casoDetail.radicado}
+                  onChange={handleUpdateDetailCaso}
+                />
+              </div>
             )}
             <div className="infodetailcaso">
               <label htmlFor="nombres" className="labeldetailcaso">
@@ -286,7 +298,7 @@ function DetailCasos() {
               />
             </div>
             {casoDetail.TipoDeCaso.descripcion === "Insolvencia" && (
-              <div>
+              <div className="botonescotizacion">
                 <div className="infodetailcaso">
                   <Buttonf onClick={handlerSolicitud}>Solicitud</Buttonf>
                 </div>
@@ -359,7 +371,7 @@ function DetailCasos() {
                 value={
                   editingField === "valor_pretensiones"
                     ? casoDetail.valor_pretensiones
-                    : formatNumero(casoDetail.valor_pretensiones)
+                    : (casoDetail.valor_pretensiones)
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -369,22 +381,20 @@ function DetailCasos() {
                 Valor honorarios: $
               </label>
               <input
-                type="text"
+                type="number"
                 className="cajadetail"
                 name="honorarios"
                 id="honorarios"
                 onChange={handleUpdateDetailCaso}
                 value={
-                  editingField === "honorarios"
-                    ? casoDetail.honorarios
-                    : formatNumero(casoDetail.honorarios)
+                  casoDetail.honorarios
                 }
                 onKeyDown={handleKeyPress}
               />
             </div>
             <div className="infodetailcaso">
               <label htmlFor="cuotas" className="labeldetailcaso">
-                Número de cuotas: $
+                Número de cuotas:
               </label>
               <input
                 type="text"
@@ -395,7 +405,25 @@ function DetailCasos() {
                 value={
                   editingField === "cuotas"
                     ? casoDetail.cuotas
-                    : formatNumero(casoDetail.cuotas)
+                    : (casoDetail.cuotas)
+                }
+                onKeyDown={handleKeyPress}
+              />
+            </div>
+            <div className="infodetailcaso">
+              <label htmlFor="porcentajeInicial" className="labeldetailcaso">
+                Porcentaje cuota inicial:
+              </label>
+              <input
+                type="text"
+                className="cajadetail"
+                name="porcentajeInicial"
+                id="porcentajeInicial"
+                onChange={handleUpdateDetailCaso}
+                value={
+                  editingField === "porcentajeInicial"
+                    ? casoDetail.porcentajeInicial
+                    : (casoDetail.porcentajeInicial)
                 }
                 onKeyDown={handleKeyPress}
               />

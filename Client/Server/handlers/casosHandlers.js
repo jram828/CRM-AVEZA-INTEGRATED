@@ -120,7 +120,8 @@ const postActualizaCaso = async (req, res) => {
   descripcion,
   radicado,
   juzgado,
-  cuotas
+  cuotas,
+  porcentajeInicial
   } = req.body;
 
 
@@ -136,7 +137,8 @@ const postActualizaCaso = async (req, res) => {
       descripcion,
       radicado,
       juzgado,
-      parseInt(cuotas)
+      parseInt(cuotas),
+      parseInt(porcentajeInicial)
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el caso");

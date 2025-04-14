@@ -3,12 +3,13 @@ import {useEffect, useState } from "react";
 import "../../App.css";
 import "./clientes.css";
 import { useDispatch, useSelector } from "react-redux";
-import { filterCliente, getClienteAll, getClientes, getClientesTodos, setSource } from "../../redux/actions";
+import { filterCliente, getClienteAll, getClienteAllCasos, getClientes, getClientesTodos, setSource } from "../../redux/actions";
 import { Button, Button2, Button3 } from "../Mystyles";
 import SearchBar from "../searchBarClientes";
 import OrderClientes from "../orderCliente/orderCliente";
 import { Link } from "react-router-dom";
 import loading from "../../assets/loading.gif";
+import { getClientesCasos } from "../../handlers/todosClientes";
 
 const Clientes = () => {
   const dispatch = useDispatch();
@@ -29,10 +30,10 @@ const Clientes = () => {
  const [order, setOrder] = useState("");
 
  useEffect(() => {
-   dispatch(getClientesTodos(1,24)); // Obtener el total de clientes
+  dispatch(getClienteAllCasos()); // Obtener el total de clientes
  }, [dispatch]);
 
- const totalPages = Math.ceil(pages?.length / 12);
+ const totalPages = Math.ceil(pages?.length / 15); // Cambia 15 por el número de elementos por página que desees
  console.log(totalPages);
 
  console.log("pages", pages);

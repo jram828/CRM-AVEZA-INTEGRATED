@@ -1,5 +1,6 @@
 import { getClienteById } from "../controllers/cliente/getClienteByid.js";
 import { getAllCliente } from "../controllers/cliente/getAllClientes.js";
+import { getAllClienteCasos } from "../controllers/cliente/getAllClientesCasos.js";
 import { getClienteByName } from "../controllers/cliente/getClienteByName.js";
 import { createClienteBd } from "../controllers/cliente/postClientesController.js";
 import { eliminaCliente } from "../controllers/cliente/postEliminaCliente.js";
@@ -27,6 +28,25 @@ const clientesHandler = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+const clientesCasosHandler = async (req, res) => {
+  //const { name } = req.query;
+  console.log(req.query);
+  const { pagina = 1, porPagina = 10 } = req.query;
+  const offset = (parseInt(pagina) - 1) * parseInt(porPagina);
+
+  try {
+    const response = await getAllClienteCasos(req.query);
+    res.status(200).json(response);
+    /*}  else {
+            const countyByName = await getClienteByName(name)
+            res.status(200).json(countyByName);
+        } ;*/
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 
 const clientesDetailHandler = async (req, res) => {
   const { cedulaCliente } = req.query;
@@ -150,6 +170,7 @@ const postActualizaClientes = async (req, res) => {
 };
 export  {
   clientesHandler,
+  clientesCasosHandler,
   clientesDetailHandler,
   postClientesHandler,
   postEliminaClientes,

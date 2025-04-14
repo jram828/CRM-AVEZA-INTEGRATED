@@ -52,21 +52,27 @@ export const generarPlanPagosHonorarios = (
   numCuotas,
   inicial
 ) => {
+
+  console.log("Valor Honorarios:", valorHonorarios);
+  console.log("Número de Cuotas:", numCuotas);      
+  console.log("Porcentaje Inicial:", inicial);
   const planPagos = [];
-  let saldo = valorHonorarios*(1-(inicial/100));
-  let fechaPago = sumarMeses(ultimoDiaDelMes(new Date()), 1);
+  let saldo = valorHonorarios*(1-((inicial)/100));
+  let fechaPago = sumarMeses(ultimoDiaDelMes(new Date()),0);
 
-  const cuotaMensual=valorHonorarios*(1-(inicial/100))/numCuotas;
-
-  for (let i = 1; i <= numCuotas; i++) {
+  const cuotaMensual=valorHonorarios*(1-((inicial)/100))/numCuotas;
+ console.log("Cuota Mensual:", cuotaMensual);
+  for (let i = 0; i <= numCuotas; i++) {
     
-    saldo -= cuotaMensual;
+    i!==0?saldo -= cuotaMensual:null;
     
     planPagos.push({
       numeroCuota: i,
-      cuotaMensual: formatNumero(cuotaMensual, 0),
-      saldo: formatNumero(saldo, 0),
-      fechapago: formatearFecha(fechaPago), // Copiar la fecha de pago actual
+      // cuotaMensual: formatNumero(cuotaMensual, 0),
+      // saldo: formatNumero(saldo, 0),
+      cuotaMensual: i===0?valorHonorarios*((inicial)/100):cuotaMensual,
+      saldo: i===0?valorHonorarios*(1-((inicial)/100)):saldo,
+      fechapago: i===0?formatearFecha(new Date()) :formatearFecha(fechaPago), // Copiar la fecha de pago actual
     });
     
     if(fechaPago.getMonth()===2 && fechaPago.getDate()===2){

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 
-  export async function getClientes() {
+  export async function getClientesCasos() {
     try {
-      const response = await axios.get('/clientes/conocimientolitigios');
+      const response = await axios.get('/clientes/clientescasos');
       return response.data
      
     } catch (error) {

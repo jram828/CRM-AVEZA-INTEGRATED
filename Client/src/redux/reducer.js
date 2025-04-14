@@ -12,6 +12,7 @@ import {
   GET_ABOGADOS,
   GET_ABOGADOS_TODOS,
   GET_CLIENTES,
+  GET_CLIENTES_CASOS,
   GET_CLIENTES_TODOS,
   GET_BY_ID_ABOGADO,
   GET_BY_ID_CLIENTE,
@@ -112,6 +113,11 @@ const rootReducer = (state = initialState, action) => {
         clientes: action.payload,
       };
     case GET_CLIENTES_TODOS:
+      return {
+        ...state,
+        pages: action.payload,
+      };
+      case GET_CLIENTES_CASOS:
       return {
         ...state,
         pages: action.payload,

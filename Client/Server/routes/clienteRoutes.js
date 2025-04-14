@@ -6,6 +6,7 @@ import { crearCiudades } from "../controllers/crearCiudades.js";
 import {
   clientesDetailHandler,
   clientesHandler,
+  clientesCasosHandler,
   postClientesHandler,
   postEliminaClientes,
   postActualizaClientes,
@@ -15,6 +16,7 @@ import {
 const clientesRouter = Router();
 
 clientesRouter.get("/conocimientolitigios", clientesHandler);
+clientesRouter.get("/clientescasos", clientesCasosHandler);
 clientesRouter.get("/:cedulaCliente", clientesDetailHandler); // obtiene un único C
 
 clientesRouter.post("/registrocliente", postClientesHandler);

@@ -42,6 +42,11 @@ export default (sequelize) => {
       },
       honorarios: { type: DataTypes.BIGINT, allowNull: true},
       cuotas: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 1 },
+      porcentajeInicial: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: true
+      },
       forma_de_pago: { type: DataTypes.STRING, allowNull: true,
         defaultValue: "Contado" },
       etapa: {

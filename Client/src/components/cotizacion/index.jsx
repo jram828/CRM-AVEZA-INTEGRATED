@@ -5,7 +5,10 @@ import "../cotizacion/cotizacion.css";
 import { Button } from "../Mystyles.js";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarCotizacion } from "../../handlers/generarCotizacion.jsx";
-import { crearSolicitud, modificarCasoCotizacion } from "../../redux/actions.js";
+import {
+  crearSolicitud,
+  modificarCasoCotizacion,
+} from "../../redux/actions.js";
 import { formatNumero } from "../../utils/formatNumero.js";
 import { use } from "react";
 
@@ -162,6 +165,13 @@ const Cotizacion = () => {
     updatedDeudas[index][name] = value;
     setDeudas(updatedDeudas);
 
+    if (name === "acreedor") {
+      const foundAcreedor = listaacreedores.filter((acreedor) =>
+        acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
+      );
+      console.log("Acreedores encontrados:", foundAcreedor);
+      setAcreedorFilt(foundAcreedor);
+    }
     if (name === "capital") {
       // Cálculo de totales por tipo de deuda
       const totalesPorTipo = deudas.reduce((acc, deuda) => {
@@ -240,7 +250,7 @@ const Cotizacion = () => {
     console.log("name:", name);
     console.log("value:", value);
     setEditingField(name);
-    setAcreedorFilt(initAcreedorFilt);
+    // setAcreedorFilt(initAcreedorFilt);
   };
 
   const handleBienChange = (index, event) => {
@@ -289,6 +299,7 @@ const Cotizacion = () => {
         votoClase: "",
       },
     ]);
+    setAcreedorFilt(initAcreedorFilt);
   };
 
   const handleSujetoChange = async (event) => {
@@ -383,23 +394,23 @@ const Cotizacion = () => {
       honorarios,
       resultadosCotizacion
     );
-    
+
     dispatch(modificarCasoCotizacion(datoscotizacion));
-  
+
     console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));
   };
 
-  const handleAcreedorChange = (e) => {
-    e.preventDefault();
+  const handleAcreedorChange = (event) => {
+    event.preventDefault();
 
     setDatosDeuda({
       ...datosDeuda,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     });
 
     const foundAcreedor = listaacreedores.filter((acreedor) =>
-      acreedor.nombre.toLowerCase().includes(e.target.value.toLowerCase())
+      acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
     );
     console.log("Acreedores encontrados:", foundAcreedor);
     setAcreedorFilt(foundAcreedor);
@@ -518,69 +529,71 @@ const Cotizacion = () => {
           <div className="infocotizaciondatos">
             <div className="formdeudascotizacion">
               <div className="formbienes">
-                <div className="encabezadoingresos">
-                  <h6 className="titulocotizacion">Bienes</h6>
-                </div>
-                <div className="encabezadoingresos">
-                  <h6 className="titulocotizacion">Tipo de bien</h6>
-                  <h6 className="titulocotizacion">Valor comercial</h6>
-                </div>
-                {bienes.map((bien, index) => (
-                  <div className="infodeudascotizacion" key={index}>
-                    <input
-                      type="text"
-                      className="cajacotizacion"
-                      name="tipoBien"
-                      id="tipoBien"
-                      value={bien.tipoBien}
-                      onChange={(event) => handleBienChange(index, event)}
-                    />
-                    <input
-                      type="text"
-                      className="cajacotizacion"
-                      name="valor"
-                      id="valorBien"
-                      onChange={(event) => handleBienChange(index, event)}
-                      value={bien.valor}
-                      onKeyDown={handleKeyPress}
-                    />
+                <div className="infoseccioncotizacion">
+                  <div className="encabezadoingresos">
+                    <h6 className="titulocotizacion">Bienes</h6>
                   </div>
-                ))}
-                <div className="encabezadopropuesta">
-                  <h6 className="titulocotizacion">TOTAL BIENES</h6>
-                  <h6 className="titulocotizacion">
-                    {formatNumero(resultadosCotizacion.totalBienes)}
-                  </h6>
-                </div>
-                <div className="encabezadopropuesta">
-                  <label>Sujeto a registro?</label>
-                  <div>
-                    <input
-                      type="radio"
-                      id="si"
-                      name="registro"
-                      value="si"
-                      checked={resultadosCotizacion.sujetoRegistro === "si"}
-                      onChange={(event) => handleSujetoChange(event)}
-                    />
-                    <label htmlFor="si">Sí</label>
+                  <div className="encabezadoingresos">
+                    <h6 className="titulocotizacion">Tipo de bien</h6>
+                    <h6 className="titulocotizacion">Valor comercial</h6>
                   </div>
-                  <div>
-                    <input
-                      type="radio"
-                      id="no"
-                      name="registro"
-                      value="no"
-                      checked={resultadosCotizacion.sujetoRegistro === "no"}
-                      onChange={(event) => handleSujetoChange(event)}
-                    />
-                    <label htmlFor="no">No</label>
+                  {bienes.map((bien, index) => (
+                    <div className="infodeudascotizacion" key={index}>
+                      <input
+                        type="text"
+                        className="cajacotizacion"
+                        name="tipoBien"
+                        id="tipoBien"
+                        value={bien.tipoBien}
+                        onChange={(event) => handleBienChange(index, event)}
+                      />
+                      <input
+                        type="text"
+                        className="cajacotizacion"
+                        name="valor"
+                        id="valorBien"
+                        onChange={(event) => handleBienChange(index, event)}
+                        value={bien.valor}
+                        onKeyDown={handleKeyPress}
+                      />
+                    </div>
+                  ))}
+                  <div className="encabezadopropuesta">
+                    <h6 className="titulocotizacion">TOTAL BIENES</h6>
+                    <h6 className="titulocotizacion">
+                      {formatNumero(resultadosCotizacion.totalBienes)}
+                    </h6>
                   </div>
-                </div>
+                  <div className="encabezadopropuesta">
+                    <label>Sujeto a registro?</label>
+                    <div>
+                      <input
+                        type="radio"
+                        id="si"
+                        name="registro"
+                        value="si"
+                        checked={resultadosCotizacion.sujetoRegistro === "si"}
+                        onChange={(event) => handleSujetoChange(event)}
+                      />
+                      <label htmlFor="si">Sí</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="no"
+                        name="registro"
+                        value="no"
+                        checked={resultadosCotizacion.sujetoRegistro === "no"}
+                        onChange={(event) => handleSujetoChange(event)}
+                      />
+                      <label htmlFor="no">No</label>
+                    </div>
+                  </div>
 
-                <Button onClick={handleAddBien} value="Guardarbien">
-                  Agregar bien
-                </Button>
+                  <Button onClick={handleAddBien} value="Guardarbien">
+                    Agregar bien
+                  </Button>
+                </div>
               </div>
               <div className="resumen">
                 <div className="formgastos">
@@ -844,17 +857,38 @@ const Cotizacion = () => {
                         Quinta Clase
                       </option>
                     </select>
-
-                    <input
-                      type="text"
-                      value={deuda.acreedor}
-                      name="acreedor"
-                      id={`acreedor-${index}`}
-                      className="cajacotizacion"
-                      placeholder="Buscar acreedor..."
-                      onChange={(event) => handleAcreedorChange(index, event)}
-                    />
-
+                    <div className="acreedorSelect">
+                      <input
+                        type="text"
+                        value={deuda.acreedor}
+                        name="acreedor"
+                        id={`acreedor-${index}`}
+                        className="cajacotizacion"
+                        placeholder="Buscar acreedor..."
+                        onChange={(event) => handleDeudaChange(index, event)}
+                      />
+                      {acreedorFilt.length > 0 && (
+                        <select
+                          name="acreedor"
+                          id="acreedor"
+                          className="cajadeudas"
+                          onChange={(event) => handleDeudaChange(index, event)}
+                        >
+                          <option value="" className="opcionesacreedor">
+                            Instituciones encontradas
+                          </option>
+                          {acreedorFilt.map((acreedor) => (
+                          <option
+                            key={acreedor.idAcreedor}
+                            value={acreedor.idAcreedor}
+                            className="opcionesacreedor"
+                          >
+                            {acreedor.nombre}
+                          </option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
                     <input
                       type="number"
                       className="cajadeudas"

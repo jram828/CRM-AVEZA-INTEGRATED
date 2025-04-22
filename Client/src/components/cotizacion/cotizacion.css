@@ -227,6 +227,12 @@ font-weight: bold;
   flex-direction: row;
   align-items: center;
 }
+.acreedorSelect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+}
 
 .infoseccion{
   margin: 10px;

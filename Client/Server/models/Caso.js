@@ -41,6 +41,7 @@ export default (sequelize) => {
         defaultValue: "No",
       },
       honorarios: { type: DataTypes.BIGINT, allowNull: true},
+      honorariosLiquidacion: { type: DataTypes.BIGINT, allowNull: true},
       cuotas: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 1 },
       porcentajeInicial: {
         type: DataTypes.INTEGER,

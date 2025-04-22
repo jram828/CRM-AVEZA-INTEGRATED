@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
+  casoActual,
   clienteActual,
   deleteCaso,
   finCaso,
@@ -32,6 +33,7 @@ function DetailCasos() {
     idCaso: "",
     valor_pretensiones: "",
     honorarios: "",
+    honorariosLiquidacion: "",
     cuotas: "",
     aceptacion_cotizacion: "",
     tiene_contrato: "",
@@ -59,6 +61,7 @@ function DetailCasos() {
       try {
         const caso = await getCasoById(id);
         setCasoDetail(caso);
+        dispatch(casoActual(caso));
       } catch (error) {
         console.error("Error al obtener el caso:", error);
       }
@@ -76,6 +79,7 @@ function DetailCasos() {
   );
   // const valor_pretensiones = Number(casoDetail.valor_pretensiones).toLocaleString();
   const honorarios_letras = numeroALetras(Number(casoDetail.honorarios));
+  const honorariosLiquidacion_letras = numeroALetras(Number(casoDetail.honorariosLiquidacion));
   // const honorarios = Number(casoDetail.honorarios).toLocaleString();
 
   const parseNumero = (numeroFormateado) => {
@@ -126,7 +130,7 @@ function DetailCasos() {
   };
 
   const handlerGenerarDocumentos = () => {
-    generarDocumentos(casoDetail, valor_pretensiones_letras, honorarios_letras);
+    generarDocumentos(casoDetail, valor_pretensiones_letras, honorarios_letras, honorariosLiquidacion_letras);
   };
 
   const handlerSolicitud = () => {
@@ -424,6 +428,24 @@ function DetailCasos() {
                   editingField === "porcentajeInicial"
                     ? casoDetail.porcentajeInicial
                     : (casoDetail.porcentajeInicial)
+                }
+                onKeyDown={handleKeyPress}
+              />
+            </div>
+            <div className="infodetailcaso">
+              <label htmlFor="honorariosLiquidacion" className="labeldetailcaso">
+                Mensualidad liquidación:
+              </label>
+              <input
+                type="text"
+                className="cajadetail"
+                name="honorariosLiquidacion"
+                id="honorariosLiquidacion"
+                onChange={handleUpdateDetailCaso}
+                value={
+                  editingField === "honorariosLiquidacion"
+                    ? casoDetail.honorariosLiquidacion
+                    : (casoDetail.honorariosLiquidacion)
                 }
                 onKeyDown={handleKeyPress}
               />

@@ -5,12 +5,13 @@ import "../cotizacion/cotizacion.css";
 import { Button } from "../Mystyles.js";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarCotizacion } from "../../handlers/generarCotizacion.jsx";
-import { crearSolicitud } from "../../redux/actions.js";
+import { crearSolicitud, modificarCasoCotizacion } from "../../redux/actions.js";
 import { formatNumero } from "../../utils/formatNumero.js";
 import { use } from "react";
 
 const Cotizacion = () => {
   const cliente = useSelector((state) => state.cliente);
+  const caso = useSelector((state) => state.caso);
   console.log("Cliente cotizacion:", cliente);
 
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const Cotizacion = () => {
 
   const initResultadosCotizacion = {
     totalDeudas: "",
+    totalBienes: "",
     totalVotoClase: "",
     totalDerechoVoto: "",
     "Primera Clase": {
@@ -64,12 +66,14 @@ const Cotizacion = () => {
     valorCuota: "",
     sumaCuotas: "",
     sumaValorCuota: "",
+    sujetoRegistro: "",
   };
 
   const initHonorarios = {
     inicial: "",
     cuotasHonorarios: "",
     valorHonorarios: "",
+    honorariosLiquidacion: "",
   };
 
   const initPropuesta = {
@@ -216,22 +220,11 @@ const Cotizacion = () => {
       );
 
       console.log("Suma derecho de voto:", sumaDerechoVoto);
-      let vHonorarios;
       console.log(
         "Total deudas para honorarios:",
         resultadosCotizacion.totalDeudas
       );
 
-      
-      if (0.1 * resultadosCotizacion.totalDeudas > 50000000) {
-        vHonorarios = 50000000;
-        setHonorarios({ ...honorarios, valorHonorarios: vHonorarios });
-      } else {
-        vHonorarios = 0.1 * resultadosCotizacion.totalDeudas;
-        setHonorarios({ ...honorarios, valorHonorarios: vHonorarios });
-      }
-
-      console.log("vHonorarios:", vHonorarios);
       console.log("Honorarios:", honorarios);
       // Actualizar el estado con los resultados
       setResultadosCotizacion({
@@ -296,6 +289,15 @@ const Cotizacion = () => {
         votoClase: "",
       },
     ]);
+  };
+
+  const handleSujetoChange = async (event) => {
+    event.preventDefault();
+    const { value } = event.target;
+    setResultadosCotizacion({
+      ...resultadosCotizacion,
+      sujetoRegistro: value,
+    });
   };
 
   const handleAddPropuesta = async (e) => {
@@ -371,6 +373,7 @@ const Cotizacion = () => {
 
   const handlerGenerarCotizacion = () => {
     const datoscotizacion = generarCotizacion(
+      caso,
       ingreso,
       gasto,
       bienes,
@@ -380,7 +383,9 @@ const Cotizacion = () => {
       honorarios,
       resultadosCotizacion
     );
-
+    
+    dispatch(modificarCasoCotizacion(datoscotizacion));
+  
     console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));
   };
@@ -524,7 +529,7 @@ const Cotizacion = () => {
                   <div className="infodeudascotizacion" key={index}>
                     <input
                       type="text"
-                      className="cajaingresos"
+                      className="cajacotizacion"
                       name="tipoBien"
                       id="tipoBien"
                       value={bien.tipoBien}
@@ -532,13 +537,11 @@ const Cotizacion = () => {
                     />
                     <input
                       type="text"
-                      className="cajaingresos"
+                      className="cajacotizacion"
                       name="valor"
                       id="valorBien"
                       onChange={(event) => handleBienChange(index, event)}
-                      value={
-                       bien.valor
-                      }
+                      value={bien.valor}
                       onKeyDown={handleKeyPress}
                     />
                   </div>
@@ -548,15 +551,40 @@ const Cotizacion = () => {
                   <h6 className="titulocotizacion">
                     {formatNumero(resultadosCotizacion.totalBienes)}
                   </h6>
-
                 </div>
+                <div className="encabezadopropuesta">
+                  <label>Sujeto a registro?</label>
+                  <div>
+                    <input
+                      type="radio"
+                      id="si"
+                      name="registro"
+                      value="si"
+                      checked={resultadosCotizacion.sujetoRegistro === "si"}
+                      onChange={(event) => handleSujetoChange(event)}
+                    />
+                    <label htmlFor="si">Sí</label>
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      id="no"
+                      name="registro"
+                      value="no"
+                      checked={resultadosCotizacion.sujetoRegistro === "no"}
+                      onChange={(event) => handleSujetoChange(event)}
+                    />
+                    <label htmlFor="no">No</label>
+                  </div>
+                </div>
+
                 <Button onClick={handleAddBien} value="Guardarbien">
                   Agregar bien
                 </Button>
               </div>
               <div className="resumen">
                 <div className="formgastos">
-                  <div className="infoseccioncotizacion">
+                  <div className="infoseccioncotizacion2">
                     <div className="encabezadoingresos">
                       <h6 className="titulocotizacion">Ingresos mensuales</h6>
                     </div>
@@ -564,7 +592,7 @@ const Cotizacion = () => {
                       <div className="infodetailingresos">
                         <input
                           type="number"
-                          className="cajaingresos"
+                          className="cajacotizacion"
                           name="Valor"
                           id="valor"
                           onChange={(event) => handleIngresoChange(event)}
@@ -574,7 +602,7 @@ const Cotizacion = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="infoseccioncotizacion">
+                  <div className="infoseccioncotizacion2">
                     <div className="encabezadogastos">
                       <h6 className="titulocotizacion">Gastos mensuales</h6>
                     </div>
@@ -582,16 +610,15 @@ const Cotizacion = () => {
                     <div className="infodetailingresos">
                       <input
                         type="number"
-                        className="cajaingresos"
+                        className="cajacotizacion"
                         name="gastosmensuales"
                         id="gastosmensuales"
                         onChange={(event) => handleGastoChange(event)}
                         value={gasto.gastosmensuales}
-                       
                       />
                     </div>
                   </div>
-                  <div className="infoseccioncotizacion">
+                  <div className="infoseccioncotizacion2">
                     <div className="encabezadogastos">
                       <h6 className="titulocotizacion">
                         Posible cuota mensual
@@ -601,12 +628,11 @@ const Cotizacion = () => {
                     <div className="infodetailingresos">
                       <input
                         type="number"
-                        className="cajaingresos"
+                        className="cajacotizacion"
                         name="mensual"
                         id="mensual"
                         onChange={(event) => handleCuotaChange(event)}
-                        value={posibleCuota.mensual
-                        }
+                        value={posibleCuota.mensual}
                         onKeyDown={handleKeyPress}
                       />
                     </div>
@@ -621,23 +647,24 @@ const Cotizacion = () => {
                     <div className="infodeudascotizacion">
                       <div className="infodetailingresos">
                         <h6 className="titulocotizacion">Valor</h6>
-                        <h6 className="titulocotizacion">{
-                            resultadosCotizacion.totalDeudas * 0.1 > 50000000
-                              ? formatNumero(50000000)
-                              : formatNumero(resultadosCotizacion.totalDeudas * 0.1)
-                          }
-                          </h6>
+                        <input
+                          type="number"
+                          className="cajacotizacion"
+                          name="valorHonorarios"
+                          id="valorHonorarios"
+                          onChange={(event) => handleHonorarioChange(event)}
+                          value={honorarios.valorHonorarios}
+                          onKeyDown={handleKeyPress}
+                        />
                       </div>
                     </div>
 
                     <div className="infodeudascotizacion">
                       <div className="infodetailingresos">
-                        <h6 className="titulocotizacion">
-                          Porcentaje inicial:
-                        </h6>
+                        <h6 className="titulocotizacion">Cuota inicial:</h6>
                         <input
                           type="number"
-                          className="cajaingresos"
+                          className="cajacotizacion"
                           name="inicial"
                           id="inicial"
                           onChange={(event) => handleHonorarioChange(event)}
@@ -652,11 +679,27 @@ const Cotizacion = () => {
                         <h6 className="titulocotizacion">Numero de cuotas:</h6>
                         <input
                           type="number"
-                          className="cajaingresos"
+                          className="cajacotizacion"
                           name="cuotasHonorarios"
                           id="cuotasHonorarios"
                           onChange={(event) => handleHonorarioChange(event)}
-                          value={ honorarios.cuotasHonorarios}
+                          value={honorarios.cuotasHonorarios}
+                          onKeyDown={handleKeyPress}
+                        />
+                      </div>
+                    </div>
+                    <div className="infodeudascotizacion">
+                      <div className="infodetailingresos">
+                        <h6 className="titulocotizacion">
+                          Mensualidad liquidación:
+                        </h6>
+                        <input
+                          type="number"
+                          className="cajacotizacion"
+                          name="honorariosLiquidacion"
+                          id="honorariosLiquidacion"
+                          onChange={(event) => handleHonorarioChange(event)}
+                          value={honorarios.honorariosLiquidacion}
                           onKeyDown={handleKeyPress}
                         />
                       </div>
@@ -778,26 +821,26 @@ const Cotizacion = () => {
                     <select
                       name="tipoDeuda"
                       id={`tipodeuda-${index}`}
-                      className="cajaingresos"
+                      className="cajacotizacion"
                       value={deuda.tipoDeuda}
                       onChange={(event) => handleDeudaChange(index, event)}
                     >
-                      <option value="" className="cajaingresos">
+                      <option value="" className="cajacotizacion">
                         Seleccione tipo de deuda
                       </option>
-                      <option value="Primera Clase" className="cajaingresos">
+                      <option value="Primera Clase" className="cajacotizacion">
                         Primera Clase
                       </option>
-                      <option value="Segunda Clase" className="cajaingresos">
+                      <option value="Segunda Clase" className="cajacotizacion">
                         Segunda Clase
                       </option>
-                      <option value="Tercera Clase" className="cajaingresos">
+                      <option value="Tercera Clase" className="cajacotizacion">
                         Tercera Clase
                       </option>
-                      <option value="Cuarta Clase" className="cajaingresos">
+                      <option value="Cuarta Clase" className="cajacotizacion">
                         Cuarta Clase
                       </option>
-                      <option value="Quinta Clase" className="cajaingresos">
+                      <option value="Quinta Clase" className="cajacotizacion">
                         Quinta Clase
                       </option>
                     </select>
@@ -807,7 +850,7 @@ const Cotizacion = () => {
                       value={deuda.acreedor}
                       name="acreedor"
                       id={`acreedor-${index}`}
-                      className="cajaingresos"
+                      className="cajacotizacion"
                       placeholder="Buscar acreedor..."
                       onChange={(event) => handleAcreedorChange(index, event)}
                     />

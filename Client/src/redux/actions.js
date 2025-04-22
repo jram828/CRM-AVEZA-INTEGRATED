@@ -4,7 +4,8 @@ import axios from "axios";
 export const GET_CLIENTE_BY_CEDULA = "GET_CLIENTE_BY_CEDULA";
 export const GET_CLIENTES = "GET_CLIENTES"
 export const GET_CLIENTES_CASOS = "GET_CLIENTES_CASOS"
-export const SET_CLIENTE = "SET_CLIENTE";
+export const SET_CLIENTE = "SET_CLIENTE"; 
+export const SET_CASO = "SET_CASO"; 
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const SET_USERTOKEN = "SET_USERTOKEN";
 export const FILTER_ABOGADO = "FILTER_NAME_ABOGADO";
@@ -40,6 +41,7 @@ export const MODIFICAR_DATOS_ABOGADO = "MODIFICAR_DATOS_ABOGADO";
 export const SET_ABOGADO = "SET_ABOGADO";
 export const GET_CLIENTES_TODOS = "GET_CLIENTES_TODOS";
 export const MODIFICAR_CASO = "MODIFICAR_CASO";
+export const MODIFICAR_CASO_COTIZACION = "MODIFICAR_CASO_COTIZACION";
 export const DELETE_CONSULTA = "DELETE_CONSULTA";
 export const POST_INSOLVENCIA = "POST_INSOLVENCIA";
 export const GET_SOLICITUD_BY_CEDULA = "GET_SOLICITUD_BY_CEDULA";
@@ -49,6 +51,14 @@ export const clienteActual = (cliente) => {
   return {
     type: SET_CLIENTE,
     payload: cliente,
+  };
+};
+
+export const casoActual = (caso) => {
+  console.log("Caso Action:", caso);
+  return {
+    type: SET_CASO,
+    payload: caso,
   };
 };
 
@@ -524,6 +534,21 @@ export const getAbogadosTodos = () => {
      });
    };
  };
+
+ export const modificarCasoCotizacion = (payload) => {
+  const endpoint = `/casos/actualizacotizacion`;
+
+  return async (dispatch) => {
+    const data = await axios.put(endpoint, payload);
+    console.log("URL", endpoint, "PAYLOAD", payload);
+    window.alert("Se ha actualizado el caso con éxito.");
+    return dispatch({
+      type: MODIFICAR_CASO_COTIZACION,
+      payload: data,
+    });
+  };
+};
+
 export const setAbogado = (abogado) => {
   console.log("Abogado Action:", abogado);
   return {

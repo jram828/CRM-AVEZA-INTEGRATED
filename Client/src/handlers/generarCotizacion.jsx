@@ -4,6 +4,7 @@ import { saveAs } from "file-saver";
 import { formatNumero } from "../utils/formatNumero";
 
 export const generarCotizacion = (
+  caso,
   ingreso,
   gasto,
   bienes,
@@ -14,6 +15,7 @@ export const generarCotizacion = (
   resultadosCotizacion
 ) => {
   console.log("Datos cotizacion:", {
+    caso,
     ingreso,
     gasto,
     bienes,
@@ -26,6 +28,7 @@ export const generarCotizacion = (
   const docs = document.getElementById("doc");
 
   const datoscotizacion = {
+    caso,
     ingreso,
     gasto,
     bienes,
@@ -33,7 +36,7 @@ export const generarCotizacion = (
     propuestas,
     cliente,
     honorarios,
-    resultadosCotizacion
+    resultadosCotizacion,
   };
 
   const reader = new FileReader();
@@ -63,17 +66,12 @@ export const generarCotizacion = (
       ...bien,
       valor: formatNumero(bien.valor),
     }));
-    
+
     const newPropuestas = propuestas.map((propuesta) => ({
       ...propuesta,
       valorCuota: formatNumero(propuesta.valorCuota),
     }));
 
-    const newHonorarios = (resultadosCotizacion.totalDeudas * 0.1 > 50000000
-      ? 50000000
-      : (resultadosCotizacion.totalDeudas * 0.1))
-    
-      
     // !Reemplazar contenido de array en una tabla
     doc.render({
       nombre: cliente.nombres,
@@ -90,13 +88,18 @@ export const generarCotizacion = (
       ingresosMensuales: formatNumero(ingreso.Valor),
       bienes: newBienes,
       deudas: newDeudas,
-      honorarios: formatNumero(newHonorarios),
-      inicial: formatNumero(newHonorarios*(honorarios.inicial/100)),
+      honorarios: formatNumero(honorarios.valorHonorarios),
+      inicial: formatNumero(honorarios.inicial),
       numeroCuotas: honorarios.cuotasHonorarios,
       totalDeudas: formatNumero(resultadosCotizacion.totalDeudas),
       totalBienes: formatNumero(resultadosCotizacion.totalBienes),
       gastosMensuales: formatNumero(gasto.gastosmensuales),
+      honorariosLiquidacion: formatNumero(honorarios.honorariosLiquidacion),
       propuestas: newPropuestas,
+      registro:
+        resultadosCotizacion.sujetoRegistro === "si"
+          ? "Si (x) No ()"
+          : "Si () No (x)",
     });
 
     const blob = doc.getZip().generate({

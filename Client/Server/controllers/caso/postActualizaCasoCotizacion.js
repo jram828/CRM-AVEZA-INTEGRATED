@@ -2,37 +2,23 @@ import { models } from "../../DB.js";
 
 const { Caso} = models;
 
-const actualizaCaso = async (
-  etapa,
+const actualizaCasoCotizacion = async (
   idCaso,
-  valor_pretensiones,
-  honorarios,
-  honorariosLiquidacion,
-  aceptacion_cotizacion,
-  tiene_contrato,
-  forma_de_pago,
-  descripcion,
-  radicado,
-  juzgado,
-  cuotas,
-  porcentajeInicial
+  totalDeudas,
+  inicial,
+  cuotasHonorarios,
+  valorHonorarios,
+  honorariosLiquidacion
 ) => {
 
 
   const [updateCount, updateCaso] = await Caso.update({
-    etapa,
     idCaso,
-    valor_pretensiones,
-    honorarios,
+    valor_pretensiones: totalDeudas,
+    honorarios:valorHonorarios,
     honorariosLiquidacion,
-    aceptacion_cotizacion,
-    tiene_contrato,
-    forma_de_pago,
-    descripcion,
-    radicado,
-    juzgado,
-    cuotas,
-    porcentajeInicial
+    cuotas:cuotasHonorarios,
+    porcentajeInicial:inicial
     },
     {
       where: {
@@ -57,4 +43,4 @@ const actualizaCaso = async (
 
   // return await Abogado.create({nombre, duracion,dificultad, temporada}); //?ASI También puede ser
 };
-export { actualizaCaso };
+export { actualizaCasoCotizacion };

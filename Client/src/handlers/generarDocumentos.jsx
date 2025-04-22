@@ -2,12 +2,17 @@ import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import { saveAs } from "file-saver";
 import { generarPlanPagosHonorarios } from "../utils/planPagosHonorarios";
+import { fechaLetras } from "../utils/fechaLetras";
 
 export const generarDocumentos = (
   caso,
   valor_pretensiones_letras,
-  honorarios_letras
+  honorarios_letras,
+  honorariosLiquidacion_letras,
 ) => {
+
+  const fecha = fechaLetras(new Date());
+
   console.log("caso generar documentos", caso);
   const docs = document.getElementById("doc");
 
@@ -47,10 +52,13 @@ export const generarDocumentos = (
       correo: caso.Cliente.email,
       ciudad: caso.Cliente.Ciudads[0].nombre_ciudad,
       direccion: caso.Cliente.direccion,
+      fecha: fecha,
       pretensiones: Number(caso.valor_pretensiones).toLocaleString(),
       pretensiones_letras: valor_pretensiones_letras.toUpperCase(),
       honorarios: Number(caso.honorarios).toLocaleString(),
       honorarios_letras: honorarios_letras.toUpperCase(),
+      honorariosLiquidacion: Number(caso.honorariosLiquidacion).toLocaleString(),
+      honorariosLiquidacion_letras: honorariosLiquidacion_letras.toUpperCase(),
       planpagos: planpagos,
     });
 

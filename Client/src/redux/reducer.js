@@ -38,6 +38,7 @@ import {
   CLEAN_USER,
   SET_ABOGADO,
   SET_CLIENTE,
+  SET_CASO,
   DELETE_CASO,
   GET_CONSULTAS,
   GET_CONSULTAS_TODOS,
@@ -45,6 +46,7 @@ import {
   MODIFICAR_DATOS_ABOGADO,
   GET_PAGOS,
   MODIFICAR_CASO,
+  MODIFICAR_CASO_COTIZACION,
   FIN_CASO,
   FILTER_CITAS,
   SET_FILTRO,
@@ -159,6 +161,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         cliente: action.payload,
       };
+      case SET_CASO:
+      return {
+        ...state,
+        caso: action.payload,
+      };
     case ORDER_ABOGADOS:
       return {
         ...state,
@@ -261,6 +268,11 @@ const rootReducer = (state = initialState, action) => {
         cliente: action.payload,
       };
     case MODIFICAR_CASO:
+      return {
+        ...state,
+        caso: action.payload,
+      };
+      case MODIFICAR_CASO_COTIZACION:
       return {
         ...state,
         caso: action.payload,

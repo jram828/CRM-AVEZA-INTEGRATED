@@ -4,6 +4,7 @@ import { finCaso } from "../controllers/caso/finCaso.js";
 import { deleteCaso } from "../controllers/caso/deleteCaso.js";
 import { getCasoId } from "../controllers/caso/getCasoById.js";
 import { actualizaCaso } from "../controllers/caso/postActualizaCaso.js";
+import { actualizaCasoCotizacion } from "../controllers/caso/postActualizaCasoCotizacion.js";
 
 const createCasosHandler = async (req, res) => {
   const {
@@ -114,6 +115,7 @@ const postActualizaCaso = async (req, res) => {
   idCaso,
   valor_pretensiones,
   honorarios,
+  honorariosLiquidacion,
   aceptacion_cotizacion,
   tiene_contrato,
   forma_de_pago,
@@ -131,6 +133,7 @@ const postActualizaCaso = async (req, res) => {
       idCaso,
       parseInt(valor_pretensiones),
       parseInt(honorarios),
+      parseInt(honorariosLiquidacion),
       aceptacion_cotizacion,
       tiene_contrato,
       forma_de_pago,
@@ -138,7 +141,37 @@ const postActualizaCaso = async (req, res) => {
       radicado,
       juzgado,
       parseInt(cuotas),
-      parseInt(porcentajeInicial)
+      parseInt(porcentajeInicial),
+    );
+    if (response) res.status(200).json(response);
+    else res.status(204).json("No se actualizo el caso");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const postActualizaCasoCotizacion = async (req, res) => {
+  const { 
+    caso,
+    ingreso,
+    gasto,
+    bienes,
+    deudas,
+    propuestas,
+    cliente,
+    honorarios,
+    resultadosCotizacion
+  } = req.body;
+
+ 
+  try {
+    const response = await actualizaCasoCotizacion(
+      caso.idCaso,
+      parseInt(resultadosCotizacion.totalDeudas),
+      parseInt(honorarios.inicial),
+      parseInt(honorarios.cuotasHonorarios),
+      parseInt(honorarios.valorHonorarios),
+      parseInt(honorarios.honorariosLiquidacion),
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el caso");
@@ -154,4 +187,6 @@ export {
   deleteCasoHandler,
   getTipoDeCasoByIdHandler,
   postActualizaCaso,
+  postActualizaCasoCotizacion,
+
 };

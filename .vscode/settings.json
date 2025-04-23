@@ -10,7 +10,8 @@
         "Pagos",
         "Google Drive",
         "Cotizacion",
-        "Casos"
+        "Casos",
+        "Registro cliente"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

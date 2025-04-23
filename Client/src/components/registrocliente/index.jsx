@@ -5,6 +5,7 @@ import { Button } from "../Mystyles";
 import { useNavigate } from "react-router-dom";
 import { registroCliente } from "../../handlers/registroCliente";
 import { codigoCiudades } from "../../utils/codigoCiudades.js"; // Asegúrate de que la ruta sea correcta
+import { registroClienteExcel } from "../../handlers/registroClienteExcel.jsx";
 
 const RegistroCliente = () => {
   const [userDataRegistro, setUserDataRegistro] = useState({
@@ -24,6 +25,8 @@ const RegistroCliente = () => {
     comentarios: "",
     valor_pretensiones: "",
   });
+
+  const [file, setFile] = useState(null);
 
   const initCiudadFilt = {
     ciudades: [],
@@ -59,11 +62,27 @@ const RegistroCliente = () => {
     console.log("Ciudades encontradas:", foundCiudad);
     setCiudadFilt(foundCiudad);
   };
+
+
+  const handlerCargarDatos = async () => {
+    registroClienteExcel();
+  };
+  
+
   return (
     <div className="contenedorregistro">
       <form className="datos" method="post" onSubmit={submitHandlerRegistro}>
         <h1 className="titulo">Registro De Cliente</h1>
         <br />
+        <div className="menu-registrocliente">
+                <input type="file" id="docexcel" accept=".xlsx, .xls"  />
+                <Button
+                  className="botonesiniciosesion"
+                  onClick={handlerCargarDatos}
+                >
+                  Cargar datos
+                </Button>
+              </div>
         <br />
         <div className="inforegistrocliente">
           <label htmlFor="nombre" className="labelregistrodecliente">

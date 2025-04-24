@@ -141,7 +141,7 @@ const Cotizacion = () => {
         return acc;
       }, {})
   );
-
+  console.log("Bienes general:", bienes);
   // console.log("FormData:", formData);
 
   const addPropuesta = () => {
@@ -255,11 +255,11 @@ const Cotizacion = () => {
 
   const handleBienChange = (index, event) => {
     const { name, value } = event.target;
-    // console.log("Bienes handle bien change:", bienes);
+    console.log("Bienes handle bien change:", bienes);
     const updatedBienes = [...bienes];
     updatedBienes[index][name] = value;
     setBienes(updatedBienes);
-    // console.log("Bienes:", bienes);
+    console.log("Bienes:", bienes);
     if (name === "valor") {
       // Cálculo del total
       let totalBienes = bienes.reduce(
@@ -420,7 +420,7 @@ const Cotizacion = () => {
     return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(",", "."));
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e,index) => {
     if (e.key === "Enter") {
       const { name } = e.target;
 
@@ -431,12 +431,13 @@ const Cotizacion = () => {
             [name]: parseNumero(bien[name]), // Formatea el valor solo cuando se presiona Enter
           });
           break;
-        case "capital":
-          setDatosDeuda({
-            ...datosDeuda,
-            [name]: parseNumero(datosDeuda[name]), // Formatea el valor solo cuando se presiona Enter
-          });
+        case "capital": {
+          const updatedDeudas = [...deudas];
+          updatedDeudas[index][name] = parseNumero(updatedDeudas[index][name]);
+
+          setDeudas(updatedDeudas);
           break;
+        }
         case "intereses":
           setDatosDeuda({
             ...datosDeuda,
@@ -516,6 +517,7 @@ const Cotizacion = () => {
         <Button
           className="botonesiniciosesion"
           onClick={handlerGenerarCotizacion}
+          type="button"
         >
           Generar cotización
         </Button>
@@ -538,7 +540,7 @@ const Cotizacion = () => {
                     <h6 className="titulocotizacion">Valor comercial</h6>
                   </div>
                   {bienes.map((bien, index) => (
-                    <div className="infodeudascotizacion" key={index}>
+                    <div className="infodeudascotizacion" key={`bienes-${index}`}>
                       <input
                         type="text"
                         className="cajacotizacion"
@@ -554,7 +556,7 @@ const Cotizacion = () => {
                         id="valorBien"
                         onChange={(event) => handleBienChange(index, event)}
                         value={bien.valor}
-                        onKeyDown={handleKeyPress}
+                        onKeyDown={(event) =>handleKeyPress(event,index)}
                       />
                     </div>
                   ))}
@@ -590,7 +592,7 @@ const Cotizacion = () => {
                     </div>
                   </div>
 
-                  <Button onClick={handleAddBien} value="Guardarbien">
+                  <Button onClick={handleAddBien} type="button">
                     Agregar bien
                   </Button>
                 </div>
@@ -610,7 +612,7 @@ const Cotizacion = () => {
                           id="valor"
                           onChange={(event) => handleIngresoChange(event)}
                           value={ingreso.Valor}
-                          onKeyDown={handleKeyPress}
+                          onKeyDown={(event) =>handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -646,7 +648,7 @@ const Cotizacion = () => {
                         id="mensual"
                         onChange={(event) => handleCuotaChange(event)}
                         value={posibleCuota.mensual}
-                        onKeyDown={handleKeyPress}
+                        onKeyDown={(event) =>handleKeyPress(event)}
                       />
                     </div>
                   </div>
@@ -667,7 +669,7 @@ const Cotizacion = () => {
                           id="valorHonorarios"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.valorHonorarios}
-                          onKeyDown={handleKeyPress}
+                          onKeyDown={(event) =>handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -682,7 +684,7 @@ const Cotizacion = () => {
                           id="inicial"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.inicial}
-                          onKeyDown={handleKeyPress}
+                          onKeyDown={(event) =>handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -697,7 +699,7 @@ const Cotizacion = () => {
                           id="cuotasHonorarios"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.cuotasHonorarios}
-                          onKeyDown={handleKeyPress}
+                          onKeyDown={(event) =>handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -713,7 +715,7 @@ const Cotizacion = () => {
                           id="honorariosLiquidacion"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.honorariosLiquidacion}
-                          onKeyDown={handleKeyPress}
+                          onKeyDown={(event) =>handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -830,7 +832,7 @@ const Cotizacion = () => {
                   </h6>
                 </div>
                 {deudas.map((deuda, index) => (
-                  <div className="infodeudascotizacion" key={index}>
+                  <div className="infodeudascotizacion" key={`tipodeuda-${index}`}>
                     <select
                       name="tipoDeuda"
                       id={`tipodeuda-${index}`}
@@ -867,7 +869,7 @@ const Cotizacion = () => {
                         placeholder="Buscar acreedor..."
                         onChange={(event) => handleDeudaChange(index, event)}
                       />
-                      {acreedorFilt.length > 0 && index===(deudas.length-1)&&(
+                      {acreedorFilt.length > 0 && index === deudas.length - 1 && (
                         <select
                           name="acreedor"
                           id="acreedor"
@@ -878,13 +880,13 @@ const Cotizacion = () => {
                             Instituciones encontradas
                           </option>
                           {acreedorFilt.map((acreedor) => (
-                          <option
-                            key={acreedor.idAcreedor}
-                            value={acreedor.idAcreedor}
-                            className="opcionesacreedor"
-                          >
-                            {acreedor.nombre}
-                          </option>
+                            <option
+                              key={acreedor.idAcreedor}
+                              value={acreedor.idAcreedor}
+                              className="opcionesacreedor"
+                            >
+                              {acreedor.nombre}
+                            </option>
                           ))}
                         </select>
                       )}
@@ -896,6 +898,7 @@ const Cotizacion = () => {
                       id={`capital-${index}`}
                       value={Number.parseFloat(deuda.capital)}
                       onChange={(event) => handleDeudaChange(index, event)}
+                      onKeyDown={(event) =>handleKeyPress(event,index)}
                     />
                     <input
                       type="number"
@@ -915,7 +918,7 @@ const Cotizacion = () => {
                     />
                   </div>
                 ))}
-                <Button onClick={handleAddDeuda} value="Guardar">
+                <Button onClick={handleAddDeuda} value="Guardar" type="button">
                   Agregar deuda
                 </Button>
               </div>

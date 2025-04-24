@@ -151,8 +151,11 @@ const Cotizacion = () => {
   // useEffect(() => {
 
   // }, [deudas]);
+  const formatoNumero = (numero) => {
+    return numero.toLocaleString("es-CO", { minimumFractionDigits: 2 });
+  };
 
-  // console.log("Deudas:", deudas);
+  console.log("Deudas:", deudas);
   // console.log("Datos deuda:", datosDeuda);
 
   // console.log("Propuestas:", propuestas);
@@ -173,6 +176,9 @@ const Cotizacion = () => {
       setAcreedorFilt(foundAcreedor);
     }
     if (name === "capital") {
+
+    
+
       // Cálculo de totales por tipo de deuda
       const totalesPorTipo = deudas.reduce((acc, deuda) => {
         acc[deuda.tipoDeuda] =
@@ -417,12 +423,13 @@ const Cotizacion = () => {
   };
 
   const parseNumero = (numeroFormateado) => {
+    console.log("Numero formateado:", numeroFormateado);
     return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(",", "."));
   };
 
   const handleKeyPress = (e,index) => {
     if (e.key === "Enter") {
-      const { name } = e.target;
+      const { name, value } = e.target;
 
       switch (editingField) {
         case "valor":
@@ -432,8 +439,12 @@ const Cotizacion = () => {
           });
           break;
         case "capital": {
+
+          
           const updatedDeudas = [...deudas];
-          updatedDeudas[index][name] = parseNumero(updatedDeudas[index][name]);
+          console.log("Deudas keypress:", updatedDeudas);
+          // updatedDeudas[index][name] = Number(value.replace(/\./g, "").replace(/,/g, "."));
+          updatedDeudas[index][name] = parseNumero(value);
 
           setDeudas(updatedDeudas);
           break;
@@ -746,14 +757,14 @@ const Cotizacion = () => {
                         <h6 className="titulocotizacion">{tipo[0]}</h6>
                         <input
                           type="text"
-                          value={resultadosCotizacion.totalesPorTipo[tipo[0]]}
+                          value={formatNumero(Number.parseFloat(resultadosCotizacion.totalesPorTipo[tipo[0]]))}
                           className="inputDerechoVoto"
                           readOnly
                         />
                         <input
                           type="text"
                           value={
-                            resultadosCotizacion.derechoVotoPorTipo[tipo[0]]
+                           ( resultadosCotizacion.derechoVotoPorTipo[tipo[0]])
                           }
                           className="inputDerechoVoto"
                           readOnly
@@ -892,11 +903,15 @@ const Cotizacion = () => {
                       )}
                     </div>
                     <input
-                      type="number"
+                      type="text"
                       className="cajadeudas"
                       name="capital"
                       id={`capital-${index}`}
-                      value={Number.parseFloat(deuda.capital)}
+                      value={
+                        editingField === "capital" && index === deudas.length - 1
+                          ? deuda.capital
+                          : formatNumero(deuda.capital)
+                      }
                       onChange={(event) => handleDeudaChange(index, event)}
                       onKeyDown={(event) =>handleKeyPress(event,index)}
                     />

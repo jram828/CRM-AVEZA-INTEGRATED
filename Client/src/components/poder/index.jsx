@@ -9,7 +9,7 @@ import { printDivContent } from "../../utils/printDivContent";
 const Poder = () => {
   const cliente = useSelector((state) => state.cliente);
 
-  console.log('Cliente poder: ', cliente)
+  // console.log('Cliente poder: ', cliente)
   
 function generatePDF() {
   printDivContent("poder");

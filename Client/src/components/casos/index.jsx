@@ -32,16 +32,16 @@ function Casos() {
   const todos = pages?.datosPagina || [];
   const totalPages = Math.ceil(todos.length / 9);
 
-  console.log(totalPages);
+  // console.log(totalPages);
 
-  console.log("pages", pages);
+  // console.log("pages", pages);
 
   useEffect(() => {
     // if (order) {
     //   dispatch(orderCasos(order, currentPage));
     // } else {
       const storedFilter = JSON.parse(localStorage.getItem("casosFilter"));
-      console.log('Stored filter:', storedFilter)
+      // console.log('Stored filter:', storedFilter)
       if (storedFilter) {
         setFilterApplied(true);
       }
@@ -49,7 +49,7 @@ function Casos() {
     // }
   }, [dispatch, currentPage, order]);
 
-  console.log("order", order, "currentpage", currentPage);
+  // console.log("order", order, "currentpage", currentPage);
   const handleVerTodosClick = () => {
     setOrder("");
     setCurrentPage(1);
@@ -88,9 +88,9 @@ function Casos() {
             (caso.nombresabogado === user.nombres &&
               caso.apellidosAbogado === user.apellidos)
         ));
-  console.log('Casos: ', casos)
+  // console.log('Casos: ', casos)
   
-  console.log("Casos usuario: ", userCasos);
+  // console.log("Casos usuario: ", userCasos);
   return (
     <div className="contenedorcasos">
       <div className="encabezado">

@@ -44,7 +44,7 @@ function CrearCaso() {
     obtenerAbogados();
   }, []);
 
-  console.log("abogados", abogados);
+  // console.log("abogados", abogados);
 
   const [clientes, setClientes] = useState([]);
 

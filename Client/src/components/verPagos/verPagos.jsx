@@ -23,9 +23,9 @@ localStorage.removeItem("pagosFilter");
   const todos = pages?.datosPagina || [];
   const totalPages = Math.ceil(todos.length / 9);
 
-  console.log(totalPages);
+  // console.log(totalPages);
 
-  console.log("pages", pages);
+  // console.log("pages", pages);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,9 +36,9 @@ localStorage.removeItem("pagosFilter");
     fetchData();
   }, [dispatch]);
 
-  console.log("Pagos:", pagos);
-  console.log('Pagos paginados:', pages)
-  console.log('User:', user)
+  // console.log("Pagos:", pagos);
+  // console.log('Pagos paginados:', pages)
+  // console.log('User:', user)
 
   function formatearFecha(fechaISO) {
     const fecha = new Date(fechaISO);

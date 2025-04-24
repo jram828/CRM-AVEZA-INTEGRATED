@@ -18,34 +18,34 @@ const createCaso = async (
   forma_de_pago,
   porcentajeInicial
 ) => {
-  console.log(
-    "radicado",
-    radicado,
-    "juzgado",
-    juzgado,
-    "cedulaCliente",
-    cedulaCliente,
-    "cedulaAbogado",
-    cedulaAbogado,
-    "fecha",
-    fecha,
-    "descripcion",
-    descripcion,
-    "TipoDeCasoId",
-    TipoDeCasoid,
-    "cuotas",
-    cuotas,
-    "honorarios",
-    honorarios,
-    "valor_pretensiones",
-    valor_pretensiones,
-    "cuotas",
-    cuotas,
-    "forma_de_pago",
-    forma_de_pago,
-    "porcentajeInicial",
-    porcentajeInicial
-  );
+  // console.log(
+  //   "radicado",
+  //   radicado,
+  //   "juzgado",
+  //   juzgado,
+  //   "cedulaCliente",
+  //   cedulaCliente,
+  //   "cedulaAbogado",
+  //   cedulaAbogado,
+  //   "fecha",
+  //   fecha,
+  //   "descripcion",
+  //   descripcion,
+  //   "TipoDeCasoId",
+  //   TipoDeCasoid,
+  //   "cuotas",
+  //   cuotas,
+  //   "honorarios",
+  //   honorarios,
+  //   "valor_pretensiones",
+  //   valor_pretensiones,
+  //   "cuotas",
+  //   cuotas,
+  //   "forma_de_pago",
+  //   forma_de_pago,
+  //   "porcentajeInicial",
+  //   porcentajeInicial
+  // );
 
   const estaCliente = await Cliente.findOne({
     where: {
@@ -112,7 +112,7 @@ const createCaso = async (
   } else {
     porcentajeIni = 0;
   }
-  console.log("Radicado controller:", radicado);
+  // console.log("Radicado controller:", radicado);
   const newCaso = await Caso.create({
     radicado: radicado,
     juzgado: juzgado,

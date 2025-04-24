@@ -34,7 +34,7 @@ const Cliente = (props) => {
   //   comentarios,
   // } = props.cliente;
 
-  console.log("Props cliente:", props.cliente);
+  // console.log("Props cliente:", props.cliente);
 
   //  const newCliente = {
   //    cedulaCliente,

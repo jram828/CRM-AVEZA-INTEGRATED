@@ -13,12 +13,12 @@ export const generarDocumentos = (
 
   const fecha = fechaLetras(new Date());
 
-  console.log("caso generar documentos", caso);
+  // console.log("caso generar documentos", caso);
   const docs = document.getElementById("doc");
 
 
   const planpagos = generarPlanPagosHonorarios(caso.honorarios, caso.cuotas, caso.porcentajeInicial);
-  console.log("Plan de pagos:", planpagos);
+  // console.log("Plan de pagos:", planpagos);
   
   const reader = new FileReader();
   if (docs.files.length === 0) {

@@ -20,27 +20,27 @@ const createAbogadoBd = async (
   const ciudadfilter = codigoCiudades.filter(
     (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
   );
-  console.log("Ciudad filter:", ciudadfilter);
+  // console.log("Ciudad filter:", ciudadfilter);
 
   const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
-  console.log("Codigo ciudad:", codigo_ciudad);
+  // console.log("Codigo ciudad:", codigo_ciudad);
 
-  console.log("ciudad:", ciudadfilter);
+  // console.log("ciudad:", ciudadfilter);
 
   // console.log('imagen',imagen)
-  console.log(cedulaAbogado);
-  console.log("Datos abogado:", {
-    email,
-    nombres,
-    apellidos,
-    cedulaAbogado,
-    celular,
-    direccion,
-    nombre_ciudad,
-    tarjetaProf,
-    password,
-    administrador
-  });
+  // console.log(cedulaAbogado);
+  // console.log("Datos abogado:", {
+  //   email,
+  //   nombres,
+  //   apellidos,
+  //   cedulaAbogado,
+  //   celular,
+  //   direccion,
+  //   nombre_ciudad,
+  //   tarjetaProf,
+  //   password,
+  //   administrador
+  // });
   try {
     const newAbogado = await Abogado.create({
       email,

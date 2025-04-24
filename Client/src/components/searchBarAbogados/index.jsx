@@ -26,7 +26,7 @@ const SearchBar = ({ onFilter }) => {
       onFilter(queryString);
       dispatch(filterAbogado(queryString));
     } else {
-      console.log("Por favor ingrese al menos un valor de búsqueda");
+      // console.log("Por favor ingrese al menos un valor de búsqueda");
     }
   };
 

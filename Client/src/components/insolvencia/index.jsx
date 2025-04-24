@@ -12,10 +12,10 @@ import { use } from "react";
 
 const Insolvencia = () => {
   const cliente = useSelector((state) => state.cliente);
-  console.log("Cliente insolvencia:", cliente);
+  // console.log("Cliente insolvencia:", cliente);
 
   const solicitud = useSelector((state) => state.solicitud);
-  console.log("Solicitud insolvencia:", solicitud);
+  // console.log("Solicitud insolvencia:", solicitud);
 
   const dispatch = useDispatch();
 
@@ -135,11 +135,11 @@ const Insolvencia = () => {
     setPropuesta(initPropuesta);
   };
 
-  console.log("Deudas:", deudas);
-  console.log("Datos deuda:", datosDeuda);
+  // console.log("Deudas:", deudas);
+  // console.log("Datos deuda:", datosDeuda);
 
-  console.log("Propuestas:", propuestas);
-  console.log("Propuesta:", propuesta);
+  // console.log("Propuestas:", propuestas);
+  // console.log("Propuesta:", propuesta);
 
   const handleDeudaChange = (e) => {
     setDatosDeuda({
@@ -167,11 +167,11 @@ const Insolvencia = () => {
   const handleSubmitDeuda = async (e) => {
     e.preventDefault();
     addDeuda(datosDeuda);
-    console.log("Acreedor buscado:", datosDeuda.acreedor);
+    // console.log("Acreedor buscado:", datosDeuda.acreedor);
     const filteredAcreedor = listaacreedores.filter(
       (acreedor) => acreedor.nombre === datosDeuda.acreedor
     );
-    console.log("Acreedor encontrado:", filteredAcreedor);
+    // console.log("Acreedor encontrado:", filteredAcreedor);
     addAcreedor(filteredAcreedor[0]);
   };
 
@@ -213,25 +213,25 @@ const Insolvencia = () => {
     setObligaciones([...obligaciones, obligacion]);
     setObligacion(initObligacion);
   };
-  console.log("Gastos:", gastos);
-  console.log("Datos gasto:", gasto);
+  // console.log("Gastos:", gastos);
+  // console.log("Datos gasto:", gasto);
 
-  console.log("Ingresos:", ingresos);
-  console.log("ingreso:", ingreso);
+  // console.log("Ingresos:", ingresos);
+  // console.log("ingreso:", ingreso);
 
-  console.log("bienes:", bienes);
-  console.log("bien:", bien);
+  // console.log("bienes:", bienes);
+  // console.log("bien:", bien);
 
-  console.log("Procesos:", procesos);
-  console.log("proceso:", proceso);
+  // console.log("Procesos:", procesos);
+  // console.log("proceso:", proceso);
 
-  console.log("Sociedades:", sociedades);
-  console.log("sociedad:", sociedad);
+  // console.log("Sociedades:", sociedades);
+  // console.log("sociedad:", sociedad);
 
-  console.log("Obligaciones:", obligaciones);
-  console.log("obligacion:", obligacion);
+  // console.log("Obligaciones:", obligaciones);
+  // console.log("obligacion:", obligacion);
 
-  console.log("motivos:", motivos);
+  // console.log("motivos:", motivos);
 
   const handleIngresoChange = (e) => {
     setIngreso({
@@ -322,7 +322,7 @@ const Insolvencia = () => {
       listaAcreedores
     );
 
-    console.log("Datos insolvencia para back:", datosinsolvencia);
+    // console.log("Datos insolvencia para back:", datosinsolvencia);
     dispatch(crearSolicitud(datosinsolvencia));
   };
 
@@ -335,8 +335,8 @@ const Insolvencia = () => {
   const handleJuzgadoChange = (e) => {
     const value = e.target.value;
 
-    console.log("Input name:", e.target.name);
-    console.log("Input value:", e.target.value);
+    // console.log("Input name:", e.target.name);
+    // console.log("Input value:", e.target.value);
     setProceso({
       ...proceso,
       [e.target.name]: e.target.value,
@@ -345,10 +345,10 @@ const Insolvencia = () => {
     const foundJuzgado = juzgados.filter((juzgado) =>
       juzgado.nombre.toLowerCase().includes(value.toLowerCase())
     );
-    console.log("Juzgados encontrados:", foundJuzgado);
+    // console.log("Juzgados encontrados:", foundJuzgado);
     setFilteredJuzgado(foundJuzgado);
 
-    console.log("Juzgados filtrados:", filteredJuzgado);
+    // console.log("Juzgados filtrados:", filteredJuzgado);
   };
 
   const handleAcreedorChange = (e) => {
@@ -362,7 +362,7 @@ const Insolvencia = () => {
     const foundAcreedor = listaacreedores.filter((acreedor) =>
       acreedor.nombre.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    console.log("Acreedores encontrados:", foundAcreedor);
+    // console.log("Acreedores encontrados:", foundAcreedor);
     setAcreedorFilt(foundAcreedor);
   };
 

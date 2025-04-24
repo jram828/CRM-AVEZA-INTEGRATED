@@ -18,7 +18,7 @@ export async function registroAbogado(userDataRegistro) {
 
  
 
-  console.log("User data registro:", userDataRegistro);
+  // console.log("User data registro:", userDataRegistro);
 
   const URL = "/abogados";
   try {

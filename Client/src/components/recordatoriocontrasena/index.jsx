@@ -21,7 +21,7 @@ const RecordatorioContrasena = () => {
       e.preventDefault();
 
       const { email,cedula } = userData;
-      console.log("Datos recordar password:", email);
+      // console.log("Datos recordar password:", email);
 
       try {
         await recordarPassword(email,cedula);

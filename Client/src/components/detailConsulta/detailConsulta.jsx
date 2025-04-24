@@ -10,7 +10,7 @@ function DetailConsulta({consulta}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("Consulta detail:", consulta);
+  // console.log("Consulta detail:", consulta);
 
   const handleComplete = (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ function DetailConsulta({consulta}) {
 
     if (isConfirmed) {
       dispatch(deleteConsulta(consulta.id));
-      console.log("id", consulta.id);
+      // console.log("id", consulta.id);
       window.location.reload();
       // navigate("/verconsultas");
     }

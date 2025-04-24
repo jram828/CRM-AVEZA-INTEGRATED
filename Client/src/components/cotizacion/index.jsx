@@ -15,7 +15,7 @@ import { use } from "react";
 const Cotizacion = () => {
   const cliente = useSelector((state) => state.cliente);
   const caso = useSelector((state) => state.caso);
-  console.log("Cliente cotizacion:", cliente);
+  // console.log("Cliente cotizacion:", cliente);
 
   const dispatch = useDispatch();
 
@@ -142,7 +142,7 @@ const Cotizacion = () => {
       }, {})
   );
 
-  console.log("FormData:", formData);
+  // console.log("FormData:", formData);
 
   const addPropuesta = () => {
     setPropuestas([...propuestas, initPropuesta]);
@@ -152,13 +152,13 @@ const Cotizacion = () => {
 
   // }, [deudas]);
 
-  console.log("Deudas:", deudas);
-  console.log("Datos deuda:", datosDeuda);
+  // console.log("Deudas:", deudas);
+  // console.log("Datos deuda:", datosDeuda);
 
-  console.log("Propuestas:", propuestas);
-  console.log("Propuesta:", propuesta);
+  // console.log("Propuestas:", propuestas);
+  // console.log("Propuesta:", propuesta);
 
-  console.log("Posible cuota:", posibleCuota);
+  // console.log("Posible cuota:", posibleCuota);
   const handleDeudaChange = (index, event) => {
     const { name, value } = event.target;
     const updatedDeudas = [...deudas];
@@ -169,7 +169,7 @@ const Cotizacion = () => {
       const foundAcreedor = listaacreedores.filter((acreedor) =>
         acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
       );
-      console.log("Acreedores encontrados:", foundAcreedor);
+      // console.log("Acreedores encontrados:", foundAcreedor);
       setAcreedorFilt(foundAcreedor);
     }
     if (name === "capital") {
@@ -179,14 +179,14 @@ const Cotizacion = () => {
           (acc[deuda.tipoDeuda] || 0) + parseFloat(deuda.capital);
         return acc;
       }, {});
-      console.log("Totales por tipo:", totalesPorTipo);
+      // console.log("Totales por tipo:", totalesPorTipo);
 
       // Cálculo del total general
       let totalDeudas = deudas.reduce(
         (acc, deuda) => acc + parseFloat(deuda.capital),
         0
       );
-      console.log("Total de deudas:", totalDeudas);
+      // console.log("Total de deudas:", totalDeudas);
 
       let derechoVotoPorTipo = {};
 
@@ -195,14 +195,14 @@ const Cotizacion = () => {
         derechoVotoPorTipo[key] = ((valor / totalDeudas) * 100).toFixed(2);
       });
 
-      console.log("Derecho voto por tipo:", derechoVotoPorTipo);
+      // console.log("Derecho voto por tipo:", derechoVotoPorTipo);
 
       const votoClasePorTipo = deudas.reduce((acc, deuda) => {
         acc[deuda.tipoDeuda] =
           (acc[deuda.tipoDeuda] || 0) + parseFloat(deuda.votoClase);
         return acc;
       }, {});
-      console.log("Voto clase por tipo:", votoClasePorTipo);
+      // console.log("Voto clase por tipo:", votoClasePorTipo);
 
       const resultados = deudas.map((deuda) => {
         const derechoVoto =
@@ -222,20 +222,20 @@ const Cotizacion = () => {
         };
       });
       setDeudas(resultados);
-      console.log("Resultados:", resultados);
+      // console.log("Resultados:", resultados);
       // Suma de porcentajes
       const sumaDerechoVoto = resultados.reduce(
         (acc, deuda) => acc + deuda.derechoVoto,
         0
       );
 
-      console.log("Suma derecho de voto:", sumaDerechoVoto);
-      console.log(
-        "Total deudas para honorarios:",
-        resultadosCotizacion.totalDeudas
-      );
+      // console.log("Suma derecho de voto:", sumaDerechoVoto);
+      // console.log(
+      //   "Total deudas para honorarios:",
+      //   resultadosCotizacion.totalDeudas
+      // );
 
-      console.log("Honorarios:", honorarios);
+      // console.log("Honorarios:", honorarios);
       // Actualizar el estado con los resultados
       setResultadosCotizacion({
         ...resultadosCotizacion,
@@ -245,38 +245,38 @@ const Cotizacion = () => {
         totalesPorTipo,
       });
     }
-    console.log("Resultados cotizacion:", resultadosCotizacion);
-    console.log("index:", index);
-    console.log("name:", name);
-    console.log("value:", value);
+    // console.log("Resultados cotizacion:", resultadosCotizacion);
+    // console.log("index:", index);
+    // console.log("name:", name);
+    // console.log("value:", value);
     setEditingField(name);
     // setAcreedorFilt(initAcreedorFilt);
   };
 
   const handleBienChange = (index, event) => {
     const { name, value } = event.target;
-    console.log("Bienes handle bien change:", bienes);
+    // console.log("Bienes handle bien change:", bienes);
     const updatedBienes = [...bienes];
     updatedBienes[index][name] = value;
     setBienes(updatedBienes);
-    console.log("Bienes:", bienes);
+    // console.log("Bienes:", bienes);
     if (name === "valor") {
       // Cálculo del total
       let totalBienes = bienes.reduce(
         (acc, bien) => acc + parseFloat(bien.valor),
         0
       );
-      console.log("Total de bienes:", totalBienes);
+      // console.log("Total de bienes:", totalBienes);
       // Actualizar el estado con los resultados
       setResultadosCotizacion({
         ...resultadosCotizacion,
         totalBienes,
       });
     }
-    console.log("Resultados cotizacion:", resultadosCotizacion);
-    console.log("index:", index);
-    console.log("name:", name);
-    console.log("value:", value);
+    // console.log("Resultados cotizacion:", resultadosCotizacion);
+    // console.log("index:", index);
+    // console.log("name:", name);
+    // console.log("value:", value);
     setEditingField(name);
   };
 
@@ -331,14 +331,14 @@ const Cotizacion = () => {
     setBienes([...bienes, initBien]);
   };
 
-  console.log("Gastos:", gastos);
-  console.log("Datos gasto:", gasto);
+  // console.log("Gastos:", gastos);
+  // console.log("Datos gasto:", gasto);
 
-  console.log("Ingresos:", ingresos);
-  console.log("ingreso:", ingreso);
+  // console.log("Ingresos:", ingresos);
+  // console.log("ingreso:", ingreso);
 
-  console.log("bienes:", bienes);
-  console.log("bien:", bien);
+  // console.log("bienes:", bienes);
+  // console.log("bien:", bien);
 
   const handleIngresoChange = (e) => {
     setIngreso({
@@ -397,7 +397,7 @@ const Cotizacion = () => {
 
     dispatch(modificarCasoCotizacion(datoscotizacion));
 
-    console.log("Datos cotizacion:", datoscotizacion);
+    // console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));
   };
 
@@ -412,7 +412,7 @@ const Cotizacion = () => {
     const foundAcreedor = listaacreedores.filter((acreedor) =>
       acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
     );
-    console.log("Acreedores encontrados:", foundAcreedor);
+    // console.log("Acreedores encontrados:", foundAcreedor);
     setAcreedorFilt(foundAcreedor);
   };
 
@@ -469,10 +469,10 @@ const Cotizacion = () => {
 
   const handleCuotasChange = (tipo, field, value) => {
     const updatedData = { ...resultadosCotizacion };
-    console.log("Updated data:", updatedData);
-    console.log("Tipo:", tipo);
-    console.log("Field:", field);
-    console.log("Value:", value);
+    // console.log("Updated data:", updatedData);
+    // console.log("Tipo:", tipo);
+    // console.log("Field:", field);
+    // console.log("Value:", value);
     updatedData[tipo][field] = value;
 
     // Calcular el valor de la cuota
@@ -480,9 +480,9 @@ const Cotizacion = () => {
       const tasa = parseFloat(updatedData[tipo].tasa) || 0;
       const cuotas = parseInt(updatedData[tipo].cuotas, 10) || 0;
       const totalPorTipo = resultadosCotizacion.totalesPorTipo[tipo];
-      console.log("Total por tipo:", totalPorTipo);
-      console.log("Tasa:", tasa);
-      console.log("Cuotas:", cuotas);
+      // console.log("Total por tipo:", totalPorTipo);
+      // console.log("Tasa:", tasa);
+      // console.log("Cuotas:", cuotas);
       updatedData[tipo].valorCuota =
         cuotas > 0
           ? Math.round(totalPorTipo * (tasa / 100)) /
@@ -501,10 +501,10 @@ const Cotizacion = () => {
 
     updatedData.sumaCuotas = totalCuotas;
     updatedData.sumaValorCuota = totalValorCuota;
-    console.log("Suma de cuotas:", totalCuotas);
+    // console.log("Suma de cuotas:", totalCuotas);
     setResultadosCotizacion(updatedData);
   };
-  console.log("Honorarios:", honorarios);
+  // console.log("Honorarios:", honorarios);
   return (
     <div className="contenedorcotizacion">
       <div className="encabezado">

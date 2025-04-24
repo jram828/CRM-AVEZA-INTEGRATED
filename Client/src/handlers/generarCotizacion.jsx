@@ -14,17 +14,17 @@ export const generarCotizacion = (
   honorarios,
   resultadosCotizacion
 ) => {
-  console.log("Datos cotizacion:", {
-    caso,
-    ingreso,
-    gasto,
-    bienes,
-    deudas,
-    propuestas,
-    cliente,
-    honorarios,
-    resultadosCotizacion,
-  });
+  // console.log("Datos cotizacion:", {
+  //   caso,
+  //   ingreso,
+  //   gasto,
+  //   bienes,
+  //   deudas,
+  //   propuestas,
+  //   cliente,
+  //   honorarios,
+  //   resultadosCotizacion,
+  // });
   const docs = document.getElementById("doc");
 
   const datoscotizacion = {

@@ -11,13 +11,13 @@ const createConsultaBd = async (
   telefono,
   consulta
 ) => {
-  console.log("Datos Crear consulta controller: ", {
-    nombre,
-    apellido,
-    correo,
-    telefono,
-    consulta,
-  });
+  // console.log("Datos Crear consulta controller: ", {
+  //   nombre,
+  //   apellido,
+  //   correo,
+  //   telefono,
+  //   consulta,
+  // });
   const newConsulta = await Consulta.create({
     nombre,
     apellido,

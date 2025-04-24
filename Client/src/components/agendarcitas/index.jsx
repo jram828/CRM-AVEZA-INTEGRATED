@@ -67,7 +67,7 @@ const submitHandlerRegistro = async (e) => {
       // e.preventDefault();
 
         const filtroCita = e.target.value;
-        console.log("Target value", filtroCita);
+        // console.log("Target value", filtroCita);
         // setFiltro(filtroCita);
         window.localStorage.setItem("filtroCita", JSON.stringify(filtroCita));
       // console.log("Filtro change: ", filtro);

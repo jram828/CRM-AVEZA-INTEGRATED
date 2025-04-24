@@ -8,7 +8,7 @@
   Ciudad
 } = models
 const getCasoId = async (id) => {
-  console.log(id)
+  // console.log(id)
   const caso = await Caso.findByPk(id, {
     include: [
       {

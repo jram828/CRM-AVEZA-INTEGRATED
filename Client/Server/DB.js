@@ -37,7 +37,7 @@ import solicitudModel from "./models/Solicitud.js";
 config(); // Cargar variables de entorno desde el archivo .env
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
-console.log("Datos conexion:", { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY });
+// console.log("Datos conexion:", { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY });
 
 
 

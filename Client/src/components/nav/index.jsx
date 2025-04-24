@@ -10,7 +10,7 @@ const Nav = ({ logout }) => {
    const dispatch = useDispatch();
    const user = JSON.parse(localStorage.getItem("loggedUser"));
  
-   console.log("User local storage: ", user);
+  //  console.log("User local storage: ", user);
 
   const handleClick = () => {
     window.localStorage.setItem("filtroCita", JSON.stringify("usuario"));

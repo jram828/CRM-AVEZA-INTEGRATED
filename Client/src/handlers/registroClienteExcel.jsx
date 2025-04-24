@@ -30,7 +30,7 @@ export async function registroClienteExcel() {
     const worksheet = workbook.Sheets[sheetName];
     var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-    console.log("Datos del archivo:", jsonData);
+    // console.log("Datos del archivo:", jsonData);
 
     jsonData.forEach(async (row) => {
       const clienteData = {
@@ -40,7 +40,7 @@ export async function registroClienteExcel() {
         correo: row.Correo,
         direccion: row.Direccion,
       };
-      console.log("Cliente data:", clienteData);
+      // console.log("Cliente data:", clienteData);
       const URL = "/clientes/registrocliente";
       try {
         await axios.post(URL, clienteData);

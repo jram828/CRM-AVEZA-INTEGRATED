@@ -9,7 +9,7 @@ import { useEffect } from "react";
 const Contrato = () => {
     const [cliente, setCliente] = useState({});
     const { cedula } = useParams();
-    console.log("Cedula Contrato:", cedula);
+    // console.log("Cedula Contrato:", cedula);
     useEffect(() => {
       axios.get(`/${cedula}`, { cedula: cedula }).then(({ data }) => {
         if (data.nombres) {
@@ -20,7 +20,7 @@ const Contrato = () => {
       });
     }, []);
   
-  console.log('Cliente contrato:',cliente)
+  // console.log('Cliente contrato:',cliente)
   //  if (cliente.length > 0) {
     return (
       <div>

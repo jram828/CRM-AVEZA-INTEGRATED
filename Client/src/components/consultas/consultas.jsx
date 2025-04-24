@@ -52,7 +52,7 @@ function Consultas() {
     }
   };
 
-  console.log("data", dataRegistro);
+  // console.log("data", dataRegistro);
 
   /*useEffect(() => {
     if( dataRegistro.nombre !== '' || dataRegistro.apellido !== '' || dataRegistro.correo !== '' || dataRegistro.telefono!== '' || dataRegistro.consulta !== '' ) {

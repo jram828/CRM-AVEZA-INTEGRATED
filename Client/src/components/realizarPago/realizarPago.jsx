@@ -27,9 +27,9 @@ function RealizarPago() {
   const handlePay = async () => {
     try {
       // Realizar la llamada a la API para crear la orden de pago en MercadoPago
-      console.log("Datos crear usuario: ", userPreference);
+      // console.log("Datos crear usuario: ", userPreference);
       const paymentData = await crearPago(userPreference);
-      console.log("Respuesta creacion pago: ", paymentData);
+      // console.log("Respuesta creacion pago: ", paymentData);
 
       // Redirigir a la página de pago de MercadoPago
       window.open(paymentData.init_point, "_self");
@@ -58,8 +58,8 @@ function RealizarPago() {
     fetchData();
   }, [dispatch]);
 
-  console.log('Casos para pagos:', pages)
-  console.log('User:', user)
+  // console.log('Casos para pagos:', pages)
+  // console.log('User:', user)
   
   if (pages.datosPagina) {
     

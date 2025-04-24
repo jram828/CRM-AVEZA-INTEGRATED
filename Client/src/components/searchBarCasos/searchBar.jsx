@@ -62,17 +62,17 @@ const SearchBar = ({ onFilter }) => {
 
     if (e.target.name === "estado") {
       const valueEstado = e.target.value;
-      console.log("Target value", valueEstado);
+      // console.log("Target value", valueEstado);
       setEstado(valueEstado);
       window.localStorage.setItem("select", JSON.stringify("estado"));
-      console.log("Estado change: ", estado);
+      // console.log("Estado change: ", estado);
       handleSearch(valueEstado);
     } else {
       const valueTipoCaso = e.target.value;
-      console.log("Target value", valueTipoCaso);
+      // console.log("Target value", valueTipoCaso);
       setTipoCaso(valueTipoCaso);
       window.localStorage.setItem("select", JSON.stringify("tipoCaso"));
-      console.log("Tipo caso change: ", tipoCaso);
+      // console.log("Tipo caso change: ", tipoCaso);
       handleSearch(valueTipoCaso);
     }
   };
@@ -80,10 +80,10 @@ const SearchBar = ({ onFilter }) => {
   const handleSearch = (searchParam) => {
     const queryParts = [];
 
-    console.log("Parametro search: ", searchParam);
+    // console.log("Parametro search: ", searchParam);
 
     const select = JSON.parse(localStorage.getItem("select"));
-    console.log("Select: ", select);
+    // console.log("Select: ", select);
 
     switch (select) {
       case "estado":
@@ -104,7 +104,7 @@ const SearchBar = ({ onFilter }) => {
     if (apellidoCliente)
       queryParts.push(`apellidosCliente=${formatInputValue(apellidoCliente)}`);
 
-    console.log("Query parts:", queryParts);
+    // console.log("Query parts:", queryParts);
     const queryString = queryParts.join("&");
 
     if (queryString) {

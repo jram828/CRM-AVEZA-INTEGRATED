@@ -47,16 +47,16 @@ const Form = ({ login, clickHandlerRecordatorio, clickHandlerCrear }) => {
     // Loginf();
     dispatch(setUserToken(user));
     const { rol } = userData;
-    console.log("Datos login:", user.email, rol);
+    // console.log("Datos login:", user.email, rol);
     try {
       const { data } = await axios(
         `/login/google/?email=${user.email}&rol=&${rol}`
       );
 
-      console.log("Login 3:", data);
+      // console.log("Login 3:", data);
 
       const { access } = data;
-      console.log("Access: ", access);
+      // console.log("Access: ", access);
 
       window.localStorage.setItem("loggedUser", JSON.stringify(data.usuario));
       if (access === true) {

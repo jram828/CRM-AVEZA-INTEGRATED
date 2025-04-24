@@ -74,15 +74,15 @@ export const generarPlanPagosHonorarios = (
   inicial
 ) => {
 
-  console.log("Valor Honorarios:", valorHonorarios);
-  console.log("Número de Cuotas:", numCuotas);      
-  console.log("Porcentaje Inicial:", inicial);
+  // console.log("Valor Honorarios:", valorHonorarios);
+  // console.log("Número de Cuotas:", numCuotas);      
+  // console.log("Porcentaje Inicial:", inicial);
   const planPagos = [];
   let saldo = valorHonorarios-inicial;
   let fechaPago = sumarMeses(new Date(),0);
 
   const cuotaMensual=(Math.round((valorHonorarios-inicial)/numCuotas));
- console.log("Cuota Mensual:", cuotaMensual);
+//  console.log("Cuota Mensual:", cuotaMensual);
   for (let i = 0; i <= numCuotas; i++) {
     
     i!==0?saldo -= cuotaMensual:null;

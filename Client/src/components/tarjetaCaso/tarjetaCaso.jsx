@@ -16,7 +16,7 @@ function TarjetaCaso({caso}) {
 
 
    
-    console.log('item', caso)
+    // console.log('item', caso)
      
 
   return (

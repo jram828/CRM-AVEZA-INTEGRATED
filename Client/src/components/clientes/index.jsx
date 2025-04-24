@@ -20,7 +20,7 @@ const Clientes = () => {
     dispatch(setSource("cliente"));
   }, [dispatch]);
 
-  console.log("Clientes conocimiento: ", clientes);
+  // console.log("Clientes conocimiento: ", clientes);
 
  
  const pages = useSelector((state) => state.pages);
@@ -34,9 +34,9 @@ const Clientes = () => {
  }, [dispatch]);
 
  const totalPages = Math.ceil(pages?.length / 15); // Cambia 15 por el número de elementos por página que desees
- console.log(totalPages);
+//  console.log(totalPages);
 
- console.log("pages", pages);
+//  console.log("pages", pages);
 
  useEffect(() => {
   //  if (order) {
@@ -46,7 +46,7 @@ const Clientes = () => {
   //  }
  }, [dispatch, currentPage, order]);
 
- console.log("order", order, "currentpage", currentPage);
+//  console.log("order", order, "currentpage", currentPage);
  const handleVerTodosClick = () => {
   //  setOrder("");
    setCurrentPage(1);

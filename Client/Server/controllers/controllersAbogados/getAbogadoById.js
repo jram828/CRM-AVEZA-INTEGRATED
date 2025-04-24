@@ -16,7 +16,7 @@ import { models } from "../../DB.js";
 
 const { Abogado, Ciudad, Departamento, Pais } = models;
 const getAbogadoById = async (cedulaAbogado) => {
-  console.log("Cedula abogado controller:", cedulaAbogado);
+  // console.log("Cedula abogado controller:", cedulaAbogado);
   const consulta = {
     where: {
       cedulaAbogado: parseInt(cedulaAbogado),
@@ -47,7 +47,7 @@ const getAbogadoById = async (cedulaAbogado) => {
 
   const abogado = await Abogado.findOne(consulta);
 
-  console.log('Abogado encontrado:', abogado)
+  // console.log('Abogado encontrado:', abogado)
   if (!abogado) throw Error("Abogado no existe");
   return abogado;
 };

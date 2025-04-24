@@ -113,7 +113,7 @@ function PDF({ cliente }) {
     negrita: { fontWeight: "bold" },
   });
 
-  console.log('Cliente PDF: ', cliente)
+  // console.log('Cliente PDF: ', cliente)
   return (
     <Document>
       <Page style={styles.page}>

@@ -10,11 +10,11 @@ function paginarArreglo(arreglo, paginaActual, tamañoPagina) {
 
 //Si la variable todos viene en true, muestra todos los casos aun los que han sido finalizados
 const getAllCaso = async (filters) => {
-  console.log("filters get caso controller:", filters.query);
+  // console.log("filters get caso controller:", filters.query);
   const todos = filters.query.todos || "false";
   let getAllCasoBd = [];
-  console.log("Todos filter casos:", todos);
-  console.log("Esto viene en el query en todos ... ", filters.query.todos);
+  // console.log("Todos filter casos:", todos);
+  // console.log("Esto viene en el query en todos ... ", filters.query.todos);
   // if (!filters.query.todos || filters.query.todos==='false' ) {
 
   // Consulta a la base de datos
@@ -140,7 +140,7 @@ const getAllCaso = async (filters) => {
 
   //Filtra de acuerdo a los parametros recibidos
   Object.entries(filters.query).forEach(([field, value]) => {
-    console.log("campo.... ", field, " valor..... ", value);
+    // console.log("campo.... ", field, " valor..... ", value);
     if (
       field !== "ordenarPor" &&
       field !== "pagina" &&
@@ -208,7 +208,7 @@ const getAllCaso = async (filters) => {
   }
 
   //Devuelve desde la pagina solicitada y la cantidad de elementos solicitados
-  console.log("Arreglo ordenado");
+  // console.log("Arreglo ordenado");
   // console.log(arregloOrdenado);
   let elementos = filters.query.porPagina || 9;
   let offset = filters.query.pagina || 1;

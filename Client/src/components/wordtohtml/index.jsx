@@ -177,7 +177,7 @@ function WordToHtml() {
          compression: "DEFLATE",
        });
 
-       console.log('Blob:',blob)
+      //  console.log('Blob:',blob)
        // Output the document using Data-URI
        saveAs(blob, "output.docx");
      };

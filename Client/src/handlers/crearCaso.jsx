@@ -15,7 +15,7 @@ export async function postCaso(data) {
     cuotas,
     forma_de_pago,
   } = data;
-  console.log("data del post", data);
+  // console.log("data del post", data);
 
   const fechaValida = new Date(fecha);
  var fechaVer; 

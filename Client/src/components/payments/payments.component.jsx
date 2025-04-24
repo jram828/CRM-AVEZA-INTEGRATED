@@ -5,7 +5,7 @@ import RealizarPago from "../realizarPago/realizarPago";
 function Payments() {
 
   const user = JSON.parse(localStorage.getItem("loggedUser"));
-  console.log("User:", user);
+  // console.log("User:", user);
 
   return (
     <div className="contenedorpagos">

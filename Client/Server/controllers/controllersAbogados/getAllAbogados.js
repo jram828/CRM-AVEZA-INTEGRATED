@@ -5,7 +5,7 @@ import { models } from "../../DB.js";
 
 const getAllAbogados = async (filters) => {
   //filters = acá me traigo req.query
-  console.log('filtros',filters)
+  // console.log('filtros',filters)
   
   let getAllAbogadosBd = [];
 
@@ -41,7 +41,7 @@ const getAllAbogados = async (filters) => {
      const abogado= await Abogado.findOne(consulta);
      getAllAbogadosBd=[abogado.dataValues]
 
-     console.log("Abogado encontrado:", getAllAbogadosBd);
+    //  console.log("Abogado encontrado:", getAllAbogadosBd);
     if (!getAllAbogadosBd) throw Error("Abogado no existe");
     
   } else {

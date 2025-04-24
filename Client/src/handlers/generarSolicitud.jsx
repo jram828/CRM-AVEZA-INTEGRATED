@@ -16,20 +16,20 @@ export const generarSolicitud = (
   cliente,
   listaAcreedores
 ) => {
-  console.log("Datos solicitud:", {
-    ingresos,
-    gastos,
-    bienes,
-    procesos,
-    obligaciones,
-    sociedades,
-    deudas,
-    propuestas,
-    motivos,
-    cliente,
-    ciudad: cliente.Ciudads[0].nombre_ciudad,
-    listaAcreedores,
-  });
+  // console.log("Datos solicitud:", {
+  //   ingresos,
+  //   gastos,
+  //   bienes,
+  //   procesos,
+  //   obligaciones,
+  //   sociedades,
+  //   deudas,
+  //   propuestas,
+  //   motivos,
+  //   cliente,
+  //   ciudad: cliente.Ciudads[0].nombre_ciudad,
+  //   listaAcreedores,
+  // });
   const docs = document.getElementById("doc");
 
   const newAcreedores = listaAcreedores.map((acreedor, index) => ({
@@ -44,7 +44,7 @@ export const generarSolicitud = (
 
   const sumaCapitalDeudas = formatNumero(deudas.reduce((acumulador, deuda) => acumulador + deuda.capital, 0));
   const sumaGastos = formatNumero(Number(gastos.energia) + Number(gastos.gas) + Number(gastos.aguaAlcAseo) + Number(gastos.telecomunicaciones) + Number(gastos.television) + Number(gastos.arriendo) + Number(gastos.seguros) + Number(gastos.alimentacion) + Number(gastos.transporte) + Number(gastos.otros));
-  console.log("Suma gastos:", sumaGastos);
+  // console.log("Suma gastos:", sumaGastos);
   const datosinsolvencia = {
     ingresos,
     gastos,
@@ -68,7 +68,7 @@ export const generarSolicitud = (
   reader.readAsBinaryString(docs.files.item(0));
 
   reader.onerror = function (evt) {
-    console.log("error reading file", evt);
+    // console.log("error reading file", evt);
     alert("error reading file" + evt);
   };
   reader.onload = function (evt) {

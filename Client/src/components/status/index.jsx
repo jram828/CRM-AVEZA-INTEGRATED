@@ -18,7 +18,7 @@ function Status() {
   useEffect(() => {
     const replaceFirst = search.replace("?", "");
     const splitString = replaceFirst.split("&");
-    console.log("array queries: ", splitString);
+    // console.log("array queries: ", splitString);
 
     const formattedQueries = {};
 
@@ -31,7 +31,7 @@ function Status() {
   }, []);
 
   // console.log("objeto queries: ", queries);
-  console.log("Payment id: ", queries.payment_id);
+  // console.log("Payment id: ", queries.payment_id);
 
   function generatePDF() {
     printDivContent("comprobante");
@@ -40,16 +40,16 @@ function Status() {
   // if (queries.payment_id) {
   useEffect(() => {
     const datos = obtenerPago(queries.payment_id);
-    console.log("Informacion del pago: ", datos);
+    // console.log("Informacion del pago: ", datos);
     setDatosPago(datos);
   }, [queries.payment_id]);
   // }
 
   const obtenerPago = async (id) => {
-    console.log("Payment id obtener pago: ", id);
+    // console.log("Payment id obtener pago: ", id);
     try {
       const paymentData = await verificarPago(id);
-      console.log("Respuesta verificacion pago: ", paymentData);
+      // console.log("Respuesta verificacion pago: ", paymentData);
       setDatosPago(paymentData);
       return paymentData;
     } catch (error) {

@@ -15,16 +15,16 @@ const Detail = () => {
   // const datos = useSelector((state) =>
   //   source === "abogado" ? state.abogado : state.cliente
   // );
-  console.log('Source:', source)
+  // console.log('Source:', source)
   const cliente = JSON.parse(localStorage.getItem("cliente"));
-  console.log('Cliente local:', cliente)
+  // console.log('Cliente local:', cliente)
 
   const abogado = JSON.parse(localStorage.getItem("abogado"));
-  console.log("Abogado local:", abogado);
+  // console.log("Abogado local:", abogado);
 
-  const datos = source === "abogado" ? abogado:cliente;
+  // const datos = source === "abogado" ? abogado:cliente;
 
-  console.log("Datos cliente:", datos);
+  // console.log("Datos cliente:", datos);
   const Cedula =
     source === "abogado" ? datos.cedulaAbogado : datos.cedulaCliente;
 
@@ -87,7 +87,7 @@ const Detail = () => {
 
       if (isConfirmed) {
         dispatch(deleteAbogado(Cedula));
-        console.log("cedula", Cedula);
+        // console.log("cedula", Cedula);
         navigate("/abogados");
       }
     } else {
@@ -122,7 +122,7 @@ const Detail = () => {
     }
   };
 
-  console.log("Nuevos Datos cliente:", userDataDetail);
+  // console.log("Nuevos Datos cliente:", userDataDetail);
 
   return (
     <div className="contenedordetail">

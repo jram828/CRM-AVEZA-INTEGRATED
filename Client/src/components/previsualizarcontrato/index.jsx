@@ -25,7 +25,7 @@ function loadFile(url, callback) {
 
 const PrevisualizarContrato = () => {
   const cliente = useSelector((state) => state.cliente);
-  console.log("Cliente Prev Contrato:", cliente);
+  // console.log("Cliente Prev Contrato:", cliente);
   var [selectedFile, setSelectedFile] = useState(null);
 
   const handleChangeTemplate = (event) => {
@@ -71,7 +71,7 @@ const PrevisualizarContrato = () => {
                     reader.readAsBinaryString(docs.files.item(0));
 
                     reader.onerror = function (evt) {
-                      console.log("error reading file", evt);
+                      // console.log("error reading file", evt);
                       alert("error reading file" + evt);
                     };
                     reader.onload = function (evt) {

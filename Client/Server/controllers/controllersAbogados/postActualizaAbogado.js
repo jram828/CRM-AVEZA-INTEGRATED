@@ -17,30 +17,30 @@ const actualizaAbogado = async (
   cedula_anterior
 ) => {
   // console.log('imagen',imagen)
-  console.log("Datos controller actualiza abogado:", {
-    cedulaAbogado,
-    tarjetaProf,
-    nombres,
-    apellidos,
-    email,
-    celular,
-    direccion,
-    ciudad,
-    ciudad_anterior,
-    comentarios,
-    cedula_anterior,
-  });
-  console.log("Cedula Abogado controller:", cedulaAbogado);
-  console.log("Cedula anterior controller:", cedula_anterior);
+  // console.log("Datos controller actualiza abogado:", {
+  //   cedulaAbogado,
+  //   tarjetaProf,
+  //   nombres,
+  //   apellidos,
+  //   email,
+  //   celular,
+  //   direccion,
+  //   ciudad,
+  //   ciudad_anterior,
+  //   comentarios,
+  //   cedula_anterior,
+  // });
+  // console.log("Cedula Abogado controller:", cedulaAbogado);
+  // console.log("Cedula anterior controller:", cedula_anterior);
   const ciudadfilter = codigoCiudades.filter(
     (Ciudad) => Ciudad.nombre_ciudad === ciudad.toUpperCase()
   );
-  console.log("Ciudad filter:", ciudadfilter);
+  // console.log("Ciudad filter:", ciudadfilter);
 
   const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
-  console.log("Codigo ciudad:", codigo_ciudad);
+  // console.log("Codigo ciudad:", codigo_ciudad);
 
-  console.log("ciudad:", ciudadfilter);
+  // console.log("ciudad:", ciudadfilter);
 
   const AbogadoActualizar = await Abogado.findByPk(cedula_anterior);
 

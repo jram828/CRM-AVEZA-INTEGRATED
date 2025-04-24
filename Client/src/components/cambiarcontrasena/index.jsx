@@ -15,7 +15,7 @@ const CambiarContrasena = () => {
   useEffect(() => {
     const replaceFirst = search.replace("?", "");
     const splitString = replaceFirst.split("&");
-    console.log("array queries: ", splitString);
+    // console.log("array queries: ", splitString);
 
     const formattedQueries = {};
 
@@ -27,7 +27,7 @@ const CambiarContrasena = () => {
     setQueries(formattedQueries);
   }, []);
 
-  console.log("objeto queries: ", queries);
+  // console.log("objeto queries: ", queries);
 
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const CambiarContrasena = () => {
     e.preventDefault();
 
     const { newPassword } = userData;
-    console.log("Datos recordar password:", newPassword);
+    // console.log("Datos recordar password:", newPassword);
 
     try {
       await cambiarPassword(newPassword, queries.cedula);

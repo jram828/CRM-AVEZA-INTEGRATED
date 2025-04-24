@@ -22,7 +22,7 @@ function AllConsultas() {
   }, [dispatch]);
 
   const totalPages = Math.ceil(consultas?.length / 6);
-  console.log('Total paginas:',totalPages);
+  // console.log('Total paginas:',totalPages);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +33,7 @@ function AllConsultas() {
     fetchData();
   }, [dispatch, currentPage]);
 
-  console.log("consultas", consultas);
+  // console.log("consultas", consultas);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);

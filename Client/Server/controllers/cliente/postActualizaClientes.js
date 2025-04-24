@@ -17,17 +17,17 @@ const actualizaCliente = async (
   // password,
 ) => {
   const cedulaCliente = cedula;
-  console.log('Cedula cliente controller:', cedulaCliente)
-  console.log("Cedula anterior controller:", cedula_anterior);
+  // console.log('Cedula cliente controller:', cedulaCliente)
+  // console.log("Cedula anterior controller:", cedula_anterior);
     const ciudadfilter = codigoCiudades.filter(
       (Ciudad) => Ciudad.nombre_ciudad === ciudad.toUpperCase()
     );
-    console.log("Ciudad filter:", ciudadfilter);
+    // console.log("Ciudad filter:", ciudadfilter);
 
     const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
-    console.log("Codigo ciudad:", codigo_ciudad);
+    // console.log("Codigo ciudad:", codigo_ciudad);
 
-  console.log("ciudad:", ciudadfilter);
+  // console.log("ciudad:", ciudadfilter);
   
   const clienteActualizar = await Cliente.findByPk(cedula_anterior);
 

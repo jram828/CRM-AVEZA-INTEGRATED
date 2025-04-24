@@ -12,7 +12,7 @@ import { generarDocumentos } from "../../handlers/generarDocumentos";
 function DetailInsolvencia() {
   // const user = JSON.parse(localStorage.getItem("loggedUser"));
   const { id } = useParams(); // Obtener el id de los parámetros de la ruta
-  console.log("Id detail:", id);
+  // console.log("Id detail:", id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -59,7 +59,7 @@ function DetailInsolvencia() {
     obtenerCaso(id);
   }, [id]);
 
-  console.log("Caso detail:", casoDetail);
+  // console.log("Caso detail:", casoDetail);
   // ciudad: datos.Ciudads[0].nombre_ciudad,
   // departamento: datos.Ciudads[0].Departamentos[0].nombre_departamento,
 
@@ -79,7 +79,7 @@ function DetailInsolvencia() {
     const fechaFin = new Date().toISOString().split("T")[0]; // Obtener la fecha actual en formato YYYY-MM-DD
     dispatch(finCaso(id, fechaFin));
     // dispatch(getCasos());
-    console.log("id", id, "fechaFin", fechaFin);
+    // console.log("id", id, "fechaFin", fechaFin);
     navigate("/casos");
     // }
   };
@@ -92,7 +92,7 @@ function DetailInsolvencia() {
     if (isConfirmed) {
       dispatch(deleteCaso(id));
       // dispatch(getCasos());
-      console.log("id", id);
+      // console.log("id", id);
       navigate("/casos");
     }
   };

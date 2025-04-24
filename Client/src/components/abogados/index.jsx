@@ -25,9 +25,9 @@ const Abogados = () => {
   }, [dispatch]);
 
   const totalPages = Math.ceil(pages?.length / 12);
-  console.log(totalPages);
+  // console.log(totalPages);
 
-  console.log("pages", pages);
+  // console.log("pages", pages);
 
   useEffect(() => {
     // if (order) {
@@ -45,7 +45,7 @@ const Abogados = () => {
     // }
   }, [dispatch, currentPage]);
 
-  console.log("currentpage", currentPage);
+  // console.log("currentpage", currentPage);
 
   useEffect(() => {
     dispatch(getAbogados());
@@ -53,7 +53,7 @@ const Abogados = () => {
   }, [dispatch]);
 
 
-  console.log("Abogados: ", abogados);
+  // console.log("Abogados: ", abogados);
 
   const handleVerTodosClick = () => {
     // setOrder("");

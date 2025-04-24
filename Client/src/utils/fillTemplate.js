@@ -15,7 +15,7 @@ const fillTemplate = () => {
     dispatch(getClienteAll());
   }, [dispatch]);
 
-  console.log("Clientes conocimiento: ", clientes);
+  // console.log("Clientes conocimiento: ", clientes);
 
   const generarContrato = () => {
 
@@ -28,7 +28,7 @@ const fillTemplate = () => {
     reader.readAsBinaryString(docs.files.item(0));
 
     reader.onerror = function (evt) {
-      console.log("error reading file", evt);
+      // console.log("error reading file", evt);
       alert("error reading file" + evt);
     };
     reader.onload = function (evt) {

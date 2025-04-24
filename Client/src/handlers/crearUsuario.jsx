@@ -14,13 +14,13 @@ export async function crearUsuario(userDataCrear) {
     tipo_usuario,
   } = userDataCrear;
   
-  console.log("Userdata: ", userDataCrear);
+  // console.log("Userdata: ", userDataCrear);
 
   const ciudad = codigoCiudades.filter(
     (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
   );
 
-  console.log("Codigo ciudad Userdata: ", ciudad);
+  // console.log("Codigo ciudad Userdata: ", ciudad);
   // const URL = "/crearusuario";
   try {
     await axios.post("/usuarios", {

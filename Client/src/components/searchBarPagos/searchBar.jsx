@@ -18,12 +18,12 @@ const SearchBar = ({ onFilter }) => {
   const handleSearch = (searchParam) => {
     const queryParts = [];
 
-    console.log("Parametro search: ", searchParam);
+    // console.log("Parametro search: ", searchParam);
 
     if (apellidoCliente)
       queryParts.push(`apellidosCliente=${formatInputValue(apellidoCliente)}`);
 
-    console.log("Query parts:", queryParts);
+    // console.log("Query parts:", queryParts);
     const queryString = queryParts.join("&");
 
     if (queryString) {

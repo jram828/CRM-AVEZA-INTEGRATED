@@ -92,7 +92,7 @@ export function EditarInsolvenc() {
   };
 
   const handleSubmit = () => {
-    console.log("Datos guardados:", clienteData);
+    // console.log("Datos guardados:", clienteData);
     // Aquí puedes implementar la lógica para enviar los datos al backend.
   };
 

@@ -161,7 +161,7 @@ const getAllCita = async (filters) => {
   //if (filters.query.pagina) offset = (filters.query.pagina - 1) * parseInt(elementos);
   //console.log(arregloOrdenado)
   //console.log(datos)
-  console.log("offset....", offset, "  elementos........", elementos);
+  // console.log("offset....", offset, "  elementos........", elementos);
   const totalPaginas = Math.ceil(arregloOrdenado.length / elementos);
   const paginaActual = paginarArreglo(arregloOrdenado, offset - 1, elementos);
 

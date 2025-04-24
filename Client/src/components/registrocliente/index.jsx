@@ -59,7 +59,7 @@ const RegistroCliente = () => {
     const foundCiudad = codigoCiudades.filter((ciudad) =>
       ciudad.nombre_ciudad.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    console.log("Ciudades encontradas:", foundCiudad);
+    // console.log("Ciudades encontradas:", foundCiudad);
     setCiudadFilt(foundCiudad);
   };
 

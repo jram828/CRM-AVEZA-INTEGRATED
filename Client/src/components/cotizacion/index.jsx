@@ -521,7 +521,7 @@ const Cotizacion = () => {
         </Button>
       </div>
       <form
-        onSubmit={handlerGenerarCotizacion}
+        // onSubmit={handlerGenerarCotizacion}
         className="datoscotizacion"
         id="contcotizacion"
       >
@@ -867,7 +867,7 @@ const Cotizacion = () => {
                         placeholder="Buscar acreedor..."
                         onChange={(event) => handleDeudaChange(index, event)}
                       />
-                      {acreedorFilt.length > 0 && (
+                      {acreedorFilt.length > 0 && index===(deudas.length-1)&&(
                         <select
                           name="acreedor"
                           id="acreedor"

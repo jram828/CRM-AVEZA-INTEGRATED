@@ -41,7 +41,7 @@ server.use((err, req, res)=>{          //Manejador de errores
 const PORT = env.PORT || 3001;
 
 server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT} in ${env.status}`);
+  console.log(`Server listening on port http://localhost:${PORT} in ${env.status}`);
 });
 
 

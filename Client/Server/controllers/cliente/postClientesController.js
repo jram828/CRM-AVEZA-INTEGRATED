@@ -19,15 +19,8 @@ const createClienteBd = async (
   comentarios,
   valor_pretensiones
 ) => {
-  const ciudadfilter = codigoCiudades.filter(
-    (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
-  );
-  console.log("Ciudad filter:", ciudadfilter);
 
-  const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
-  console.log("Codigo ciudad:", codigo_ciudad);
-
-  console.log("ciudad:", ciudadfilter);
+  
   console.log("Body:", {
     email,
     nombres,
@@ -73,7 +66,19 @@ const createClienteBd = async (
         comentarios: comentarios,
         valor_pretensiones: valor_pretensiones,
       });
-      newCliente.addCiudad(codigo_ciudad);
+      if(nombre_ciudad){
+        const ciudadfilter = codigoCiudades.filter(
+          (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
+        );
+        console.log("Ciudad filter:", ciudadfilter);
+      
+        const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
+        console.log("Codigo ciudad:", codigo_ciudad);
+      
+        console.log("ciudad:", ciudadfilter);
+        newCliente.addCiudad(codigo_ciudad);
+      }
+      
       // newCliente.addTipoDeCaso(tipo_de_caso);
       // newCliente.addTipoUsuario(tipo_usuario);
 

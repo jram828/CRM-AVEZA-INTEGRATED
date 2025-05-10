@@ -14,17 +14,17 @@ export const generarCotizacion = (
   honorarios,
   resultadosCotizacion
 ) => {
-  // console.log("Datos cotizacion:", {
-  //   caso,
-  //   ingreso,
-  //   gasto,
-  //   bienes,
-  //   deudas,
-  //   propuestas,
-  //   cliente,
-  //   honorarios,
-  //   resultadosCotizacion,
-  // });
+  console.log("Datos cotizacion:", {
+    caso,
+    ingreso,
+    gasto,
+    bienes,
+    deudas,
+    propuestas,
+    cliente,
+    honorarios,
+    resultadosCotizacion,
+  });
   const docs = document.getElementById("doc");
 
   const datoscotizacion = {
@@ -66,12 +66,20 @@ export const generarCotizacion = (
       ...bien,
       valor: formatNumero(bien.valor),
     }));
+    
 
-    const newPropuestas = propuestas.map((propuesta) => ({
-      ...propuesta,
-      valorCuota: formatNumero(propuesta.valorCuota),
+
+    const newPropuestas = Object.keys(resultadosCotizacion)
+    .filter(clase => resultadosCotizacion[clase].cuotas && resultadosCotizacion[clase].valorCuota) // Filtra las clases con valores válidos
+    .map((clase, index) => ({ // Usa index como contador
+        contador: index + 1, // Contador que inicia desde 1
+        Clasificacion: clase,
+        subtotal: formatNumero(resultadosCotizacion.totalesPorTipo[clase]) || 0, // Obtiene el subtotal, si existe
+        numeroCuotas: parseInt(resultadosCotizacion[clase].cuotas, 10), // Número de cuotas
+        valorCuota: formatNumero(Math.round(parseFloat(resultadosCotizacion[clase].valorCuota))) // Redondea el valor de la cuota
     }));
 
+    console.log("Propuestas:", newPropuestas);
     // !Reemplazar contenido de array en una tabla
     doc.render({
       nombre: cliente.nombres,

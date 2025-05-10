@@ -22,7 +22,7 @@ const Detail = () => {
   const abogado = JSON.parse(localStorage.getItem("abogado"));
   // console.log("Abogado local:", abogado);
 
-  // const datos = source === "abogado" ? abogado:cliente;
+  const datos = source === "abogado" ? abogado:cliente;
 
   // console.log("Datos cliente:", datos);
   const Cedula =
@@ -49,9 +49,9 @@ const Detail = () => {
         ...userDataDetail,
         email: datos.email,
         celular: datos.celular,
-        ciudad: datos.Ciudads[0].nombre_ciudad,
-        ciudad_anterior: datos.Ciudads[0].codigo_ciudad,
-        departamento: datos.Ciudads[0].Departamentos[0].nombre_departamento,
+        ciudad: datos?.Ciudads[0]?.nombre_ciudad|| "",
+        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad|| "",
+        departamento: datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento|| "",
         tarjetaProf: datos.tarjetaProf,
         nombres: datos.nombres,
         apellidos: datos.apellidos,
@@ -65,9 +65,9 @@ const Detail = () => {
         ...userDataDetail,
         email: datos.email,
         celular: datos.celular,
-        ciudad: datos.Ciudads[0].nombre_ciudad,
-        ciudad_anterior: datos.Ciudads[0].codigo_ciudad,
-        departamento: datos.Ciudads[0].Departamentos[0].nombre_departamento,
+        ciudad: datos?.Ciudads[0]?.nombre_ciudad|| "",
+        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad|| "",
+        departamento: datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento|| "",
         nombres: datos.nombres,
         tarjetaProf: "",
         apellidos: datos.apellidos,

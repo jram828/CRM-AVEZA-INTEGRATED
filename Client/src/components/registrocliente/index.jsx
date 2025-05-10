@@ -26,8 +26,6 @@ const RegistroCliente = () => {
     valor_pretensiones: "",
   });
 
-  const [file, setFile] = useState(null);
-
   const initCiudadFilt = {
     ciudades: [],
   };

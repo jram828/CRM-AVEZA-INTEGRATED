@@ -141,7 +141,7 @@ const Cotizacion = () => {
         return acc;
       }, {})
   );
-  console.log("Bienes general:", bienes);
+  // console.log("Bienes general:", bienes);
   // console.log("FormData:", formData);
 
   const addPropuesta = () => {
@@ -389,6 +389,9 @@ const Cotizacion = () => {
   };
 
   const handlerGenerarCotizacion = () => {
+
+    console.log("Propuestas handler:", propuestas);
+    
     const datoscotizacion = generarCotizacion(
       caso,
       ingreso,

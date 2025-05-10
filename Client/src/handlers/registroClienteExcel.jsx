@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import * as XLSX from "xlsx";
+import { codigoCiudades } from "../utils/codigoCiudades";
 
 export async function registroClienteExcel() {
   // const {
@@ -30,15 +31,23 @@ export async function registroClienteExcel() {
     const worksheet = workbook.Sheets[sheetName];
     var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-    // console.log("Datos del archivo:", jsonData);
-
+    console.log("Datos del archivo:", jsonData);
+   jsonData.shift(); // Eliminar la primera fila (encabezados)
     jsonData.forEach(async (row) => {
+
+      const foundCiudad = codigoCiudades.filter((ciudad) =>
+            ciudad.nombre_ciudad.toLowerCase().includes(row[6].toLowerCase())
+          );
+ console.log("Ciudades encontradas:", foundCiudad);
       const clienteData = {
-        nombres: row.Nombres,
-        apellidos: row.Apellidos,
-        celular: row.Celular,
-        correo: row.Correo,
-        direccion: row.Direccion,
+        cedulaCliente: row[0],
+        nombres: row[1],
+        apellidos: row[2],
+        celular: row[3],
+        email: row[4],
+        direccion: row[5],
+        nombre_ciudad: foundCiudad.length > 0 ? foundCiudad[0].nombre_ciudad : "",
+
       };
       // console.log("Cliente data:", clienteData);
       const URL = "/clientes/registrocliente";

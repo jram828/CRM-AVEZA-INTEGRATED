@@ -33,7 +33,7 @@ const Clientes = () => {
   dispatch(getClienteAllCasos()); // Obtener el total de clientes
  }, [dispatch]);
 
- const totalPages = Math.ceil(pages?.length / 15); // Cambia 15 por el número de elementos por página que desees
+ const totalPages = Math.ceil(pages?.length / 12); // Cambia 15 por el número de elementos por página que desees
 //  console.log(totalPages);
 
 //  console.log("pages", pages);

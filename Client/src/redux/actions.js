@@ -133,7 +133,7 @@ export const setSource = (source) => {
 };
 
 export const getClientes = (page) => {
-  const endpoint = `/clientes/conocimientolitigios?pagina=${page}&porPagina=15`;
+  const endpoint = `/clientes/conocimientolitigios?pagina=${page}&porPagina=12`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
     return dispatch({

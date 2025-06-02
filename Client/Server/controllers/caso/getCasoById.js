@@ -25,6 +25,7 @@ const getCasoId = async (id) => {
           ]
       },
       {
+        
         model: Abogado,
         attributes: ["apellidos", "nombres", "direccion", "celular", "email", "tarjetaProf"],
         

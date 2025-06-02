@@ -87,7 +87,7 @@ const Proceso = procesoModel(sequelize);
 const Bien = bienModel(sequelize);
 const Gastos = gastosModel(sequelize);
 const PropuestaPago = propuestaPagoModel(sequelize);
-const Deuda = deudaModel(sequelize);
+const Deuda2 = deudaModel(sequelize);
 const Sociedad = sociedadModel(sequelize);
 const ObligacionAlimentaria = obligacionAlimentariaModel(sequelize);
 const Motivos = motivosModel(sequelize);
@@ -178,8 +178,8 @@ Gastos.belongsToMany(Solicitud, { through: "solicitud_Gastos" });
 Solicitud.belongsToMany(PropuestaPago, { through: "solicitud_PropuestaPago" });
 PropuestaPago.belongsToMany(Solicitud, { through: "solicitud_PropuestaPago" });
 
-Solicitud.belongsToMany(Deuda, { through: "solicitud_Deuda" });
-Deuda.belongsToMany(Solicitud, { through: "solicitud_Deuda" });
+Solicitud.belongsToMany(Deuda2, { through: "solicitud_Deuda" });
+Deuda2.belongsToMany(Solicitud, { through: "solicitud_Deuda" });
 
 Solicitud.belongsToMany(Sociedad, { through: "solicitud_Sociedad" });
 Sociedad.belongsToMany(Solicitud, { through: "solicitud_Sociedad" });
@@ -195,6 +195,9 @@ Cliente.belongsToMany(Solicitud, { through: "solicitud_cliente" });
 
 TipoUsuario.hasMany(Cliente);
 Cliente.belongsTo(TipoUsuario);
+
+Cliente.belongsToMany(Deuda2, { through: "Cliente_Deuda" });
+Deuda2.belongsToMany(Cliente, { through: "Cliente_Deuda" });
 
 const models = {
   ...sequelize.models,

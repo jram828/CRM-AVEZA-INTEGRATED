@@ -5,7 +5,8 @@
   Abogado,
   TipoDeCaso,
   PagosCliente,
-  Ciudad
+  Ciudad,
+  Deuda2
 } = models
 const getCasoId = async (id) => {
   // console.log(id)
@@ -17,7 +18,10 @@ const getCasoId = async (id) => {
         include: [
           {
             model: Ciudad,
-            attributes: ["nombre_ciudad","codigo_ciudad"]}
+            attributes: ["nombre_ciudad","codigo_ciudad"]},
+            {
+            model: Deuda2,
+            attributes: ["acreedor","capital","derechoVoto","clasificacion"]}
           ]
       },
       {

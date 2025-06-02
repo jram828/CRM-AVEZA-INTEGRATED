@@ -14,6 +14,7 @@ const createDeudas = async (deudas,cedulaCliente) => {
       activo: true,
     },
   });
+  console.log("estaCliente controller:", estaCliente);
   if (!estaCliente)
     return JSON.stringify({
       mensaje: "Cliente no encontrado o Cliente eliminado",
@@ -60,7 +61,7 @@ const createDeudas = async (deudas,cedulaCliente) => {
         derechoVoto: deuda.derechoVoto,
         acreedor: deuda.acreedor,
       });
-
+      console.log("Nueva Deuda:", newDeuda);
       newDeuda.addCliente(estaCliente);
     }
 

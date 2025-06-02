@@ -20,6 +20,7 @@ export const generarDocumentos = (
   const planpagos = generarPlanPagosHonorarios(caso.honorarios, caso.cuotas, caso.porcentajeInicial);
   // console.log("Plan de pagos:", planpagos);
   
+  console.log("Deudas del cliente generar:", caso.Cliente.Deuda2s);
   const reader = new FileReader();
   if (docs.files.length === 0) {
     alert("No files selected");
@@ -38,11 +39,6 @@ export const generarDocumentos = (
       linebreaks: true,
     });
 
-    // !Reemplazar contenido de array en una tabla
-    // doc.render({
-    //   clientes: clientes,
-    // });
-
     // !Reemplazar campos en una plantilla (Documentos legales)
     doc.render({
       nombre: caso.Cliente.nombres.toUpperCase(),
@@ -60,6 +56,7 @@ export const generarDocumentos = (
       honorariosLiquidacion: Number(caso.honorariosLiquidacion).toLocaleString(),
       honorariosLiquidacion_letras: honorariosLiquidacion_letras.toUpperCase(),
       planpagos: planpagos,
+      deudas: caso.Cliente.Deuda2s,
     });
 
     const blob = doc.getZip().generate({

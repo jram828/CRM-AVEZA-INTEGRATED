@@ -1,4 +1,5 @@
 import { createCaso } from "../controllers/caso/postAgregaCaso.js";
+import { createDeudas } from "../controllers/caso/createDeudas.js";
 import { getAllCaso } from "../controllers/caso/getAllCaso.js";
 import { finCaso } from "../controllers/caso/finCaso.js";
 import { deleteCaso } from "../controllers/caso/deleteCaso.js";
@@ -97,6 +98,18 @@ const finCasoHandler = async (req, res) => {
   }
 };
 
+const createDeudasHandler = async (req, res) => {
+  const { deudas, cedulaCliente } = req.body;
+  console.log('body handler crear deudas:', req.body)
+
+  try {
+    const response = await createDeudas(deudas,cedulaCliente);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const deleteCasoHandler = async (req, res) => {
   const { idCaso} = req.body;
   console.log("body handler delete:", req.body);
@@ -182,6 +195,7 @@ const postActualizaCasoCotizacion = async (req, res) => {
 
 export {
   createCasosHandler,
+  createDeudasHandler,
   getCasoHandler,
   finCasoHandler,
   deleteCasoHandler,

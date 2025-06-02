@@ -6,6 +6,7 @@ import { Button } from "../Mystyles.js";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarCotizacion } from "../../handlers/generarCotizacion.jsx";
 import {
+  crearDeudas,
   crearSolicitud,
   modificarCasoCotizacion,
 } from "../../redux/actions.js";
@@ -405,6 +406,8 @@ const Cotizacion = () => {
     );
 
     dispatch(modificarCasoCotizacion(datoscotizacion));
+    console.log("Cedula:", cliente.cedula);
+    dispatch(crearDeudas({deudas, cedulaCliente: cliente.cedula}));
 
     // console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));

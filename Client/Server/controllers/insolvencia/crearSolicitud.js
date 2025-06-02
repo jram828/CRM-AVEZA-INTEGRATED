@@ -8,7 +8,7 @@ const {
   Proceso,
   Ingreso,
   Gastos,
-  Deuda,
+  Deuda2,
   Motivos,
   ObligacionAlimentaria,
   PropuestaPago,
@@ -105,7 +105,7 @@ export const crearSolicitud = async (datosInsolvencia) => {
     console.log("Ultimo Proceso: ", newProceso);
 
     for (let deuda of deudas) {
-      var newDeuda = await Deuda.create({
+      var newDeuda = await Deuda2.create({
         tipoDeuda: deuda.tipoDeuda,
         tipoGarantia: deuda.tipoGarantia,
         documentoSoporte: deuda.documentoSoporte,

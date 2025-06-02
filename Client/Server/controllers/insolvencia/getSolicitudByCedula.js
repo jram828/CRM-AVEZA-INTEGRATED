@@ -32,7 +32,7 @@ const getSolicitudCedula = async (cedula) => {
                 Proceso,
                 Gastos,
                 PropuestaPago,
-                Deuda,
+                deuda,
                 Sociedad,
                 ObligacionAlimentaria,
                 Motivos

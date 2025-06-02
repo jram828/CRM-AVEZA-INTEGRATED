@@ -53,6 +53,7 @@ import {
   DELETE_CONSULTA,
   POST_INSOLVENCIA,
   GET_SOLICITUD_BY_CEDULA,
+  CREAR_DEUDAS,
 } from "./actions";
 
 let initialState = {
@@ -68,6 +69,7 @@ let initialState = {
   caso: {},
   cita: [],
   citas: [],
+  deudas: [],
   filtro: [],
   consultas: [],
   pagos: [],
@@ -119,7 +121,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         pages: action.payload,
       };
-      case GET_CLIENTES_CASOS:
+    case GET_CLIENTES_CASOS:
       return {
         ...state,
         pages: action.payload,
@@ -161,7 +163,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         cliente: action.payload,
       };
-      case SET_CASO:
+    case SET_CASO:
       return {
         ...state,
         caso: action.payload,
@@ -272,7 +274,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         caso: action.payload,
       };
-      case MODIFICAR_CASO_COTIZACION:
+    case MODIFICAR_CASO_COTIZACION:
       return {
         ...state,
         caso: action.payload,
@@ -297,6 +299,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         solicitud: action.payload,
       };
+    case CREAR_DEUDAS:
+      return {
+        ...state,
+        deudas: action.payload,
+      };
+
     case CLEAN_USER:
       return initialState;
     // case LOGIN:

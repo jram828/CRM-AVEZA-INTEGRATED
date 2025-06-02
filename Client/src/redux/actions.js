@@ -6,6 +6,7 @@ export const GET_CLIENTES = "GET_CLIENTES"
 export const GET_CLIENTES_CASOS = "GET_CLIENTES_CASOS"
 export const SET_CLIENTE = "SET_CLIENTE"; 
 export const SET_CASO = "SET_CASO"; 
+export const CREAR_DEUDAS = "CREAR_DEUDAS"; 
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const SET_USERTOKEN = "SET_USERTOKEN";
 export const FILTER_ABOGADO = "FILTER_NAME_ABOGADO";
@@ -544,6 +545,19 @@ export const getAbogadosTodos = () => {
     window.alert("Se ha actualizado el caso con éxito.");
     return dispatch({
       type: MODIFICAR_CASO_COTIZACION,
+      payload: data,
+    });
+  };
+};
+
+ export const crearDeudas = (payload) => {
+  const endpoint = `/casos/creardeudas`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+  
+    return dispatch({
+      type: CREAR_DEUDAS,
       payload: data,
     });
   };

@@ -79,6 +79,7 @@ function DetailCasos() {
   );
   // const valor_pretensiones = Number(casoDetail.valor_pretensiones).toLocaleString();
   const honorarios_letras = numeroALetras(Number(casoDetail.honorarios));
+  const valorRadicar_letras = numeroALetras(Number(casoDetail.valorRadicar));
   const honorariosLiquidacion_letras = numeroALetras(Number(casoDetail.honorariosLiquidacion));
   // const honorarios = Number(casoDetail.honorarios).toLocaleString();
 
@@ -130,7 +131,7 @@ function DetailCasos() {
   };
 
   const handlerGenerarDocumentos = () => {
-    generarDocumentos(casoDetail, valor_pretensiones_letras, honorarios_letras, honorariosLiquidacion_letras);
+    generarDocumentos(casoDetail, valor_pretensiones_letras, honorarios_letras, valorRadicar_letras,honorariosLiquidacion_letras);
   };
 
   const handlerSolicitud = () => {

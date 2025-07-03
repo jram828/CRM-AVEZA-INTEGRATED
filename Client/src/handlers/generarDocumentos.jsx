@@ -8,6 +8,7 @@ export const generarDocumentos = (
   caso,
   valor_pretensiones_letras,
   honorarios_letras,
+  valorRadicar_letras,
   honorariosLiquidacion_letras,
 ) => {
 
@@ -53,6 +54,8 @@ export const generarDocumentos = (
       pretensiones_letras: valor_pretensiones_letras.toUpperCase(),
       honorarios: Number(caso.honorarios).toLocaleString(),
       honorarios_letras: honorarios_letras.toUpperCase(),
+      valorRadicar: Number(caso.valorRadicar).toLocaleString(),
+      valorRadicar_letras: valorRadicar_letras.toUpperCase(),
       honorariosLiquidacion: Number(caso.honorariosLiquidacion).toLocaleString(),
       honorariosLiquidacion_letras: honorariosLiquidacion_letras.toUpperCase(),
       planpagos: planpagos,

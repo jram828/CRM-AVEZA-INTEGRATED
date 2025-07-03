@@ -96,21 +96,22 @@ function CrearCaso() {
     try {
       await postCaso(userDataRegistro);
 
-      if (userDataRegistro.TipoDeCasoid === "1") {
-        const isConfirmed = window.confirm(
-          "¿Desea ingresar los datos para la solicitud de insolvencia?"
-        );
+      // if (userDataRegistro.TipoDeCasoid === "1") {
+      //   const isConfirmed = window.confirm(
+      //     "¿Desea ingresar los datos para la solicitud de insolvencia?"
+      //   );
 
-        if (isConfirmed) {
-          // dispatch(deleteCaso(id));
-          // dispatch(getCasos());
-          // console.log("id", id);
-          navigate("/insolvencia");
-        }
-      } else {
-        navigate("/casos");
-      }
-      // window.alert("Caso creado con éxito");
+      //   if (isConfirmed) {
+      //     // dispatch(deleteCaso(id));
+      //     // dispatch(getCasos());
+      //     // console.log("id", id);
+      //     navigate("/insolvencia");
+      //   }
+      // } else {
+      //   navigate("/casos");
+      // }
+      window.alert("Caso creado con éxito");
+      navigate("/casos");
     } catch (error) {
       console.error("Error al crear el caso:", error.message);
       window.alert("No se pudo crear el caso");

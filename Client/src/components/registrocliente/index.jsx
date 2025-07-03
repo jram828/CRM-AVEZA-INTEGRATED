@@ -227,7 +227,6 @@ const RegistroCliente = () => {
           >
             Guardar
           </Button>
-          <Button>Registrar Acreedores</Button>
         </div>
       </form>
     </div>

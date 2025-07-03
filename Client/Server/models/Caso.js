@@ -35,21 +35,29 @@ export default (sequelize) => {
           len: [1, 3000],
         },
       },
-      valor_pretensiones: { type: DataTypes.BIGINT, allowNull: true},
+      valor_pretensiones: { type: DataTypes.BIGINT, allowNull: true },
       aceptacion_cotizacion: {
         type: DataTypes.STRING,
         defaultValue: "No",
       },
-      honorarios: { type: DataTypes.BIGINT, allowNull: true},
-      honorariosLiquidacion: { type: DataTypes.BIGINT, allowNull: true},
+      honorarios: { type: DataTypes.BIGINT, allowNull: true },
+      honorariosLiquidacion: { type: DataTypes.BIGINT, allowNull: true },
       cuotas: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 1 },
       porcentajeInicial: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
-        allowNull: true
+        allowNull: true,
       },
-      forma_de_pago: { type: DataTypes.STRING, allowNull: true,
-        defaultValue: "Contado" },
+      valorRadicar: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: true,
+      },
+      forma_de_pago: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "Contado",
+      },
       etapa: {
         type: DataTypes.STRING,
         defaultValue: "prospecto",

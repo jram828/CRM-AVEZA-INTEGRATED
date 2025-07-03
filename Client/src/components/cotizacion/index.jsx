@@ -77,6 +77,7 @@ const Cotizacion = () => {
     inicial: "",
     cuotasHonorarios: "",
     valorHonorarios: "",
+    valorRadicar: "",
     honorariosLiquidacion: "",
   };
 
@@ -716,6 +717,20 @@ const Cotizacion = () => {
                           id="cuotasHonorarios"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.cuotasHonorarios}
+                          onKeyDown={(event) =>handleKeyPress(event)}
+                        />
+                      </div>
+                    </div>
+                      <div className="infodeudascotizacion">
+                      <div className="infodetailingresos">
+                        <h6 className="titulocotizacion">Valor para radicar:</h6>
+                        <input
+                          type="number"
+                          className="cajacotizacion"
+                          name="valorRadicar"
+                          id="valorRadicar"
+                          onChange={(event) => handleHonorarioChange(event)}
+                          value={honorarios.valorRadicar}
                           onKeyDown={(event) =>handleKeyPress(event)}
                         />
                       </div>

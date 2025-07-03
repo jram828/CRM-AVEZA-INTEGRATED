@@ -416,7 +416,7 @@ function DetailCasos() {
             </div>
             <div className="infodetailcaso">
               <label htmlFor="porcentajeInicial" className="labeldetailcaso">
-                Porcentaje cuota inicial:
+                Cuota inicial:
               </label>
               <input
                 type="text"
@@ -428,6 +428,24 @@ function DetailCasos() {
                   editingField === "porcentajeInicial"
                     ? casoDetail.porcentajeInicial
                     : (casoDetail.porcentajeInicial)
+                }
+                onKeyDown={handleKeyPress}
+              />
+            </div>
+                        <div className="infodetailcaso">
+              <label htmlFor="porcentajeInicial" className="labeldetailcaso">
+                Valor para radicar:
+              </label>
+              <input
+                type="text"
+                className="cajadetail"
+                name="valorRadicar"
+                id="valorRadicar"
+                onChange={handleUpdateDetailCaso}
+                value={
+                  editingField === "valorRadicar"
+                    ? casoDetail.valorRadicar
+                    : (casoDetail.valorRadicar)
                 }
                 onKeyDown={handleKeyPress}
               />

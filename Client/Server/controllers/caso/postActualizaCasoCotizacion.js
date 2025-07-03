@@ -8,6 +8,7 @@ const actualizaCasoCotizacion = async (
   inicial,
   cuotasHonorarios,
   valorHonorarios,
+  valorRadicar,
   honorariosLiquidacion
 ) => {
 
@@ -18,6 +19,7 @@ const actualizaCasoCotizacion = async (
     honorarios:valorHonorarios,
     honorariosLiquidacion,
     cuotas:cuotasHonorarios,
+    valorRadicar,
     porcentajeInicial:inicial
     },
     {

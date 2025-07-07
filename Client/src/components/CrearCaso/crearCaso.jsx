@@ -282,7 +282,7 @@ function CrearCaso() {
             name="cedulaCliente"
             id="cedulaCliente"
             onChange={handleChangeRegistro}
-            className="cajacrearcaso"
+            className="opcionestipodecaso"
           >
             <option value="" className="clientes">
               Clientes
@@ -291,7 +291,7 @@ function CrearCaso() {
               <option
                 key={cliente.cedulaCliente}
                 value={cliente.cedulaCliente}
-                className="opcionesclientes"
+                className="opcionestipodecaso"
               >
                 {cliente.nombres} {cliente.apellidos}
               </option>

@@ -171,11 +171,15 @@ const Cotizacion = () => {
     setDeudas(updatedDeudas);
 
     if (name === "acreedor") {
-      const foundAcreedor = listaacreedores.filter((acreedor) =>
-        acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
-      );
-      // console.log("Acreedores encontrados:", foundAcreedor);
-      setAcreedorFilt(foundAcreedor);
+            <input
+              type="text"
+              value={deuda.acreedor}
+              name="acreedor"
+              id={`acreedor-${index}`}
+              className="cajacotizacion"
+              placeholder="Buscar acreedor..."
+              onChange={(event) => handleDeudaChange(index, event)}
+            />
     }
     if (name === "capital") {
 

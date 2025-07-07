@@ -23,10 +23,11 @@ function CrearCaso() {
     cuotas: "",
     forma_de_pago: "",
     radicado: "",
-    juzgado: "",  
+    juzgado: "",
   });
   // console.log(userDataRegistro);
 
+  const [clientesFilt, setClientesFilt] = useState([]);
   const [abogados, setAbogados] = useState([]);
 
   const navigate = useNavigate();
@@ -79,7 +80,7 @@ function CrearCaso() {
         console.error("Error al obtener los tipos de casos:", error);
       }
     };
- 
+
     obtenerTipos();
   }, []);
 
@@ -90,7 +91,17 @@ function CrearCaso() {
       [name]: value,
     }));
   };
+  const handleClienteChange = (e) => {
+    const { value } = e.target;
 
+    const foundCliente = clientes.filter((cliente) =>
+          cliente.apellidos.toLowerCase().includes(value.toLowerCase())
+        );
+        console.log("Clientes encontrados:", foundCliente);
+        setClientesFilt(foundCliente);
+  };  
+
+        
   const submitHandlerRegistro = async (e) => {
     e.preventDefault();
     try {
@@ -110,7 +121,7 @@ function CrearCaso() {
       // } else {
       //   navigate("/casos");
       // }
-      window.alert("Caso creado con éxito");
+      // window.alert("Caso creado con éxito");
       navigate("/casos");
     } catch (error) {
       console.error("Error al crear el caso:", error.message);
@@ -265,6 +276,16 @@ function CrearCaso() {
           <label htmlFor="cedulaCliente" className="labelcrearcaso">
             Selecciona el cliente:
           </label>
+             <input
+              type="text"
+              // value={cliente.cedulaCliente}
+              name="cliente"
+              id="buscarCliente"
+              className="cajacrearcaso"
+              placeholder="Buscar por apellido..."
+              onChange={(event) => handleClienteChange(event)}
+            />
+          {clientesFilt.length > 0 && (
           <select
             name="cedulaCliente"
             id="cedulaCliente"
@@ -274,7 +295,7 @@ function CrearCaso() {
             <option value="" className="clientes">
               Clientes
             </option>
-            {clientes.map((cliente) => (
+            {clientesFilt.map((cliente) => (
               <option
                 key={cliente.cedulaCliente}
                 value={cliente.cedulaCliente}
@@ -284,6 +305,7 @@ function CrearCaso() {
               </option>
             ))}
           </select>
+          )}
           {userDataRegistro.TipoDeCasoid === 1 && (
             <>
               <label htmlFor="radicado" className="labelcrearcaso">
@@ -318,21 +340,21 @@ function CrearCaso() {
           ></textarea>
           {userDataRegistro.TipoDeCasoid === 1 && (
             <>
-          <label htmlFor="juzgado" className="labelcrearcaso">
-            Nombre juzgado:
-          </label>
-          <input
-            type="text"
-            className="cajacrearcaso"
-            name="juzgado"
-            id="juzgado"
-            value={userDataRegistro.juzgado}
-            onChange={handleChangeRegistro}
-          />
-          </>
+              <label htmlFor="juzgado" className="labelcrearcaso">
+                Nombre juzgado:
+              </label>
+              <input
+                type="text"
+                className="cajacrearcaso"
+                name="juzgado"
+                id="juzgado"
+                value={userDataRegistro.juzgado}
+                onChange={handleChangeRegistro}
+              />
+            </>
           )}
           {userDataRegistro.TipoDeCasoid === 1 && (
-          <>
+            <>
               <label htmlFor="cuotas" className="labelcrearcaso">
                 Porcentaje cuota inicial:
               </label>
@@ -345,7 +367,7 @@ function CrearCaso() {
                 onChange={handleChangeRegistro}
               />
             </>
-            )}
+          )}
         </div>
 
         <div className="botonescrearcaso">

@@ -98,7 +98,7 @@ function CrearCaso() {
           cliente.apellidos.toLowerCase().includes(value.toLowerCase())
         );
         console.log("Clientes encontrados:", foundCliente);
-        setClientesFilt(foundCliente);
+        setClientesFilt(foundCliente.sort((a, b) => a.nombres.localeCompare(b.nombres)));
   };  
 
         

@@ -276,15 +276,7 @@ function CrearCaso() {
           <label htmlFor="cedulaCliente" className="labelcrearcaso">
             Selecciona el cliente:
           </label>
-             <input
-              type="text"
-              // value={cliente.cedulaCliente}
-              name="cliente"
-              id="buscarCliente"
-              className="cajacrearcaso"
-              placeholder="Buscar por apellido..."
-              onChange={(event) => handleClienteChange(event)}
-            />
+          <div className="buscarcliente">  
           {clientesFilt.length > 0 && (
           <select
             name="cedulaCliente"
@@ -306,6 +298,16 @@ function CrearCaso() {
             ))}
           </select>
           )}
+          <input
+              type="text"
+              // value={cliente.cedulaCliente}
+              name="cliente"
+              id="buscarCliente"
+              className="cajacrearcaso"
+              placeholder="Buscar por apellido..."
+              onChange={(event) => handleClienteChange(event)}
+            />
+            </div> 
           {userDataRegistro.TipoDeCasoid === 1 && (
             <>
               <label htmlFor="radicado" className="labelcrearcaso">

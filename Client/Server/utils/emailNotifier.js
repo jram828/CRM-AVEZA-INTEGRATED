@@ -52,6 +52,32 @@ const sendEmailCliente = ({nombres, email}) => {
        });
 } 
 
+const sendEmailProspecto = ({nombres, email}) => {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
+    const templatePath = path.join(__dirname, '', "templateProspecto.html");
+    const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
+
+       const personalizedHtml = htmlTemplate
+         .replace("{{nombre}}", nombres)
+         .replace("{{correo}}", email);
+
+       const mailOptions = {
+         from: `CRM AVEZA <${EMAIL}>`,
+         to: email,
+         subject: "🚀 Bienvenido a CRM AVEZA!!",
+         html: personalizedHtml,
+       };
+
+       transporter.sendMail(mailOptions, function (error) {
+         if (error) {
+           console.log("⚠️" + error);
+         } else {
+           console.log("✅ Email sent: " + nombres);
+         }
+       });
+}
 
 
 
@@ -136,6 +162,7 @@ const sendEmailCita = (cliente, abogado, newCita)=>{
 
 export {
     sendEmailCliente,
+    sendEmailProspecto,
     sendEmailCita,
     sendEmailPassword
 }

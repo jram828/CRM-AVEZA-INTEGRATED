@@ -14,15 +14,22 @@ import {
   GET_CLIENTES,
   GET_CLIENTES_CASOS,
   GET_CLIENTES_TODOS,
+  GET_PROSPECTOS,
+  GET_PROSPECTOS_CASOS,
+  GET_PROSPECTOS_TODOS,
   GET_BY_ID_ABOGADO,
   GET_BY_ID_CLIENTE,
+  GET_BY_ID_PROSPECTO,
   FILTER_ABOGADO,
   FILTER_CLIENTE,
+  FILTER_PROSPECTO,
   SET_SOURCE,
   ORDER_ABOGADOS,
   ORDER_CLIENTES,
+  ORDER_PROSPECTOS,
   DELETE_ABOGADO,
   DELETE_CLIENTE,
+  DELETE_PROSPECTO,
   GET_TIPOSDECASOS,
   GET_CASOS,
   GET_CASOS_TODOS,
@@ -38,6 +45,7 @@ import {
   CLEAN_USER,
   SET_ABOGADO,
   SET_CLIENTE,
+  SET_PROSPECTO,
   SET_CASO,
   DELETE_CASO,
   GET_CONSULTAS,
@@ -62,8 +70,10 @@ let initialState = {
   user: {},
   abogados: [],
   clientes: [],
+  prospectos: [],
   abogado: {},
   cliente: {},
+  prospecto: {},
   tiposDeCasos: [],
   casos: [],
   caso: {},
@@ -116,12 +126,28 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         clientes: action.payload,
       };
+    case GET_PROSPECTOS:
+      return {
+        ...state,
+        prospectos: action.payload,
+      };
     case GET_CLIENTES_TODOS:
       return {
         ...state,
         pages: action.payload,
       };
+
+          case GET_PROSPECTOS_TODOS:
+      return {
+        ...state,
+        pages: action.payload,
+      };
     case GET_CLIENTES_CASOS:
+      return {
+        ...state,
+        pages: action.payload,
+      };
+          case GET_PROSPECTOS_CASOS:
       return {
         ...state,
         pages: action.payload,
@@ -137,6 +163,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         cliente: action.payload,
       };
+          case GET_BY_ID_PROSPECTO:
+      return {
+        ...state,
+        prospecto: action.payload,
+      };
     case FILTER_ABOGADO:
       return {
         ...state,
@@ -146,6 +177,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         clientes: action.payload,
+      };
+
+          case FILTER_PROSPECTO:
+      return {
+        ...state,
+        prospectos: action.payload,
       };
 
     case SET_SOURCE:
@@ -163,6 +200,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         cliente: action.payload,
       };
+          case SET_PROSPECTO:
+      return {
+        ...state,
+        prospecto: action.payload,
+      };
     case SET_CASO:
       return {
         ...state,
@@ -179,6 +221,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         clientes: action.payload,
       };
+
+          case ORDER_PROSPECTOS:
+      return {
+        ...state,
+        prospectos: action.payload,
+      };
     case DELETE_ABOGADO:
       return {
         ...state,
@@ -188,6 +236,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         clientes: action.payload,
+      };
+
+          case DELETE_PROSPECTO:
+      return {
+        ...state,
+        prospectos: action.payload,
       };
     case DELETE_CONSULTA:
       return {
@@ -307,22 +361,6 @@ const rootReducer = (state = initialState, action) => {
 
     case CLEAN_USER:
       return initialState;
-    // case LOGIN:
-    //   return {
-    //     ...state,
-    //     user: action.payload,
-    //     loginError: "",
-    //   };
-    // case LOGIN_FAILED:
-    //   return {
-    //     ...state,
-    //     loginError: action.payload,
-    //   };
-    // case LOG_FAILED:
-    //   return {
-    //     ...state,
-    //     logError: action.payload,
-    //   };
 
     // case ADD_REVIEW:
     //   return {

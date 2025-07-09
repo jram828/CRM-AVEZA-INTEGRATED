@@ -36,6 +36,8 @@ import Payments from "./components/payments/payments.component.jsx";
 import { crearUsuario } from "./handlers/crearUsuario.jsx";
 import Status from "./components/status/index.jsx";
 import CambiarContrasena from "./components/cambiarcontrasena/index.jsx";
+import RegistroProspecto from "./components/registroprospecto/index.jsx";
+import Prospectos from "./components/prospectos/index.jsx";
 // import EditarInsolvencia from "./components/editarinsolvencia/index.jsx";
 
 
@@ -166,6 +168,7 @@ function App() {
         <Route path="insolvencia" element={<Insolvencia />} />
         {/* <Route path="editarinsolvencia" element={<EditarInsolvencia />} /> */}
         <Route path="registrocliente" element={<RegistroCliente />} />
+        <Route path="registroprospecto" element={<RegistroProspecto />} />
         <Route path="registroabogado" element={<RegistroAbogado />} />
         <Route path="detail" element={<Detail />} />
         <Route
@@ -185,6 +188,7 @@ function App() {
         <Route path="documentoslegales" element={<DocumentosLegales />} />
         <Route path="contrato" element={<Contrato />} />
         <Route path="clientes" element={<Clientes />} />
+        <Route path="prospectos" element={<Prospectos />} />
         <Route path="casos" element={<Casos />} />
         <Route path="casos/:id" element={<DetailCasos />} />
         <Route path="casos/crearcaso" element={<CrearCaso />} />

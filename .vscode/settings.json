@@ -11,7 +11,8 @@
         "Google Drive",
         "Cotizacion",
         "Casos",
-        "Registro cliente"
+        "Registro cliente",
+        "Prospectos"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

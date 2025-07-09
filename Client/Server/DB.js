@@ -8,6 +8,7 @@ import abogadoModel from "./models/Abogado.js";
 import casoModel from "./models/Caso.js";
 import citaModel from "./models/Cita.js";
 import clienteModel from "./models/Cliente.js";
+import prospectoModel from "./models/Prospecto.js";
 import consultaModel from "./models/Consulta.js";
 import contratoModel from "./models/Contrato.js";
 import cotizacionModel from "./models/Cotizacion.js";
@@ -69,6 +70,7 @@ const Consulta = consultaModel(sequelize);
 const Acreedor = acreedorModel(sequelize);
 const Abogado = abogadoModel(sequelize);
 const Cliente = clienteModel(sequelize);
+const Prospecto = prospectoModel(sequelize);
 const Contrato = contratoModel(sequelize);
 const TipoDeCaso = tipoCasoModel(sequelize);
 const DocumentoTemplate = documentoLegalTemplateModel(sequelize);
@@ -142,6 +144,9 @@ Departamento.belongsToMany(Pais, { through: "pais_departamento" });
 Cliente.belongsToMany(Acreedor, { through: "cliente_acreedor" });
 Acreedor.belongsToMany(Cliente, { through: "cliente_acreedor" });
 
+Prospecto.belongsToMany(Acreedor, { through: "prospecto_acreedor" });
+Acreedor.belongsToMany(Prospecto, { through: "prospecto_acreedor" });
+
 Departamento.belongsToMany(Ciudad, { through: "ciudad_departamento" });
 Ciudad.belongsToMany(Departamento, { through: "ciudad_departamento" });
 
@@ -153,6 +158,9 @@ Factura.belongsTo(Cliente);
 
 Cliente.belongsToMany(Ciudad, { through: "cliente_ciudad" });
 Ciudad.belongsToMany(Cliente, { through: "cliente_ciudad" });
+
+Prospecto.belongsToMany(Ciudad, { through: "Prospecto_ciudad" });
+Ciudad.belongsToMany(Prospecto, { through: "Prospecto_ciudad" });
 
 Abogado.belongsToMany(Ciudad, { through: "abogado_ciudad" });
 Ciudad.belongsToMany(Abogado, { through: "abogado_ciudad" });

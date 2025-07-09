@@ -2,9 +2,13 @@ import axios from "axios";
 // import { URL } from "../App";
 
 export const GET_CLIENTE_BY_CEDULA = "GET_CLIENTE_BY_CEDULA";
+export const GET_PROSPECTO_BY_CEDULA = "GET_PROSPECTO_BY_CEDULA";
 export const GET_CLIENTES = "GET_CLIENTES"
+export const GET_PROSPECTOS = "GET_PROSPECTOS"
 export const GET_CLIENTES_CASOS = "GET_CLIENTES_CASOS"
+export const GET_PROSPECTOS_CASOS = "GET_PROSPECTOS_CASOS"
 export const SET_CLIENTE = "SET_CLIENTE"; 
+export const SET_PROSPECTO = "SET_PROSPECTO"; 
 export const SET_CASO = "SET_CASO"; 
 export const CREAR_DEUDAS = "CREAR_DEUDAS"; 
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
@@ -13,12 +17,16 @@ export const FILTER_ABOGADO = "FILTER_NAME_ABOGADO";
 export const GET_ABOGADOS = "GET_ABOGADOS";
 export const GET_BY_ID_ABOGADO = "GET_BY_ID_ABOGADO";
 export const GET_BY_ID_CLIENTE = "GET_BY_ID_CLIENTE";
+export const GET_BY_ID_PROSPECTO = "GET_BY_ID_PROSPECTO";
 export const FILTER_CLIENTE = "FILTER_NAME_CLIENTE";
+export const FILTER_PROSPECTO = "FILTER_NAME_PROSPECTO";
 export const SET_SOURCE = "SET_SOURCE";
 export const ORDER_ABOGADOS = "ORDER_ABOGADOS";
 export const ORDER_CLIENTES = "ORDER_CLIENTES";
+export const ORDER_PROSPECTOS = "ORDER_PROSPECTOS";
 export const DELETE_ABOGADO = "DELETE_ABOGADO";
 export const DELETE_CLIENTE = "DELETE_CLIENTES";
+export const DELETE_PROSPECTO = "DELETE_PROSPECTO";
 export const GET_TIPOSDECASOS = "GET_TIPOSDECASOS";
 export const GET_CASOS = "GET_CASOS";
 export const GET_CASOS_TODOS= "GET_CASOS_TODOS";
@@ -38,9 +46,11 @@ export const GET_PAGOS = "GET_PAGOS";
 export const CLEAN_USER = "CLEAN_USER";
 export const GET_ABOGADOS_TODOS = "GET_ABOGADOS_TODOS";
 export const MODIFICAR_DATOS = "MODIFICAR_DATOS";
+export const MODIFICAR_DATOS_PROSPECTO = "MODIFICAR_DATOS_PROSPECTO";
 export const MODIFICAR_DATOS_ABOGADO = "MODIFICAR_DATOS_ABOGADO";
 export const SET_ABOGADO = "SET_ABOGADO";
 export const GET_CLIENTES_TODOS = "GET_CLIENTES_TODOS";
+export const GET_PROSPECTOS_TODOS = "GET_PROSPECTOS_TODOS";
 export const MODIFICAR_CASO = "MODIFICAR_CASO";
 export const MODIFICAR_CASO_COTIZACION = "MODIFICAR_CASO_COTIZACION";
 export const DELETE_CONSULTA = "DELETE_CONSULTA";
@@ -52,6 +62,14 @@ export const clienteActual = (cliente) => {
   return {
     type: SET_CLIENTE,
     payload: cliente,
+  };
+};
+
+export const prospectoActual = (prospecto) => {
+  // console.log("Cliente Action:", cliente);
+  return {
+    type: SET_PROSPECTO,
+    payload: prospecto,
   };
 };
 
@@ -87,6 +105,22 @@ export const getClienteByCedula = (cedula) => {
   };
 };
 
+export const getProspectoByCedula = (cedula) => {
+  
+  // console.log('Cedula get by cedula:',cedula)
+  return async (dispatch) => {
+    const { data } = await axios.get(`/${cedula}`);
+    try {
+      return dispatch({
+        type: GET_PROSPECTO_BY_CEDULA,
+        payload: data,
+      });
+    } catch (error) {
+      window.alert("Prospecto no encontrado!");
+    }
+  };
+};
+
 export  const getClienteAll = () => {
 return async (dispatch) => {
   const { data } = await axios.get('/clientes/clientescasos');
@@ -98,6 +132,21 @@ return async (dispatch) => {
     });
   } catch (error) {
     window.alert("Clientes no encontrados!");
+  }
+};
+};
+
+export  const getProspectoAll = () => {
+return async (dispatch) => {
+  const { data } = await axios.get('/prospectos/prospectoscasos');
+  // console.log('Data Get clientes:',data)
+  try {
+    return dispatch({
+      type: GET_PROSPECTOS,
+      payload: data,
+    });
+  } catch (error) {
+    window.alert("Prospectos no encontrados!");
   }
 };
 };
@@ -144,6 +193,17 @@ export const getClientes = (page) => {
   };
 };
 
+export const getProspectos = (page) => {
+  const endpoint = `/prospectos/prospectos?pagina=${page}&porPagina=12`;
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_PROSPECTOS,
+      payload: data,
+    });
+  };
+};
+
 export const getAbogados = (page) => {
   const endpoint = `/abogados?pagina=${page}&porPagina=12`;
   return async (dispatch) => {
@@ -181,6 +241,18 @@ export const getByIdCliente = (cedulaCliente) => {
   };
 };
 
+export const getByIdProspecto = (cedulaProspecto) => {
+  const endpoint = `/prospectos/cedulaprospecto?cedulaProspecto=${cedulaProspecto}`;
+  // console.log("URL", endpoint);
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_BY_ID_PROSPECTO,
+      payload: data,
+    });
+  };
+};
+
 export const filterCliente = (filtro) => {
   const endpoint = `/clientes/conocimientolitigios?${filtro}`;
   // console.log("URL", endpoint);
@@ -189,6 +261,19 @@ export const filterCliente = (filtro) => {
 
     return dispatch({
       type: FILTER_CLIENTE,
+      payload: data,
+    });
+  };
+};
+
+export const filterProspecto = (filtro) => {
+  const endpoint = `/prospectos/prospectos?${filtro}`;
+  // console.log("URL", endpoint);
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+
+    return dispatch({
+      type: FILTER_PROSPECTO,
       payload: data,
     });
   };
@@ -230,6 +315,18 @@ export const orderClientes = (value) => {
   };
 };
 
+export const orderProspectos = (value) => {
+  const endpoint = `/prospectos?field=apellido&order=${value}`;
+
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: ORDER_PROSPECTOS,
+      payload: data,
+    });
+  };
+};
+
 export const deleteAbogado = (cedulaAbogado) => {
   const endpoint = `/abogados/delete`;
 
@@ -253,6 +350,20 @@ export const deleteCliente = (cedulaCliente) => {
     // console.log("cedula", cedulaAbogado);
     return dispatch({
       type: DELETE_CLIENTE,
+      payload: data,
+    });
+  };
+};
+
+export const deleteProspecto = (cedulaProspecto) => {
+  const endpoint = `/prospectos/elimina`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, { cedulaProspecto });
+    // console.log("url", endpoint);
+    // console.log("cedula", cedulaAbogado);
+    return dispatch({
+      type: DELETE_PROSPECTO,
       payload: data,
     });
   };
@@ -508,6 +619,20 @@ export const getAbogadosTodos = () => {
     };
   };
 
+    export const modificarDatosProspecto = (payload) => {
+    const endpoint = `/prospectos/actualiza`;
+
+    return async (dispatch) => {
+      const data = await axios.put(endpoint, payload);
+      // console.log("URL", endpoint, "PAYLOAD", payload);
+      window.alert("Se ha actualizado el prospecto con éxito.");
+      return dispatch({
+        type: MODIFICAR_DATOS_PROSPECTO,
+        payload: data,
+      });
+    };
+  };
+
     export const modificarDatosAbogado = (payload) => {
       const endpoint = `/abogados/actualiza`;
 
@@ -579,12 +704,32 @@ export const setCliente = (source) => {
   };
 };
 
+
+export const setProspecto = (source) => {
+  // console.log("Limpiar estado detail:", source);
+  return {
+    type: SET_PROSPECTO,
+    payload: source,
+  };
+};
+
 export const getClientesTodos = (currentPage,porPagina) => {
   const endpoint = `/clientes/conocimientolitigios?pagina=${currentPage}&porPagina=${porPagina}`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
     return dispatch({
       type: GET_CLIENTES_TODOS,
+      payload: data,
+    });
+  };
+};
+
+export const getProspectosTodos = (currentPage,porPagina) => {
+  const endpoint = `/prospectos/prospectos?pagina=${currentPage}&porPagina=${porPagina}`;
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_PROSPECTOS_TODOS,
       payload: data,
     });
   };

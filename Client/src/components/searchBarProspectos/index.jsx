@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import "./searchBarClientes.css";
+import "./searchBarProspectos.css";
 import { filterCliente } from "../../redux/actions";
 import { Button } from "../Mystyles";
 import { Link } from "react-router-dom";

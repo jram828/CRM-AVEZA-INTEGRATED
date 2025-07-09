@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import "./searchBarProspectos.css";
-import { filterCliente } from "../../redux/actions";
+import { filterProspecto } from "../../redux/actions";
 import { Button } from "../Mystyles";
 import { Link } from "react-router-dom";
 
@@ -19,12 +19,12 @@ const SearchBar = ({ onFilter }) => {
     const queryParts = [];
     if (nombre) queryParts.push(`nombres=${formatInputValue(nombre)}`);
     if (apellido) queryParts.push(`apellidos=${formatInputValue(apellido)}`);
-    if (cedula) queryParts.push(`cedulaCliente=${cedula}`);
+    if (cedula) queryParts.push(`cedulaProspecto=${cedula}`);
     const queryString = queryParts.join("&");
 
     if (queryString) {
       onFilter(queryString);
-      dispatch(filterCliente(queryString));
+      dispatch(filterProspecto(queryString));
     } else {
       console.log("Por favor ingrese al menos un valor de búsqueda");
     }

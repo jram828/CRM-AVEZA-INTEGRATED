@@ -166,6 +166,21 @@ export  const getClienteAllCasos = () => {
   };
   };
   
+  export  const getProspectoAllCasos = () => {
+  return async (dispatch) => {
+    const { data } = await axios.get('/prospectos/prospectoscasos');
+    // console.log('Data Get clientes:',data)
+    try {
+      return dispatch({
+        type: GET_PROSPECTOS_CASOS,
+        payload: data,
+      });
+    } catch (error) {
+      window.alert("Clientes no encontrados!");
+    }
+  };
+  };
+
 export const setUserToken = (userToken) => {
   // console.log("User token:", userToken);
   return {

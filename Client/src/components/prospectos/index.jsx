@@ -17,7 +17,7 @@ const Prospectos = () => {
 
   useEffect(() => {
     dispatch(getProspectoAll());
-    dispatch(setSource("Prospecto"));
+    dispatch(setSource("prospecto"));
   }, [dispatch]);
 
   // console.log("Prospectos conocimiento: ", Prospectos);

@@ -3,7 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../Mystyles";
 import "../detail/detail.css";
-import { deleteAbogado, deleteCliente, modificarDatos, modificarDatosAbogado, modificarDatosProspecto} from "../../redux/actions";
+import {
+  deleteAbogado,
+  deleteCliente,
+  modificarDatos,
+  modificarDatosAbogado,
+  modificarDatosProspecto,
+} from "../../redux/actions";
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
 
@@ -15,27 +21,30 @@ const Detail = () => {
   // const datos = useSelector((state) =>
   //   source === "abogado" ? state.abogado : state.cliente
   // );
-  // console.log('Source:', source)
+   console.log('Source:', source)
   const cliente = JSON.parse(localStorage.getItem("cliente"));
   // console.log('Cliente local:', cliente)
 
   const abogado = JSON.parse(localStorage.getItem("abogado"));
   // console.log("Abogado local:", abogado);
 
-   const prospecto = JSON.parse(localStorage.getItem("prospecto"));
+  const prospecto = JSON.parse(localStorage.getItem("prospecto"));
 
-  const datos = source === "abogado" ? abogado:cliente
-  ;
-
-  // console.log("Datos cliente:", datos);
- const Cedula =
-  source === "abogado"
-    ? datos.cedulaAbogado
-    : source === "prospecto"
-    ? datos.cedulaProspecto
-    : datos.cedulaCliente;
-
-    const [userDataDetail, setUserDataDetail] = useState({
+  const datos =
+    source === "abogado"
+      ? abogado
+      : source === "prospecto"
+      ? prospecto
+      : cliente;
+  console.log("Datos cliente:", datos);
+  const Cedula =
+    source === "abogado"
+      ? datos.cedulaAbogado
+      : source === "prospecto"
+      ? datos.cedulaProspecto
+      : datos.cedulaCliente;
+console.log("Cedula:", Cedula);
+  const [userDataDetail, setUserDataDetail] = useState({
     email: "",
     nombres: "",
     apellidos: "",
@@ -56,9 +65,10 @@ const Detail = () => {
         ...userDataDetail,
         email: datos.email,
         celular: datos.celular,
-        ciudad: datos?.Ciudads[0]?.nombre_ciudad|| "",
-        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad|| "",
-        departamento: datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento|| "",
+        ciudad: datos?.Ciudads[0]?.nombre_ciudad || "",
+        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad || "",
+        departamento:
+          datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento || "",
         tarjetaProf: datos.tarjetaProf,
         nombres: datos.nombres,
         apellidos: datos.apellidos,
@@ -67,14 +77,15 @@ const Detail = () => {
         cedulanew: datos.cedulaAbogado,
         cedula_anterior: datos.cedulaAbogado,
       });
-    } else if (source === "cliente"){
+    } else if (source === "cliente") {
       setUserDataDetail({
         ...userDataDetail,
         email: datos.email,
         celular: datos.celular,
-        ciudad: datos?.Ciudads[0]?.nombre_ciudad|| "",
-        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad|| "",
-        departamento: datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento|| "",
+        ciudad: datos?.Ciudads[0]?.nombre_ciudad || "",
+        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad || "",
+        departamento:
+          datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento || "",
         nombres: datos.nombres,
         tarjetaProf: "",
         apellidos: datos.apellidos,
@@ -88,9 +99,10 @@ const Detail = () => {
         ...userDataDetail,
         email: datos.email,
         celular: datos.celular,
-        ciudad: datos?.Ciudads[0]?.nombre_ciudad|| "",
-        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad|| "",
-        departamento: datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento|| "",
+        ciudad: datos?.Ciudads[0]?.nombre_ciudad || "",
+        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad || "",
+        departamento:
+          datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento || "",
         nombres: datos.nombres,
         tarjetaProf: "",
         apellidos: datos.apellidos,
@@ -138,12 +150,10 @@ const Detail = () => {
     if (source === "abogado") {
       dispatch(modificarDatosAbogado(userDataDetail));
       window.localStorage.setItem("abogado", JSON.stringify(userDataDetail));
-     } else if (source === "cliente") {
-      
+    } else if (source === "cliente") {
       dispatch(modificarDatos(userDataDetail));
       window.localStorage.setItem("cliente", JSON.stringify(userDataDetail));
-    } else  {
-      
+    } else {
       dispatch(modificarDatosProspecto(userDataDetail));
       window.localStorage.setItem("prospecto", JSON.stringify(userDataDetail));
     }
@@ -220,7 +230,6 @@ const Detail = () => {
                 Volver
               </Button>
             </Link>
-            
           )}
           {/* <Button className="botonesiniciosesion" onClick={generarContrato}>
             Generar Documentos

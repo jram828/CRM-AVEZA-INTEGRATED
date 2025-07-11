@@ -22,6 +22,8 @@ const Detail = () => {
   const abogado = JSON.parse(localStorage.getItem("abogado"));
   // console.log("Abogado local:", abogado);
 
+   const prospecto = JSON.parse(localStorage.getItem("prospecto"));
+
   const datos = source === "abogado" ? abogado:cliente
   ;
 
@@ -65,7 +67,7 @@ const Detail = () => {
         cedulanew: datos.cedulaAbogado,
         cedula_anterior: datos.cedulaAbogado,
       });
-    } else {
+    } else if (source === "cliente"){
       setUserDataDetail({
         ...userDataDetail,
         email: datos.email,
@@ -80,6 +82,22 @@ const Detail = () => {
         comentarios: datos.comentarios,
         cedulanew: datos.cedulaCliente,
         cedula_anterior: datos.cedulaCliente,
+      });
+    } else {
+      setUserDataDetail({
+        ...userDataDetail,
+        email: datos.email,
+        celular: datos.celular,
+        ciudad: datos?.Ciudads[0]?.nombre_ciudad|| "",
+        ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad|| "",
+        departamento: datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento|| "",
+        nombres: datos.nombres,
+        tarjetaProf: "",
+        apellidos: datos.apellidos,
+        direccion: datos.direccion,
+        comentarios: datos.comentarios,
+        cedulanew: datos.cedulaProspecto,
+        cedula_anterior: datos.cedulaProspecto,
       });
     }
   }, [dispatch, source]);

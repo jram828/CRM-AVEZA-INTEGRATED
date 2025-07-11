@@ -6,6 +6,7 @@ import "../detail/detail.css";
 import {
   deleteAbogado,
   deleteCliente,
+  deleteProspecto,
   modificarDatos,
   modificarDatosAbogado,
   modificarDatosProspecto,
@@ -125,7 +126,16 @@ console.log("Cedula:", Cedula);
         // console.log("cedula", Cedula);
         navigate("/abogados");
       }
-    } else {
+    } else if (source === "prospecto") {
+      const isConfirmed = window.confirm(
+        "¿Estás seguro de que deseas eliminar este registro?"
+      );
+
+      if (isConfirmed) {
+        dispatch(deleteProspecto(Cedula));
+        navigate("/prospectos");
+      }
+    }else {
       const isConfirmed = window.confirm(
         "¿Estás seguro de que deseas eliminar este registro?"
       );

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../Mystyles";
 import "../detail/detail.css";
-import { deleteAbogado, deleteCliente, modificarDatos, modificarDatosAbogado} from "../../redux/actions";
+import { deleteAbogado, deleteCliente, modificarDatos, modificarDatosAbogado, modificarDatosProspecto} from "../../redux/actions";
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
 
@@ -25,10 +25,14 @@ const Detail = () => {
   const datos = source === "abogado" ? abogado:cliente;
 
   // console.log("Datos cliente:", datos);
-  const Cedula =
-    source === "abogado" ? datos.cedulaAbogado : datos.cedulaCliente;
+ const Cedula =
+  source === "abogado"
+    ? datos.cedulaAbogado
+    : source === "prospecto"
+    ? datos.cedulaProspecto
+    : datos.cedulaCliente;
 
-  const [userDataDetail, setUserDataDetail] = useState({
+    const [userDataDetail, setUserDataDetail] = useState({
     email: "",
     nombres: "",
     apellidos: "",
@@ -115,10 +119,14 @@ const Detail = () => {
     if (source === "abogado") {
       dispatch(modificarDatosAbogado(userDataDetail));
       window.localStorage.setItem("abogado", JSON.stringify(userDataDetail));
-     } else {
+     } else if (source === "cliente") {
       
       dispatch(modificarDatos(userDataDetail));
       window.localStorage.setItem("cliente", JSON.stringify(userDataDetail));
+    } else  {
+      
+      dispatch(modificarDatosProspecto(userDataDetail));
+      window.localStorage.setItem("prospecto", JSON.stringify(userDataDetail));
     }
   };
 

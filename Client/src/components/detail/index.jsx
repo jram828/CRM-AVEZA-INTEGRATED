@@ -22,7 +22,8 @@ const Detail = () => {
   const abogado = JSON.parse(localStorage.getItem("abogado"));
   // console.log("Abogado local:", abogado);
 
-  const datos = source === "abogado" ? abogado:cliente;
+  const datos = source === "abogado" ? abogado:cliente
+  ;
 
   // console.log("Datos cliente:", datos);
  const Cedula =

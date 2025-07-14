@@ -1,4 +1,4 @@
-import { Prospecto, Ciudad, TipoDeCaso, TipoUsuario } from '../../DB_conn.js';
+import { Prospecto, Ciudad, TipoDeCaso, TipoUsuario } from '../../DB.js';
 import codigoCiudades from '../../utils/codigoCiudades.js';
 import tipoUsuarios from '../../utils/tipoUsuarios.js';
 import tipoDeCasos from '../../utils/tipoDeCasos.js';

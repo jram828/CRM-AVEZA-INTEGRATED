@@ -28,7 +28,7 @@ export async function postProspectoAut(userDataRegistro) {
   const ciudadfilter = codigoCiudades.filter(
     (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
   );
-  const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
+  const codigo_ciudad = ciudadfilter[0]?.codigo_ciudad ||0;
   console.log("Codigo ciudad:", codigo_ciudad);
 
   console.log("ciudad:", ciudadfilter);
@@ -75,7 +75,7 @@ export async function postProspectoAut(userDataRegistro) {
         valor_pretensiones: valor_pretensiones,
       });
 
-      newProspecto.addCiudad(codigo_ciudad);
+      codigo_ciudad ===0 ? newProspecto.addCiudad(codigo_ciudad):null;
       newProspecto.addTipoDeCaso(tipo_de_caso);
       newProspecto.addTipoUsuario(tipo_usuario);
 

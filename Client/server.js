@@ -40,6 +40,8 @@ server.use((err, req, res)=>{          //Manejador de errores
 
 const PORT = env.PORT || 3001;
 
+import './Server/jobs/gmailCron.js'; // Importar el cron para que se ejecute al iniciar el servidor
+
 server.listen(PORT, () => {
   console.log(`Server listening on port http://localhost:${PORT} in ${env.status}`);
 });

@@ -1,7 +1,7 @@
-const { Prospecto, Ciudad, TipoDeCaso, TipoUsuario } = require("../../DB_conn");
-const codigoCiudades = require("../../utils/codigoCiudades").default;
-const tipoUsuarios = require("../../utils/tipoUsuarios");
-const tipoDeCasos = require("../../utils/tipoDeCasos");
+import { Prospecto, Ciudad, TipoDeCaso, TipoUsuario } from '../../DB_conn.js';
+import codigoCiudades from '../../utils/codigoCiudades.js';
+import tipoUsuarios from '../../utils/tipoUsuarios.js';
+import tipoDeCasos from '../../utils/tipoDeCasos.js';
 
 
 export async function postProspectoAut(userDataRegistro) {

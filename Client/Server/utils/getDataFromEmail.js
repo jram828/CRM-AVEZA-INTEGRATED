@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const oauth2Client = new google.auth.OAuth2(
-  process.env.VITE_GOOGLE_ID,
-  process.env.VITE_GOOGLE_API_KEY,
+  process.env.CRON_GOOGLE_ID,
+  process.env.CRON_GOOGLE_API_KEY,
   process.env.GOOGLE_REDIRECT_URI
 );
 

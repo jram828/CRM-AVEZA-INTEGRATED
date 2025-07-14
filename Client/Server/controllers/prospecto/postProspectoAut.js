@@ -10,7 +10,7 @@ export async function postProspectoAut(userDataRegistro) {
     email,
     nombres,
     apellidos,
-    cedulaProspecto,
+    cedula,
     celular,
     direccion,
     nombre_ciudad,
@@ -62,7 +62,7 @@ export async function postProspectoAut(userDataRegistro) {
   } else {
     try {
       const newProspecto = await Prospecto.create({
-        cedulaProspecto: cedulaProspecto,
+        cedulaProspecto: cedula,
         email: email,
         nombres: nombres,
         apellidos: apellidos,

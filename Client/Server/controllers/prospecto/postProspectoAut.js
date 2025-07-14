@@ -1,7 +1,8 @@
-import { Prospecto, Ciudad, TipoDeCaso, TipoUsuario } from '../../DB.js';
-import codigoCiudades from '../../utils/codigoCiudades.js';
-import tipoUsuarios from '../../utils/tipoUsuarios.js';
-import tipoDeCasos from '../../utils/tipoDeCasos.js';
+import { models } from "../../DB.js";
+import {codigoCiudades} from "../../utils/codigoCiudades.js";
+import { sendEmailProspecto } from "../../utils/emailNotifier.js";
+
+const { Prospecto, Ciudad, TipoDeCaso, TipoUsuario } = models;
 
 
 export async function postProspectoAut(userDataRegistro) {

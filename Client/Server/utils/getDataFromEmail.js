@@ -45,29 +45,43 @@ export const buscarCorreos = async () => {
   }
 };
 
-const extraerDatos = (texto) => {
-  const campos = {
+const extraerCampos = (texto) => {
+  const datos = {
     nombres: '',
     apellidos: '',
     correo: '',
-    ciudad: ''
+    cedula: '',
+    telefono: '',
+    direccion: '',
+    ciudad: '',
+    comentarios: ''
   };
 
-  const mapa = {
-    'Nombre (s):': 'nombres',
-    'Apellidos:': 'apellidos',
-    'Correo electrónico:': 'correo',
-    'Ciudad:': 'ciudad'
+  const mapeo = {
+    'nombre (s)': 'nombres',
+    'apellidos': 'apellidos',
+    'correo electrónico': 'correo',
+    'número de cédula': 'cedula',
+    'teléfono': 'telefono',
+    'dirección': 'direccion',
+    'ciudad': 'ciudad',
+    'comentarios': 'comentarios'
   };
 
   const lineas = texto.split('\n');
   for (let i = 0; i < lineas.length; i++) {
-    const linea = lineas[i].trim();
-    if (mapa[linea]) {
-      campos[mapa[linea]] = lineas[i + 1]?.trim() || '';
+    // Normaliza cada línea
+    const normalizada = lineas[i]
+      .toLowerCase()
+      .replace(/[*:_\-\.]/g, '')
+      .replace(/["']/g, '')
+      .trim();
+
+    if (mapeo[normalizada]) {
+      const valor = lineas[i + 1]?.trim();
+      datos[mapeo[normalizada]] = valor || '';
     }
   }
 
-  return campos;
+  return datos;
 };
-

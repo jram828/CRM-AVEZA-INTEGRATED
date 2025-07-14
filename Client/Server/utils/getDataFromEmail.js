@@ -52,7 +52,7 @@ export const buscarCorreos = async () => {
       // ✅ Enviar los datos al backend
       try {
         const respuesta = postProspectoAut(datos);
-        console.log("📤 Prospecto enviado:", respuesta);
+        console.log("📤Prospecto enviado:", respuesta);
       } catch (error) {
         console.error(
           "❌ Error al enviar prospecto:",

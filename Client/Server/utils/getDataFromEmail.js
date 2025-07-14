@@ -35,6 +35,8 @@ export const buscarCorreos = async () => {
       if (!cuerpoCodificado) continue;
 
       const cuerpoTexto = Buffer.from(cuerpoCodificado, 'base64').toString('utf-8');
+
+      console.log('Cuerpo del correo:', cuerpoTexto);
       const datos = extraerDatos(cuerpoTexto);
       console.log('📩 Registro extraído:', datos);
     }

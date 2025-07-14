@@ -1,13 +1,20 @@
 import { DataTypes } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 
 export default (sequelize) => {
   const Prospecto = sequelize.define(
     "Prospecto",
     {
+      idProspecto:{
+      type: DataTypes.UUID,
+      defaultValue: uuidv4,
+      primaryKey: true,
+      allowNull: false,
+      unique: true,
+    },
       cedulaProspecto: {
         type: DataTypes.BIGINT,
-        allowNull: false,
-        primaryKey: true,
+        allowNull: true,
       },
       email: {
         type: DataTypes.STRING,
@@ -15,7 +22,7 @@ export default (sequelize) => {
       },
       nombres: { type: DataTypes.STRING, allowNull: false },
       apellidos: { type: DataTypes.STRING, allowNull: false },
-      direccion: { type: DataTypes.STRING, allowNull: false },
+      direccion: { type: DataTypes.STRING, allowNull: true },
       celular: { type: DataTypes.BIGINT, allowNull: false },
       comentarios: { type: DataTypes.TEXT, allowNull: true },
       activo: {
@@ -23,7 +30,7 @@ export default (sequelize) => {
         defaultValue: true,
       },
     },
-    { timestamps: false}
+    { timestamps: true, createdAt: "fechaCreacion", updatedAt: "fechaActualizacion" }
   );
   return Prospecto;
 };

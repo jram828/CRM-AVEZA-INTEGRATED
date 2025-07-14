@@ -1,5 +1,9 @@
 import { google } from "googleapis";
 import dotenv from "dotenv";
+import axios from 'axios';
+// ... otros imports como googleapis y dotenv
+
+
 dotenv.config();
 
 const oauth2Client = new google.auth.OAuth2(
@@ -44,6 +48,17 @@ export const buscarCorreos = async () => {
       const datos = extraerDatos(cuerpoTexto);
       console.log("📩 Registro extraído:", datos);
 
+      // ✅ Enviar los datos al backend
+      try {
+        const respuesta = postProspectoAut(datos);
+        console.log("📤 Prospecto enviado:", respuesta);
+      } catch (error) {
+        console.error(
+          "❌ Error al enviar prospecto:",
+          error.message
+        );
+      }
+
       await gmail.users.messages.modify({
         userId: "me",
         id,
@@ -61,22 +76,22 @@ const extraerDatos = (texto) => {
   const datos = {
     nombres: "",
     apellidos: "",
-    correo: "",
+    email: "",
     cedula: "",
-    telefono: "",
+    celular: "",
     direccion: "",
-    ciudad: "",
+    nombre_ciudad: "",
     comentarios: "",
   };
 
   const mapeo = {
     "nombre (s)": "nombres",
     apellidos: "apellidos",
-    "correo electrónico": "correo",
+    "correo electrónico": "email",
     "número de cédula": "cedula",
-    teléfono: "telefono",
+    teléfono: "celular",
     dirección: "direccion",
-    ciudad: "ciudad",
+    ciudad: "nombre_ciudad",
     comentarios: "comentarios",
   };
 

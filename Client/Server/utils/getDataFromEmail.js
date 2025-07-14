@@ -45,7 +45,7 @@ export const buscarCorreos = async () => {
   }
 };
 
-const extraerCampos = (texto) => {
+const extraerDatos = (texto) => {
   const datos = {
     nombres: '',
     apellidos: '',

@@ -76,8 +76,8 @@ export async function postProspectoAut(userDataRegistro) {
       });
 
       codigo_ciudad ===0 ? newProspecto.addCiudad(codigo_ciudad):null;
-      newProspecto.addTipoDeCaso(tipo_de_caso);
-      newProspecto.addTipoUsuario(tipo_usuario);
+      // newProspecto.addTipoDeCaso(tipo_de_caso);
+      // newProspecto.addTipoUsuario(tipo_usuario);
 
       return newProspecto;
     } catch (error) {

@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import imaps from "imap-simple";
 import { postProspectoAut } from "../controllers/prospecto/postProspectoAut.js";
-import { simpleParser } from "mailparser";
+import qp from "quoted-printable";
 
 dotenv.config();
 
@@ -32,18 +32,14 @@ export const buscarCorreos = async () => {
     const messages = await connection.search(searchCriteria, fetchOptions);
     console.log(`🟢 Se encontraron ${messages.length} correos filtrados.`);
 
-    for (const message of messages) { 
-      console.log('🧩 Estructura completa del mensaje:', JSON.stringify(message, null, 2));
+    for (const message of messages) {
+      console.log("🧩 Estructura completa del mensaje:", JSON.stringify(message, null, 2));
+
       const obtenerContenidoPlano = (parts) => {
         for (const part of parts) {
-          if (
-            part.which === "TEXT" ||
-            part.which === "BODY" ||
-            part.which === "1"
-          ) {
+          if (part.which === "TEXT" || part.which === "BODY" || part.which === "1") {
             return part.body;
           }
-          // Revisión recursiva si hay partes anidadas
           if (Array.isArray(part.parts)) {
             const nested = obtenerContenidoPlano(part.parts);
             if (nested) return nested;
@@ -52,19 +48,12 @@ export const buscarCorreos = async () => {
         return "";
       };
 
-      const rawBody = obtenerContenidoPlano(message.parts);
+      const encoded = obtenerContenidoPlano(message.parts);
+      if (!encoded) continue;
 
-      if (!rawBody) continue;
+      const decoded = qp.decode(encoded).toString("utf-8");
 
-      const parsed = await simpleParser(rawBody);
-
-      // Usamos `html` si `text` está vacío
-      const contenido = parsed.text?.trim().length
-        ? parsed.text
-        : parsed.html || "";
-
-      // Limpiamos etiquetas si viene como HTML
-      const limpio = contenido
+      const limpio = decoded
         .replace(/<br\s*\/?>/gi, "\n")
         .replace(/<\/?[^>]+(>|$)/g, "")
         .replace(/&nbsp;/g, " ")
@@ -94,7 +83,6 @@ const extraerDatos = (texto) => {
     .map((l) => l.trim())
     .filter((l) => l.length > 0);
 
-  // Primeros campos directos
   const datos = {
     nombres: lineas[0] || "",
     apellidos: lineas[1] || "",
@@ -114,8 +102,7 @@ const extraerDatos = (texto) => {
     modoContacto: "",
   };
 
-  // Campos con formato "Campo: valor"
-  let idx = 5; // después de la fila en blanco
+  let idx = 5;
   const campos = [
     "impuestoLaboral",
     "vehiculoCooperativas",

@@ -33,21 +33,33 @@ export const buscarCorreos = async () => {
     console.log(`🟢 Se encontraron ${messages.length} correos filtrados.`);
 
     for (const message of messages) {
-      const raw = message.parts.find((part) => part.which === "TEXT").body;
+  const rawBody = message.parts.find(part => part.which === 'TEXT')?.body;
+  if (!rawBody) continue;
 
-      const parsed = await simpleParser(raw);
-      const textoPlano = parsed.text || "";
+  const parsed = await simpleParser(rawBody);
 
-      const datos = extraerDatos(textoPlano);
-      console.log("📩 Registro extraído:", datos);
+  // Usamos `html` si `text` está vacío
+  const contenido = parsed.text?.trim().length ? parsed.text : parsed.html || '';
 
-      try {
-        const respuesta = await postProspectoAut(datos);
-        console.log("📤Prospecto enviado:", respuesta);
-      } catch (error) {
-        console.error("❌ Error al enviar prospecto:", error.message);
-      }
-    }
+  // Limpiamos etiquetas si viene como HTML
+  const limpio = contenido
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/?[^>]+(>|$)/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\r/g, '')
+    .trim();
+
+  const datos = extraerDatos(limpio);
+  console.log('📩 Registro extraído:', datos);
+
+  try {
+    const respuesta = await postProspectoAut(datos);
+    console.log('📤 Prospecto enviado:', respuesta);
+  } catch (error) {
+    console.error('❌ Error al enviar prospecto:', error.message);
+  }
+}
+
 
     await connection.end();
   } catch (error) {

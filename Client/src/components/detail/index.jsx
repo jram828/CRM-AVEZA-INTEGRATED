@@ -335,7 +335,7 @@ const Detail = () => {
                 className="cajadetail"
                 name="direccion"
                 id="direccion"
-                value={userDataDetail.direccion.toUpperCase()}
+                value={userDataDetail?.direccion?.toUpperCase()}
                 onChange={handleUpdateDetail}
               />
             </div>
@@ -348,7 +348,7 @@ const Detail = () => {
                 className="cajadetail"
                 name="ciudad"
                 id="ciudad"
-                value={userDataDetail.ciudad.toUpperCase()}
+                value={userDataDetail?.ciudad?.toUpperCase()}
                 onChange={handleUpdateDetail}
               />
             </div>
@@ -361,7 +361,7 @@ const Detail = () => {
                 className="cajadetail"
                 name="departamento"
                 id="departamento"
-                value={userDataDetail.departamento.toUpperCase()}
+                value={userDataDetail?.departamento?.toUpperCase()}
                 onChange={handleUpdateDetail}
               />
             </div>

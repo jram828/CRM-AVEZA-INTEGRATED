@@ -22,7 +22,7 @@ const Detail = () => {
   // const datos = useSelector((state) =>
   //   source === "abogado" ? state.abogado : state.cliente
   // );
-   console.log('Source:', source)
+  console.log("Source:", source);
   const cliente = JSON.parse(localStorage.getItem("cliente"));
   // console.log('Cliente local:', cliente)
 
@@ -44,7 +44,7 @@ const Detail = () => {
       : source === "prospecto"
       ? datos.cedulaProspecto
       : datos.cedulaCliente;
-console.log("Cedula:", Cedula);
+  console.log("Cedula:", Cedula);
   const [userDataDetail, setUserDataDetail] = useState({
     email: "",
     nombres: "",
@@ -135,7 +135,7 @@ console.log("Cedula:", Cedula);
         dispatch(deleteProspecto(Cedula));
         navigate("/prospectos");
       }
-    }else {
+    } else {
       const isConfirmed = window.confirm(
         "¿Estás seguro de que deseas eliminar este registro?"
       );
@@ -197,9 +197,29 @@ console.log("Cedula:", Cedula);
             </svg>
             Eliminar
           </Button>
-          {/* <GoogleDriveFileUploader/> */}
           {datos?.tarjetaProf ? (
             <Link to="/abogados">
+              <Button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1.2em"
+                  height="1.2em"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="none"
+                    stroke="black"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={50.5}
+                    d="M244 400L100 256l144-144M120 256h292"
+                  ></path>
+                </svg>
+                Volver
+              </Button>
+            </Link>
+          ) : source === "prospecto" ? (
+            <Link to="/prospectos">
               <Button>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -241,9 +261,6 @@ console.log("Cedula:", Cedula);
               </Button>
             </Link>
           )}
-          {/* <Button className="botonesiniciosesion" onClick={generarContrato}>
-            Generar Documentos
-          </Button> */}
         </div>
         {/* <div className="generardocumento">
           <input type="file" id="doc" />
@@ -283,7 +300,7 @@ console.log("Cedula:", Cedula);
                 onChange={handleUpdateDetail}
               />
             </div>
-            {/* <div className="infodetail">
+            <div className="infodetail">
               <label htmlFor="cedula" className="labeldetail">
                 Numero de cédula:
               </label>
@@ -295,7 +312,7 @@ console.log("Cedula:", Cedula);
                 value={userDataDetail.cedula}
                 onChange={handleUpdateDetail}
               />
-            </div> */}
+            </div>
             <div className="infodetail">
               <label htmlFor="email" className="labeldetail">
                 Correo:
@@ -365,6 +382,140 @@ console.log("Cedula:", Cedula);
               </div>
             )}
           </div>
+          {source === "prospecto" && (
+            <div className="personal">
+              <div className="infodetail">
+                <label htmlFor="impuestoLaboral" className="labeldetail">
+                  Impuestos o laborales:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="impuestoLaboral"
+                  id="impuestoLaboral"
+                  value={userDataDetail.impuestoLaboral}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="vehiculoCooperativas" className="labeldetail">
+                  Vehículo o cooperativas:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="vehiculoCooperativas"
+                  id="vehiculoCooperativas"
+                  value={userDataDetail.vehiculoCooperativas}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="hipotecario" className="labeldetail">
+                  Crédito hipotecario:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="hipotecario"
+                  id="hipotecario"
+                  value={userDataDetail.hipotecario}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="proveedores" className="labeldetail">
+                  Crédito proveedores:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="proveedores"
+                  id="proveedores"
+                  value={userDataDetail.proveedores}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="bancoPersonas" className="labeldetail">
+                  Crédito con Bancos o personas:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="bancoPersonas"
+                  id="bancoPersonas"
+                  value={userDataDetail.bancoPersonas}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="tieneBienes" className="labeldetail">
+                  Tiene bienes?:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="tieneBienes"
+                  id="tieneBienes"
+                  value={userDataDetail.tieneBienes}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="bienes" className="labeldetail">
+                  Bienes:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="bienes"
+                  id="bienes"
+                  value={userDataDetail.bienes}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="totalBienes" className="labeldetail">
+                  Total bienes:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="totalBienes"
+                  id="totalBienes"
+                  value={userDataDetail.totalBienes}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="totalDeudas" className="labeldetail">
+                  Total deudas:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="totalDeudas"
+                  id="totalDeudas"
+                  value={userDataDetail.totalDeudas}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+              <div className="infodetail">
+                <label htmlFor="modoContacto" className="labeldetail">
+                  Modo de contacto:
+                </label>
+                <input
+                  type="text"
+                  className="cajadetail"
+                  name="modoContacto"
+                  id="modoContacto"
+                  value={userDataDetail.modoContacto}
+                  onChange={handleUpdateDetail}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

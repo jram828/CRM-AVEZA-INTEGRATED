@@ -30,6 +30,7 @@
     "filesaver": "^0.0.13",
     "googleapis": "^144.0.0",
     "hash-router": "^0.4.0",
+    "imap-simple": "^5.1.0",
     "jest-dom": "^4.0.0",
     "jquery": "^3.7.1",
     "jspdf": "^2.5.1",

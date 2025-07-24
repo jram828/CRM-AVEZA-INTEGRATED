@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import imaps from "imap-simple";
 import { postProspectoAut } from "../controllers/prospecto/postProspectoAut.js";
+import { simpleParser } from "mailparser";
 
 dotenv.config();
 
@@ -22,21 +23,22 @@ export const buscarCorreos = async () => {
     const connection = await imaps.connect(config);
     await connection.openBox("INBOX");
 
-    const searchCriteria = [
-      "UNSEEN",
-      ["HEADER", "SUBJECT", SUBJECT]
-    ];
+    const searchCriteria = ["UNSEEN", ["HEADER", "SUBJECT", SUBJECT]];
     const fetchOptions = {
       bodies: ["TEXT"],
-      markSeen: true
+      markSeen: true,
     };
 
     const messages = await connection.search(searchCriteria, fetchOptions);
     console.log(`🟢 Se encontraron ${messages.length} correos filtrados.`);
 
     for (const message of messages) {
-      const cuerpoTexto = message.parts.find(part => part.which === "TEXT").body;
-      const datos = extraerDatos(cuerpoTexto);
+      const raw = message.parts.find((part) => part.which === "TEXT").body;
+
+      const parsed = await simpleParser(raw);
+      const textoPlano = parsed.text || "";
+
+      const datos = extraerDatos(textoPlano);
       console.log("📩 Registro extraído:", datos);
 
       try {
@@ -54,7 +56,10 @@ export const buscarCorreos = async () => {
 };
 
 const extraerDatos = (texto) => {
-  const lineas = texto.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+  const lineas = texto
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
 
   // Primeros campos directos
   const datos = {
@@ -73,7 +78,7 @@ const extraerDatos = (texto) => {
     bienes: "",
     totalBienes: "",
     totalDeudas: "",
-    modoContacto: ""
+    modoContacto: "",
   };
 
   // Campos con formato "Campo: valor"
@@ -89,12 +94,13 @@ const extraerDatos = (texto) => {
     "bienes",
     "totalBienes",
     "totalDeudas",
-    "modoContacto"
+    "modoContacto",
   ];
 
   for (let i = 0; i < campos.length && idx < lineas.length; i++, idx++) {
     const partes = lineas[idx].split(":");
-    datos[campos[i]] = partes.length > 1 ? partes.slice(1).join(":").trim() : "";
+    datos[campos[i]] =
+      partes.length > 1 ? partes.slice(1).join(":").trim() : "";
   }
 
   return datos;

@@ -111,6 +111,17 @@ const Detail = () => {
         comentarios: datos.comentarios,
         cedulanew: datos.cedulaProspecto,
         cedula_anterior: datos.cedulaProspecto,
+        impuestoLaboral: datos.impuestoLaboral || "",
+        vehiculoCooperativas: datos.vehiculoCooperativas || "",
+        hipotecario: datos.hipotecario || "",
+        proveedores: datos.proveedores || "",
+        bancoPersonas: datos.bancoPersonas || "",
+        familiares: datos.familiares || "",
+        tieneBienes: datos.tieneBienes || "",
+        bienes: datos.bienes || "",
+        totalBienes: datos.totalBienes || "",
+        totalDeudas: datos.totalDeudas || "",
+        modoContacto: datos.modoContacto || "",
       });
     }
   }, [dispatch, source]);

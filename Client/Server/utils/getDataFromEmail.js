@@ -33,33 +33,53 @@ export const buscarCorreos = async () => {
     console.log(`🟢 Se encontraron ${messages.length} correos filtrados.`);
 
     for (const message of messages) {
-  const rawBody = message.parts.find(part => part.which === 'TEXT')?.body;
-  if (!rawBody) continue;
+      const obtenerContenidoPlano = (parts) => {
+        for (const part of parts) {
+          if (
+            part.which === "TEXT" ||
+            part.which === "BODY" ||
+            part.which === "1"
+          ) {
+            return part.body;
+          }
+          // Revisión recursiva si hay partes anidadas
+          if (Array.isArray(part.parts)) {
+            const nested = obtenerContenidoPlano(part.parts);
+            if (nested) return nested;
+          }
+        }
+        return "";
+      };
 
-  const parsed = await simpleParser(rawBody);
+      const rawBody = obtenerContenidoPlano(message.parts);
 
-  // Usamos `html` si `text` está vacío
-  const contenido = parsed.text?.trim().length ? parsed.text : parsed.html || '';
+      if (!rawBody) continue;
 
-  // Limpiamos etiquetas si viene como HTML
-  const limpio = contenido
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/?[^>]+(>|$)/g, '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\r/g, '')
-    .trim();
+      const parsed = await simpleParser(rawBody);
 
-  const datos = extraerDatos(limpio);
-  console.log('📩 Registro extraído:', datos);
+      // Usamos `html` si `text` está vacío
+      const contenido = parsed.text?.trim().length
+        ? parsed.text
+        : parsed.html || "";
 
-  try {
-    const respuesta = await postProspectoAut(datos);
-    console.log('📤 Prospecto enviado:', respuesta);
-  } catch (error) {
-    console.error('❌ Error al enviar prospecto:', error.message);
-  }
-}
+      // Limpiamos etiquetas si viene como HTML
+      const limpio = contenido
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/?[^>]+(>|$)/g, "")
+        .replace(/&nbsp;/g, " ")
+        .replace(/\r/g, "")
+        .trim();
 
+      const datos = extraerDatos(limpio);
+      console.log("📩 Registro extraído:", datos);
+
+      try {
+        const respuesta = await postProspectoAut(datos);
+        console.log("📤 Prospecto enviado:", respuesta);
+      } catch (error) {
+        console.error("❌ Error al enviar prospecto:", error.message);
+      }
+    }
 
     await connection.end();
   } catch (error) {

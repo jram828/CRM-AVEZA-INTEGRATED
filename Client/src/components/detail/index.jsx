@@ -231,31 +231,32 @@ const Detail = () => {
             </Link>
           ) : source === "prospecto" ? (
             <div className="botonesprospecto">
-            <Link to="/cotizacion">
-              <Button>
-                Cotizacion
-              </Button>
-            </Link>
-            <Link to="/prospectos">
-              <Button>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.2em"
-                  height="1.2em"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="none"
-                    stroke="black"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={50.5}
-                    d="M244 400L100 256l144-144M120 256h292"
-                  ></path>
-                </svg>
-                Volver
-              </Button>
-            </Link>
+              <Link to="/cotizacion">
+                <Button>Cotizacion</Button>
+              </Link>
+
+              <Button>Convertir en Cliente</Button>
+
+              <Link to="/prospectos">
+                <Button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1.2em"
+                    height="1.2em"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      fill="none"
+                      stroke="black"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={50.5}
+                      d="M244 400L100 256l144-144M120 256h292"
+                    ></path>
+                  </svg>
+                  Volver
+                </Button>
+              </Link>
             </div>
           ) : (
             <Link to="/clientes">

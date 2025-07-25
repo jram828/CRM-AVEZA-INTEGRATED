@@ -312,19 +312,6 @@ const Detail = () => {
               />
             </div>
             <div className="infodetail">
-              <label htmlFor="cedula" className="labeldetail">
-                Numero de cédula:
-              </label>
-              <input
-                type="number"
-                className="cajadetail"
-                name="cedula"
-                id="cedula"
-                value={userDataDetail.cedula}
-                onChange={handleUpdateDetail}
-              />
-            </div>
-            <div className="infodetail">
               <label htmlFor="email" className="labeldetail">
                 Correo:
               </label>

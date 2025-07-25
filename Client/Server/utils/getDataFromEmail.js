@@ -22,7 +22,7 @@ const SUBJECT = "Lead pauta insolvencia";
 
 export const keepAlivePing = async () => {
   try {
-    await axios.get(process.env.VITE_URL);
+    await axios.get(`${process.env.VITE_URL}/tiposdecasos`);
     console.log('📡 Keep-alive enviado correctamente');
   } catch (err) {
     console.error('❌ Error en keep-alive:', err.message);

@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import imaps from "imap-simple";
 import { postProspectoAut } from "../controllers/prospecto/postProspectoAut.js";
 import qp from "quoted-printable";
+import axios from "axios";
 
 dotenv.config();
 

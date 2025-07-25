@@ -18,6 +18,18 @@ const config = {
 
 const SUBJECT = "Lead pauta insolvencia";
 
+
+export const keepAlivePing = async () => {
+  try {
+    await axios.get(process.env.VITE_URL);
+    console.log('📡 Keep-alive enviado correctamente');
+  } catch (err) {
+    console.error('❌ Error en keep-alive:', err.message);
+  }
+};
+
+
+
 export const buscarCorreos = async () => {
   try {
     const connection = await imaps.connect(config);

@@ -230,6 +230,12 @@ const Detail = () => {
               </Button>
             </Link>
           ) : source === "prospecto" ? (
+            <div className="botonesprospecto">
+            <Link to="/cotizacion">
+              <Button>
+                Cotizacion
+              </Button>
+            </Link>
             <Link to="/prospectos">
               <Button>
                 <svg
@@ -250,6 +256,7 @@ const Detail = () => {
                 Volver
               </Button>
             </Link>
+            </div>
           ) : (
             <Link to="/clientes">
               <Button>

@@ -32,7 +32,7 @@ const actualizaProspecto = async (
   
   const prospectoActualizar = await Prospecto.findByPk(idProspecto);
 
-  codigo_ciudad? prospectoActualizar.removeCiudad(ciudad_anterior):null;
+  ciudad_anterior? prospectoActualizar.removeCiudad(ciudad_anterior):null;
 
   const [updateCount, updateClient] = await Prospecto.update(
     { cedulaProspecto: cedulaProspecto,

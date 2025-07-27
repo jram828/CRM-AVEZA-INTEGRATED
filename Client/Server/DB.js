@@ -207,6 +207,9 @@ Cliente.belongsTo(TipoUsuario);
 Cliente.belongsToMany(Deuda2, { through: "Cliente_Deuda" });
 Deuda2.belongsToMany(Cliente, { through: "Cliente_Deuda" });
 
+Prospecto.belongsToMany(Deuda2, { through: "Prospecto_Deuda" });
+Deuda2.belongsToMany(Prospecto, { through: "Prospecto_Deuda" });
+
 const models = {
   ...sequelize.models,
   conn: sequelize,

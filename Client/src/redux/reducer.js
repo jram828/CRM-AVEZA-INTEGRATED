@@ -62,6 +62,7 @@ import {
   POST_INSOLVENCIA,
   GET_SOLICITUD_BY_CEDULA,
   CREAR_DEUDAS,
+  COPIAR_DEUDAS,
 } from "./actions";
 
 let initialState = {
@@ -354,6 +355,11 @@ const rootReducer = (state = initialState, action) => {
         solicitud: action.payload,
       };
     case CREAR_DEUDAS:
+      return {
+        ...state,
+        deudas: action.payload,
+      };
+          case COPIAR_DEUDAS:
       return {
         ...state,
         deudas: action.payload,

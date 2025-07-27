@@ -6,6 +6,7 @@ import { deleteCaso } from "../controllers/caso/deleteCaso.js";
 import { getCasoId } from "../controllers/caso/getCasoById.js";
 import { actualizaCaso } from "../controllers/caso/postActualizaCaso.js";
 import { actualizaCasoCotizacion } from "../controllers/caso/postActualizaCasoCotizacion.js";
+import { copyDeudas } from "../controllers/caso/copyDeudas.js";
 
 const createCasosHandler = async (req, res) => {
   const {
@@ -110,6 +111,18 @@ const createDeudasHandler = async (req, res) => {
   }
 };
 
+const copyDeudasHandler = async (req, res) => {
+  const { cedulaProspecto } = req.body;
+  console.log('body handler crear deudas:', req.body)
+
+  try {
+    const response = await copyDeudas(cedulaProspecto);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const deleteCasoHandler = async (req, res) => {
   const { idCaso} = req.body;
   console.log("body handler delete:", req.body);
@@ -196,6 +209,7 @@ const postActualizaCasoCotizacion = async (req, res) => {
 export {
   createCasosHandler,
   createDeudasHandler,
+  copyDeudasHandler,
   getCasoHandler,
   finCasoHandler,
   deleteCasoHandler,

@@ -199,6 +199,7 @@ const Detail = () => {
     const submitHandlerRegistro = (e) => {
       e.preventDefault();
       registroCliente(userDataDetail);
+      dispatch(copyDeudas({cedulaProspecto: prospecto.cedula}));
       navigate("/clientes");
     };
   // console.log("Nuevos Datos cliente:", userDataDetail);

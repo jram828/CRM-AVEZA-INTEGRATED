@@ -14,7 +14,7 @@ import { formatNumero } from "../../utils/formatNumero.js";
 import { use } from "react";
 
 const Cotizacion = () => {
-  const cliente = useSelector((state) => state.cliente);
+  const prospecto = useSelector((state) => state.prospecto);
   const caso = useSelector((state) => state.caso);
   // console.log("Cliente cotizacion:", cliente);
 
@@ -405,14 +405,14 @@ const Cotizacion = () => {
       bienes,
       deudas,
       propuestas,
-      cliente,
+      prospecto,
       honorarios,
       resultadosCotizacion
     );
 
     dispatch(modificarCasoCotizacion(datoscotizacion));
-    console.log("Cedula:", cliente.cedula);
-    dispatch(crearDeudas({deudas, cedulaCliente: cliente.cedula}));
+    console.log("Cedula:", prospecto.cedula);
+    dispatch(crearDeudas({deudas, cedulaProspecto: prospecto.cedula}));
 
     // console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));

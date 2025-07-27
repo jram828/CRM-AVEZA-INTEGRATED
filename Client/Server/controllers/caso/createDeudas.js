@@ -1,23 +1,23 @@
 import { models } from "../../DB.js";
 import moment from "moment";
 
-const { Deuda2, Cliente } = models;
+const { Deuda2, Prospecto } = models;
 
-const createDeudas = async (deudas,cedulaCliente) => {
+const createDeudas = async (deudas,cedulaProspecto) => {
   console.log("deudas controller:", deudas);
-  console.log("cedulaCliente controller:", cedulaCliente);
+  console.log("cedulaProspecto controller:", cedulaProspecto);
 
 
-  const estaCliente = await Cliente.findOne({
+  const estaProspecto = await Prospecto.findOne({
     where: {
-      cedulaCliente: Number(cedulaCliente),
+      cedulaProspecto: Number(cedulaProspecto),
       activo: true,
     },
   });
-  console.log("estaCliente controller:", estaCliente);
-  if (!estaCliente)
+  console.log("estaProspecto controller:", estaProspecto);
+  if (!estaProspecto)
     return JSON.stringify({
-      mensaje: "Cliente no encontrado o Cliente eliminado",
+      mensaje: "Prospecto no encontrado o Prospecto eliminado",
     });
 
 
@@ -62,7 +62,7 @@ const createDeudas = async (deudas,cedulaCliente) => {
         acreedor: deuda.acreedor,
       });
       console.log("Nueva Deuda:", newDeuda);
-      newDeuda.addCliente(estaCliente);
+      newDeuda.addProspecto(estaProspecto);
     }
 
   return newDeuda; //Devuelve el último registro creado

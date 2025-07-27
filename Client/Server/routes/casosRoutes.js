@@ -8,6 +8,7 @@ import {
   postActualizaCasoCotizacion,
   deleteCasoHandler,
   createDeudasHandler,
+  copyDeudasHandler,
 } from "../handlers/casosHandlers.js";
 
 const casosRouter = Router();
@@ -22,6 +23,7 @@ casosRouter.post("/findecaso", finCasoHandler);
 
 casosRouter.post("/elimina", deleteCasoHandler);
 casosRouter.post("/creardeudas", createDeudasHandler);
+casosRouter.post("/copiardeudas", copyDeudasHandler);
 
 casosRouter.put("/actualiza", postActualizaCaso); //Actualizar datos (uno a la vez)
 

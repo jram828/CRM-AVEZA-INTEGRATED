@@ -11,6 +11,7 @@ export const SET_CLIENTE = "SET_CLIENTE";
 export const SET_PROSPECTO = "SET_PROSPECTO"; 
 export const SET_CASO = "SET_CASO"; 
 export const CREAR_DEUDAS = "CREAR_DEUDAS"; 
+export const COPIAR_DEUDAS = "COPIAR_DEUDAS";
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const SET_USERTOKEN = "SET_USERTOKEN";
 export const FILTER_ABOGADO = "FILTER_NAME_ABOGADO";
@@ -698,6 +699,19 @@ export const getAbogadosTodos = () => {
   
     return dispatch({
       type: CREAR_DEUDAS,
+      payload: data,
+    });
+  };
+};
+
+ export const copyDeudas = (payload) => {
+  const endpoint = `/casos/copiardeudas`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+  
+    return dispatch({
+      type: COPIAR_DEUDAS,
       payload: data,
     });
   };

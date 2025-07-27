@@ -11,6 +11,7 @@ import {
   modificarDatosAbogado,
   modificarDatosProspecto,
 } from "../../redux/actions";
+import { registroCliente } from "../../handlers/registroCliente";
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
 
@@ -195,6 +196,11 @@ const Detail = () => {
     }
   };
 
+    const submitHandlerRegistro = (e) => {
+      e.preventDefault();
+      registroCliente(userDataDetail);
+      navigate("/clientes");
+    };
   // console.log("Nuevos Datos cliente:", userDataDetail);
 
   return (
@@ -250,7 +256,7 @@ const Detail = () => {
                 <Button>Cotizacion</Button>
               </Link>
 
-              <Button>Convertir en Cliente</Button>
+              <Button onClick={submitHandlerRegistro} className="botonesiniciosesion">Convertir en Cliente</Button>
 
               <Link to="/prospectos">
                 <Button>

@@ -4,6 +4,7 @@ import { codigoCiudades } from "../../utils/codigoCiudades.js";
 const { Prospecto, Ciudad, Pais, Departamento } = models;
 
 const actualizaProspecto = async (
+  idProspecto,
   cedula,
   nombres,
   apellidos,
@@ -13,7 +14,7 @@ const actualizaProspecto = async (
   ciudad,
   ciudad_anterior,
   comentarios,
-  cedula_anterior
+  
   // password,
 ) => {
   const cedulaProspecto = cedula;
@@ -29,7 +30,7 @@ const actualizaProspecto = async (
 
   // console.log("ciudad:", ciudadfilter);
   
-  const prospectoActualizar = await Prospecto.findByPk(cedula_anterior);
+  const prospectoActualizar = await Prospecto.findByPk(idProspecto);
 
   prospectoActualizar.removeCiudad(ciudad_anterior);
 
@@ -45,14 +46,14 @@ const actualizaProspecto = async (
     },
     {
       where: {
-        cedulaProspecto: cedula_anterior,
+        idProspecto: idProspecto,
       },
     }
   );
   
       const consulta = {
         where: {
-          cedulaProspecto: parseInt(cedulaProspecto),
+          idProspecto: idProspecto,
           activo: true,
         },
         include: [

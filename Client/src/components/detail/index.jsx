@@ -46,18 +46,32 @@ const Detail = () => {
       : datos.cedulaCliente;
   console.log("Cedula:", Cedula);
   const [userDataDetail, setUserDataDetail] = useState({
+    idProspecto: "",
+    cedula_anterior: "",
+    ciudad_anterior: "",
+    cedula: "",
+    cedulanew: "",
+    impuestoLaboral: "",
+    vehiculoCooperativas: "",
+    hipotecario: "",
+    proveedores: "",
+    bancoPersonas: "",
+    familiares: "",
+    tieneBienes: "",
+    bienes: "",
+    totalBienes: "",
+    totalDeudas: "",
+    modoContacto: "",
+    tarjetaProf: "",
     email: "",
     nombres: "",
     apellidos: "",
-    tarjetaProf: "",
-    cedula: "",
     celular: "",
     direccion: "",
     ciudad: "",
     departamento: "",
     // password: "",
     comentarios: "",
-    cedulanew: "",
   });
 
   useEffect(() => {
@@ -98,6 +112,7 @@ const Detail = () => {
     } else {
       setUserDataDetail({
         ...userDataDetail,
+        idProspecto: datos.idProspecto,
         email: datos.email,
         celular: datos.celular,
         ciudad: datos?.Ciudads[0]?.nombre_ciudad || "",

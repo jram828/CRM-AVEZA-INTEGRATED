@@ -132,7 +132,7 @@ const postEliminaProspectos = async (req, res) => {
 
 const postActualizaProspectos = async (req, res) => {
 
-  const {
+  const {idProspecto,
     cedulanew,
     nombres,
     apellidos,
@@ -150,6 +150,7 @@ const postActualizaProspectos = async (req, res) => {
   try {
     console.log('Cedula anterior handler:',cedula_anterior)
     const response = await actualizaProspecto(
+      idProspecto,
       cedula,
       nombres,
       apellidos,

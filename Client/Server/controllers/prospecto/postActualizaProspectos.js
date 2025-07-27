@@ -26,13 +26,13 @@ const actualizaProspecto = async (
     // console.log("Ciudad filter:", ciudadfilter);
 
     const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
-    // console.log("Codigo ciudad:", codigo_ciudad);
+    console.log("Codigo ciudad:", codigo_ciudad);
 
   // console.log("ciudad:", ciudadfilter);
   
   const prospectoActualizar = await Prospecto.findByPk(idProspecto);
 
-  prospectoActualizar.removeCiudad(ciudad_anterior);
+  codigo_ciudad? prospectoActualizar.removeCiudad(ciudad_anterior):null;
 
   const [updateCount, updateClient] = await Prospecto.update(
     { cedulaProspecto: cedulaProspecto,

@@ -6,7 +6,7 @@ export async function registroCliente(userDataRegistro) {
     nombres,
     apellidos,
     cedulaCliente,
-    cedula,
+    cedulanew,
     celular,
     direccion,
     nombre_ciudad,
@@ -19,8 +19,8 @@ export async function registroCliente(userDataRegistro) {
     comentarios,
     valor_pretensiones,
   } = userDataRegistro;
-
-  // console.log("User data registro:", userDataRegistro);
+  
+  console.log("User data registro:", userDataRegistro);
   
   const URL = "/clientes/registrocliente";
   try {
@@ -29,7 +29,7 @@ export async function registroCliente(userDataRegistro) {
       // password: `${password}`,
       nombres: `${nombres}`,
       apellidos: `${apellidos}`,
-      cedulaCliente: `${cedulaCliente? cedulaCliente : cedula}`,
+      cedulaCliente: `${cedulaCliente? cedulaCliente : cedulanew}`,
       celular: `${celular}`,
       direccion: `${direccion}`,
       nombre_ciudad: `${nombre_ciudad? nombre_ciudad : ciudad}`,

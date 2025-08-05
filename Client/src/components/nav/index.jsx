@@ -68,7 +68,7 @@ const Nav = ({ logout }) => {
           </Button>
         </Link>
       )}
-      {(user.administrador === true || user.cedulaAbogado) && (
+      {(user.administrador || user.cedulaAbogado) && (
         <Link to="/clientes">
           <Button>
             {" "}

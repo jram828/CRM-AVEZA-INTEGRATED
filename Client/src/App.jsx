@@ -1,11 +1,23 @@
 //Importar modulos necesarios
 import { useState } from "react";
-import "./App.css";
 import Nav from "./components/nav/index.jsx";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import logo from "./img/logoAveza.png";
+import { useDispatch } from "react-redux";
+import { setAuth } from "./redux/actions.js";
+
+// Componentes
+import Form from "./components/login/index.jsx";
+import CrearUsuario from "./components/crearusuario/index.jsx";
+import RecordatorioContrasena from "./components/recordatoriocontrasena/index.jsx";
+import CambiarContrasena from "./components/cambiarcontrasena/index.jsx";
+import Consultas from "./components/consultas/consultas.jsx";
+import { crearUsuario } from "./handlers/crearUsuario.jsx";
+
+// Rutas protegidas (internas)
 import PrevisualizarContrato from "./components/previsualizarcontrato/index.jsx";
 import Detail from "./components/detail/index.jsx";
-import Form from "./components/login/index.jsx";
 import GenerarFactura from "./components/generarfactura/index.jsx";
 import DocumentosLegales from "./components/documentoslegales/index.jsx";
 import Cotizacion from "./components/cotizacion/index.jsx";
@@ -14,37 +26,25 @@ import Contrato from "./components/contrato/index.jsx";
 import ConfigurarRecordatorios from "./components/configurarrecordatorios/index.jsx";
 import AgendarCitas from "./components/agendarcitas/index.jsx";
 import RegistroCliente from "./components/registrocliente/index.jsx";
-import CrearUsuario from "./components/crearusuario/index.jsx";
-import RecordatorioContrasena from "./components/recordatoriocontrasena/index.jsx";
-import axios from "axios";
-import logo from "./img/logoAveza.png";
 import PDF from "./components/PDF/index.jsx";
 import Autorizacion from "./components/autorizacion/index.jsx";
 import Insolvencia from "./components/insolvencia/index.jsx";
 import Poder from "./components/poder/index.jsx";
 import WordToHtml from "./components/wordtohtml/index.jsx";
-import { useDispatch } from "react-redux";
-import { setAuth } from "./redux/actions.js";
 import Abogados from "./components/abogados/index.jsx";
 import RegistroAbogado from "./components/registroabogado/index.jsx";
 import Casos from "./components/casos/index.jsx";
 import DetailCasos from "./components/detailCasos/detailCasos.jsx";
 import CrearCaso from "./components/CrearCaso/crearCaso.jsx";
-import Consultas from "./components/consultas/consultas.jsx";
 import AllConsultas from "./components/allConsultas/allConsultas.jsx";
 import Payments from "./components/payments/payments.component.jsx";
-import { crearUsuario } from "./handlers/crearUsuario.jsx";
 import Status from "./components/status/index.jsx";
-import CambiarContrasena from "./components/cambiarcontrasena/index.jsx";
 import RegistroProspecto from "./components/registroprospecto/index.jsx";
 import Prospectos from "./components/prospectos/index.jsx";
-// import EditarInsolvencia from "./components/editarinsolvencia/index.jsx";
+import SidebarDemo from "./components/sidebar/index.jsx";
 
-
+// URL base
 const URL = import.meta.env.VITE_URL;
-// const { URL } = process.env;
-// axios.defaults.baseURL = "https://crm-aveza.onrender.com/crmAveza";
-
 axios.defaults.baseURL = URL;
 
 function App() {
@@ -52,24 +52,24 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
-  //Funcion para verificar datos de ingreso
+  const rutasSinSidebar = [
+    "/",
+    "/crearusuario",
+    "/recordatoriocontrasena",
+    "/cambiarcontrasena",
+    "/consultas",
+  ];
+
   async function login(userData) {
-    const { cedula, password, rol } = userData;
+    const { cedula, password } = userData;
     const URL = "/login";
-    // console.log("Datos login:", { cedula, password, rol });
     try {
-      const { data } = await axios(
-        URL + `?cedula=${cedula}&password=${password}`
-      );
-      // console.log("Login propio:", data);
+      const { data } = await axios(URL + `?cedula=${cedula}&password=${password}`);
       const { access } = data;
-      // console.log("Access: ", access);
       window.localStorage.setItem("loggedUser", JSON.stringify(data.usuario));
       if (access === true) {
         dispatch(setAuth(access));
-
         if (data.usuario.administrador || data.usuario.cedulaAbogado) {
           navigate("/clientes");
         } else if (data.usuario.cedulaCliente) {
@@ -80,7 +80,7 @@ function App() {
       } else {
         window.alert("Usuario o contraseña incorrectos");
       }
-    } catch (error) {
+    } catch {
       window.alert("Usuario o contraseña incorrectos");
     }
   }
@@ -92,58 +92,37 @@ function App() {
     navigate("/");
   };
 
-  // const sendSMS = () => {
-  //   // setAccess(false);
-  //   navigate("/sms");
-  // };
-
-  // const onClose = (id) => {
-  //   const charactersFilter = characters.filter(
-  //     (character) => character.id !== id
-  //   );
-  //   setCharacters(charactersFilter);
-  // };
-
-  //Acceder al modulo de crear usuario
   const clickHandlerCrear = (e) => {
     e.preventDefault();
     setAccess(true);
     navigate("/crearusuario");
   };
 
-  //Acceder al modulo de recordar contraseñas
   const clickHandlerRecordatorio = (e) => {
     e.preventDefault();
     setAccess(true);
-
     navigate("/recordatoriocontrasena");
   };
 
   return (
-    //Renderizar menu principal en las rutas correspondientes
     <div className="App">
-      {location.pathname !== "/" &&
-      location.pathname !== "/crearusuario" &&
-      location.pathname !== "/recordatoriocontrasena" &&
-      location.pathname !== "/cambiarcontrasena" &&
-      location.pathname !== "/consultas" ? (
-        <Nav logout={logout} />
-      ) : undefined}
+      {/* Nav */}
+      {/* {!rutasSinSidebar.includes(location.pathname) && <Nav logout={logout} />} */}
 
-      {location.pathname === "/home" ? (
+      {!rutasSinSidebar.includes(location.pathname) && <SidebarDemo logout={logout} />}
+
+      {/* Pantalla de inicio */}
+      {/* {location.pathname === "/home" && (
         <div className="logo-aveza2">
-          <br></br>
-          <br></br>
-          <br></br>
+          <br /><br /><br />
           <img src={logo} alt="logo-aveza" title="AVEZA SAS" />
-          <br></br>
-          <br></br>
-          <br></br>
+          <br /><br /><br />
           <h1 className="titulo">Bienvenido a CRM AVEZA</h1>
         </div>
-      ) : undefined}
+      )} */}
 
       <Routes>
+        {/* Rutas públicas */}
         <Route
           path="/"
           element={
@@ -154,48 +133,55 @@ function App() {
             />
           }
         />
-        <Route
-          path="/crearusuario"
-          element={<CrearUsuario crearUsuario={crearUsuario} />}
-        />
-        <Route path="/consultas" element={<Consultas />} />
-        <Route path="generar" element={<WordToHtml />} />
-        <Route path="generarfactura" element={<GenerarFactura />} />
-        <Route path="cotizacion" element={<Cotizacion />} />
-        <Route path="autorizacion" element={<Autorizacion />} />
-        <Route path="poder" element={<Poder />} />
-        <Route path="PDF" element={<PDF />} />
-        <Route path="insolvencia" element={<Insolvencia />} />
-        {/* <Route path="editarinsolvencia" element={<EditarInsolvencia />} /> */}
-        <Route path="registrocliente" element={<RegistroCliente />} />
-        <Route path="registroprospecto" element={<RegistroProspecto />} />
-        <Route path="registroabogado" element={<RegistroAbogado />} />
-        <Route path="detail" element={<Detail />} />
-        <Route
-          path="previsualizarcontrato"
-          element={<PrevisualizarContrato />}
-        />
-        <Route
-          path="configurarrecordatorios"
-          element={<ConfigurarRecordatorios />}
-        />
-        <Route path="agendarcitas" element={<AgendarCitas />} />
-        <Route
-          path="/recordatoriocontrasena"
-          element={<RecordatorioContrasena />}
-        />
+        <Route path="/crearusuario" element={<CrearUsuario crearUsuario={crearUsuario} />} />
+        <Route path="/recordatoriocontrasena" element={<RecordatorioContrasena />} />
         <Route path="/cambiarcontrasena" element={<CambiarContrasena />} />
-        <Route path="documentoslegales" element={<DocumentosLegales />} />
-        <Route path="contrato" element={<Contrato />} />
-        <Route path="clientes" element={<Clientes />} />
-        <Route path="prospectos" element={<Prospectos />} />
-        <Route path="casos" element={<Casos />} />
-        <Route path="casos/:id" element={<DetailCasos />} />
-        <Route path="casos/crearcaso" element={<CrearCaso />} />
-        <Route path="abogados" element={<Abogados />} />
-        <Route path="verconsultas" element={<AllConsultas />} />
-        <Route path="pagos" element={<Payments />} />
-        <Route path="pagos/status" element={<Status />} />
+        <Route path="/consultas" element={<Consultas />} />
+
+        {/* Rutas privadas (con layout/sidebar) */}
+        <Route
+          path="*"
+          element={
+           
+              <Routes>
+                <Route path="/home" element={
+                  <div className="logo-aveza2 text-center">
+                    <br /><br /><br />
+                    <img src={logo} alt="logo-aveza" title="AVEZA SAS" />
+                    <br /><br /><br />
+                    <h1 className="titulo">Bienvenido a CRM AVEZA</h1>
+                  </div>
+                } />
+                <Route path="/generar" element={<WordToHtml />} />
+                <Route path="/generarfactura" element={<GenerarFactura />} />
+                <Route path="/cotizacion" element={<Cotizacion />} />
+                <Route path="/autorizacion" element={<Autorizacion />} />
+                <Route path="/poder" element={<Poder />} />
+                <Route path="/PDF" element={<PDF />} />
+                <Route path="/insolvencia" element={<Insolvencia />} />
+                <Route path="/registrocliente" element={<RegistroCliente />} />
+                <Route path="/registroprospecto" element={<RegistroProspecto />} />
+                <Route path="/registroabogado" element={<RegistroAbogado />} />
+                <Route path="/detail" element={<Detail />} />
+                <Route path="/previsualizarcontrato" element={<PrevisualizarContrato />} />
+                <Route path="/configurarrecordatorios" element={<ConfigurarRecordatorios />} />
+                <Route path="/agendarcitas" element={<AgendarCitas />} />
+                <Route path="/documentoslegales" element={<DocumentosLegales />} />
+                <Route path="/contrato" element={<Contrato />} />
+                <Route path="/clientes" element={<Clientes />} />
+                <Route path="/prospectos" element={<Prospectos />} />
+                <Route path="/casos" element={<Casos />} />
+                <Route path="/casos/:id" element={<DetailCasos />} />
+                <Route path="/casos/crearcaso" element={<CrearCaso />} />
+                <Route path="/abogados" element={<Abogados />} />
+                <Route path="/verconsultas" element={<AllConsultas />} />
+                <Route path="/pagos" element={<Payments />} />
+                <Route path="/pagos/status" element={<Status />} />
+              </Routes>
+          
+          }
+        />
+
       </Routes>
     </div>
   );

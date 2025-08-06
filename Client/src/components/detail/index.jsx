@@ -233,11 +233,9 @@ const Detail = () => {
           <h5 className="titulo">Detalles</h5>
         </div>
         <div className="menu-detail">
-          {/* <Link to={"/cotizacion"}> */}
           <Button className="botonesiniciosesion" onClick={submitUpdateDetail}>
             Actualizar
           </Button>
-          {/* </Link> */}
           <Button onClick={handleDelete} className="botonesiniciosesion">
             <svg
               xmlns="http://www.w3.org/2000/svg"

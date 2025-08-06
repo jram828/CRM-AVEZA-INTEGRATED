@@ -36,7 +36,7 @@ export default (sequelize) => {
       totalBienes: { type: DataTypes.STRING, allowNull: false },
       totalDeudas: { type: DataTypes.STRING, allowNull: false },
       modoContacto: { type: DataTypes.STRING, allowNull: false },
-      contactactado: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
+      contactado: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
       tieneCotizacion: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
       cotizacionAprobada: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
       activo: {

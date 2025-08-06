@@ -11,6 +11,7 @@ import {
   modificarDatos,
   modificarDatosAbogado,
   modificarDatosProspecto,
+  updateCotizacionData,
 } from "../../redux/actions";
 import { registroCliente } from "../../handlers/registroCliente";
 // import GooglePicker from "../../utils/googlePicker";
@@ -142,6 +143,9 @@ const Detail = () => {
         totalBienes: datos.totalBienes || "",
         totalDeudas: datos.totalDeudas || "",
         modoContacto: datos.modoContacto || "",
+        contactado: datos.contactado || "No",
+        tieneCotizacion: datos.tieneCotizacion || "No",
+        cotizacionAprobada: datos.cotizacionAprobada || "No",
       });
     }
   }, [dispatch, source]);

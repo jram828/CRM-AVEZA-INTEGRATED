@@ -218,11 +218,13 @@ const Detail = () => {
       [name]: checked ? "Si" : "No",
     });
 
-    dispatch(updateCotizacionData({
-      idProspecto: userDataDetail.idProspecto,
-      field: name,
-      value: checked ? "Si" : "No"
-    }));
+    dispatch(
+      updateCotizacionData({
+        idProspecto: userDataDetail.idProspecto,
+        field: name,
+        value: checked ? "Si" : "No",
+      })
+    );
   };
   return (
     <div className="contenedordetail">
@@ -437,7 +439,18 @@ const Detail = () => {
 
             {source === "prospecto" && (
               <div className="personal">
-                {" "}
+                <div className="infodetail">
+                  <label htmlFor="contactado" className="labeldetail">
+                    Contactado:
+                  </label>
+
+                  <input
+                    type="checkbox"
+                    name="contactado"
+                    checked={userDataDetail.contactado === "Si"}
+                    onChange={handleCotizacionChange}
+                  />
+                </div>
                 <div className="infodetail">
                   <label htmlFor="departamento" className="labeldetail">
                     Cotización:
@@ -447,7 +460,7 @@ const Detail = () => {
                       <input
                         type="checkbox"
                         name="tieneCotizacion"
-                        checked={!!userDataDetail.tieneCotizacion}
+                        checked={userDataDetail.tieneCotizacion === "Si"}
                         onChange={handleCotizacionChange}
                       />
                       Generada
@@ -456,7 +469,7 @@ const Detail = () => {
                       <input
                         type="checkbox"
                         name="cotizacionAprobada"
-                        checked={!!userDataDetail.cotizacionAprobada}
+                        checked={userDataDetail.cotizacionAprobada === "Si"}
                         onChange={handleCotizacionChange}
                       />
                       Aprobada

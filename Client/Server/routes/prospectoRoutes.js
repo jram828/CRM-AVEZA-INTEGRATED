@@ -10,6 +10,7 @@ import {
   postProspectosHandler,
   postEliminaProspectos,
   postActualizaProspectos,
+  postActualizaDatosCotizacion,
   // getClientByEmailHandler,
 } from "../handlers/prospectosHandlers.js";
 
@@ -26,6 +27,7 @@ prospectosRouter.post("/relacionardepartamentos", relacionarDepartamentos);
 prospectosRouter.post("/crearciudades", crearCiudades);
 
 prospectosRouter.put("/actualiza", postActualizaProspectos); //Actualizar datos (uno a la vez)
+prospectosRouter.put("/cotizacion", postActualizaDatosCotizacion); 
 
 prospectosRouter.post("/elimina", postEliminaProspectos);
 

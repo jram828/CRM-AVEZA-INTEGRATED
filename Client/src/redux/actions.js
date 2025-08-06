@@ -57,6 +57,7 @@ export const MODIFICAR_CASO_COTIZACION = "MODIFICAR_CASO_COTIZACION";
 export const DELETE_CONSULTA = "DELETE_CONSULTA";
 export const POST_INSOLVENCIA = "POST_INSOLVENCIA";
 export const GET_SOLICITUD_BY_CEDULA = "GET_SOLICITUD_BY_CEDULA";
+export const PUT_DATOS_COTIZACION = "PUT_DATOS_COTIZACION";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -555,6 +556,17 @@ export const postConsulta =  async(payload) => {
       const { data } = await axios.get(endpoint);
       return dispatch({
         type: GET_CONSULTAS,
+        payload: data,
+      });
+    };
+  };
+
+    export const updateCotizacionData = (cotizacionData) => {
+    const endpoint = `/prospectos/cotizacion`;
+    return async (dispatch) => {
+      const { data } = await axios.put(endpoint, cotizacionData);
+      return dispatch({
+        type: PUT_DATOS_COTIZACION,
         payload: data,
       });
     };

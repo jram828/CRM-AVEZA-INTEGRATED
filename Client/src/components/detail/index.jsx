@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../Mystyles";
 import "../detail/detail.css";
 import {
+  copyDeudas,
   deleteAbogado,
   deleteCliente,
   deleteProspecto,
@@ -73,6 +74,9 @@ const Detail = () => {
     departamento: "",
     // password: "",
     comentarios: "",
+    contactado: "No",
+    tieneCotizacion: "No",
+    cotizacionAprobada: "No",
   });
 
   useEffect(() => {
@@ -196,14 +200,26 @@ const Detail = () => {
     }
   };
 
-    const submitHandlerRegistro = (e) => {
-      e.preventDefault();
-      registroCliente(userDataDetail);
-      dispatch(copyDeudas({cedulaProspecto: prospecto.cedula}));
-      navigate("/clientes");
-    };
+  const submitHandlerRegistro = (e) => {
+    e.preventDefault();
+    registroCliente(userDataDetail);
+    dispatch(copyDeudas({ cedulaProspecto: prospecto.cedula }));
+    navigate("/clientes");
+  };
   // console.log("Nuevos Datos cliente:", userDataDetail);
+  const handleCotizacionChange = (e) => {
+    const { name, checked } = e.target;
+    setUserDataDetail({
+      ...userDataDetail,
+      [name]: checked ? "Si" : "No",
+    });
 
+    dispatch(updateCotizacionData({
+      idProspecto: userDataDetail.idProspecto,
+      field: name,
+      value: checked ? "Si" : "No"
+    }));
+  };
   return (
     <div className="contenedordetail">
       <div className="detail" key={userDataDetail.cedula}>
@@ -257,7 +273,12 @@ const Detail = () => {
                 <Button>Cotizacion</Button>
               </Link>
 
-              <Button onClick={submitHandlerRegistro} className="botonesiniciosesion">Convertir en Cliente</Button>
+              <Button
+                onClick={submitHandlerRegistro}
+                className="botonesiniciosesion"
+              >
+                Convertir en Cliente
+              </Button>
 
               <Link to="/prospectos">
                 <Button>
@@ -407,6 +428,37 @@ const Detail = () => {
                   value={userDataDetail.comentarios}
                   onChange={handleUpdateDetail}
                 />
+              </div>
+            )}
+
+            {source === "prospecto" && (
+              <div className="personal">
+                {" "}
+                <div className="infodetail">
+                  <label htmlFor="departamento" className="labeldetail">
+                    Cotización:
+                  </label>
+                  <div className="checkbox-group">
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="tieneCotizacion"
+                        checked={!!userDataDetail.tieneCotizacion}
+                        onChange={handleCotizacionChange}
+                      />
+                      Generada
+                    </label>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="cotizacionAprobada"
+                        checked={!!userDataDetail.cotizacionAprobada}
+                        onChange={handleCotizacionChange}
+                      />
+                      Aprobada
+                    </label>
+                  </div>
+                </div>
               </div>
             )}
           </div>

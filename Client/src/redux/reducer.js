@@ -63,6 +63,7 @@ import {
   GET_SOLICITUD_BY_CEDULA,
   CREAR_DEUDAS,
   COPIAR_DEUDAS,
+  PUT_DATOS_COTIZACION,
 } from "./actions";
 
 let initialState = {
@@ -138,7 +139,7 @@ const rootReducer = (state = initialState, action) => {
         pages: action.payload,
       };
 
-          case GET_PROSPECTOS_TODOS:
+    case GET_PROSPECTOS_TODOS:
       return {
         ...state,
         pages: action.payload,
@@ -148,7 +149,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         pages: action.payload,
       };
-          case GET_PROSPECTOS_CASOS:
+    case GET_PROSPECTOS_CASOS:
       return {
         ...state,
         pages: action.payload,
@@ -164,7 +165,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         cliente: action.payload,
       };
-          case GET_BY_ID_PROSPECTO:
+    case GET_BY_ID_PROSPECTO:
       return {
         ...state,
         prospecto: action.payload,
@@ -180,7 +181,7 @@ const rootReducer = (state = initialState, action) => {
         clientes: action.payload,
       };
 
-          case FILTER_PROSPECTO:
+    case FILTER_PROSPECTO:
       return {
         ...state,
         prospectos: action.payload,
@@ -201,7 +202,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         cliente: action.payload,
       };
-          case SET_PROSPECTO:
+    case SET_PROSPECTO:
       return {
         ...state,
         prospecto: action.payload,
@@ -223,7 +224,7 @@ const rootReducer = (state = initialState, action) => {
         clientes: action.payload,
       };
 
-          case ORDER_PROSPECTOS:
+    case ORDER_PROSPECTOS:
       return {
         ...state,
         prospectos: action.payload,
@@ -239,7 +240,7 @@ const rootReducer = (state = initialState, action) => {
         clientes: action.payload,
       };
 
-          case DELETE_PROSPECTO:
+    case DELETE_PROSPECTO:
       return {
         ...state,
         prospectos: action.payload,
@@ -359,12 +360,16 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         deudas: action.payload,
       };
-          case COPIAR_DEUDAS:
+    case COPIAR_DEUDAS:
       return {
         ...state,
         deudas: action.payload,
       };
-
+    case PUT_DATOS_COTIZACION:
+      return {
+        ...state,
+        prospecto: action.payload,
+      };
     case CLEAN_USER:
       return initialState;
 

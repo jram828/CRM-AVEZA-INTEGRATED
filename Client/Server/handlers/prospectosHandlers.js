@@ -4,12 +4,9 @@ import { getAllProspectoCasos } from "../controllers/prospecto/getAllProspectosC
 import { getProspectoByName } from "../controllers/prospecto/getProspectoByName.js";
 import { createProspectoBd } from "../controllers/prospecto/postProspectosController.js";
 import { eliminaProspecto } from "../controllers/prospecto/postEliminaProspecto.js";
-import {
-  actualizaProspecto,
-} from "../controllers/prospecto/postActualizaProspectos.js";
-import {
-  getProspectoByEmail,
-} from "../controllers/prospecto/getProspectoByEmail.js";
+import { actualizaProspecto } from "../controllers/prospecto/postActualizaProspectos.js";
+import { getProspectoByEmail } from "../controllers/prospecto/getProspectoByEmail.js";
+import { actualizaDatosCotizacion } from "../controllers/prospecto/postActualizaDatosCotizacion.js";
 
 const prospectosHandler = async (req, res) => {
   //const { name } = req.query;
@@ -47,7 +44,6 @@ const prospectosCasosHandler = async (req, res) => {
   }
 };
 
-
 const prospectosDetailHandler = async (req, res) => {
   const { cedulaProspecto } = req.query;
   // res.status(200).send(`Detalle del Usuario ${id}`); //? esto fue de solo prueba de inicio 42:57
@@ -76,20 +72,20 @@ const getProspectoByEmailHandler = async (req, res) => {
 const postProspectosHandler = async (req, res) => {
   console.log("Body post prospecto handler:", req.body);
   const {
-      email,
-      nombres,
-      apellidos,
-      cedulaProspecto,
-      celular,
-      direccion,
-      nombre_ciudad,
-      tipo_usuario,
-      tipo_de_caso,
-      forma_de_pago,
-      honorarios,
-      cuotas,
-      comentarios,
-      valor_pretensiones
+    email,
+    nombres,
+    apellidos,
+    cedulaProspecto,
+    celular,
+    direccion,
+    nombre_ciudad,
+    tipo_usuario,
+    tipo_de_caso,
+    forma_de_pago,
+    honorarios,
+    cuotas,
+    comentarios,
+    valor_pretensiones,
   } = req.body;
 
   try {
@@ -131,8 +127,8 @@ const postEliminaProspectos = async (req, res) => {
 };
 
 const postActualizaProspectos = async (req, res) => {
-
-  const {idProspecto,
+  const {
+    idProspecto,
     cedulanew,
     nombres,
     apellidos,
@@ -144,11 +140,11 @@ const postActualizaProspectos = async (req, res) => {
     comentarios,
     cedula_anterior,
   } = req.body;
-  
+
   const cedula = cedulanew;
 
   try {
-    console.log('Cedula anterior handler:',cedula_anterior)
+    console.log("Cedula anterior handler:", cedula_anterior);
     const response = await actualizaProspecto(
       idProspecto,
       cedula,
@@ -167,14 +163,27 @@ const postActualizaProspectos = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-  // res.status(200).send(`creando actividades`);
 };
-export  {
+
+const postActualizaDatosCotizacion = async (req, res) => {
+  const { idProspecto, field, value } = req.body;
+
+  try {
+    const response = await actualizaDatosCotizacion(idProspecto, field, value);
+    if (response) res.status(200).json(response);
+    else res.status(204).json("No se actualizo el Prospecto");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export {
   prospectosHandler,
   prospectosCasosHandler,
   prospectosDetailHandler,
   postProspectosHandler,
   postEliminaProspectos,
   postActualizaProspectos,
+  postActualizaDatosCotizacion,
   getProspectoByEmailHandler,
 };

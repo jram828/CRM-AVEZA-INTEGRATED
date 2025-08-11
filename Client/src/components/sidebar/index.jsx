@@ -37,7 +37,7 @@ export default function SidebarDemo({ logout }) {
     },
     {
       label: "Clientes",
-      href: "/clientes", // Podés cambiarlo por una ruta real o futura
+      href: "/clientes",
       icon: (
         <IconUsersGroup stroke={1} />),
     },
@@ -52,8 +52,8 @@ export default function SidebarDemo({ logout }) {
       label: "Agenda",
       href: "/agendarcitas",
       icon: (
-        <IconCalendarWeek stroke={1} />
-        ),
+        <IconCalendarWeek stroke={1} className="text-black group-hover/sidebar:text-black" />
+      ),
     },
 
     {
@@ -61,7 +61,7 @@ export default function SidebarDemo({ logout }) {
       href: "/pagos",
       icon: (
         <IconReceiptDollar stroke={1} />
-            ),
+      ),
     },
 
     {
@@ -69,7 +69,7 @@ export default function SidebarDemo({ logout }) {
       href: "/verconsultas",
       icon: (
         <IconDevicesQuestion stroke={1} />
-            ),
+      ),
     },
 
     {
@@ -77,7 +77,7 @@ export default function SidebarDemo({ logout }) {
       href: "/",
       icon: (
         <IconCornerDownLeft stroke={1}
-        className="text-red-600"/>),
+          className="text-red-600" />),
       onClick: logout
     },
   ];
@@ -91,7 +91,9 @@ export default function SidebarDemo({ logout }) {
       <SidebarCambio open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-            {open ? <Logo /> : <LogoIcon />}
+            {/* {open ? <Logo /> : <LogoIcon />} */}
+            <LogoResponsive open={open} />
+
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
                 <SidebarLink
@@ -117,21 +119,57 @@ export default function SidebarDemo({ logout }) {
   );
 }
 
-const Logo = () => (
-  <a
-    href="#"
-    className="relative z-20 flex items-center space-x-2 py-3 px-4 text-sm font-normal text-black dark:text-white"
-  >
-    <div className="h-6 w-6 bg-black dark:bg-white rounded" />
-    <span className="font-bold text-lg">CRM AVEZA</span>
-  </a>
-);
+// const Logo = () => (
+//   <a
+//     href="#"
+//     className="relative z-20 flex items-center space-x-2 py-3 px-4 text-sm font-normal text-black dark:text-white"
+//   >
+//     <img
+//       src="./logoaveza.png"
+//       alt="Logo"
+//       className="h-20 w-20 object-cover rounded"
+//     />
+//     <div className="flex flex-col">
+//       <span className="font-bold text-4xl tracking-wide">AVEZA</span>
+//       <span className="font-bold text-[8px]">MÁS QUE UNA SOLUCIÓN JÚRIDICA</span>
+//     </div>
+//   </a>
+// );
 
-const LogoIcon = () => (
+// const LogoIcon = () => (
+//   <a
+//     href="#"
+//     className="relative z-20 flex items-center space-x-2 py-3 px-4 text-sm font-normal text-black dark:text-white justify-center"
+//   >
+//     <img
+//       src="./logoaveza.png"
+//       alt="Logo"
+//       className="h-10 w-10 object-cover rounded"
+//     />
+//   </a>
+// );
+
+const LogoResponsive = ({ open }) => (
   <a
     href="#"
-    className="relative z-20 flex items-center space-x-2 py-3 px-4 text-sm font-normal text-black dark:text-white"
+    className={cn(
+      "relative z-20 flex items-center space-x-2 py-3 px-4 text-sm font-normal text-black dark:text-white",
+      !open && "justify-center" // Centrar solo si está cerrado
+    )}
   >
-    <div className="h-6 w-6 bg-black dark:bg-white rounded" />
+    <img
+      src="./logoaveza.png"
+      alt="Logo"
+      className={cn(
+        "object-cover rounded transition-all duration-300 ease-in-out",
+        open ? "h-20 w-20" : "h-10 w-10" // tamaño según estado
+      )}
+    />
+    {open && (
+      <div className="flex flex-col">
+        <span className="font-bold text-4xl tracking-wide">AVEZA</span>
+        <span className="font-bold text-[8px]">MÁS QUE UNA SOLUCIÓN JÚRIDICA</span>
+      </div>
+    )}
   </a>
 );

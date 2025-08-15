@@ -85,7 +85,7 @@ export default function SidebarDemo({ logout }) {
   return (
     <div
       className={cn(
-        "flex flex-col h-screen bg-gray-100 dark:bg-neutral-900 border-r dark:border-neutral-700 absolute left-0 z-10"
+        "flex flex-col h-screen bg-white dark:bg-neutral-900 border-r border-gray-200 absolute left-0 z-10"
       )}
     >
       <SidebarCambio open={open} setOpen={setOpen}>
@@ -110,9 +110,7 @@ export default function SidebarDemo({ logout }) {
               ))}
             </div>
           </div>
-          <div className="p-4 text-xs text-neutral-500 dark:text-neutral-400">
-            AVEZA CRM
-          </div>
+         
         </SidebarBody>
       </SidebarCambio>
     </div>

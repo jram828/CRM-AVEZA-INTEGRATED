@@ -1,50 +1,60 @@
-.contenedorlitigios{
-  background-color: white;
-  opacity: 0.85;
+.contenedorlitigios {
+  background-color: red;
+  opacity: 0.95;          /* un poco más opaco, ajusta si querés */
   border-radius: 10px;
   padding: 10px;
-  height: 90vh;
-  width: 70vw;
+  height: 90vh;           /* altura para que no genere scroll fuera */
+  width: 100%;            /* que ocupe todo el ancho disponible */
+  max-width: 900px;       /* para que no quede muy ancho en pantallas grandes */
   margin-left: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
-.encabezado{
-  width: 300px;
+.encabezado {
+  width: 100%;            /* ocupa todo el ancho */
+  max-width: 900px;       /* igual que el contenedor */
+  margin-bottom: 1rem;    /* separación */
 }
 
-.registrocliente{
+.registrocliente {
   display: flex;
   flex-direction: row;
-}
-
-   .divabogados{
-    display: grid;
-    justify-content: flex-start;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: minmax(20px, auto);
-   }
-
-   .inputfiltros {
+  gap: 1rem;              /* para separar los botones */
+  flex-wrap: wrap;        /* que se adapten en pantallas chicas */
   width: 100%;
-  padding: 10px;
-  border: 1px solid;
-  border-radius: 10px;
-  background-color: transparent;
-  color:black;
-  font-family: "Outfit", sans-serif;
-  outline: none;
+  max-width: 900px;
+  margin-bottom: 1rem;
 }
 
-.paginaabogados{
-  border-radius: 3px;
-  padding: 3px;
-  margin: 8px;
-  background-color: rgb(81, 115, 238, 0.75);
-  color: black;
-  /* height: 25x; */
-  min-width: 90px;
-  font-weight: bold;
+.divabogados {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* más responsive */
+  grid-auto-rows: minmax(20px, auto);
+  gap: 1rem;              /* espacio entre items */
+  overflow-y: auto;       /* scroll vertical solo acá */
+  flex-grow: 1;           /* para que crezca y ocupe espacio */
+  width: 100%;
+  max-width: 900px;
+  padding-right: 10px;    /* para que el scroll no tape contenido */
+  box-sizing: border-box;
+}
+
+/* Responsive para pantallas más chicas */
+@media (max-width: 768px) {
+  .contenedorlitigios {
+    margin-left: 10px;
+    padding: 5px;
+    height: auto;          /* que ajuste su altura */
+    max-width: 100%;
+  }
+  .encabezado, .registrocliente, .divabogados {
+    max-width: 100%;
+    width: 100%;
+  }
+  .registrocliente {
+    flex-direction: column; /* para que los botones queden en columna */
+  }
 }

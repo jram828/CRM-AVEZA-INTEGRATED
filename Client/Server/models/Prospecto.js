@@ -39,7 +39,7 @@ export default (sequelize) => {
       contactado: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
       tieneCotizacion: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
       cotizacionAprobada: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
-      activo: 
+      activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },

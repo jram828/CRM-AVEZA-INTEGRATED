@@ -100,11 +100,11 @@ const finCasoHandler = async (req, res) => {
 };
 
 const createDeudasHandler = async (req, res) => {
-  const { deudas, cedulaCliente } = req.body;
+  const { deudas, cedulaProspecto } = req.body;
   console.log("body handler crear deudas:", req.body);
 
   try {
-    const response = await createDeudas(deudas, cedulaCliente);
+    const response = await createDeudas(deudas, cedulaProspecto);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });

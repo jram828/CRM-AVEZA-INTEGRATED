@@ -9,6 +9,7 @@ import SearchBar from "../searchBarAbogados";
 import loading from "../../assets/loading.gif";
 // import OrderClientes from "../orderCliente/orderCliente";
 import { Link } from "react-router-dom";
+import Layout from "../layout";
 
 const Abogados = () => {
   const dispatch = useDispatch();
@@ -83,6 +84,7 @@ const Abogados = () => {
   };
   
   return (
+  <Layout>
     <div className="contenedorlitigios">
       <div className="encabezado">
         <h1 className="titulo">Abogados</h1>
@@ -149,6 +151,7 @@ const Abogados = () => {
           })}
       </div>
     </div>
+    </Layout>
   );
 };
 export default Abogados;

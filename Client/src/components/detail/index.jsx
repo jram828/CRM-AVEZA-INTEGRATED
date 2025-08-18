@@ -208,8 +208,8 @@ const Detail = () => {
   const submitHandlerRegistro = (e) => {
     e.preventDefault();
     registroCliente(userDataDetail);
-    dispatch(copyDeudas({ cedulaProspecto: prospecto.cedula }));
-    dispatch(copyHonorarios({ cedulaProspecto: prospecto.cedula }));
+    dispatch(copyDeudas({ cedulaProspecto: prospecto.cedulaProspecto}));
+    dispatch(copyHonorarios({ cedulaProspecto: prospecto.cedulaProspecto}));
     navigate("/clientes");
   };
   // console.log("Nuevos Datos cliente:", userDataDetail);

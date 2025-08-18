@@ -74,8 +74,7 @@ function DetailCasos() {
   }, [id]);
 
   console.log("Honorarios Caso detail:", casoDetail.Honorarios);
-  // ciudad: datos.Ciudads[0].nombre_ciudad,
-  // departamento: datos.Ciudads[0].Departamentos[0].nombre_departamento,
+
 
   const valor_pretensiones_letras = numeroALetras(
     Number(casoDetail.valor_pretensiones)

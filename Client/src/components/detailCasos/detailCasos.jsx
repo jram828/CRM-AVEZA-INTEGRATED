@@ -14,7 +14,6 @@ import { getCasoById } from "../../handlers/detailCaso";
 import { numeroALetras } from "../convertiraletras";
 import { generarDocumentos } from "../../handlers/generarDocumentos";
 import { formatNumero } from "../../utils/formatNumero";
-import Deuda from "../../../Server/models/Deuda";
 // import { generarSolicitud } from "../../handlers/generarSolicitud";
 
 function DetailCasos() {

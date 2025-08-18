@@ -64,6 +64,8 @@ import {
   CREAR_DEUDAS,
   COPIAR_DEUDAS,
   PUT_DATOS_COTIZACION,
+  POST_HONORARIOS,
+  COPIAR_HONORARIOS,
 } from "./actions";
 
 let initialState = {
@@ -76,6 +78,7 @@ let initialState = {
   abogado: {},
   cliente: {},
   prospecto: {},
+  honorarios: {},
   tiposDeCasos: [],
   casos: [],
   caso: {},
@@ -369,6 +372,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         prospecto: action.payload,
+      };
+    case POST_HONORARIOS:
+      return {
+        ...state,
+        honorarios: action.payload,
+      };
+    case COPIAR_HONORARIOS:
+      return {
+        ...state,
+        honorarios: action.payload,
       };
     case CLEAN_USER:
       return initialState;

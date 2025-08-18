@@ -9,6 +9,8 @@ import {
   deleteCasoHandler,
   createDeudasHandler,
   copyDeudasHandler,
+  copyHonorariosHandler,
+  postHonorariosHandler
 } from "../handlers/casosHandlers.js";
 
 const casosRouter = Router();
@@ -24,6 +26,8 @@ casosRouter.post("/findecaso", finCasoHandler);
 casosRouter.post("/elimina", deleteCasoHandler);
 casosRouter.post("/creardeudas", createDeudasHandler);
 casosRouter.post("/copiardeudas", copyDeudasHandler);
+casosRouter.post("/honorarios", postHonorariosHandler);
+casosRouter.post("/copiarhonorarios", copyHonorariosHandler);
 
 casosRouter.put("/actualiza", postActualizaCaso); //Actualizar datos (uno a la vez)
 

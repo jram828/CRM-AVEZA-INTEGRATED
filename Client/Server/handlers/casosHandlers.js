@@ -7,7 +7,7 @@ import { getCasoId } from "../controllers/caso/getCasoById.js";
 import { actualizaCaso } from "../controllers/caso/postActualizaCaso.js";
 import { actualizaCasoCotizacion } from "../controllers/caso/postActualizaCasoCotizacion.js";
 import { copyDeudas } from "../controllers/caso/copyDeudas.js";
-
+import { guardaHonorarios } from "../controllers/caso/postHonorarios.js";
 const createCasosHandler = async (req, res) => {
   const {
     radicado,
@@ -66,7 +66,7 @@ const createCasosHandler = async (req, res) => {
 
 const getCasoHandler = async (req, res) => {
   try {
-    console.log('Req get caso handler:', req.query)
+    console.log("Req get caso handler:", req.query);
     const response = await getAllCaso(req);
     res.status(200).json(response);
   } catch (error) {
@@ -79,7 +79,7 @@ const getTipoDeCasoByIdHandler = async (req, res) => {
   const { idCaso } = req.params;
   try {
     const response = await getCasoId(idCaso);
-    console.log('Response handler get caso:', response)
+    console.log("Response handler get caso:", response);
     res.status(200).json(response);
   } catch (error) {
     console.log(error);
@@ -89,7 +89,7 @@ const getTipoDeCasoByIdHandler = async (req, res) => {
 
 const finCasoHandler = async (req, res) => {
   const { idCaso, fechaFin } = req.body;
-  console.log('body handler fin:', req.body)
+  console.log("body handler fin:", req.body);
 
   try {
     const response = await finCaso(idCaso, fechaFin);
@@ -101,10 +101,10 @@ const finCasoHandler = async (req, res) => {
 
 const createDeudasHandler = async (req, res) => {
   const { deudas, cedulaCliente } = req.body;
-  console.log('body handler crear deudas:', req.body)
+  console.log("body handler crear deudas:", req.body);
 
   try {
-    const response = await createDeudas(deudas,cedulaCliente);
+    const response = await createDeudas(deudas, cedulaCliente);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -113,7 +113,7 @@ const createDeudasHandler = async (req, res) => {
 
 const copyDeudasHandler = async (req, res) => {
   const { cedulaProspecto } = req.body;
-  console.log('body handler crear deudas:', req.body)
+  console.log("body handler crear deudas:", req.body);
 
   try {
     const response = await copyDeudas(cedulaProspecto);
@@ -123,8 +123,20 @@ const copyDeudasHandler = async (req, res) => {
   }
 };
 
+const copyHonorariosHandler = async (req, res) => {
+  const { cedulaProspecto } = req.body;
+  console.log("body handler crear honorarios:", req.body);
+
+  try {
+    const response = await copiarHonorarios(cedulaProspecto);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const deleteCasoHandler = async (req, res) => {
-  const { idCaso} = req.body;
+  const { idCaso } = req.body;
   console.log("body handler delete:", req.body);
 
   try {
@@ -137,21 +149,20 @@ const deleteCasoHandler = async (req, res) => {
 
 const postActualizaCaso = async (req, res) => {
   const {
-  etapa,
-  idCaso,
-  valor_pretensiones,
-  honorarios,
-  honorariosLiquidacion,
-  aceptacion_cotizacion,
-  tiene_contrato,
-  forma_de_pago,
-  descripcion,
-  radicado,
-  juzgado,
-  cuotas,
-  porcentajeInicial
+    etapa,
+    idCaso,
+    valor_pretensiones,
+    honorarios,
+    honorariosLiquidacion,
+    aceptacion_cotizacion,
+    tiene_contrato,
+    forma_de_pago,
+    descripcion,
+    radicado,
+    juzgado,
+    cuotas,
+    porcentajeInicial,
   } = req.body;
-
 
   try {
     const response = await actualizaCaso(
@@ -167,7 +178,7 @@ const postActualizaCaso = async (req, res) => {
       radicado,
       juzgado,
       parseInt(cuotas),
-      parseInt(porcentajeInicial),
+      parseInt(porcentajeInicial)
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el caso");
@@ -177,7 +188,7 @@ const postActualizaCaso = async (req, res) => {
 };
 
 const postActualizaCasoCotizacion = async (req, res) => {
-  const { 
+  const {
     caso,
     ingreso,
     gasto,
@@ -186,10 +197,9 @@ const postActualizaCasoCotizacion = async (req, res) => {
     propuestas,
     cliente,
     honorarios,
-    resultadosCotizacion
+    resultadosCotizacion,
   } = req.body;
 
- 
   try {
     const response = await actualizaCasoCotizacion(
       caso.idCaso,
@@ -197,10 +207,37 @@ const postActualizaCasoCotizacion = async (req, res) => {
       parseInt(honorarios.inicial),
       parseInt(honorarios.cuotasHonorarios),
       parseInt(honorarios.valorHonorarios),
-      parseInt(honorarios.honorariosLiquidacion),
+      parseInt(honorarios.honorariosLiquidacion)
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el caso");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const postHonorariosHandler = async (req, res) => {
+  const { cedulaProspecto, honorarios } = req.body;
+
+  const {
+    inicial,
+    cuotasHonorarios,
+    valorHonorarios,
+    valorRadicar,
+    honorariosLiquidacion,
+  } = honorarios;
+  console.log("body handler honorarios:", req.body);
+
+  try {
+    const response = await guardaHonorarios(
+      cedulaProspecto,
+      inicial,
+      cuotasHonorarios,
+      valorHonorarios,
+      valorRadicar,
+      honorariosLiquidacion
+    );
+    res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -216,5 +253,6 @@ export {
   getTipoDeCasoByIdHandler,
   postActualizaCaso,
   postActualizaCasoCotizacion,
-
+  postHonorariosHandler,
+  copyHonorariosHandler,
 };

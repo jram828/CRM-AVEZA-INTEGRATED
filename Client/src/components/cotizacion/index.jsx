@@ -9,6 +9,7 @@ import {
   crearDeudas,
   crearSolicitud,
   modificarCasoCotizacion,
+  postHonorarios,
 } from "../../redux/actions.js";
 import { formatNumero } from "../../utils/formatNumero.js";
 import { use } from "react";
@@ -413,7 +414,7 @@ const Cotizacion = () => {
     dispatch(modificarCasoCotizacion(datoscotizacion));
     console.log("Cedula:", prospecto.cedula);
     dispatch(crearDeudas({deudas, cedulaProspecto: prospecto.cedula}));
-
+    dispatch(postHonorarios({honorarios: honorarios, cedulaProspecto: prospecto.cedula}));
     // console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));
   };

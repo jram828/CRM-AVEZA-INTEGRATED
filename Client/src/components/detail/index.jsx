@@ -5,6 +5,7 @@ import { Button } from "../Mystyles";
 import "../detail/detail.css";
 import {
   copyDeudas,
+  copyHonorarios,
   deleteAbogado,
   deleteCliente,
   deleteProspecto,
@@ -208,6 +209,7 @@ const Detail = () => {
     e.preventDefault();
     registroCliente(userDataDetail);
     dispatch(copyDeudas({ cedulaProspecto: prospecto.cedula }));
+    dispatch(copyHonorarios({ cedulaProspecto: prospecto.cedula }));
     navigate("/clientes");
   };
   // console.log("Nuevos Datos cliente:", userDataDetail);

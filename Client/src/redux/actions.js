@@ -3,14 +3,14 @@ import axios from "axios";
 
 export const GET_CLIENTE_BY_CEDULA = "GET_CLIENTE_BY_CEDULA";
 export const GET_PROSPECTO_BY_CEDULA = "GET_PROSPECTO_BY_CEDULA";
-export const GET_CLIENTES = "GET_CLIENTES"
-export const GET_PROSPECTOS = "GET_PROSPECTOS"
-export const GET_CLIENTES_CASOS = "GET_CLIENTES_CASOS"
-export const GET_PROSPECTOS_CASOS = "GET_PROSPECTOS_CASOS"
-export const SET_CLIENTE = "SET_CLIENTE"; 
-export const SET_PROSPECTO = "SET_PROSPECTO"; 
-export const SET_CASO = "SET_CASO"; 
-export const CREAR_DEUDAS = "CREAR_DEUDAS"; 
+export const GET_CLIENTES = "GET_CLIENTES";
+export const GET_PROSPECTOS = "GET_PROSPECTOS";
+export const GET_CLIENTES_CASOS = "GET_CLIENTES_CASOS";
+export const GET_PROSPECTOS_CASOS = "GET_PROSPECTOS_CASOS";
+export const SET_CLIENTE = "SET_CLIENTE";
+export const SET_PROSPECTO = "SET_PROSPECTO";
+export const SET_CASO = "SET_CASO";
+export const CREAR_DEUDAS = "CREAR_DEUDAS";
 export const COPIAR_DEUDAS = "COPIAR_DEUDAS";
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const SET_USERTOKEN = "SET_USERTOKEN";
@@ -30,7 +30,7 @@ export const DELETE_CLIENTE = "DELETE_CLIENTES";
 export const DELETE_PROSPECTO = "DELETE_PROSPECTO";
 export const GET_TIPOSDECASOS = "GET_TIPOSDECASOS";
 export const GET_CASOS = "GET_CASOS";
-export const GET_CASOS_TODOS= "GET_CASOS_TODOS";
+export const GET_CASOS_TODOS = "GET_CASOS_TODOS";
 export const FILTER_CASOS = "FILTER_CASOS";
 export const ORDER_CASOS = "ORDER_CASOS";
 export const GET_CASO_BY_ID = "GET_CASO_BY_ID";
@@ -58,6 +58,8 @@ export const DELETE_CONSULTA = "DELETE_CONSULTA";
 export const POST_INSOLVENCIA = "POST_INSOLVENCIA";
 export const GET_SOLICITUD_BY_CEDULA = "GET_SOLICITUD_BY_CEDULA";
 export const PUT_DATOS_COTIZACION = "PUT_DATOS_COTIZACION";
+export const POST_HONORARIOS = "POST_HONORARIOS";
+export const COPIAR_HONORARIOS = "COPIAR_HONORARIOS";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -92,7 +94,6 @@ export const setAuth = (auth) => {
 };
 
 export const getClienteByCedula = (cedula) => {
-  
   // console.log('Cedula get by cedula:',cedula)
   return async (dispatch) => {
     const { data } = await axios.get(`/${cedula}`);
@@ -108,7 +109,6 @@ export const getClienteByCedula = (cedula) => {
 };
 
 export const getProspectoByCedula = (cedula) => {
-  
   // console.log('Cedula get by cedula:',cedula)
   return async (dispatch) => {
     const { data } = await axios.get(`/${cedula}`);
@@ -123,39 +123,39 @@ export const getProspectoByCedula = (cedula) => {
   };
 };
 
-export  const getClienteAll = () => {
-return async (dispatch) => {
-  const { data } = await axios.get('/clientes/clientescasos');
-  // console.log('Data Get clientes:',data)
-  try {
-    return dispatch({
-      type: GET_CLIENTES,
-      payload: data,
-    });
-  } catch (error) {
-    window.alert("Clientes no encontrados!");
-  }
-};
-};
-
-export  const getProspectoAll = () => {
-return async (dispatch) => {
-  const { data } = await axios.get('/prospectos/prospectoscasos');
-  // console.log('Data Get clientes:',data)
-  try {
-    return dispatch({
-      type: GET_PROSPECTOS,
-      payload: data,
-    });
-  } catch (error) {
-    window.alert("Prospectos no encontrados!");
-  }
-};
-};
-
-export  const getClienteAllCasos = () => {
+export const getClienteAll = () => {
   return async (dispatch) => {
-    const { data } = await axios.get('/clientes/clientescasos');
+    const { data } = await axios.get("/clientes/clientescasos");
+    // console.log('Data Get clientes:',data)
+    try {
+      return dispatch({
+        type: GET_CLIENTES,
+        payload: data,
+      });
+    } catch (error) {
+      window.alert("Clientes no encontrados!");
+    }
+  };
+};
+
+export const getProspectoAll = () => {
+  return async (dispatch) => {
+    const { data } = await axios.get("/prospectos/prospectoscasos");
+    // console.log('Data Get clientes:',data)
+    try {
+      return dispatch({
+        type: GET_PROSPECTOS,
+        payload: data,
+      });
+    } catch (error) {
+      window.alert("Prospectos no encontrados!");
+    }
+  };
+};
+
+export const getClienteAllCasos = () => {
+  return async (dispatch) => {
+    const { data } = await axios.get("/clientes/clientescasos");
     // console.log('Data Get clientes:',data)
     try {
       return dispatch({
@@ -166,11 +166,11 @@ export  const getClienteAllCasos = () => {
       window.alert("Clientes no encontrados!");
     }
   };
-  };
-  
-  export  const getProspectoAllCasos = () => {
+};
+
+export const getProspectoAllCasos = () => {
   return async (dispatch) => {
-    const { data } = await axios.get('/prospectos/prospectoscasos');
+    const { data } = await axios.get("/prospectos/prospectoscasos");
     // console.log('Data Get clientes:',data)
     try {
       return dispatch({
@@ -181,7 +181,7 @@ export  const getClienteAllCasos = () => {
       window.alert("Clientes no encontrados!");
     }
   };
-  };
+};
 
 export const setUserToken = (userToken) => {
   // console.log("User token:", userToken);
@@ -231,8 +231,6 @@ export const getAbogados = (page) => {
     });
   };
 };
-
-
 
 export const getByIdAbogado = (cedulaAbogado) => {
   const endpoint = `/abogados/${cedulaAbogado}`;
@@ -410,7 +408,7 @@ export const getCasos = (page) => {
 
 export const getCasosTodos = () => {
   return async (dispatch) => {
-    const { data } = await axios.get('/casos');
+    const { data } = await axios.get("/casos");
     // console.log('Data casos:',data)
     return dispatch({
       type: GET_CASOS_TODOS,
@@ -461,7 +459,7 @@ export const deleteCaso = (idCaso) => {
   const endpoint = `/casos/elimina`;
 
   return async (dispatch) => {
-    const data = await axios.post(endpoint, { idCaso});
+    const data = await axios.post(endpoint, { idCaso });
     // console.log("url", endpoint, "id", idCaso);
 
     return dispatch({
@@ -500,7 +498,7 @@ export const postCita = (payload) => {
 export const getCitas = () => {
   // const endpoint = `/citas?porPagina=20`;
   return async (dispatch) => {
-    const { data } = await axios.get('/citas');
+    const { data } = await axios.get("/citas");
     return dispatch({
       type: GET_CITAS,
       payload: data,
@@ -522,17 +520,17 @@ export const filterCitas = (filtro) => {
 };
 
 export const setFiltro = (filtro) => {
-      return {
-        type: SET_FILTRO,
-        payload: filtro,
-      };
+  return {
+    type: SET_FILTRO,
+    payload: filtro,
+  };
 };
-export const postConsulta =  async(payload) => {
+export const postConsulta = async (payload) => {
   //  console.log('Payload post consulta:', payload)
-  const { nombre, apellido, consulta, correo, telefono} = payload;
-  
+  const { nombre, apellido, consulta, correo, telefono } = payload;
+
   // return async (dispatch) => {
-  try{
+  try {
     const { data } = await axios.post("/consultas", {
       nombre: `${nombre}`,
       apellido: `${apellido}`,
@@ -545,82 +543,93 @@ export const postConsulta =  async(payload) => {
     //   type: POST_CONSULTA,
     //   payload: data,
     // });
-   } catch (error) {
+  } catch (error) {
     window.alert("No fue posible registrar la consulta.");
-  };
-}; 
+  }
+};
 
-  export const getConsultas = (page) => {
-    const endpoint = `/consultas`;
-    return async (dispatch) => {
-      const { data } = await axios.get(endpoint);
-      return dispatch({
-        type: GET_CONSULTAS,
-        payload: data,
-      });
-    };
+export const getConsultas = (page) => {
+  const endpoint = `/consultas`;
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_CONSULTAS,
+      payload: data,
+    });
   };
+};
 
-    export const updateCotizacionData = (cotizacionData) => {
-    const endpoint = `/prospectos/cotizacion`;
-    return async (dispatch) => {
-      const { data } = await axios.put(endpoint, cotizacionData);
-      return dispatch({
-        type: PUT_DATOS_COTIZACION,
-        payload: data,
-      });
-    };
+export const updateCotizacionData = (cotizacionData) => {
+  const endpoint = `/prospectos/cotizacion`;
+  return async (dispatch) => {
+    const { data } = await axios.put(endpoint, cotizacionData);
+    return dispatch({
+      type: PUT_DATOS_COTIZACION,
+      payload: data,
+    });
   };
+};
 
-  export const deleteConsulta = (id) => {
-    const endpoint = `/consultas/delete`;
-    return async (dispatch) => {
-      const { data } = await axios.post(endpoint, {
-        id: `${id}`
-      });
-      return dispatch({
-        type: DELETE_CONSULTA,
-        payload: data,
-      });
-    };
+export const postHonorarios = (honorariosData) => {
+  const endpoint = `/casos/honorarios`;
+  return async (dispatch) => {
+    const { data } = await axios.post(endpoint, honorariosData);
+    return dispatch({
+      type: POST_HONORARIOS,
+      payload: data,
+    });
   };
+};
 
-    export const getConsultasTodos = (page) => {
-      const endpoint = `/consultas?pagina=${page}&porPagina=6`;
-      return async (dispatch) => {
-        const { data } = await axios.get(endpoint);
-        return dispatch({
-          type: GET_CONSULTAS_TODOS,
-          payload: data,
-        });
-      };
-    };
-  
-export const recordarPassword = async (email,cedula) => {
+export const deleteConsulta = (id) => {
+  const endpoint = `/consultas/delete`;
+  return async (dispatch) => {
+    const { data } = await axios.post(endpoint, {
+      id: `${id}`,
+    });
+    return dispatch({
+      type: DELETE_CONSULTA,
+      payload: data,
+    });
+  };
+};
+
+export const getConsultasTodos = (page) => {
+  const endpoint = `/consultas?pagina=${page}&porPagina=6`;
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_CONSULTAS_TODOS,
+      payload: data,
+    });
+  };
+};
+
+export const recordarPassword = async (email, cedula) => {
   const endpoint = `/login/password/?correo=${email}&cedula=${cedula}`;
   // console.log("PAYLOAD", email);
   const data = await axios.get(endpoint);
   return data;
 };
 
-export const cambiarPassword = async (password,cedula) => {
+export const cambiarPassword = async (password, cedula) => {
   const endpoint = `/login/password/?password=${password}&cedula=${cedula}`;
   // console.log("PAYLOAD", password);
   const data = await axios.post(endpoint);
   return data;
 };
 
-  export const getPagos = () => {
-    const endpoint = `/pagosClientes`;
-    return async (dispatch) => {
-      const { data } = await axios.get(endpoint);
-      return dispatch({
-        type: GET_PAGOS,
-        payload: data,
-      });
-    };
+export const getPagos = () => {
+  const endpoint = `/pagosClientes`;
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_PAGOS,
+      payload: data,
+    });
+  };
 };
-  
+
 export const getAbogadosTodos = () => {
   const endpoint = `/abogados?pagina=1&porPagina=24`;
 
@@ -633,63 +642,63 @@ export const getAbogadosTodos = () => {
   };
 };
 
-  export const modificarDatos = (payload) => {
-    const endpoint = `/clientes/actualiza`;
+export const modificarDatos = (payload) => {
+  const endpoint = `/clientes/actualiza`;
 
-    return async (dispatch) => {
-      const data = await axios.put(endpoint, payload);
-      // console.log("URL", endpoint, "PAYLOAD", payload);
-      window.alert("Se ha actualizado el cliente con éxito.");
-      return dispatch({
-        type: MODIFICAR_DATOS,
-        payload: data,
-      });
-    };
+  return async (dispatch) => {
+    const data = await axios.put(endpoint, payload);
+    // console.log("URL", endpoint, "PAYLOAD", payload);
+    window.alert("Se ha actualizado el cliente con éxito.");
+    return dispatch({
+      type: MODIFICAR_DATOS,
+      payload: data,
+    });
   };
+};
 
-    export const modificarDatosProspecto = (payload) => {
-    const endpoint = `/prospectos/actualiza`;
+export const modificarDatosProspecto = (payload) => {
+  const endpoint = `/prospectos/actualiza`;
 
-    return async (dispatch) => {
-      const data = await axios.put(endpoint, payload);
-      // console.log("URL", endpoint, "PAYLOAD", payload);
-      window.alert("Se ha actualizado el prospecto con éxito.");
-      return dispatch({
-        type: MODIFICAR_DATOS_PROSPECTO,
-        payload: data,
-      });
-    };
+  return async (dispatch) => {
+    const data = await axios.put(endpoint, payload);
+    // console.log("URL", endpoint, "PAYLOAD", payload);
+    window.alert("Se ha actualizado el prospecto con éxito.");
+    return dispatch({
+      type: MODIFICAR_DATOS_PROSPECTO,
+      payload: data,
+    });
   };
+};
 
-    export const modificarDatosAbogado = (payload) => {
-      const endpoint = `/abogados/actualiza`;
+export const modificarDatosAbogado = (payload) => {
+  const endpoint = `/abogados/actualiza`;
 
-      return async (dispatch) => {
-        const data = await axios.put(endpoint, payload);
-        // console.log("URL", endpoint, "PAYLOAD", payload);
-        window.alert("Se ha actualizado el abogado con éxito.");
-        return dispatch({
-          type: MODIFICAR_DATOS_ABOGADO,
-          payload: data,
-        });
-      };
-    };
-  
- export const modificarCaso = (payload) => {
-   const endpoint = `/casos/actualiza`;
+  return async (dispatch) => {
+    const data = await axios.put(endpoint, payload);
+    // console.log("URL", endpoint, "PAYLOAD", payload);
+    window.alert("Se ha actualizado el abogado con éxito.");
+    return dispatch({
+      type: MODIFICAR_DATOS_ABOGADO,
+      payload: data,
+    });
+  };
+};
 
-   return async (dispatch) => {
-     const data = await axios.put(endpoint, payload);
+export const modificarCaso = (payload) => {
+  const endpoint = `/casos/actualiza`;
+
+  return async (dispatch) => {
+    const data = await axios.put(endpoint, payload);
     //  console.log("URL", endpoint, "PAYLOAD", payload);
-     window.alert("Se ha actualizado el caso con éxito.");
-     return dispatch({
-       type: MODIFICAR_CASO,
-       payload: data,
-     });
-   };
- };
+    window.alert("Se ha actualizado el caso con éxito.");
+    return dispatch({
+      type: MODIFICAR_CASO,
+      payload: data,
+    });
+  };
+};
 
- export const modificarCasoCotizacion = (payload) => {
+export const modificarCasoCotizacion = (payload) => {
   const endpoint = `/casos/actualizacotizacion`;
 
   return async (dispatch) => {
@@ -703,12 +712,12 @@ export const getAbogadosTodos = () => {
   };
 };
 
- export const crearDeudas = (payload) => {
+export const crearDeudas = (payload) => {
   const endpoint = `/casos/creardeudas`;
 
   return async (dispatch) => {
     const data = await axios.post(endpoint, payload);
-  
+
     return dispatch({
       type: CREAR_DEUDAS,
       payload: data,
@@ -716,14 +725,27 @@ export const getAbogadosTodos = () => {
   };
 };
 
- export const copyDeudas = (payload) => {
+export const copyDeudas = (payload) => {
   const endpoint = `/casos/copiardeudas`;
 
   return async (dispatch) => {
     const data = await axios.post(endpoint, payload);
-  
+
     return dispatch({
       type: COPIAR_DEUDAS,
+      payload: data,
+    });
+  };
+};
+
+export const copyHonorarios = (payload) => {
+  const endpoint = `/casos/copiarhonorarios`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+
+    return dispatch({
+      type: COPIAR_HONORARIOS,
       payload: data,
     });
   };
@@ -745,7 +767,6 @@ export const setCliente = (source) => {
   };
 };
 
-
 export const setProspecto = (source) => {
   // console.log("Limpiar estado detail:", source);
   return {
@@ -754,7 +775,7 @@ export const setProspecto = (source) => {
   };
 };
 
-export const getClientesTodos = (currentPage,porPagina) => {
+export const getClientesTodos = (currentPage, porPagina) => {
   const endpoint = `/clientes/conocimientolitigios?pagina=${currentPage}&porPagina=${porPagina}`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
@@ -765,7 +786,7 @@ export const getClientesTodos = (currentPage,porPagina) => {
   };
 };
 
-export const getProspectosTodos = (currentPage,porPagina) => {
+export const getProspectosTodos = (currentPage, porPagina) => {
   const endpoint = `/prospectos/prospectos?pagina=${currentPage}&porPagina=${porPagina}`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
@@ -776,9 +797,12 @@ export const getProspectosTodos = (currentPage,porPagina) => {
   };
 };
 
-export  const crearSolicitud = (datosInsolvencia) => {
+export const crearSolicitud = (datosInsolvencia) => {
   return async (dispatch) => {
-    const { data } = await axios.post('/insolvencia/crearsolicitud', datosInsolvencia);
+    const { data } = await axios.post(
+      "/insolvencia/crearsolicitud",
+      datosInsolvencia
+    );
     // console.log('Data Crear Solicitud:',data)
     try {
       return dispatch({
@@ -789,19 +813,19 @@ export  const crearSolicitud = (datosInsolvencia) => {
       window.alert("No fue posible crear la solicitud de insolvencia!");
     }
   };
-  };
+};
 
-  export  const obtenerSolicitud = (cedula) => {
-    return async (dispatch) => {
-      const { data } = await axios.get(`/insolvencia/obtenersolicitud/${cedula}`);
-      // console.log('Data Obtener Solicitud:',data)
-      try {
-        return dispatch({
-          type: GET_SOLICITUD_BY_CEDULA,
-          payload: data,
-        });
-      } catch (error) {
-        window.alert("No fue posible obtener la solicitud de insolvencia!");
-      }
-    };
-    };
+export const obtenerSolicitud = (cedula) => {
+  return async (dispatch) => {
+    const { data } = await axios.get(`/insolvencia/obtenersolicitud/${cedula}`);
+    // console.log('Data Obtener Solicitud:',data)
+    try {
+      return dispatch({
+        type: GET_SOLICITUD_BY_CEDULA,
+        payload: data,
+      });
+    } catch (error) {
+      window.alert("No fue posible obtener la solicitud de insolvencia!");
+    }
+  };
+};

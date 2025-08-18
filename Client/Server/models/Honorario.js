@@ -14,7 +14,16 @@ export default (sequelize) => {
       valorRadicar: { type: DataTypes.BIGINT, allowNull: false },
           inicial: { type: DataTypes.BIGINT, allowNull: false },
     cuotasHonorarios:{ type: DataTypes.INTEGER, allowNull: false } ,
-    honorariosLiquidacion:{ type: DataTypes.BIGINT, allowNull: true } 
+    honorariosLiquidacion:{ type: DataTypes.BIGINT, allowNull: true },
+    totalDeudas: { type: DataTypes.BIGINT, allowNull: false },
+    },
+    {
+      indexes: [
+        {
+          unique: true,
+          fields: ["idHonorario"],
+        },
+      ],
     },
     { timestamps: false }
   );

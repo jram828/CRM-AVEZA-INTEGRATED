@@ -8,7 +8,8 @@ const guardaHonorarios = async (cedulaProspecto,
   cuotasHonorarios,
   valorHonorarios,
   valorRadicar,
-  honorariosLiquidacion
+  honorariosLiquidacion,
+  totalDeudas
 ) => {
 
   const estaProspecto = await Prospecto.findOne({
@@ -61,6 +62,14 @@ const guardaHonorarios = async (cedulaProspecto,
   } else {
     hLiquidacion = 0;
   }
+
+      var tDeudas;
+
+  if (typeof totalDeudas === "number") {
+    tDeudas = totalDeudas;
+  } else {
+    tDeudas = 0;
+  }
   // console.log("Radicado controller:", radicado);
   const newHonorario= await Honorario.create({
     valorHonorarios: vhonorarios,
@@ -68,6 +77,7 @@ const guardaHonorarios = async (cedulaProspecto,
     inicial: vinicial,
     cuotasHonorarios: vcuotas,
     honorariosLiquidacion: hLiquidacion,
+    totalDeudas: tDeudas,
   });
 
    newHonorario.addProspecto(cedulaProspecto);

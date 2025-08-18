@@ -217,7 +217,7 @@ const postActualizaCasoCotizacion = async (req, res) => {
 };
 
 const postHonorariosHandler = async (req, res) => {
-  const { cedulaProspecto, honorarios } = req.body;
+  const { cedulaProspecto, honorarios, totalDeudas } = req.body;
 
   const {
     inicial,
@@ -235,7 +235,8 @@ const postHonorariosHandler = async (req, res) => {
       cuotasHonorarios,
       valorHonorarios,
       valorRadicar,
-      honorariosLiquidacion
+      honorariosLiquidacion,
+      totalDeudas
     );
     res.status(200).json(response);
   } catch (error) {

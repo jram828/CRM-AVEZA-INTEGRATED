@@ -1,4 +1,5 @@
  import { models } from "../../DB.js";
+
  const {
   Caso,
   Cliente,
@@ -6,7 +7,8 @@
   TipoDeCaso,
   PagosCliente,
   Ciudad,
-  Deuda2
+  Deuda2,
+  Honorario
 } = models
 const getCasoId = async (id) => {
   // console.log(id)
@@ -21,7 +23,10 @@ const getCasoId = async (id) => {
             attributes: ["nombre_ciudad","codigo_ciudad"]},
             {
             model: Deuda2,
-            attributes: ["acreedor","capital","derechoVoto","clasificacion"]}
+            attributes: ["acreedor","capital","derechoVoto","clasificacion"]},
+            {
+            model: Honorario,
+            attributes: ["valorHonorarios","valorRadicar","inicial","cuotasHonorarios","honorariosLiquidacion","totalDeudas"]}
           ]
       },
       {

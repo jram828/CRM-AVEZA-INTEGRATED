@@ -411,10 +411,10 @@ const Cotizacion = () => {
       resultadosCotizacion
     );
 
-    dispatch(modificarCasoCotizacion(datoscotizacion));
-    console.log("Cedula:", prospecto.cedula);
-    dispatch(crearDeudas({deudas, cedulaProspecto: prospecto.cedula}));
-    dispatch(postHonorarios({honorarios: honorarios, cedulaProspecto: prospecto.cedula}));
+    // dispatch(modificarCasoCotizacion(datoscotizacion));
+    console.log("Cedula:", prospecto.cedulaProspecto);
+    dispatch(crearDeudas({deudas, cedulaProspecto: prospecto.cedulaProspecto}));
+    dispatch(postHonorarios({honorarios: honorarios, cedulaProspecto: prospecto.cedulaProspecto, totalDeudas: resultadosCotizacion.totalDeudas}));
     // console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));
   };

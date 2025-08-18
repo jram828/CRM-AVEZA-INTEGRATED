@@ -1,7 +1,7 @@
 import "./detailCasos.css";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   casoActual,
   clienteActual,
@@ -18,6 +18,8 @@ import { formatNumero } from "../../utils/formatNumero";
 
 function DetailCasos() {
   const user = JSON.parse(localStorage.getItem("loggedUser"));
+  const Caso = useSelector((state) => state.caso);
+
   const { id } = useParams(); // Obtener el id de los parámetros de la ruta
   // console.log("Id detail:", id);
   const dispatch = useDispatch();
@@ -72,7 +74,7 @@ function DetailCasos() {
     obtenerCaso(id);
   }, [id]);
 
-  console.log("Honorarios Caso detail:", casoDetail.Honorarios);
+  console.log("Honorarios Caso detail:", casoDetail);
 
 
   const valor_pretensiones_letras = numeroALetras(

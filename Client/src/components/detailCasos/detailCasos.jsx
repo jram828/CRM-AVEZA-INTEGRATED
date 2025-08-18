@@ -414,8 +414,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "valor_pretensiones"
-                    ? Caso?.Cliente?.Honorarios?.[0]?.totalDeudas || "0"
-                    : Caso?.Cliente?.Honorarios?.[0]?.totalDeudas || "0"
+                    ? casoDetail.valor_pretensiones || "0"
+                    : casoDetail.valor_pretensiones || "0"
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -430,7 +430,7 @@ function DetailCasos() {
                 name="honorarios"
                 id="honorarios"
                 onChange={handleUpdateDetailCaso}
-                value={Caso?.Cliente?.Honorarios[0]?.valorHonorarios || "0"}
+                value={casoDetail.honorarios || "0"}
                 onKeyDown={handleKeyPress}
               />
             </div>
@@ -446,8 +446,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "cuotas"
-                    ? Caso?.Cliente?.Honorarios[0]?.cuotasHonorarios || "0"
-                    : Caso?.Cliente?.Honorarios[0]?.cuotasHonorarios || "0"
+                    ? casoDetail.honorarios || "0"
+                    : casoDetail.honorarios || "0"
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -464,8 +464,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "porcentajeInicial"
-                    ? Caso?.Cliente?.Honorarios[0]?.inicial || "0"
-                    : Caso?.Cliente?.Honorarios[0]?.inicial || "0"
+                    ? casoDetail.porcentajeInicial || "0"
+                    : casoDetail.porcentajeInicial || "0"
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -482,8 +482,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "valorRadicar"
-                    ? Caso?.Cliente?.Honorarios[0]?.valorRadicar || "0"
-                    : Caso?.Cliente?.Honorarios[0]?.valorRadicar || "0"
+                    ? casoDetail.valorRadicar || "0"
+                    : casoDetail.valorRadicar || "0"
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -503,8 +503,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "honorariosLiquidacion"
-                    ? Caso?.Cliente?.Honorarios[0]?.honorariosLiquidacion || "0"
-                    : Caso?.Cliente?.Honorarios[0]?.honorariosLiquidacion || "0"
+                    ? casoDetail.honorariosLiquidacion || "0"
+                    : casoDetail.honorariosLiquidacion || "0"
                 }
                 onKeyDown={handleKeyPress}
               />

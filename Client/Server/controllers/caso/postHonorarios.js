@@ -18,10 +18,16 @@ const guardaHonorarios = async (cedulaProspecto,
       activo: true,
     },
   });
-  if (!estaProspecto)
-    return JSON.stringify({
+ let idProspecto;
+  if (estaProspecto) {
+  idProspecto = estaProspecto.idProspecto;
+  console.log('ID del prospecto:', idProspecto);
+} else {
+  return JSON.stringify({
       mensaje: "Prospecto no encontrado o Prospecto eliminado",
     });
+}
+
 
     // var pretensiones;
 
@@ -36,7 +42,7 @@ const guardaHonorarios = async (cedulaProspecto,
   if (typeof valorHonorarios === "number") {
     vhonorarios = valorHonorarios;
   } else {
-    vhonorarios = 0;
+    vhonorarios = BigInt(valorHonorarios);
   }
 
   var vcuotas;
@@ -44,7 +50,7 @@ const guardaHonorarios = async (cedulaProspecto,
   if (typeof cuotasHonorarios === "number") {
     vcuotas = cuotasHonorarios;
   } else {
-    vcuotas = 0;
+    vcuotas = parseInt(cuotasHonorarios);
   }
 
   var vinicial;
@@ -52,7 +58,7 @@ const guardaHonorarios = async (cedulaProspecto,
   if (typeof inicial === "number") {
     vinicial = inicial;
   } else {
-    vinicial = 0;
+    vinicial = BigInt(inicial);
   }
 
     var hLiquidacion;
@@ -60,7 +66,7 @@ const guardaHonorarios = async (cedulaProspecto,
   if (typeof honorariosLiquidacion === "number") {
     hLiquidacion = honorariosLiquidacion;
   } else {
-    hLiquidacion = 0;
+    hLiquidacion = BigInt(honorariosLiquidacion);
   }
 
       var tDeudas;
@@ -68,7 +74,7 @@ const guardaHonorarios = async (cedulaProspecto,
   if (typeof totalDeudas === "number") {
     tDeudas = totalDeudas;
   } else {
-    tDeudas = 0;
+    tDeudas = BigInt(totalDeudas);
   }
   // console.log("Radicado controller:", radicado);
   const newHonorario= await Honorario.create({
@@ -80,7 +86,7 @@ const guardaHonorarios = async (cedulaProspecto,
     totalDeudas: tDeudas,
   });
 
-   newHonorario.addProspecto(cedulaProspecto);
+   newHonorario.addProspecto(idProspecto);
 
   return newHonorario;
 

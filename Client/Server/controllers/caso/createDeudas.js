@@ -3,10 +3,9 @@ import moment from "moment";
 
 const { Deuda2, Prospecto } = models;
 
-const createDeudas = async (deudas,cedulaProspecto) => {
+const createDeudas = async (deudas, cedulaProspecto) => {
   console.log("deudas controller:", deudas);
   console.log("cedulaProspecto controller:", cedulaProspecto);
-
 
   const estaProspecto = await Prospecto.findOne({
     where: {
@@ -15,11 +14,15 @@ const createDeudas = async (deudas,cedulaProspecto) => {
     },
   });
   console.log("estaProspecto controller:", estaProspecto);
-  if (!estaProspecto)
+  var idProspecto;
+  if (estaProspecto) {
+    idProspecto = estaProspecto.idProspecto;
+    console.log("ID del prospecto:", idProspecto);
+  } else {
     return JSON.stringify({
       mensaje: "Prospecto no encontrado o Prospecto eliminado",
     });
-
+  }
 
   // var pretensiones;
 
@@ -54,16 +57,16 @@ const createDeudas = async (deudas,cedulaProspecto) => {
   // }
   // console.log("Radicado controller:", radicado);
 
-    for (let deuda of deudas) {
-      var newDeuda = await Deuda2.create({
-        capital: Number(deuda.capital),
-        clasificacion: deuda.tipoDeuda,
-        derechoVoto: deuda.derechoVoto,
-        acreedor: deuda.acreedor,
-      });
-      console.log("Nueva Deuda:", newDeuda);
-      newDeuda.addProspecto(estaProspecto);
-    }
+  for (let deuda of deudas) {
+    var newDeuda = await Deuda2.create({
+      capital: Number(deuda.capital),
+      clasificacion: deuda.tipoDeuda,
+      derechoVoto: deuda.derechoVoto,
+      acreedor: deuda.acreedor,
+    });
+    console.log("Nueva Deuda:", newDeuda);
+    newDeuda.addProspecto(idProspecto);
+  }
 
   return newDeuda; //Devuelve el último registro creado
 };

@@ -14,6 +14,7 @@ import { getCasoById } from "../../handlers/detailCaso";
 import { numeroALetras } from "../convertiraletras";
 import { generarDocumentos } from "../../handlers/generarDocumentos";
 import { formatNumero } from "../../utils/formatNumero";
+import Deuda from "../../../Server/models/Deuda";
 // import { generarSolicitud } from "../../handlers/generarSolicitud";
 
 function DetailCasos() {
@@ -44,6 +45,8 @@ function DetailCasos() {
     Cliente: "",
     Abogado: "",
     radicado: "",
+    Honorarios: [],
+    Deuda2s: [],
   });
 
   const [editingField, setEditingField] = useState(null);
@@ -70,7 +73,7 @@ function DetailCasos() {
     obtenerCaso(id);
   }, [id]);
 
-  // console.log("Caso detail:", casoDetail);
+  console.log("Honorarios Caso detail:", casoDetail.Honorarios);
   // ciudad: datos.Ciudads[0].nombre_ciudad,
   // departamento: datos.Ciudads[0].Departamentos[0].nombre_departamento,
 

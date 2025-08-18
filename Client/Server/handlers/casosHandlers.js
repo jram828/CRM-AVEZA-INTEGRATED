@@ -8,6 +8,7 @@ import { actualizaCaso } from "../controllers/caso/postActualizaCaso.js";
 import { actualizaCasoCotizacion } from "../controllers/caso/postActualizaCasoCotizacion.js";
 import { copyDeudas } from "../controllers/caso/copyDeudas.js";
 import { guardaHonorarios } from "../controllers/caso/postHonorarios.js";
+import { copiarHonorarios } from "../controllers/caso/copiarHonorarios.js";
 const createCasosHandler = async (req, res) => {
   const {
     radicado,

@@ -64,7 +64,38 @@ function DetailCasos() {
     const obtenerCaso = async (id) => {
       try {
         const caso = await getCasoById(id);
-        setCasoDetail(caso);
+        const casoTransformado = {
+          idCaso: caso.idCaso ?? "",
+          radicado: caso.radicado ?? "",
+          juzgado: caso.juzgado ?? "",
+          fecha: caso.fecha ?? "",
+          fechaFin: caso.fechaFin ?? "",
+          descripcion: caso.descripcion ?? "",
+          valor_pretensiones: caso.Cliente?.Honorarios?.[0]?.totalDeudas ?? "",
+          aceptacion_cotizacion: caso.aceptacion_cotizacion ?? "",
+          honorarios: caso.Cliente?.Honorarios?.[0]?.valorHonorarios ?? "",
+          honorariosLiquidacion:
+            caso.Cliente?.Honorarios?.[0]?.honorariosLiquidacion ?? "",
+          cuotas: caso.Cliente?.Honorarios?.[0]?.cuotasHonorarios ?? "",
+          porcentajeInicial: caso.Cliente?.Honorarios?.[0]?.inicial ?? "",
+          valorRadicar: caso.Cliente?.Honorarios?.[0]?.valorRadicar ?? "",
+          forma_de_pago: caso.forma_de_pago ?? "",
+          etapa: caso.etapa ?? "",
+          tiene_contrato: caso.tiene_contrato ?? "",
+          activo: caso.activo ?? true,
+          ClienteCedulaCliente: caso.ClienteCedulaCliente ?? "",
+          AbogadoCedulaAbogado: caso.AbogadoCedulaAbogado ?? "",
+          TipoDeCasoTipoDeCasoid: caso.TipoDeCasoTipoDeCasoid ?? "",
+          TipoDeCaso: caso.TipoDeCaso ?? "",
+          tipoDeCasoFlat: caso.TipoDeCaso?.descripcion ?? "",
+          Cliente: caso.Cliente ?? "",
+          Abogado: caso.Abogado ?? "",
+          Honorarios: caso.Cliente?.Honorarios ?? [],
+          Deuda2s: caso.Cliente?.Deuda2s ?? [],
+        };
+
+        setCasoDetail(casoTransformado);
+        // setCasoDetail(caso);
         dispatch(casoActual(caso));
       } catch (error) {
         console.error("Error al obtener el caso:", error);

@@ -368,7 +368,7 @@ function DetailCasos() {
 
             <div className="infodetailcaso">
               <label htmlFor="valor_pretensiones" className="labeldetailcaso">
-                Valor pretensiones: $
+                Valor total deudas: $
               </label>
               <input
                 type="text"
@@ -378,8 +378,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "valor_pretensiones"
-                    ? casoDetail.valor_pretensiones
-                    : (casoDetail.valor_pretensiones)
+                    ? casoDetail.Cliente.Honorarios[0].totalDeudas
+                    : (casoDetail.Cliente.Honorarios[0].totalDeudas)
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -395,7 +395,7 @@ function DetailCasos() {
                 id="honorarios"
                 onChange={handleUpdateDetailCaso}
                 value={
-                  casoDetail.honorarios
+                  casoDetail.Cliente.Honorarios[0].valorHonorarios
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -412,8 +412,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "cuotas"
-                    ? casoDetail.cuotas
-                    : (casoDetail.cuotas)
+                    ? casoDetail.Cliente.Honorarios[0].cuotasHonorarios
+                    : (casoDetail.Cliente.Honorarios[0].cuotasHonorarios)
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -430,8 +430,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "porcentajeInicial"
-                    ? casoDetail.porcentajeInicial
-                    : (casoDetail.porcentajeInicial)
+                    ? casoDetail.Cliente.Honorarios[0].inicial
+                    : (casoDetail.Cliente.Honorarios[0].inicial)
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -448,8 +448,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "valorRadicar"
-                    ? casoDetail.valorRadicar
-                    : (casoDetail.valorRadicar)
+                    ? casoDetail.Cliente.Honorarios[0].valorRadicar
+                    : (casoDetail.Cliente.Honorarios[0].valorRadicar)
                 }
                 onKeyDown={handleKeyPress}
               />
@@ -466,8 +466,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "honorariosLiquidacion"
-                    ? casoDetail.honorariosLiquidacion
-                    : (casoDetail.honorariosLiquidacion)
+                    ? casoDetail.Cliente.Honorarios[0].honorariosLiquidacion
+                    : (casoDetail.Cliente.Honorarios[0].honorariosLiquidacion)
                 }
                 onKeyDown={handleKeyPress}
               />

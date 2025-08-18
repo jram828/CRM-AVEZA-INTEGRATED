@@ -446,8 +446,8 @@ function DetailCasos() {
                 onChange={handleUpdateDetailCaso}
                 value={
                   editingField === "cuotas"
-                    ? casoDetail.honorarios || "0"
-                    : casoDetail.honorarios || "0"
+                    ? casoDetail.cuotas || "0"
+                    : casoDetail.cuotas || "0"
                 }
                 onKeyDown={handleKeyPress}
               />

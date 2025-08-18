@@ -24,7 +24,7 @@ const copyDeudas = async (cedulaProspecto) => {
     }
 
     // 3. Obtener deudas asociadas al prospecto desde Prospecto_Deuda
-    const deudas = await prospecto.getDeuda2s(); // usa relación Prospecto <-> Deuda2
+    var deudas = await prospecto.getDeuda2s(); // usa relación Prospecto <-> Deuda2
 
     if (deudas.length === 0) {
       console.log(`ℹ️ El prospecto no tiene deudas vinculadas`);
@@ -42,7 +42,7 @@ const copyDeudas = async (cedulaProspecto) => {
   }
 
 
-  return newDeuda; //Devuelve el último registro creado
+  return deudas; //Devuelve el último registro creado
 
 };
 export { copyDeudas };

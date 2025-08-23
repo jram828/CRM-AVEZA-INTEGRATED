@@ -61,7 +61,7 @@ function Status() {
     <div  className="contenedorstatus">
       
       <div id="comprobante" className="infopago">
-      <div className="encabezado">
+      <div className="encabezadstat">
         <h1 className="titulo">Estado de la transacción</h1>
       </div>
         <div className="pagoinput">

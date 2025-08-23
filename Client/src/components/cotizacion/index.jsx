@@ -651,10 +651,6 @@ const Cotizacion = () => {
 
             <div className="resumenresultados">
               <div className="infoseccioncotizacion">
-                <div className="encabezadoingresos">
-                  <h6 className="titulocotizacion">Honorarios</h6>
-                </div>
-
                 <div className="infodeudascotizacion">
                   <div className="infodetailingresos">
                     <h6 className="titulocotizacion">Valor</h6>

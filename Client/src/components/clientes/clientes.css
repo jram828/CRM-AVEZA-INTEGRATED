@@ -18,6 +18,7 @@
 .registrocliente{
   display: flex;
   flex-direction: row;
+  width: 80vw;
 }
 
    .divclientes{

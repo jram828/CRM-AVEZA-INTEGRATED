@@ -172,20 +172,17 @@ const Cotizacion = () => {
     setDeudas(updatedDeudas);
 
     if (name === "acreedor") {
-            <input
-              type="text"
-              value={deuda.acreedor}
-              name="acreedor"
-              id={`acreedor-${index}`}
-              className="cajacotizacion"
-              placeholder="Buscar acreedor..."
-              onChange={(event) => handleDeudaChange(index, event)}
-            />
+      <input
+        type="text"
+        value={deuda.acreedor}
+        name="acreedor"
+        id={`acreedor-${index}`}
+        className="cajacotizacion"
+        placeholder="Buscar acreedor..."
+        onChange={(event) => handleDeudaChange(index, event)}
+      />;
     }
     if (name === "capital") {
-
-    
-
       // Cálculo de totales por tipo de deuda
       const totalesPorTipo = deudas.reduce((acc, deuda) => {
         acc[deuda.tipoDeuda] =
@@ -396,9 +393,8 @@ const Cotizacion = () => {
   };
 
   const handlerGenerarCotizacion = () => {
-
     console.log("Propuestas handler:", propuestas);
-    
+
     const datoscotizacion = generarCotizacion(
       caso,
       ingreso,
@@ -413,8 +409,16 @@ const Cotizacion = () => {
 
     // dispatch(modificarCasoCotizacion(datoscotizacion));
     console.log("Cedula:", prospecto.cedulaProspecto);
-    dispatch(crearDeudas({deudas, cedulaProspecto: prospecto.cedulaProspecto}));
-    dispatch(postHonorarios({honorarios: honorarios, cedulaProspecto: prospecto.cedulaProspecto, totalDeudas: resultadosCotizacion.totalDeudas}));
+    dispatch(
+      crearDeudas({ deudas, cedulaProspecto: prospecto.cedulaProspecto })
+    );
+    dispatch(
+      postHonorarios({
+        honorarios: honorarios,
+        cedulaProspecto: prospecto.cedulaProspecto,
+        totalDeudas: resultadosCotizacion.totalDeudas,
+      })
+    );
     // console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));
   };
@@ -439,7 +443,7 @@ const Cotizacion = () => {
     return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(",", "."));
   };
 
-  const handleKeyPress = (e,index) => {
+  const handleKeyPress = (e, index) => {
     if (e.key === "Enter") {
       const { name, value } = e.target;
 
@@ -451,8 +455,6 @@ const Cotizacion = () => {
           });
           break;
         case "capital": {
-
-          
           const updatedDeudas = [...deudas];
           console.log("Deudas keypress:", updatedDeudas);
           // updatedDeudas[index][name] = Number(value.replace(/\./g, "").replace(/,/g, "."));
@@ -535,6 +537,12 @@ const Cotizacion = () => {
   // Modal open/close handlers
   const openBienesModal = () => setShowBienesModal(true);
   const closeBienesModal = () => setShowBienesModal(false);
+
+  const [showHonorariosModal, setShowHonorariosModal] = useState(false);
+
+  // Modal open/close handlers
+  const openHonorariosModal = () => setShowHonorariosModal(true);
+  const closeHonorariosModal = () => setShowHonorariosModal(false);
 
   return (
     <div className="contenedorcotizacion">
@@ -629,6 +637,104 @@ const Cotizacion = () => {
           <div className="modal-backdrop" onClick={closeBienesModal}></div>
         </div>
       )}
+
+      {/* Honorarios Modal */}
+      {showHonorariosModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <span className="titulocotizacion">Honorarios</span>
+              <button className="close-modal" onClick={closeBienesModal}>
+                &times;
+              </button>
+            </div>
+
+            <div className="resumenresultados">
+              <div className="infoseccioncotizacion">
+                <div className="encabezadoingresos">
+                  <h6 className="titulocotizacion">Honorarios</h6>
+                </div>
+
+                <div className="infodeudascotizacion">
+                  <div className="infodetailingresos">
+                    <h6 className="titulocotizacion">Valor</h6>
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="valorHonorarios"
+                      id="valorHonorarios"
+                      onChange={(event) => handleHonorarioChange(event)}
+                      value={honorarios.valorHonorarios}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+
+                <div className="infodeudascotizacion">
+                  <div className="infodetailingresos">
+                    <h6 className="titulocotizacion">Cuota inicial:</h6>
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="inicial"
+                      id="inicial"
+                      onChange={(event) => handleHonorarioChange(event)}
+                      value={honorarios.inicial}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+
+                <div className="infodeudascotizacion">
+                  <div className="infodetailingresos">
+                    <h6 className="titulocotizacion">Numero de cuotas:</h6>
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="cuotasHonorarios"
+                      id="cuotasHonorarios"
+                      onChange={(event) => handleHonorarioChange(event)}
+                      value={honorarios.cuotasHonorarios}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+                <div className="infodeudascotizacion">
+                  <div className="infodetailingresos">
+                    <h6 className="titulocotizacion">Valor para radicar:</h6>
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="valorRadicar"
+                      id="valorRadicar"
+                      onChange={(event) => handleHonorarioChange(event)}
+                      value={honorarios.valorRadicar}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+                <div className="infodeudascotizacion">
+                  <div className="infodetailingresos">
+                    <h6 className="titulocotizacion">
+                      Mensualidad liquidación:
+                    </h6>
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="honorariosLiquidacion"
+                      id="honorariosLiquidacion"
+                      onChange={(event) => handleHonorarioChange(event)}
+                      value={honorarios.honorariosLiquidacion}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop" onClick={closeBienesModal}></div>
+        </div>
+      )}
       <form
         // onSubmit={handlerGenerarCotizacion}
         className="datoscotizacion"
@@ -645,6 +751,14 @@ const Cotizacion = () => {
                   type="button"
                 >
                   Bienes
+                </Button>
+
+                <Button
+                  className="botonesiniciosesion"
+                  onClick={openHonorariosModal}
+                  type="button"
+                >
+                  Honorarios
                 </Button>
               </div>
               <div className="resumen">
@@ -703,88 +817,6 @@ const Cotizacion = () => {
                     </div>
                   </div>
                 </div>
-                <div className="resumenresultados">
-                  <div className="infoseccioncotizacion">
-                    <div className="encabezadoingresos">
-                      <h6 className="titulocotizacion">Honorarios</h6>
-                    </div>
-
-                    <div className="infodeudascotizacion">
-                      <div className="infodetailingresos">
-                        <h6 className="titulocotizacion">Valor</h6>
-                        <input
-                          type="number"
-                          className="cajacotizacion"
-                          name="valorHonorarios"
-                          id="valorHonorarios"
-                          onChange={(event) => handleHonorarioChange(event)}
-                          value={honorarios.valorHonorarios}
-                          onKeyDown={(event) => handleKeyPress(event)}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="infodeudascotizacion">
-                      <div className="infodetailingresos">
-                        <h6 className="titulocotizacion">Cuota inicial:</h6>
-                        <input
-                          type="number"
-                          className="cajacotizacion"
-                          name="inicial"
-                          id="inicial"
-                          onChange={(event) => handleHonorarioChange(event)}
-                          value={honorarios.inicial}
-                          onKeyDown={(event) => handleKeyPress(event)}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="infodeudascotizacion">
-                      <div className="infodetailingresos">
-                        <h6 className="titulocotizacion">Numero de cuotas:</h6>
-                        <input
-                          type="number"
-                          className="cajacotizacion"
-                          name="cuotasHonorarios"
-                          id="cuotasHonorarios"
-                          onChange={(event) => handleHonorarioChange(event)}
-                          value={honorarios.cuotasHonorarios}
-                          onKeyDown={(event) => handleKeyPress(event)}
-                        />
-                      </div>
-                    </div>
-                    <div className="infodeudascotizacion">
-                      <div className="infodetailingresos">
-                        <h6 className="titulocotizacion">Valor para radicar:</h6>
-                        <input
-                          type="number"
-                          className="cajacotizacion"
-                          name="valorRadicar"
-                          id="valorRadicar"
-                          onChange={(event) => handleHonorarioChange(event)}
-                          value={honorarios.valorRadicar}
-                          onKeyDown={(event) => handleKeyPress(event)}
-                        />
-                      </div>
-                    </div>
-                    <div className="infodeudascotizacion">
-                      <div className="infodetailingresos">
-                        <h6 className="titulocotizacion">
-                          Mensualidad liquidación:
-                        </h6>
-                        <input
-                          type="number"
-                          className="cajacotizacion"
-                          name="honorariosLiquidacion"
-                          id="honorariosLiquidacion"
-                          onChange={(event) => handleHonorarioChange(event)}
-                          value={honorarios.honorariosLiquidacion}
-                          onKeyDown={(event) => handleKeyPress(event)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -810,7 +842,11 @@ const Cotizacion = () => {
                         <h6 className="titulocotizacion">{tipo[0]}</h6>
                         <input
                           type="text"
-                          value={formatNumero(Number.parseFloat(resultadosCotizacion.totalesPorTipo[tipo[0]]))}
+                          value={formatNumero(
+                            Number.parseFloat(
+                              resultadosCotizacion.totalesPorTipo[tipo[0]]
+                            )
+                          )}
                           className="inputDerechoVoto"
                           readOnly
                         />
@@ -897,7 +933,10 @@ const Cotizacion = () => {
                   </h6>
                 </div>
                 {deudas.map((deuda, index) => (
-                  <div className="infodeudascotizacion" key={`tipodeuda-${index}`}>
+                  <div
+                    className="infodeudascotizacion"
+                    key={`tipodeuda-${index}`}
+                  >
                     <select
                       name="tipoDeuda"
                       id={`tipodeuda-${index}`}
@@ -962,7 +1001,8 @@ const Cotizacion = () => {
                       name="capital"
                       id={`capital-${index}`}
                       value={
-                        editingField === "capital" && index === deudas.length - 1
+                        editingField === "capital" &&
+                        index === deudas.length - 1
                           ? deuda.capital
                           : formatNumero(deuda.capital)
                       }

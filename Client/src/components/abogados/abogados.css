@@ -5,7 +5,7 @@
   padding: 10px;
   height: 90vh;           /* altura para que no genere scroll fuera */
   width: 100%;            /* que ocupe todo el ancho disponible */
-  max-width: 900px;       /* para que no quede muy ancho en pantallas grandes */
+  max-width: 1200px;       /* para que no quede muy ancho en pantallas grandes */
   margin-left: 40px;
   display: flex;
   flex-direction: column;

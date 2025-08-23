@@ -13,6 +13,7 @@ import {
 } from "../../redux/actions.js";
 import { formatNumero } from "../../utils/formatNumero.js";
 import { use } from "react";
+import { Link } from "react-router-dom";
 
 const Cotizacion = () => {
   const prospecto = useSelector((state) => state.prospecto);
@@ -172,20 +173,17 @@ const Cotizacion = () => {
     setDeudas(updatedDeudas);
 
     if (name === "acreedor") {
-            <input
-              type="text"
-              value={deuda.acreedor}
-              name="acreedor"
-              id={`acreedor-${index}`}
-              className="cajacotizacion"
-              placeholder="Buscar acreedor..."
-              onChange={(event) => handleDeudaChange(index, event)}
-            />
+      <input
+        type="text"
+        value={deuda.acreedor}
+        name="acreedor"
+        id={`acreedor-${index}`}
+        className="cajacotizacion"
+        placeholder="Buscar acreedor..."
+        onChange={(event) => handleDeudaChange(index, event)}
+      />;
     }
     if (name === "capital") {
-
-    
-
       // Cálculo de totales por tipo de deuda
       const totalesPorTipo = deudas.reduce((acc, deuda) => {
         acc[deuda.tipoDeuda] =
@@ -396,9 +394,8 @@ const Cotizacion = () => {
   };
 
   const handlerGenerarCotizacion = () => {
-
     console.log("Propuestas handler:", propuestas);
-    
+
     const datoscotizacion = generarCotizacion(
       caso,
       ingreso,
@@ -413,8 +410,16 @@ const Cotizacion = () => {
 
     // dispatch(modificarCasoCotizacion(datoscotizacion));
     console.log("Cedula:", prospecto.cedulaProspecto);
-    dispatch(crearDeudas({deudas, cedulaProspecto: prospecto.cedulaProspecto}));
-    dispatch(postHonorarios({honorarios: honorarios, cedulaProspecto: prospecto.cedulaProspecto, totalDeudas: resultadosCotizacion.totalDeudas}));
+    dispatch(
+      crearDeudas({ deudas, cedulaProspecto: prospecto.cedulaProspecto })
+    );
+    dispatch(
+      postHonorarios({
+        honorarios: honorarios,
+        cedulaProspecto: prospecto.cedulaProspecto,
+        totalDeudas: resultadosCotizacion.totalDeudas,
+      })
+    );
     // console.log("Datos cotizacion:", datoscotizacion);
     // dispatch(crearCotizacion(datoscotizacion));
   };
@@ -439,7 +444,7 @@ const Cotizacion = () => {
     return Number(numeroFormateado.replace(/[^0-9,-]+/g, "").replace(",", "."));
   };
 
-  const handleKeyPress = (e,index) => {
+  const handleKeyPress = (e, index) => {
     if (e.key === "Enter") {
       const { name, value } = e.target;
 
@@ -451,8 +456,6 @@ const Cotizacion = () => {
           });
           break;
         case "capital": {
-
-          
           const updatedDeudas = [...deudas];
           console.log("Deudas keypress:", updatedDeudas);
           // updatedDeudas[index][name] = Number(value.replace(/\./g, "").replace(/,/g, "."));
@@ -544,6 +547,26 @@ const Cotizacion = () => {
         >
           Generar cotización
         </Button>
+        <Link to="/detail">
+          <Button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1.2em"
+              height="1.2em"
+              viewBox="0 0 512 512"
+            >
+              <path
+                fill="none"
+                stroke="black"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={50.5}
+                d="M244 400L100 256l144-144M120 256h292"
+              ></path>
+            </svg>
+            Volver
+          </Button>
+        </Link>
       </div>
       <form
         // onSubmit={handlerGenerarCotizacion}
@@ -563,7 +586,10 @@ const Cotizacion = () => {
                     <h6 className="titulocotizacion">Valor comercial</h6>
                   </div>
                   {bienes.map((bien, index) => (
-                    <div className="infodeudascotizacion" key={`bienes-${index}`}>
+                    <div
+                      className="infodeudascotizacion"
+                      key={`bienes-${index}`}
+                    >
                       <input
                         type="text"
                         className="cajacotizacion"
@@ -579,7 +605,7 @@ const Cotizacion = () => {
                         id="valorBien"
                         onChange={(event) => handleBienChange(index, event)}
                         value={bien.valor}
-                        onKeyDown={(event) =>handleKeyPress(event,index)}
+                        onKeyDown={(event) => handleKeyPress(event, index)}
                       />
                     </div>
                   ))}
@@ -635,7 +661,7 @@ const Cotizacion = () => {
                           id="valor"
                           onChange={(event) => handleIngresoChange(event)}
                           value={ingreso.Valor}
-                          onKeyDown={(event) =>handleKeyPress(event)}
+                          onKeyDown={(event) => handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -671,7 +697,7 @@ const Cotizacion = () => {
                         id="mensual"
                         onChange={(event) => handleCuotaChange(event)}
                         value={posibleCuota.mensual}
-                        onKeyDown={(event) =>handleKeyPress(event)}
+                        onKeyDown={(event) => handleKeyPress(event)}
                       />
                     </div>
                   </div>
@@ -692,7 +718,7 @@ const Cotizacion = () => {
                           id="valorHonorarios"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.valorHonorarios}
-                          onKeyDown={(event) =>handleKeyPress(event)}
+                          onKeyDown={(event) => handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -707,7 +733,7 @@ const Cotizacion = () => {
                           id="inicial"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.inicial}
-                          onKeyDown={(event) =>handleKeyPress(event)}
+                          onKeyDown={(event) => handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -722,13 +748,15 @@ const Cotizacion = () => {
                           id="cuotasHonorarios"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.cuotasHonorarios}
-                          onKeyDown={(event) =>handleKeyPress(event)}
+                          onKeyDown={(event) => handleKeyPress(event)}
                         />
                       </div>
                     </div>
-                      <div className="infodeudascotizacion">
+                    <div className="infodeudascotizacion">
                       <div className="infodetailingresos">
-                        <h6 className="titulocotizacion">Valor para radicar:</h6>
+                        <h6 className="titulocotizacion">
+                          Valor para radicar:
+                        </h6>
                         <input
                           type="number"
                           className="cajacotizacion"
@@ -736,7 +764,7 @@ const Cotizacion = () => {
                           id="valorRadicar"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.valorRadicar}
-                          onKeyDown={(event) =>handleKeyPress(event)}
+                          onKeyDown={(event) => handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -752,7 +780,7 @@ const Cotizacion = () => {
                           id="honorariosLiquidacion"
                           onChange={(event) => handleHonorarioChange(event)}
                           value={honorarios.honorariosLiquidacion}
-                          onKeyDown={(event) =>handleKeyPress(event)}
+                          onKeyDown={(event) => handleKeyPress(event)}
                         />
                       </div>
                     </div>
@@ -783,14 +811,18 @@ const Cotizacion = () => {
                         <h6 className="titulocotizacion">{tipo[0]}</h6>
                         <input
                           type="text"
-                          value={formatNumero(Number.parseFloat(resultadosCotizacion.totalesPorTipo[tipo[0]]))}
+                          value={formatNumero(
+                            Number.parseFloat(
+                              resultadosCotizacion.totalesPorTipo[tipo[0]]
+                            )
+                          )}
                           className="inputDerechoVoto"
                           readOnly
                         />
                         <input
                           type="text"
                           value={
-                           ( resultadosCotizacion.derechoVotoPorTipo[tipo[0]])
+                            resultadosCotizacion.derechoVotoPorTipo[tipo[0]]
                           }
                           className="inputDerechoVoto"
                           readOnly
@@ -869,7 +901,10 @@ const Cotizacion = () => {
                   </h6>
                 </div>
                 {deudas.map((deuda, index) => (
-                  <div className="infodeudascotizacion" key={`tipodeuda-${index}`}>
+                  <div
+                    className="infodeudascotizacion"
+                    key={`tipodeuda-${index}`}
+                  >
                     <select
                       name="tipoDeuda"
                       id={`tipodeuda-${index}`}
@@ -934,12 +969,13 @@ const Cotizacion = () => {
                       name="capital"
                       id={`capital-${index}`}
                       value={
-                        editingField === "capital" && index === deudas.length - 1
+                        editingField === "capital" &&
+                        index === deudas.length - 1
                           ? deuda.capital
                           : formatNumero(deuda.capital)
                       }
                       onChange={(event) => handleDeudaChange(index, event)}
-                      onKeyDown={(event) =>handleKeyPress(event,index)}
+                      onKeyDown={(event) => handleKeyPress(event, index)}
                     />
                     <input
                       type="number"

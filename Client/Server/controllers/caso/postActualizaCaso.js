@@ -65,11 +65,11 @@ const actualizaCaso = async (
 
       const nuevoCaso = await Caso.findOne(consulta);
 
-  if (updateCount > 0) {
+  if (updateCount > 0 && updateCountHon > 0) {
 
     return nuevoCaso;
   } else {
-    return "";
+    return "No se actualizo el caso";
   }
 
   // return await Abogado.create({nombre, duracion,dificultad, temporada}); //?ASI También puede ser

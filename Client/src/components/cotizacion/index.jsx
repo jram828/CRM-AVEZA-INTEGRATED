@@ -551,29 +551,19 @@ const Cotizacion = () => {
         >
           Generar cotización
         </Button>
-        <Button
-          className="botonesiniciosesion"
-          onClick={openBienesModal}
-          type="button"
-        >
-          Bienes
-        </Button>
       </div>
       {/* Bienes Modal */}
       {showBienesModal && (
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
-              <span className="titulo">Bienes</span>
+              <span className="titulocotizacion">Bienes</span>
               <button className="close-modal" onClick={closeBienesModal}>
                 &times;
               </button>
             </div>
             <div className="formbienes">
               <div className="infoseccioncotizacion">
-                <div className="encabezadoingresos">
-                  <h6 className="titulocotizacion">Bienes</h6>
-                </div>
                 <div className="encabezadoingresos">
                   <h6 className="titulocotizacion">Tipo de bien</h6>
                   <h6 className="titulocotizacion">Valor comercial</h6>

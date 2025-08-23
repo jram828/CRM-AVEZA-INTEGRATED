@@ -17,8 +17,6 @@
   justify-content: center;
 }
 
-
-
 .infodetailpropuesta {
   display: flex;
   flex-direction: row;
@@ -31,7 +29,7 @@
   justify-content: center;
 }
 
-.selectorjuzgado{
+.selectorjuzgado {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -88,7 +86,7 @@
 .cajadeudas {
   width: 110px;
   padding: 2px;
-  margin: 10px;
+  margin: 5px;
   border: 1px solid black; /* Color del borde */
   border-radius: 5px;
   background-color: transparent; /* Fondo transparente */
@@ -100,9 +98,9 @@
 
 .titulocotizacion {
   width: 130px;
-font-size: medium;
-font-weight: bold;
-  margin: 10px;
+  font-size: medium;
+  font-weight: bold;
+  margin: 5px;
   background-color: transparent; /* Fondo transparente */
   color: black; /* Color del texto */
   font-family: "Outfit", sans-serif; /* Estilo de fuente */
@@ -176,25 +174,25 @@ font-weight: bold;
 .datoscotizacion {
   display: flex;
   flex-direction: column;
-  align-items:flex-start;
+  align-items: flex-start;
 }
 .encabezadodeudasclase {
   display: flex;
   flex-direction: row;
-  align-items:space-between;
+  align-items: space-between;
 }
 
 .encabezadopropuesta {
   display: flex;
   flex-direction: row;
-  align-items:space-between;
+  align-items: space-between;
 }
 .formdeudascotizacion {
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   align-items: center;
   width: 95%;
-  margin: 10px;
+  margin: 5px;
   justify-content: space-around;
 }
 
@@ -202,8 +200,8 @@ font-weight: bold;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width:95%;  
-  margin: 10px;
+  width: 95%;
+  margin: 5px;
 }
 
 .formbienes {
@@ -234,35 +232,80 @@ font-weight: bold;
   width: 250px;
 }
 
-.infoseccion{
-  margin: 10px;
+.infoseccion {
+  margin: 5px;
   border: 1px solid black; /* Color del borde */
   border-radius: 5px;
-    display: flex;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 10px;
   width: 100%;
 }
 
-.infoseccioncotizacion{
-  margin: 10px;
+.infoseccioncotizacion {
+  margin: 5px;
   border: 1px solid black; /* Color del borde */
   border-radius: 5px;
-    display: flex;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 10px;
   width: 300px;
 }
 
-.infoseccioncotizacion2{
-  margin: 10px;
+.infoseccioncotizacion2 {
+  margin: 5px;
   border: 1px solid black; /* Color del borde */
   border-radius: 5px;
-    display: flex;
+  display: flex;
   flex-direction: row;
   align-items: flex-start;
   padding: 10px;
   width: 300px;
+}
+
+.modal-overlay {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  z-index: 1001;
+  min-width: 350px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #333;
 }

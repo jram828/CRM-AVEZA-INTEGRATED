@@ -1056,47 +1056,6 @@ const Cotizacion = () => {
           </div>
         </div>
       </form>
-      {/* Modal styles */}
-      <style>{`
-        .modal-overlay {
-          position: fixed;
-          z-index: 1000;
-          left: 0; top: 0; right: 0; bottom: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .modal-backdrop {
-          position: fixed;
-          left: 0; top: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.3);
-          z-index: 999;
-        }
-        .modal-content {
-          background: #fff;
-          border-radius: 8px;
-          padding: 2rem;
-          z-index: 1001;
-          min-width: 350px;
-          max-width: 90vw;
-          max-height: 90vh;
-          overflow-y: auto;
-          position: relative;
-        }
-        .modal-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1rem;
-        }
-        .close-modal {
-          background: none;
-          border: none;
-          font-size: 2rem;
-          cursor: pointer;
-          color: #333;
-        }
-      `}</style>
     </div>
   );
 };

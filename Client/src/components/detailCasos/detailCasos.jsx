@@ -48,6 +48,8 @@ function DetailCasos() {
     radicado: "",
     Honorarios: [],
     Deuda2s: [],
+    porcentajeInicial: "",
+    valorRadicar: "",
   });
 
   const [editingField, setEditingField] = useState(null);

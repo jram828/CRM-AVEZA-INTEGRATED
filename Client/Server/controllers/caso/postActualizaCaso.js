@@ -1,6 +1,6 @@
 import { models } from "../../DB.js";
 
-const { Caso} = models;
+const { Caso, Honorario} = models;
 
 const actualizaCaso = async (
   etapa,
@@ -15,7 +15,9 @@ const actualizaCaso = async (
   radicado,
   juzgado,
   cuotas,
-  porcentajeInicial
+  porcentajeInicial,
+  Honorarios,
+  valorRadicar
 ) => {
 
 
@@ -41,6 +43,21 @@ const actualizaCaso = async (
     }
   );
   
+
+    const [updateCountHon, updateHonorario] = await Honorario.update({
+    valorHonorarios: honorarios,
+    honorariosLiquidacion,
+    totalDeudas: valor_pretensiones,
+    cuotasHonorarios: cuotas,
+    inicial: porcentajeInicial,
+    valorRadicar
+    },
+    {
+      where: {
+        idHonorario: Honorarios[0].Cliente_Honorario.HonorarioIdHonorario,
+      },
+    }
+  );
       const consulta = {
         where: {
           idCaso: idCaso,

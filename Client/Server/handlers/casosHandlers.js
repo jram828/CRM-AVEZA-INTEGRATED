@@ -163,23 +163,27 @@ const postActualizaCaso = async (req, res) => {
     juzgado,
     cuotas,
     porcentajeInicial,
+    Honorarios,
+    valorRadicar
   } = req.body;
 
   try {
     const response = await actualizaCaso(
       etapa,
       idCaso,
-      parseInt(valor_pretensiones),
-      parseInt(honorarios),
-      parseInt(honorariosLiquidacion),
+      BigInt(valor_pretensiones),
+      BigInt(honorarios),
+      BigInt(honorariosLiquidacion),
       aceptacion_cotizacion,
       tiene_contrato,
       forma_de_pago,
       descripcion,
       radicado,
       juzgado,
-      parseInt(cuotas),
-      parseInt(porcentajeInicial)
+      BigInt(cuotas),
+      BigInt(porcentajeInicial),
+      Honorarios,
+      BigInt(valorRadicar)
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el caso");

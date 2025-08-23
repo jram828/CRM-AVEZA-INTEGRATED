@@ -16,7 +16,8 @@ const Prospectos = () => {
   const prospectos = useSelector((state) => state.prospectos);
 
   useEffect(() => {
-    dispatch(getProspectoAll());
+    // dispatch(getProspectoAll());
+    dispatch(getProspectoAllCasos());
     dispatch(setSource("prospecto"));
   }, [dispatch]);
 
@@ -29,9 +30,9 @@ const Prospectos = () => {
  const [currentPage, setCurrentPage] = useState(1);
  const [order, setOrder] = useState("");
 
- useEffect(() => {
-  dispatch(getProspectoAllCasos()); // Obtener el total de Prospectos
- }, [dispatch]);
+//  useEffect(() => {
+//   dispatch(getProspectoAllCasos()); // Obtener el total de Prospectos
+//  }, [dispatch]);
 
  const totalPages = Math.ceil(pages?.length / 12); // Cambia 15 por el número de elementos por página que desees
 //  console.log(totalPages);

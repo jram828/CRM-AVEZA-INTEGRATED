@@ -644,7 +644,7 @@ const Cotizacion = () => {
           <div className="modal-content">
             <div className="modal-header">
               <span className="titulocotizacion">Honorarios</span>
-              <button className="close-modal" onClick={closeBienesModal}>
+              <button className="close-modal" onClick={closeHonorariosModal}>
                 &times;
               </button>
             </div>
@@ -732,7 +732,7 @@ const Cotizacion = () => {
               </div>
             </div>
           </div>
-          <div className="modal-backdrop" onClick={closeBienesModal}></div>
+          <div className="modal-backdrop" onClick={closeHonorariosModal}></div>
         </div>
       )}
       <form

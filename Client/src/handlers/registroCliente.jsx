@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function registroCliente(userDataRegistro) {
+export function registroCliente(userDataRegistro) {
   const {
     email,
     nombres,
@@ -24,7 +24,7 @@ export async function registroCliente(userDataRegistro) {
   
   const URL = "/clientes/registrocliente";
   try {
-    await axios.post(URL, {
+    axios.post(URL, {
       email: `${email}`,
       // password: `${password}`,
       nombres: `${nombres}`,

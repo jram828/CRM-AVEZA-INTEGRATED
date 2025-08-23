@@ -9,7 +9,7 @@ export const ContainerNav = styled.div`
 `;
 export const Button = styled.button`
   border-radius: 8px;
-  margin: 10px;
+  margin: 5px;
   cursor: pointer;
   background-color: white;
   color: black;
@@ -20,7 +20,7 @@ export const Button = styled.button`
 
 export const Button2 = styled.button`
   border-radius: 50px;
-  margin: 10px;
+  margin: 5px;
   cursor: pointer;
   background-color: rgb(81, 115, 238, 0.75);
   color: black;
@@ -30,7 +30,7 @@ export const Button2 = styled.button`
 
 export const Button3 = styled.button`
   border-radius: 50px;
-  margin: 10px;
+  margin: 5px;
   background-color: rgb(81, 115, 238, 0.75);
   color: black;
   min-width: 90px;
@@ -39,7 +39,7 @@ export const Button3 = styled.button`
 
 export const Input = styled.input`
 border-radius:8px;
-margin: 10px;
+margin: 5px;
 height: 30px;
 width: 150px;
 `;

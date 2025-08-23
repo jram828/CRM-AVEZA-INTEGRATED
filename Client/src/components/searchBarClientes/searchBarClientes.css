@@ -1,7 +1,7 @@
 .inputfiltrocliente {
    width: 80%;
-   padding: 10px;
-   margin: 10px;
+   padding: 5px;
+   margin: 5px;
    border: 1px solid black; /* Color del borde */
    border-radius: 5px;
    background-color: transparent; /* Fondo transparente */

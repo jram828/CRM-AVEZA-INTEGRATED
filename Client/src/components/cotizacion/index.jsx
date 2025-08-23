@@ -133,6 +133,9 @@ const Cotizacion = () => {
   const [listaAcreedores, setListaAcreedores] = useState(listaAcreedoresObj);
   const [editingField, setEditingField] = useState(null);
   const [posibleCuota, setPosibleCuota] = useState(initPosibleCuota);
+  const [showBienesModal, setShowBienesModal] = useState(false);
+  const [showHonorariosModal, setShowHonorariosModal] = useState(false);
+  const [showIngresosModal, setShowIngresosModal] = useState(false);
   const [resultadosCotizacion, setResultadosCotizacion] = useState(
     initResultadosCotizacion
   );
@@ -530,19 +533,17 @@ const Cotizacion = () => {
     // console.log("Suma de cuotas:", totalCuotas);
     setResultadosCotizacion(updatedData);
   };
-  // console.log("Honorarios:", honorarios);
-  // Modal state
-  const [showBienesModal, setShowBienesModal] = useState(false);
 
   // Modal open/close handlers
   const openBienesModal = () => setShowBienesModal(true);
   const closeBienesModal = () => setShowBienesModal(false);
 
-  const [showHonorariosModal, setShowHonorariosModal] = useState(false);
-
   // Modal open/close handlers
   const openHonorariosModal = () => setShowHonorariosModal(true);
   const closeHonorariosModal = () => setShowHonorariosModal(false);
+
+  const openIngresosModal = () => setShowIngresosModal(true);
+  const closeIngresosModal = () => setShowIngresosModal(false);
 
   return (
     <div className="contenedorcotizacion">
@@ -731,6 +732,79 @@ const Cotizacion = () => {
           <div className="modal-backdrop" onClick={closeHonorariosModal}></div>
         </div>
       )}
+
+      {showIngresosModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <span className="titulocotizacion">
+                Ingresos / Gastos / Cuota
+              </span>
+              <button className="close-modal" onClick={closeIngresosModal}>
+                &times;
+              </button>
+            </div>
+
+            <div className="resumen">
+              <div className="formgastos">
+                <div className="infoseccioncotizacion2">
+                  <div className="encabezadoingresos">
+                    <h6 className="titulocotizacion">Ingresos mensuales</h6>
+                  </div>
+                  <div className="infodeudascotizacion">
+                    <div className="infodetailingresos">
+                      <input
+                        type="number"
+                        className="cajacotizacion"
+                        name="Valor"
+                        id="valor"
+                        onChange={(event) => handleIngresoChange(event)}
+                        value={ingreso.Valor}
+                        onKeyDown={(event) => handleKeyPress(event)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="infoseccioncotizacion2">
+                  <div className="encabezadogastos">
+                    <h6 className="titulocotizacion">Gastos mensuales</h6>
+                  </div>
+
+                  <div className="infodetailingresos">
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="gastosmensuales"
+                      id="gastosmensuales"
+                      onChange={(event) => handleGastoChange(event)}
+                      value={gasto.gastosmensuales}
+                    />
+                  </div>
+                </div>
+                <div className="infoseccioncotizacion2">
+                  <div className="encabezadogastos">
+                    <h6 className="titulocotizacion">Posible cuota mensual</h6>
+                  </div>
+
+                  <div className="infodetailingresos">
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="mensual"
+                      id="mensual"
+                      onChange={(event) => handleCuotaChange(event)}
+                      value={posibleCuota.mensual}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop" onClick={closeIngresosModal}></div>
+        </div>
+      )}
+
       <form
         // onSubmit={handlerGenerarCotizacion}
         className="datoscotizacion"
@@ -756,63 +830,14 @@ const Cotizacion = () => {
                 >
                   Honorarios
                 </Button>
-              </div>
-              <div className="resumen">
-                <div className="formgastos">
-                  <div className="infoseccioncotizacion2">
-                    <div className="encabezadoingresos">
-                      <h6 className="titulocotizacion">Ingresos mensuales</h6>
-                    </div>
-                    <div className="infodeudascotizacion">
-                      <div className="infodetailingresos">
-                        <input
-                          type="number"
-                          className="cajacotizacion"
-                          name="Valor"
-                          id="valor"
-                          onChange={(event) => handleIngresoChange(event)}
-                          value={ingreso.Valor}
-                          onKeyDown={(event) => handleKeyPress(event)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="infoseccioncotizacion2">
-                    <div className="encabezadogastos">
-                      <h6 className="titulocotizacion">Gastos mensuales</h6>
-                    </div>
 
-                    <div className="infodetailingresos">
-                      <input
-                        type="number"
-                        className="cajacotizacion"
-                        name="gastosmensuales"
-                        id="gastosmensuales"
-                        onChange={(event) => handleGastoChange(event)}
-                        value={gasto.gastosmensuales}
-                      />
-                    </div>
-                  </div>
-                  <div className="infoseccioncotizacion2">
-                    <div className="encabezadogastos">
-                      <h6 className="titulocotizacion">
-                        Posible cuota mensual
-                      </h6>
-                    </div>
-
-                    <div className="infodetailingresos">
-                      <input
-                        type="number"
-                        className="cajacotizacion"
-                        name="mensual"
-                        id="mensual"
-                        onChange={(event) => handleCuotaChange(event)}
-                        value={posibleCuota.mensual}
-                        onKeyDown={(event) => handleKeyPress(event)}
-                      />
-                    </div>
-                  </div>
-                </div>
+                <Button
+                  className="botonesiniciosesion"
+                  onClick={openIngresosModal}
+                  type="button"
+                >
+                  Ingreos / Gastos / Cuota
+                </Button>
               </div>
             </div>
 

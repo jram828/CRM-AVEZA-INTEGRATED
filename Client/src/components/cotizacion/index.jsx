@@ -565,6 +565,7 @@ const Cotizacion = () => {
         <Link to="/detail">
           <Button>Volver</Button>
         </Link>
+        
       </div>
       {/* Bienes Modal */}
       {showBienesModal && (

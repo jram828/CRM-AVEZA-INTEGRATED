@@ -13,6 +13,7 @@ import {
 } from "../../redux/actions.js";
 import { formatNumero } from "../../utils/formatNumero.js";
 import { use } from "react";
+import { Link } from "react-router-dom";
 
 const Cotizacion = () => {
   const prospecto = useSelector((state) => state.prospecto);
@@ -560,6 +561,10 @@ const Cotizacion = () => {
         >
           Generar cotización
         </Button>
+
+        <Link to="/detail">
+          <Button>Volver</Button>
+        </Link>
       </div>
       {/* Bienes Modal */}
       {showBienesModal && (

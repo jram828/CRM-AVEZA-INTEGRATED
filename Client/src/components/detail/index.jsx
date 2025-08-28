@@ -239,7 +239,7 @@ const Detail = () => {
             Actualizar
           </Button>
           <Button onClick={handleDelete} className="botonesiniciosesion">
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1.2em"
               height="1.2em"
@@ -249,13 +249,13 @@ const Detail = () => {
                 fill="black"
                 d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
               ></path>
-            </svg>
+            </svg> */}
             Eliminar
           </Button>
           {datos?.tarjetaProf ? (
             <Link to="/abogados">
               <Button>
-                <svg
+                {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.2em"
                   height="1.2em"
@@ -269,7 +269,7 @@ const Detail = () => {
                     strokeWidth={50.5}
                     d="M244 400L100 256l144-144M120 256h292"
                   ></path>
-                </svg>
+                </svg> */}
                 Volver
               </Button>
             </Link>
@@ -288,7 +288,7 @@ const Detail = () => {
 
               <Link to="/prospectos">
                 <Button>
-                  <svg
+                  {/* <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="1.2em"
                     height="1.2em"
@@ -302,7 +302,7 @@ const Detail = () => {
                       strokeWidth={50.5}
                       d="M244 400L100 256l144-144M120 256h292"
                     ></path>
-                  </svg>
+                  </svg> */}
                   Volver
                 </Button>
               </Link>
@@ -310,7 +310,7 @@ const Detail = () => {
           ) : (
             <Link to="/clientes">
               <Button>
-                <svg
+                {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.2em"
                   height="1.2em"
@@ -324,7 +324,7 @@ const Detail = () => {
                     strokeWidth={50.5}
                     d="M244 400L100 256l144-144M120 256h292"
                   ></path>
-                </svg>
+                </svg> */}
                 Volver
               </Button>
             </Link>

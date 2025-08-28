@@ -150,7 +150,7 @@ function DetailInsolvencia() {
             className="btn btn-sm w-35 border border-error bg-white hover:bg-white"
             onClick={handleDelete}
           >
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1.2em"
               height="1.2em"
@@ -160,12 +160,12 @@ function DetailInsolvencia() {
                 fill="black"
                 d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
               ></path>
-            </svg>
+            </svg> */}
             Eliminar
           </Button>
           <Link to="/casos">
             <Button className="btn btn-sm w-35 border border-accent bg-white hover:bg-white">
-              <svg
+              {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1.2em"
                 height="1.2em"
@@ -179,7 +179,7 @@ function DetailInsolvencia() {
                   strokeWidth={50.5}
                   d="M244 400L100 256l144-144M120 256h292"
                 ></path>
-              </svg>
+              </svg> */}
               Volver
             </Button>
           </Link>

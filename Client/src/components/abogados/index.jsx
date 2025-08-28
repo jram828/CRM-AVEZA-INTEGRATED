@@ -95,14 +95,14 @@ const Abogados = () => {
         <Link to="/registroabogado">
           <Button>
             {" "}
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1em"
               height="1em"
               viewBox="0 0 16 16"
             >
               <path fill="black" d="M14 7H9V2H7v5H2v2h5v5h2V9h5z"></path>
-            </svg>
+            </svg> */}
             Registrar Abogado
           </Button>
         </Link>

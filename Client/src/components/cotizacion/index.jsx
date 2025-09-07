@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 const Cotizacion = () => {
   const prospecto = useSelector((state) => state.prospecto);
   const caso = useSelector((state) => state.caso);
-  // console.log("Cliente cotizacion:", cliente);
+ console.log("Caso cotizacion:", caso);
 
   const dispatch = useDispatch();
 

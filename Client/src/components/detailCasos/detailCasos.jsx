@@ -98,7 +98,7 @@ function DetailCasos() {
 
         setCasoDetail(casoTransformado);
         // setCasoDetail(caso);
-        dispatch(casoActual(caso));
+        dispatch(casoActual(casoTransformado));
       } catch (error) {
         console.error("Error al obtener el caso:", error);
       }

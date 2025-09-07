@@ -18,11 +18,38 @@ import { Link } from "react-router-dom";
 const Cotizacion = () => {
   const prospecto = useSelector((state) => state.prospecto);
   const caso = useSelector((state) => state.caso);
- console.log("Caso cotizacion:", caso);
+  console.log("Caso cotizacion:", caso);
 
   const dispatch = useDispatch();
 
-  const deudasObj = [];
+  let deudasObj;
+
+  if (caso.Deuda2s.length > 0) {
+    deudasObj = caso.Deuda2s.map((item) => {
+      const {
+        acreedor = "",
+        capital = "",
+        derechoVoto = "",
+        clasificacion = "",
+        Cliente_Deuda = {},
+      } = item;
+
+      const { Deuda2IdDeuda = "" } = Cliente_Deuda;
+
+      return {
+        idDeuda: Deuda2IdDeuda,
+        acreedor,
+        acreedorBuscado: "", 
+        tipoDeuda: "", 
+        capital,
+        clasificacion,
+        votoClase: "",
+        derechoVoto,
+      };
+    });
+  } else {
+    deudasObj = [];
+  }
   const propuestasObj = [];
 
   const initDeuda = {
@@ -74,15 +101,26 @@ const Cotizacion = () => {
     sumaValorCuota: "",
     sujetoRegistro: "",
   };
+ let initHonorarios
 
-  const initHonorarios = {
+  if (caso.Honorarios.length > 0) {
+    initHonorarios = {
+    inicial: caso.Honorarios[0].inicial,
+    cuotasHonorarios: caso.Honorarios[0].cuotasHonorarios,
+    valorHonorarios: caso.Honorarios[0].valorHonorarios,
+    valorRadicar: caso.Honorarios[0].valorRadicar,
+    honorariosLiquidacion: caso.Honorarios[0].honorariosLiquidacion,
+  };
+  } else {
+
+   initHonorarios = {
     inicial: "",
     cuotasHonorarios: "",
     valorHonorarios: "",
     valorRadicar: "",
     honorariosLiquidacion: "",
   };
-
+  }
   const initPropuesta = {
     Clasificacion: "",
     tasaIntereses: "",
@@ -565,7 +603,6 @@ const Cotizacion = () => {
         <Link to="/detail">
           <Button>Volver</Button>
         </Link>
-        
       </div>
       {/* Bienes Modal */}
       {showBienesModal && (

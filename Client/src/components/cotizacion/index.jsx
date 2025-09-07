@@ -40,9 +40,8 @@ const Cotizacion = () => {
         idDeuda: Deuda2IdDeuda,
         acreedor,
         acreedorBuscado: "", 
-        tipoDeuda: "", 
+        tipoDeuda: clasificacion, 
         capital,
-        clasificacion,
         votoClase: "",
         derechoVoto,
       };

@@ -399,18 +399,30 @@ const Cotizacion = () => {
     });
     setEditingField(e.target.name);
   };
- let planpagos = [];
+const [planpagos, setPlanPagos] = useState([]);
 
-  const handleHonorarioChange = (e) => {
-    setHonorarios({
-      ...honorarios,
-      [e.target.name]: e.target.value,
-    });
-    setEditingField(e.target.name);
-  if (honorarios.valorHonorarios!=="" && honorarios.cuotasHonorarios!=="" && honorarios.inicial!=="") {
-    planpagos = generarPlanPagosHonorarios(honorarios.valorHonorarios, honorarios.cuotasHonorarios, honorarios.inicial);
+const handleHonorarioChange = (e) => {
+  const updatedHonorarios = {
+    ...honorarios,
+    [e.target.name]: e.target.value,
+  };
+  setHonorarios(updatedHonorarios);
+  setEditingField(e.target.name);
+  if (
+    updatedHonorarios.valorHonorarios !== "" &&
+    updatedHonorarios.cuotasHonorarios !== "" &&
+    updatedHonorarios.inicial !== ""
+  ) {
+    const nuevoPlan = generarPlanPagosHonorarios(
+      updatedHonorarios.valorHonorarios,
+      updatedHonorarios.cuotasHonorarios,
+      updatedHonorarios.inicial
+    );
+    setPlanPagos(nuevoPlan);
+  } else {
+    setPlanPagos([]);
   }
-  console.log("Plan de pagos en honorarios:", planpagos);
+  // console.log("Plan de pagos en honorarios:", planpagos);
 };
 
   const handleGastoChange = (e) => {

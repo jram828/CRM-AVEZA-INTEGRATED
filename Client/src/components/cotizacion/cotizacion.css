@@ -290,7 +290,7 @@
   border-radius: 8px;
   padding: 2rem;
   z-index: 1001;
-  min-width: 350px;
+  min-width: 500px;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;

@@ -14,6 +14,7 @@ import {
 import { formatNumero } from "../../utils/formatNumero.js";
 import { use } from "react";
 import { Link } from "react-router-dom";
+import { generarPlanPagosHonorarios } from "../../utils/planPagosHonorarios.js";
 
 const Cotizacion = () => {
   const prospecto = useSelector((state) => state.prospecto);
@@ -398,6 +399,7 @@ const Cotizacion = () => {
     });
     setEditingField(e.target.name);
   };
+ let planpagos = [];
 
   const handleHonorarioChange = (e) => {
     setHonorarios({
@@ -405,7 +407,10 @@ const Cotizacion = () => {
       [e.target.name]: e.target.value,
     });
     setEditingField(e.target.name);
-  };
+  if (honorarios.valorHonorarios!=="" && honorarios.cuotasHonorarios!=="" && honorarios.inicial!=="") {
+    planpagos = generarPlanPagosHonorarios(honorarios.valorHonorarios, honorarios.cuotasHonorarios, honorarios.inicial);
+  }
+};
 
   const handleGastoChange = (e) => {
     setGasto({
@@ -768,6 +773,32 @@ const Cotizacion = () => {
                     />
                   </div>
                 </div>
+                {/* Tabla de plan de pagos de honorarios */}
+                {planpagos && planpagos.length > 0 && (
+                  <div className="planpagos-honorarios">
+                  <h6 className="titulocotizacion">Plan de pagos</h6>
+                  <table className="tabla-planpagos">
+                    <thead>
+                    <tr>
+                      <th>Periodo</th>
+                      <th>Cuota fija</th>
+                      <th>Saldo</th>
+                      <th>Fecha de pago</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {planpagos.map((pago, idx) => (
+                      <tr key={idx}>
+                      <td>{pago.periodo}</td>
+                      <td>{formatNumero(pago.cuotaFija)}</td>
+                      <td>{formatNumero(pago.saldo)}</td>
+                      <td>{pago.fechaPago}</td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </table>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -699,7 +699,7 @@ const handleHonorarioChange = (e) => {
         </div>
       )}
 
-      /* Honorarios Modal */</div>
+      {/* Honorarios Modal */}
       {showHonorariosModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -786,32 +786,112 @@ const handleHonorarioChange = (e) => {
                     />
                   </div>
                 </div>
-                /* Tabla de plan de pagos de honorarios */
+                {/* Tabla de plan de pagos de honorarios */}
                 {planpagos && planpagos.length > 0 && (
                   <div className="planpagos-honorarios">
-                    <h6 className="titulocotizacion">Plan de pagos</h6>
-                    <table className="tabla-planpagos">
-                      <thead>
-                        <tr>
-                          <th className="celda-planpagos">Periodo</th>
-                          <th className="celda-planpagos">Cuota fija</th>
-                          <th className="celda-planpagos">Saldo</th>
-                          <th className="celda-planpagos">Fecha de pago</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {planpagos.map((pago, idx) => (
-                          <tr key={idx}>
-                            <td className="celda-planpagos">{pago.numeroCuota}</td>
-                            <td className="celda-planpagos">{formatNumero(pago.cuotaMensual)}</td>
-                            <td className="celda-planpagos">{formatNumero(pago.saldo)}</td>
-                            <td className="celda-planpagos">{pago.fechapago}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <h6 className="titulocotizacion">Plan de pagos</h6>
+                  <table className="tabla-planpagos">
+                    <thead>
+                    <tr>
+                      <th className="celda-planpagos">Periodo</th>
+                      <th className="celda-planpagos">Cuota fija</th>
+                      <th className="celda-planpagos">Saldo</th>
+                      <th className="celda-planpagos">Fecha de pago</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {planpagos.map((pago, idx) => (
+                      <tr key={idx}>
+                      <td className="celda-planpagos">{pago.numeroCuota}</td>
+                      <td className="celda-planpagos">{formatNumero(pago.cuotaMensual)}</td>
+                      <td className="celda-planpagos">{formatNumero(pago.saldo)}</td>
+                      <td className="celda-planpagos">{pago.fechapago}</td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </table>
                   </div>
                 )}
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop" onClick={closeHonorariosModal}></div>
+        </div>
+      )}
+
+      {showIngresosModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <span className="titulocotizacion">
+                Ingresos / Gastos / Cuota
+              </span>
+              <button className="close-modal" onClick={closeIngresosModal}>
+                &times;
+              </button>
+            </div>
+
+            <div className="resumen">
+              <div className="formgastos">
+                <div className="infoseccioncotizacion2">
+                  <div className="encabezadoingresos">
+                    <h6 className="titulocotizacion">Ingresos mensuales</h6>
+                  </div>
+                  <div className="infodeudascotizacion">
+                    <div className="infodetailingresos">
+                      <input
+                        type="number"
+                        className="cajacotizacion"
+                        name="Valor"
+                        id="valor"
+                        onChange={(event) => handleIngresoChange(event)}
+                        value={ingreso.Valor}
+                        onKeyDown={(event) => handleKeyPress(event)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="infoseccioncotizacion2">
+                  <div className="encabezadogastos">
+                    <h6 className="titulocotizacion">Gastos mensuales</h6>
+                  </div>
+
+                  <div className="infodetailingresos">
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="gastosmensuales"
+                      id="gastosmensuales"
+                      onChange={(event) => handleGastoChange(event)}
+                      value={gasto.gastosmensuales}
+                    />
+                  </div>
+                </div>
+                <div className="infoseccioncotizacion2">
+                  <div className="encabezadogastos">
+                    <h6 className="titulocotizacion">Posible cuota mensual</h6>
+                  </div>
+
+                  <div className="infodetailingresos">
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="mensual"
+                      id="mensual"
+                      onChange={(event) => handleCuotaChange(event)}
+                      value={posibleCuota.mensual}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop" onClick={closeIngresosModal}></div>
+        </div>
+      )}
+
+      <form
         // onSubmit={handlerGenerarCotizacion}
         className="datoscotizacion"
         id="contcotizacion"

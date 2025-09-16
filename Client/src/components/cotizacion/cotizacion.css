@@ -120,6 +120,11 @@
   height: 30px;
 }
 
+.celda-planpagos {
+  border: 1px solid #ccc;
+  padding: 3px;
+}
+
 .cajacotizacion {
   width: 110px;
   padding: 2px;

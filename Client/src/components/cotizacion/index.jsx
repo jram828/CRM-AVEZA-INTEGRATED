@@ -699,10 +699,10 @@ const Cotizacion = () => {
             </div>
 
             <div className="resumenresultados">
-              <div className="infoseccioncotizacion">
+              <div className="infoseccionmodal">
                 <div className="infodeudascotizacion">
                   <div className="infodetailingresos">
-                    <h6 className="titulocotizacion">Valor</h6>
+                    <h6 className="titulomodal">Valor</h6>
                     <input
                       type="number"
                       className="cajacotizacion"
@@ -717,7 +717,7 @@ const Cotizacion = () => {
 
                 <div className="infodeudascotizacion">
                   <div className="infodetailingresos">
-                    <h6 className="titulocotizacion">Cuota inicial:</h6>
+                    <h6 className="titulomodal">Cuota inicial:</h6>
                     <input
                       type="number"
                       className="cajacotizacion"
@@ -732,7 +732,7 @@ const Cotizacion = () => {
 
                 <div className="infodeudascotizacion">
                   <div className="infodetailingresos">
-                    <h6 className="titulocotizacion">Numero de cuotas:</h6>
+                    <h6 className="titulomodal">Numero de cuotas:</h6>
                     <input
                       type="number"
                       className="cajacotizacion"
@@ -746,7 +746,7 @@ const Cotizacion = () => {
                 </div>
                 <div className="infodeudascotizacion">
                   <div className="infodetailingresos">
-                    <h6 className="titulocotizacion">Valor para radicar:</h6>
+                    <h6 className="titulomodal">Valor para radicar:</h6>
                     <input
                       type="number"
                       className="cajacotizacion"
@@ -760,7 +760,7 @@ const Cotizacion = () => {
                 </div>
                 <div className="infodeudascotizacion">
                   <div className="infodetailingresos">
-                    <h6 className="titulocotizacion">
+                    <h6 className="titulomodal">
                       Mensualidad liquidación:
                     </h6>
                     <input
@@ -790,10 +790,10 @@ const Cotizacion = () => {
                     <tbody>
                     {planpagos.map((pago, idx) => (
                       <tr key={idx}>
-                      <td>{pago.periodo}</td>
-                      <td>{formatNumero(pago.cuotaFija)}</td>
+                      <td>{pago.numeroCuota}</td>
+                      <td>{formatNumero(pago.cuotaMensual)}</td>
                       <td>{formatNumero(pago.saldo)}</td>
-                      <td>{pago.fechaPago}</td>
+                      <td>{pago.fechapago}</td>
                       </tr>
                     ))}
                     </tbody>

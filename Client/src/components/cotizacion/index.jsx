@@ -25,31 +25,31 @@ const Cotizacion = () => {
 
   let deudasObj;
 
-  if (caso.Deuda2s.length > 0) {
-    deudasObj = caso.Deuda2s.map((item) => {
-      const {
-        acreedor = "",
-        capital = "",
-        derechoVoto = "",
-        clasificacion = "",
-        Cliente_Deuda = {},
-      } = item;
+  // if (caso?.Deuda2s?.length > 0) {
+  //   deudasObj = caso.Deuda2s.map((item) => {
+  //     const {
+  //       acreedor = "",
+  //       capital = "",
+  //       derechoVoto = "",
+  //       clasificacion = "",
+  //       Cliente_Deuda = {},
+  //     } = item;
 
-      const { Deuda2IdDeuda = "" } = Cliente_Deuda;
+  //     const { Deuda2IdDeuda = "" } = Cliente_Deuda;
 
-      return {
-        idDeuda: Deuda2IdDeuda,
-        acreedor,
-        acreedorBuscado: "", 
-        tipoDeuda: clasificacion, 
-        capital,
-        votoClase: "",
-        derechoVoto,
-      };
-    });
-  } else {
+  //     return {
+  //       idDeuda: Deuda2IdDeuda,
+  //       acreedor,
+  //       acreedorBuscado: "", 
+  //       tipoDeuda: clasificacion, 
+  //       capital,
+  //       votoClase: "",
+  //       derechoVoto,
+  //     };
+  //   });
+  // } else {
     deudasObj = [];
-  }
+  // }
   const propuestasObj = [];
 
   const initDeuda = {
@@ -103,15 +103,15 @@ const Cotizacion = () => {
   };
  let initHonorarios
 
-  if (caso.Honorarios.length > 0) {
-    initHonorarios = {
-    inicial: caso.Honorarios[0].inicial,
-    cuotasHonorarios: caso.Honorarios[0].cuotasHonorarios,
-    valorHonorarios: caso.Honorarios[0].valorHonorarios,
-    valorRadicar: caso.Honorarios[0].valorRadicar,
-    honorariosLiquidacion: caso.Honorarios[0].honorariosLiquidacion,
-  };
-  } else {
+  // if (caso?.Honorarios?.length > 0) {
+  //   initHonorarios = {
+  //   inicial: caso.Honorarios[0].inicial,
+  //   cuotasHonorarios: caso.Honorarios[0].cuotasHonorarios,
+  //   valorHonorarios: caso.Honorarios[0].valorHonorarios,
+  //   valorRadicar: caso.Honorarios[0].valorRadicar,
+  //   honorariosLiquidacion: caso.Honorarios[0].honorariosLiquidacion,
+  // };
+  // } else {
 
    initHonorarios = {
     inicial: "",
@@ -120,7 +120,7 @@ const Cotizacion = () => {
     valorRadicar: "",
     honorariosLiquidacion: "",
   };
-  }
+  // }
   const initPropuesta = {
     Clasificacion: "",
     tasaIntereses: "",

@@ -925,7 +925,7 @@ const handleHonorarioChange = (e) => {
                   onClick={openIngresosModal}
                   type="button"
                 >
-                  Ingreos / Gastos / Cuota
+                  Ingresos / Gastos / Cuota
                 </Button>
               </div>
             </div>
@@ -935,6 +935,7 @@ const handleHonorarioChange = (e) => {
                 <div className="encabezadodeudas">
                   <h6 className="titulocotizacion">Propuesta de pago</h6>
                 </div>
+                <br />
                 <div className="encabezadopropuesta">
                   <h6 className="titulocotizacion">
                     Clasificación del crédito

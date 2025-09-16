@@ -410,6 +410,7 @@ const Cotizacion = () => {
   if (honorarios.valorHonorarios!=="" && honorarios.cuotasHonorarios!=="" && honorarios.inicial!=="") {
     planpagos = generarPlanPagosHonorarios(honorarios.valorHonorarios, honorarios.cuotasHonorarios, honorarios.inicial);
   }
+  console.log("Plan de pagos en honorarios:", planpagos);
 };
 
   const handleGastoChange = (e) => {

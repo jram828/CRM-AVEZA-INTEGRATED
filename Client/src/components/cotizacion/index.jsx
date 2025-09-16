@@ -608,7 +608,10 @@ const handleHonorarioChange = (e) => {
       </div>
       <br />
       <div className="menu-cotizacion">
-        <input type="file" id="doc" />
+        <Button as="label" htmlFor="doc" className="botonesiniciosesion">
+          Seleccionar archivo
+          <input type="file" id="doc" style={{ display: "none" }} />
+        </Button>
         <Button
           className="botonesiniciosesion"
           onClick={handlerGenerarCotizacion}

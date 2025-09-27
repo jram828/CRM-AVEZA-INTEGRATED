@@ -1094,7 +1094,7 @@ const { name, value } = event.target;
                         name="acreedor"
                         id="acreedor"
                         className="cajadeudas"
-                        onChange={(index,event) => handleAcreedorChange(index,event)}
+                        onChange={(index, event) => handleAcreedorChange(index, event)}
                         placeholder="Buscar Acreedor..."
                       />
                     </div>

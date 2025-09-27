@@ -1093,12 +1093,12 @@ const { name, value } = event.target;
                         value={deuda.acreedor}
                         name="acreedor"
                         id={`acreedor-${index}`}
-                        className="cajadeudas"
+                        className="cajacotizacion"
                         onChange={event => handleAcreedorChange(index, event)}
                         placeholder="Buscar Acreedor..."
                       />
-                    </div>
-                    <div className="infodetaildeudas">
+                    {/* </div>
+                    <div className="infodetaildeudas"> */}
                       {acreedorFilt.length > 0 && index === deudas.length - 1 && (
                       <select
                         name="acreedor"

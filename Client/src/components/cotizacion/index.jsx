@@ -1090,11 +1090,11 @@ const { name, value } = event.target;
                     <div className="acreedorSelect">
                       <input
                         type="text"
-                        value={datosDeuda.acreedor}
+                        value={deuda.acreedor}
                         name="acreedor"
-                        id="acreedor"
+                        id={`acreedor-${index}`}
                         className="cajadeudas"
-                        onChange={(index, event) => handleAcreedorChange(index, event)}
+                        onChange={event => handleAcreedorChange(index, event)}
                         placeholder="Buscar Acreedor..."
                       />
                     </div>

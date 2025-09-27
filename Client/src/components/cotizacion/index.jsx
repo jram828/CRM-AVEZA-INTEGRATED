@@ -213,17 +213,17 @@ const Cotizacion = () => {
     updatedDeudas[index][name] = value;
     setDeudas(updatedDeudas);
 
-    if (name === "acreedor") {
-      <input
-        type="text"
-        value={deuda.acreedor}
-        name="acreedor"
-        id={`acreedor-${index}`}
-        className="cajacotizacion"
-        placeholder="Buscar acreedor..."
-        onChange={(event) => handleDeudaChange(index, event)}
-      />;
-    }
+    // if (name === "acreedor") {
+    //   <input
+    //     type="text"
+    //     value={deuda.acreedor}
+    //     name="acreedor"
+    //     id={`acreedor-${index}`}
+    //     className="cajacotizacion"
+    //     placeholder="Buscar acreedor..."
+    //     onChange={(event) => handleDeudaChange(index, event)}
+    //   />;
+    // }
     if (name === "capital") {
       // Cálculo de totales por tipo de deuda
       const totalesPorTipo = deudas.reduce((acc, deuda) => {
@@ -1082,7 +1082,7 @@ const handleHonorarioChange = (e) => {
                         id={`acreedor-${index}`}
                         className="cajacotizacion"
                         placeholder="Buscar acreedor..."
-                        onChange={(event) => handleDeudaChange(index, event)}
+                        onChange={(event) => handleAcreedorChange(index, event)}
                       />
                       {acreedorFilt.length > 0 && index === deudas.length - 1 && (
                         <select

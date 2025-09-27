@@ -21,6 +21,33 @@ const Cotizacion = () => {
   const caso = useSelector((state) => state.caso);
   console.log("Caso cotizacion:", caso);
 
+  // Estado para el modal y los datos del nuevo acreedor
+  const [showAcreedorModal, setShowAcreedorModal] = useState(false);
+  const [newAcreedor, setNewAcreedor] = useState({
+    nombre: "",
+    NIT: "",
+    direccion: "",
+    ciudad: "",
+    telefono: "",
+    email: "",
+  });
+
+  // Handler para guardar acreedor (simulación, reemplazar con lógica real)
+  const handleGuardarAcreedor = () => {
+    // Aquí puedes enviar newAcreedor a la API o actualizar el estado global
+    // Por ejemplo, cerrar el modal y limpiar el formulario
+    setShowAcreedorModal(false);
+    setNewAcreedor({
+      nombre: "",
+      NIT: "",
+      direccion: "",
+      ciudad: "",
+      telefono: "",
+      email: "",
+    });
+    // Opcional: mostrar mensaje de éxito o actualizar lista de acreedores
+  };
+
   const dispatch = useDispatch();
 
   let deudasObj;
@@ -1099,7 +1126,7 @@ const { name, value } = event.target;
                       />
                     {/* </div>
                     <div className="infodetaildeudas"> */}
-                      {acreedorFilt.length > 0 && index === deudas.length - 1 && (
+                      {acreedorFilt.length > 0 && index === deudas.length - 1 ? (
                       <select
                         name="acreedor"
                         id="acreedor"
@@ -1120,7 +1147,89 @@ const { name, value } = event.target;
                             </option>
                           ))}
                       </select>
+                      ):(<div className="crearAcreedor"> 
+                      <span>Debe ingresar los datos del acreedor</span>
+                      <Button
+                        className="botonesiniciosesion"
+                        type="button"
+                        onClick={() => setShowAcreedorModal(true)}
+                      >
+                        Crear Acreedor
+                      </Button>
+
+                      {/* Modal para crear acreedor */}
+                      {showAcreedorModal && (
+                        <div className="modal-overlay">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <span className="titulocotizacion">Crear Acreedor</span>
+                              <button className="close-modal" onClick={() => setShowAcreedorModal(false)}>
+                                &times;
+                              </button>
+                            </div>
+                            <div className="formacreedor">
+                              <input
+                                type="text"
+                                className="cajacotizacion"
+                                name="nombre"
+                                placeholder="Nombre"
+                                value={newAcreedor.nombre}
+                                onChange={e => setNewAcreedor({ ...newAcreedor, nombre: e.target.value })}
+                              />
+                              <input
+                                type="text"
+                                className="cajacotizacion"
+                                name="NIT"
+                                placeholder="NIT"
+                                value={newAcreedor.NIT}
+                                onChange={e => setNewAcreedor({ ...newAcreedor, NIT: e.target.value })}
+                              />
+                              <input
+                                type="text"
+                                className="cajacotizacion"
+                                name="direccion"
+                                placeholder="Dirección"
+                                value={newAcreedor.direccion}
+                                onChange={e => setNewAcreedor({ ...newAcreedor, direccion: e.target.value })}
+                              />
+                              <input
+                                type="text"
+                                className="cajacotizacion"
+                                name="ciudad"
+                                placeholder="Ciudad"
+                                value={newAcreedor.ciudad}
+                                onChange={e => setNewAcreedor({ ...newAcreedor, ciudad: e.target.value })}
+                              />
+                              <input
+                                type="text"
+                                className="cajacotizacion"
+                                name="telefono"
+                                placeholder="Teléfono"
+                                value={newAcreedor.telefono}
+                                onChange={e => setNewAcreedor({ ...newAcreedor, telefono: e.target.value })}
+                              />
+                              <input
+                                type="email"
+                                className="cajacotizacion"
+                                name="email"
+                                placeholder="Email"
+                                value={newAcreedor.email}
+                                onChange={e => setNewAcreedor({ ...newAcreedor, email: e.target.value })}
+                              />
+                              <Button
+                                className="botonesiniciosesion"
+                                type="button"
+                                onClick={handleGuardarAcreedor}
+                              >
+                                Guardar
+                              </Button>
+                            </div>
+                          </div>
+                          <div className="modal-backdrop" onClick={() => setShowAcreedorModal(false)}></div>
+                        </div>
                       )}
+                      
+                      </div>)}
                     </div>
 
                     {/* <div className="acreedorSelect">

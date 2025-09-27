@@ -40,15 +40,15 @@ const Cotizacion = () => {
   //     return {
   //       idDeuda: Deuda2IdDeuda,
   //       acreedor,
-  //       acreedorBuscado: "", 
-  //       tipoDeuda: clasificacion, 
+  //       acreedorBuscado: "",
+  //       tipoDeuda: clasificacion,
   //       capital,
   //       votoClase: "",
   //       derechoVoto,
   //     };
   //   });
   // } else {
-    deudasObj = [];
+  deudasObj = [];
   // }
   const propuestasObj = [];
 
@@ -101,7 +101,7 @@ const Cotizacion = () => {
     sumaValorCuota: "",
     sujetoRegistro: "",
   };
- let initHonorarios
+  let initHonorarios;
 
   // if (caso?.Honorarios?.length > 0) {
   //   initHonorarios = {
@@ -113,7 +113,7 @@ const Cotizacion = () => {
   // };
   // } else {
 
-   initHonorarios = {
+  initHonorarios = {
     inicial: "",
     cuotasHonorarios: "",
     valorHonorarios: "",
@@ -399,31 +399,31 @@ const Cotizacion = () => {
     });
     setEditingField(e.target.name);
   };
-const [planpagos, setPlanPagos] = useState([]);
+  const [planpagos, setPlanPagos] = useState([]);
 
-const handleHonorarioChange = (e) => {
-  const updatedHonorarios = {
-    ...honorarios,
-    [e.target.name]: e.target.value,
+  const handleHonorarioChange = (e) => {
+    const updatedHonorarios = {
+      ...honorarios,
+      [e.target.name]: e.target.value,
+    };
+    setHonorarios(updatedHonorarios);
+    setEditingField(e.target.name);
+    if (
+      updatedHonorarios.valorHonorarios !== "" &&
+      updatedHonorarios.cuotasHonorarios !== "" &&
+      updatedHonorarios.inicial !== ""
+    ) {
+      const nuevoPlan = generarPlanPagosHonorarios(
+        updatedHonorarios.valorHonorarios,
+        updatedHonorarios.cuotasHonorarios,
+        updatedHonorarios.inicial
+      );
+      setPlanPagos(nuevoPlan);
+    } else {
+      setPlanPagos([]);
+    }
+    // console.log("Plan de pagos en honorarios:", planpagos);
   };
-  setHonorarios(updatedHonorarios);
-  setEditingField(e.target.name);
-  if (
-    updatedHonorarios.valorHonorarios !== "" &&
-    updatedHonorarios.cuotasHonorarios !== "" &&
-    updatedHonorarios.inicial !== ""
-  ) {
-    const nuevoPlan = generarPlanPagosHonorarios(
-      updatedHonorarios.valorHonorarios,
-      updatedHonorarios.cuotasHonorarios,
-      updatedHonorarios.inicial
-    );
-    setPlanPagos(nuevoPlan);
-  } else {
-    setPlanPagos([]);
-  }
-  // console.log("Plan de pagos en honorarios:", planpagos);
-};
 
   const handleGastoChange = (e) => {
     setGasto({
@@ -482,13 +482,19 @@ const handleHonorarioChange = (e) => {
     // dispatch(crearCotizacion(datoscotizacion));
   };
 
-  const handleAcreedorChange = (event) => {
+  const handleAcreedorChange = (index,event) => {
     event.preventDefault();
 
-    setDatosDeuda({
-      ...datosDeuda,
-      [event.target.name]: event.target.value,
-    });
+const { name, value } = event.target;
+    const updatedDeudas = [...deudas];
+    updatedDeudas[index][name] = value;
+    setDeudas(updatedDeudas);
+
+
+    // setDatosDeuda({
+    //   ...datosDeuda,
+    //   [event.target.name]: event.target.value,
+    // });
 
     const foundAcreedor = listaacreedores.filter((acreedor) =>
       acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
@@ -775,9 +781,7 @@ const handleHonorarioChange = (e) => {
                 </div>
                 <div className="infodeudascotizacion">
                   <div className="infodetailingresos">
-                    <h6 className="titulomodal">
-                      Mensualidad liquidación:
-                    </h6>
+                    <h6 className="titulomodal">Mensualidad liquidación:</h6>
                     <input
                       type="number"
                       className="cajacotizacion"
@@ -792,27 +796,35 @@ const handleHonorarioChange = (e) => {
                 {/* Tabla de plan de pagos de honorarios */}
                 {planpagos && planpagos.length > 0 && (
                   <div className="planpagos-honorarios">
-                  <h6 className="titulocotizacion">Plan de pagos</h6>
-                  <table className="tabla-planpagos">
-                    <thead>
-                    <tr>
-                      <th className="celda-planpagos">Periodo</th>
-                      <th className="celda-planpagos">Cuota fija</th>
-                      <th className="celda-planpagos">Saldo</th>
-                      <th className="celda-planpagos">Fecha de pago</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {planpagos.map((pago, idx) => (
-                      <tr key={idx}>
-                      <td className="celda-planpagos">{pago.numeroCuota}</td>
-                      <td className="celda-planpagos">{formatNumero(pago.cuotaMensual)}</td>
-                      <td className="celda-planpagos">{formatNumero(pago.saldo)}</td>
-                      <td className="celda-planpagos">{pago.fechapago}</td>
-                      </tr>
-                    ))}
-                    </tbody>
-                  </table>
+                    <h6 className="titulocotizacion">Plan de pagos</h6>
+                    <table className="tabla-planpagos">
+                      <thead>
+                        <tr>
+                          <th className="celda-planpagos">Periodo</th>
+                          <th className="celda-planpagos">Cuota fija</th>
+                          <th className="celda-planpagos">Saldo</th>
+                          <th className="celda-planpagos">Fecha de pago</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {planpagos.map((pago, idx) => (
+                          <tr key={idx}>
+                            <td className="celda-planpagos">
+                              {pago.numeroCuota}
+                            </td>
+                            <td className="celda-planpagos">
+                              {formatNumero(pago.cuotaMensual)}
+                            </td>
+                            <td className="celda-planpagos">
+                              {formatNumero(pago.saldo)}
+                            </td>
+                            <td className="celda-planpagos">
+                              {pago.fechapago}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>
@@ -1074,7 +1086,44 @@ const handleHonorarioChange = (e) => {
                         Quinta Clase
                       </option>
                     </select>
+
                     <div className="acreedorSelect">
+                      <input
+                        type="text"
+                        value={datosDeuda.acreedor}
+                        name="acreedor"
+                        id="acreedor"
+                        className="cajadeudas"
+                        onChange={(index,event) => handleAcreedorChange(index,event)}
+                        placeholder="Buscar Acreedor..."
+                      />
+                    </div>
+                    <div className="infodetaildeudas">
+                      {acreedorFilt.length > 0 && index === deudas.length - 1 && (
+                      <select
+                        name="acreedor"
+                        id="acreedor"
+                        className="cajadeudas"
+                        onChange={(event) => handleDeudaChange(index,event)}
+                      >
+                        <option value="" className="opcionesacreedor">
+                          Instituciones encontradas
+                        </option>
+                        {
+                          acreedorFilt.map((acreedor) => (
+                            <option
+                              key={acreedor.idAcreedor}
+                              value={acreedor.idAcreedor}
+                              className="opcionesacreedor"
+                            >
+                              {acreedor.nombre}
+                            </option>
+                          ))}
+                      </select>
+                      )}
+                    </div>
+
+                    {/* <div className="acreedorSelect">
                       <input
                         type="text"
                         value={deuda.acreedor}
@@ -1105,7 +1154,7 @@ const handleHonorarioChange = (e) => {
                           ))}
                         </select>
                       )}
-                    </div>
+                    </div> */}
                     <input
                       type="text"
                       className="cajadeudas"

@@ -1,33 +1,38 @@
 import {models} from '../../DB.js'
 
- const { Prospecto, Ciudad, Departamento, Pais} = models;
+ const { Prospecto, Ciudad, Departamento, Pais, Acreedor} = models;
 const getProspectoById = async (cedulaProspecto)=>{
 
     const consulta = {
       where: {
-        cedulaProspecto: parseInt(cedulaProspecto),
-        activo: true,
+      cedulaProspecto: parseInt(cedulaProspecto),
+      activo: true,
       },
       include: [
+      {
+        model: Ciudad,
+        attributes: ["nombre_ciudad", "codigo_ciudad"],
+        through: { attributes: [] },
+        include: [
         {
-          model: Ciudad,
-          attributes: ["nombre_ciudad","codigo_ciudad"],
+          model: Departamento,
+          attributes: ["nombre_departamento"],
           through: { attributes: [] },
           include: [
-            {
-              model: Departamento,
-              attributes: ["nombre_departamento"],
-              through: { attributes: [] },
-              include: [
-                {
-                  model: Pais,
-                  attributes: ["nombre_pais"],
-                  through: { attributes: [] },
-                },
-              ],
-            },
+          {
+            model: Pais,
+            attributes: ["nombre_pais"],
+            through: { attributes: [] },
+          },
           ],
         },
+        ],
+      },
+      {
+        model: Acreedor,
+        attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad" ], // ajusta los atributos según tu modelo
+        through: { attributes: [] },
+      },
       ],
     };
     

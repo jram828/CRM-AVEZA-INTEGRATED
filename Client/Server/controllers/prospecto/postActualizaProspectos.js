@@ -1,7 +1,7 @@
 import { models } from "../../DB.js";
 import { codigoCiudades } from "../../utils/codigoCiudades.js";
 
-const { Prospecto, Ciudad, Pais, Departamento } = models;
+const { Prospecto, Ciudad, Pais, Departamento, Acreedor } = models;
 
 const actualizaProspecto = async (
   idProspecto,
@@ -58,23 +58,28 @@ const actualizaProspecto = async (
         },
         include: [
           {
-            model: Ciudad,
-            attributes: ["nombre_ciudad", "codigo_ciudad"],
+        model: Ciudad,
+        attributes: ["nombre_ciudad", "codigo_ciudad"],
+        through: { attributes: [] },
+        include: [
+          {
+            model: Departamento,
+            attributes: ["nombre_departamento"],
             through: { attributes: [] },
             include: [
-              {
-                model: Departamento,
-                attributes: ["nombre_departamento"],
-                through: { attributes: [] },
-                include: [
-                  {
-                    model: Pais,
-                    attributes: ["nombre_pais"],
-                    through: { attributes: [] },
-                  },
-                ],
-              },
+          {
+            model: Pais,
+            attributes: ["nombre_pais"],
+            through: { attributes: [] },
+          },
             ],
+          },
+        ],
+          },
+          {
+        model: Acreedor,
+        attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad"],
+        through: { attributes: [] },
           },
         ],
       };

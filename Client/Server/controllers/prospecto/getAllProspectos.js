@@ -1,36 +1,37 @@
 import { models } from "../../DB.js";
 import { Sequelize } from "sequelize";
 
-const { Prospecto, Ciudad, Departamento, Pais} = models;
+const { Prospecto, Ciudad, Departamento, Pais, Acreedor} = models;
 const getAllProspecto = async (filters) => {
   let allProspecto = [];
 
   if (filters.cedulaProspecto) {
     const consulta = {
       where: {
-        cedulaProspecto: parseInt(filters.cedulaProspecto),
-        activo: true,
+      cedulaProspecto: parseInt(filters.cedulaProspecto),
+      activo: true,
       },
       include: [
+      {
+        model: Ciudad,
+        attributes: ["nombre_ciudad", "codigo_ciudad"],
+        include: [
         {
-          model: Ciudad,
-          attributes: ["nombre_ciudad", "codigo_ciudad"],
-          through: { attributes: [] },
+          model: Departamento,
+          attributes: ["nombre_departamento"],
           include: [
-            {
-              model: Departamento,
-              attributes: ["nombre_departamento"],
-              through: { attributes: [] },
-              include: [
-                {
-                  model: Pais,
-                  attributes: ["nombre_pais"],
-                  through: { attributes: [] },
-                },
-              ],
-            },
+          {
+            model: Pais,
+            attributes: ["nombre_pais"],
+          },
           ],
         },
+        ],
+      },
+      {
+        model: Acreedor,
+        attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad"], // ajusta los atributos según tu modelo
+      },
       ],
     };
 

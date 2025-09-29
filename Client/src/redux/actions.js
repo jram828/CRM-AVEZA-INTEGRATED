@@ -60,6 +60,7 @@ export const GET_SOLICITUD_BY_CEDULA = "GET_SOLICITUD_BY_CEDULA";
 export const PUT_DATOS_COTIZACION = "PUT_DATOS_COTIZACION";
 export const POST_HONORARIOS = "POST_HONORARIOS";
 export const COPIAR_HONORARIOS = "COPIAR_HONORARIOS";
+export const CREAR_ACREEDOR = "CREAR_ACREEDOR";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -827,5 +828,18 @@ export const obtenerSolicitud = (cedula) => {
     } catch (error) {
       window.alert("No fue posible obtener la solicitud de insolvencia!");
     }
+  };
+};
+
+export const crearAcreedor = (payload) => {
+  const endpoint = `/acreedores`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+
+    return dispatch({
+      type: CREAR_ACREEDOR,
+      payload: data,
+    });
   };
 };

@@ -6,6 +6,7 @@ import { Button } from "../Mystyles.js";
 import { listaacreedores } from "../../utils/acreedores.js";
 import { generarCotizacion } from "../../handlers/generarCotizacion.jsx";
 import {
+  crearAcreedor,
   crearDeudas,
   crearSolicitud,
   modificarCasoCotizacion,
@@ -30,11 +31,13 @@ const Cotizacion = () => {
     ciudad: "",
     telefono: "",
     email: "",
+    idProspecto: prospecto?.idProspecto|| "",
   });
 
   // Handler para guardar acreedor (simulación, reemplazar con lógica real)
   const handleGuardarAcreedor = () => {
     // Aquí puedes enviar newAcreedor a la API o actualizar el estado global
+    dispatch(crearAcreedor(newAcreedor));
     // Por ejemplo, cerrar el modal y limpiar el formulario
     setShowAcreedorModal(false);
     setNewAcreedor({
@@ -526,7 +529,7 @@ const { name, value } = event.target;
     const foundAcreedor = listaacreedores.filter((acreedor) =>
       acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
     );
-    // console.log("Acreedores encontrados:", foundAcreedor);
+    console.log("Acreedores encontrados:", foundAcreedor);
     setAcreedorFilt(foundAcreedor);
   };
 

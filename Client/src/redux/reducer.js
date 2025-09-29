@@ -66,6 +66,7 @@ import {
   PUT_DATOS_COTIZACION,
   POST_HONORARIOS,
   COPIAR_HONORARIOS,
+  CREAR_ACREEDOR,
 } from "./actions";
 
 let initialState = {
@@ -382,6 +383,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         honorarios: action.payload,
+      };
+    case CREAR_ACREEDOR:
+      return {
+        ...state,
+        acreedor: action.payload,
       };
     case CLEAN_USER:
       return initialState;

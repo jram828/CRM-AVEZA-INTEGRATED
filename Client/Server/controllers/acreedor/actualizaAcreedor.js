@@ -3,7 +3,7 @@ import { codigoCiudades } from "../../utils/codigoCiudades.js";
 
 const { Abogado, Ciudad, Pais, Departamento } = models;
 
-const actualizaAbogado = async (
+const actualizaAcreedor = async (
   cedulaAbogado,
   tarjetaProf,
   nombres,
@@ -102,4 +102,4 @@ const actualizaAbogado = async (
     return "";
   }
 };
-export { actualizaAbogado };
+export { actualizaAcreedor };

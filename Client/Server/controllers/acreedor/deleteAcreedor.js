@@ -2,7 +2,7 @@ import  { models }  from "../../DB.js";
 
 const Abogado=models.Abogado
 
-const deleteAbogado = async (cedulaAbogado) => {
+const deleteAcreedor = async (cedulaAbogado) => {
   await Abogado.update(
     {
       activo: false,
@@ -17,5 +17,5 @@ const deleteAbogado = async (cedulaAbogado) => {
 };
 
 export  {
-  deleteAbogado,
+  deleteAcreedor,
 };

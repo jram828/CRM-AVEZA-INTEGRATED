@@ -15,7 +15,7 @@
 import { models } from "../../DB.js";
 
 const { Abogado, Ciudad, Departamento, Pais } = models;
-const getAbogadoById = async (cedulaAbogado) => {
+const getAcreedorById = async (cedulaAbogado) => {
   // console.log("Cedula abogado controller:", cedulaAbogado);
   const consulta = {
     where: {
@@ -52,4 +52,4 @@ const getAbogadoById = async (cedulaAbogado) => {
   return abogado;
 };
 
-export { getAbogadoById };
+export { getAcreedorById };

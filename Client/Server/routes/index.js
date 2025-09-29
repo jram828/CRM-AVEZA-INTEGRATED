@@ -12,7 +12,7 @@ import paymentsRouter from "./../routes/paymentsRoutes.js";
 import pagosClientesRouter from "./pagosClienteRoutes.js";
 import insolvenciaRouter from "./insolvenciaRoutes.js";
 import uploadRouter from "./uploadRoutes.js";
-import acreedoresRouter from "./acreedoresRoutes.js";
+import acreedorRouter from "./acreedorRoutes.js";
 // import reviewsRouter from "./reviewsRoutes.js";
 // import dashboardRouter from './dashboardRoutes.js'
 
@@ -31,7 +31,7 @@ router.use("/pagos", paymentsRouter);
 router.use("/insolvencia", insolvenciaRouter);
 router.use("/pagosClientes", pagosClientesRouter);
 router.use("/storefile", uploadRouter);
-router.use("/acreedores", acreedoresRouter);
+router.use("/acreedores", acreedorRouter);
 // router.use("/reviews", reviewsRouter);
 // router.use("/dashboard", dashboardRouter)
 

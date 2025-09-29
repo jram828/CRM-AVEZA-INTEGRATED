@@ -24,7 +24,7 @@ const postAcreedorHandler = async (req, res) => {
     email,
     nombre,
     direccion,
-    nombre_ciudad,
+    ciudad,
     telefono,
     idProspecto,
   } = req.body;
@@ -34,7 +34,7 @@ const postAcreedorHandler = async (req, res) => {
     email,
     nombre,
     direccion,
-    nombre_ciudad,
+    ciudad,
     telefono,
     idProspecto,
   });
@@ -45,7 +45,7 @@ const postAcreedorHandler = async (req, res) => {
       email,
       nombre,
       direccion,
-      nombre_ciudad,
+      ciudad,
       telefono,
       idProspecto
     );

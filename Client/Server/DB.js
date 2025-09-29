@@ -224,6 +224,9 @@ Acreedor.belongsToMany(Prospecto, { through: "Prospecto_Acreedor" });
 Cliente.belongsToMany(Acreedor, { through: "Cliente_Acreedor" });
 Acreedor.belongsToMany(Cliente, { through: "Cliente_Acreedor" });
 
+Ciudad.belongsToMany(Acreedor, { through: "Ciudad_Acreedor" });
+Acreedor.belongsToMany(Ciudad, { through: "Ciudad_Acreedor" });
+
 const models = {
   ...sequelize.models,
   conn: sequelize,

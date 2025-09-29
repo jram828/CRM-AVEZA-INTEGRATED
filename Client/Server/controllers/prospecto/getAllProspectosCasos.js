@@ -47,28 +47,33 @@ const getAllProspectoCasos = async (filters) => {
 
     const consulta = {
       where: {
-        activo: true,
+      activo: true,
       },
       include: [
+      {
+        model: Ciudad,
+        attributes: ["nombre_ciudad", "codigo_ciudad"],
+        through: { attributes: [] },
+        include: [
         {
-          model: Ciudad,
-          attributes: ["nombre_ciudad", "codigo_ciudad"],
+          model: Departamento,
+          attributes: ["nombre_departamento"],
           through: { attributes: [] },
           include: [
-            {
-              model: Departamento,
-              attributes: ["nombre_departamento"],
-              through: { attributes: [] },
-              include: [
-                {
-                  model: Pais,
-                  attributes: ["nombre_pais"],
-                  through: { attributes: [] },
-                },
-              ],
-            },
+          {
+            model: Pais,
+            attributes: ["nombre_pais"],
+            through: { attributes: [] },
+          },
           ],
         },
+        ],
+      },
+      {
+        model: Acreedor,
+        attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad"],
+        through: { attributes: [] },
+      },
       ],
     };
     allProspecto = await Prospecto.findAll(consulta);

@@ -89,26 +89,27 @@ const getAllProspecto = async (filters) => {
         {
           model: Ciudad,
           attributes: ["nombre_ciudad", "codigo_ciudad"],
-          through: { attributes: [] },
+          include: [
+        {
+          model: Departamento,
+          attributes: ["nombre_departamento"],
           include: [
             {
-              model: Departamento,
-              attributes: ["nombre_departamento"],
-              through: { attributes: [] },
-              include: [
-                {
-                  model: Pais,
-                  attributes: ["nombre_pais"],
-                  through: { attributes: [] },
-                },
-              ],
+          model: Pais,
+          attributes: ["nombre_pais"],
             },
           ],
+        },
+          ],
+        },
+        {
+          model: Acreedor,
+          attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad"],
         },
       ],
       order,
       offset: offset || 0,
-      limit: limit2 || 3, //3
+      limit: limit2 || 3,
     };
     allProspecto = await Prospecto.findAll(consulta);
   }

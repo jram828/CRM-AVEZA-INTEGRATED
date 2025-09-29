@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { models } from "../../DB.js";
 
- const { Acreedor, Ciudad, Departamento, Pais } = models;
+ const { Acreedor, Ciudad, Departamento, Pais, Prospecto, Cliente } = models;
 
 const getAllAcreedores = async (filters) => {
   //filters = acá me traigo req.query
@@ -10,33 +10,41 @@ const getAllAcreedores = async (filters) => {
   let getAllAcreedoresBD = [];
 
   if (filters.NIT) {
-     const consulta = {
-       where: {
-         NIT: parseInt(filters.NIT),
-        //  activo: true,
-       },
+    const consulta = {
+      where: {
+        NIT: parseInt(filters.NIT),
+        // activo: true,
+      },
+      include: [
+        {
+       model: Ciudad,
+       attributes: ["nombre_ciudad", "codigo_ciudad"],
+       through: { attributes: [] },
        include: [
          {
-           model: Ciudad,
-           attributes: ["nombre_ciudad", "codigo_ciudad"],
-           through: { attributes: [] },
-           include: [
-             {
-               model: Departamento,
-               attributes: ["nombre_departamento"],
-               through: { attributes: [] },
-               include: [
-                 {
-                   model: Pais,
-                   attributes: ["nombre_pais"],
-                   through: { attributes: [] },
-                 },
-               ],
-             },
-           ],
+        model: Departamento,
+        attributes: ["nombre_departamento"],
+        through: { attributes: [] },
+        include: [
+          {
+            model: Pais,
+            attributes: ["nombre_pais"],
+            through: { attributes: [] },
+          },
+        ],
          },
        ],
-     };
+        },
+        {
+       model: Prospecto,
+       attributes: { exclude: [] }, // ajusta los atributos según necesidad
+        },
+        {
+       model: Cliente,
+       attributes: { exclude: [] }, // ajusta los atributos según necesidad
+        },
+      ],
+    };
 
      const acreedor= await Acreedor.findOne(consulta);
      getAllAcreedoresBD=[acreedor.dataValues]
@@ -93,33 +101,40 @@ const getAllAcreedores = async (filters) => {
 
     getAllAcreedoresBD = await Acreedor.findAll({
       where: {
-        // activo: true,
-        ...newFilters, // agrego los campos cuyos valores existan
+      // activo: true,
+      ...newFilters, // agrego los campos cuyos valores existan
       },
       include: [
+      {
+        model: Ciudad,
+        attributes: ["nombre_ciudad", "codigo_ciudad"],
+        through: { attributes: [] },
+        include: [
         {
-          model: Ciudad,
-          attributes: ["nombre_ciudad", "codigo_ciudad"],
+          model: Departamento,
+          attributes: ["nombre_departamento"],
           through: { attributes: [] },
           include: [
-            {
-              model: Departamento,
-              attributes: ["nombre_departamento"],
-              through: { attributes: [] },
-              include: [
-                {
-                  model: Pais,
-                  attributes: ["nombre_pais"],
-                  through: { attributes: [] },
-                },
-              ],
-            },
+          {
+            model: Pais,
+            attributes: ["nombre_pais"],
+            through: { attributes: [] },
+          },
           ],
         },
+        ],
+      },
+      {
+        model: Prospecto,
+        attributes: { exclude: [] }, // incluye todos los atributos
+      },
+      {
+        model: Cliente,
+        attributes: { exclude: [] }, // incluye todos los atributos
+      },
       ],
       order,
       offset: offset || 0,
-
       limit: limit2 || 12,
     });
   }

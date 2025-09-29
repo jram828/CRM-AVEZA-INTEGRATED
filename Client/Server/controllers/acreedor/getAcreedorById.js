@@ -20,7 +20,7 @@ const getAcreedorById = async (cedulaAbogado) => {
   const consulta = {
     where: {
       cedulaAbogado: parseInt(cedulaAbogado),
-      activo: true,
+      // activo: true,
     },
     include: [
       {

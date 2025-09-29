@@ -13,7 +13,7 @@ const getAllAcreedores = async (filters) => {
      const consulta = {
        where: {
          NIT: parseInt(filters.NIT),
-         activo: true,
+        //  activo: true,
        },
        include: [
          {
@@ -93,7 +93,7 @@ const getAllAcreedores = async (filters) => {
 
     getAllAcreedoresBD = await Acreedor.findAll({
       where: {
-        activo: true,
+        // activo: true,
         ...newFilters, // agrego los campos cuyos valores existan
       },
       include: [

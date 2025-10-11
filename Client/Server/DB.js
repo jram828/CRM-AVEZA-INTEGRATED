@@ -218,9 +218,6 @@ Honorario.belongsToMany(Prospecto, { through: "Prospecto_Honorario" });
 Cliente.belongsToMany(Honorario, { through: "Cliente_Honorario" });
 Honorario.belongsToMany(Cliente, { through: "Cliente_Honorario" });
 
-Prospecto.belongsToMany(Acreedor, { through: "Prospecto_Acreedor" });
-Acreedor.belongsToMany(Prospecto, { through: "Prospecto_Acreedor" });
-
 Cliente.belongsToMany(Acreedor, { through: "Cliente_Acreedor" });
 Acreedor.belongsToMany(Cliente, { through: "Cliente_Acreedor" });
 

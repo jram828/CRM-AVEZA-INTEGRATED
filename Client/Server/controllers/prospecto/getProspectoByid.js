@@ -5,7 +5,7 @@ const getProspectoById = async (cedulaProspecto)=>{
 
     const consulta = {
       where: {
-      cedulaProspecto: parseInt(cedulaProspecto),
+      cedulaProspecto: BigInt(cedulaProspecto),
       activo: true,
       },
       include: [

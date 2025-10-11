@@ -48,17 +48,3 @@ export const dbBackUp = async () => {
     console.error("Error exportando la base de datos:", err);
   }
 };
-
-// Descomenta la siguiente línea para ejecutar la exportación cuando se ejecute este archivo
-// exportDatabase();
-// Utilidad para importar información desde un archivo JSON y guardarla en la nueva base de datos
-export const importDatabase = async () => {
-  try {
-    
-  } catch (err) {
-    console.error("Error importando la base de datos:", err);
-  }
-};
-
-// Descomenta la siguiente línea para ejecutar la importación cuando se ejecute este archivo
-// importDatabase();

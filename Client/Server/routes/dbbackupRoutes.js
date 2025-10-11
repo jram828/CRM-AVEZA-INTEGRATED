@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { dbBackUpHandler } from "../handlers/dbBackUpHandlers.js";
-
+import { dbBackUpHandler, createAcreedoresDbHandler } from "../handlers/dbBackUpHandlers.js";
 
 const dbbackupRouter = Router();
 
-dbbackupRouter.post("/", dbBackUpHandler);
+dbbackupRouter.get("/", dbBackUpHandler);
+dbbackupRouter.get("/acreedores", createAcreedoresDbHandler);
 
-export default uploadRouter;
+
+export default dbbackupRouter;

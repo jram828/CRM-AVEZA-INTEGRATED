@@ -1,4 +1,4 @@
-import { listaAcreedores } from "../../utils/listaAcreedores.js";
+import { acreedores as listaAcreedores } from "../../utils/listaAcreedores.js";
 import { models as models2 } from "../../DB2.js";
 
 // Utilidad para exportar toda la información de la base de datos a un archivo JSON

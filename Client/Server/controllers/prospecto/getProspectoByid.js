@@ -2,7 +2,7 @@ import {models} from '../../DB.js'
 
  const { Prospecto, Ciudad, Departamento, Pais, Acreedor} = models;
 const getProspectoById = async (cedulaProspecto)=>{
-
+ console.log("Cédula Prospecto en getProspectoById:", cedulaProspecto);
     const consulta = {
       where: {
       cedulaProspecto: BigInt(cedulaProspecto),

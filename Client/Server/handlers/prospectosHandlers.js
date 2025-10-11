@@ -46,7 +46,7 @@ const prospectosCasosHandler = async (req, res) => {
 
 const prospectosDetailHandler = async (req, res) => {
   const { cedulaProspecto } = req.query;
-  // res.status(200).send(`Detalle del Usuario ${id}`); //? esto fue de solo prueba de inicio 42:57
+  console.log("Cédula Prospecto en handler:", cedulaProspecto);
 
   try {
     const response = await getProspectoById(cedulaProspecto);

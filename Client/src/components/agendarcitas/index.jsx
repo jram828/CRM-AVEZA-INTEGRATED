@@ -14,67 +14,63 @@ import { Button } from "../Mystyles";
 import loading from "../../assets/loading.gif";
 
 function AgendarCitas() {
-const [dataRegistro, setDataRegistro] = useState({
-  titulo: "",
-  descripcion: "",
-  fechaCita: "",
-  horaCita: "",
-  idCaso: "",
-});
+  const [dataRegistro, setDataRegistro] = useState({
+    titulo: "",
+    descripcion: "",
+    fechaCita: "",
+    horaCita: "",
+    idCaso: "",
+  });
 
   const [errors, setErrors] = useState({});
 
-  
+  const [isLoading, setIsLoading] = useState(true); // Estado para controlar la visualización del loading
 
-const [isLoading, setIsLoading] = useState(true); // Estado para controlar la visualización del loading
+  console.log(dataRegistro);
 
-console.log(dataRegistro);
+  const dispatch = useDispatch();
 
-const dispatch = useDispatch();
-
-const casos = useSelector((state) => state.casos);
-const pages = useSelector((state) => state.pages);
+  const casos = useSelector((state) => state.casos);
+  const pages = useSelector((state) => state.pages);
 
   useEffect(() => {
-  
     // if (filtro === "todos") {
-    
-      dispatch(getCasosTodos()).then(() => setIsLoading(false)); // Desactivar el loading después de cargar los casos
+
+    dispatch(getCasosTodos()).then(() => setIsLoading(false)); // Desactivar el loading después de cargar los casos
     // } else {
-      
+
     // }
-}, []);
-  
-  
-// console.log("pages", pages);
+  }, []);
 
-const submitHandlerRegistro = async (e) => {
-  e.preventDefault();
-  try {
-    setIsLoading(true); // Activar el loading antes de enviar la solicitud
-    await postCitaHandlers(dataRegistro);
-    // window.alert("Cita creado con éxito");
-    window.location.reload();
-  } catch (error) {
-    console.error("Error al crear la cita:", error.message);
-    window.alert("No se pudo crear la cita");
-  } finally {
-    setIsLoading(false); // Desactivar el loading después de la solicitud
-  }
-};
+  // console.log("pages", pages);
 
-    const handleChangeSelect = (e) => {
-      // e.preventDefault();
+  const submitHandlerRegistro = async (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true); // Activar el loading antes de enviar la solicitud
+      // Guardar la cita en tu backend
+      await postCitaHandlers(dataRegistro);
+      // window.alert("Cita creado con éxito");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error al crear la cita:", error.message);
+      window.alert("No se pudo crear la cita");
+    } finally {
+      setIsLoading(false); // Desactivar el loading después de la solicitud
+    }
+  };
 
-        const filtroCita = e.target.value;
-        // console.log("Target value", filtroCita);
-        // setFiltro(filtroCita);
-        window.localStorage.setItem("filtroCita", JSON.stringify(filtroCita));
-      // console.log("Filtro change: ", filtro);
-      dispatch(setFiltro(filtroCita));
+  const handleChangeSelect = (e) => {
+    // e.preventDefault();
 
-    };
-  
+    const filtroCita = e.target.value;
+    // console.log("Target value", filtroCita);
+    // setFiltro(filtroCita);
+    window.localStorage.setItem("filtroCita", JSON.stringify(filtroCita));
+    // console.log("Filtro change: ", filtro);
+    dispatch(setFiltro(filtroCita));
+  };
+
   const handleChangeRegistro = (e) => {
     const { name, value } = e.target
       ? e.target
@@ -91,20 +87,18 @@ const submitHandlerRegistro = async (e) => {
     // );
   };
 
-if (isLoading || !pages || !pages.datosPagina) {
-  return (
-    <div className="loading-container">
-      <img className="loading-image" src={loading} alt="loading" />
-    </div>
-  );
-}
-
+  if (isLoading || !pages || !pages.datosPagina) {
+    return (
+      <div className="loading-container">
+        <img className="loading-image" src={loading} alt="loading" />
+      </div>
+    );
+  }
 
   //  console.log("casos2", casos);
 
-
   // console.log("registro", dataRegistro);
-  
+
   return (
     <div className="containerDiary">
       <div className="encabezado">

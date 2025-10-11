@@ -28,7 +28,7 @@ const [dataRegistro, setDataRegistro] = useState({
 
 const [isLoading, setIsLoading] = useState(true); // Estado para controlar la visualización del loading
 
-// console.log(dataRegistro);
+console.log(dataRegistro);
 
 const dispatch = useDispatch();
 

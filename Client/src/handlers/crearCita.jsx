@@ -8,7 +8,7 @@ export async function postCitaHandlers(data) {
     horaCita,
     idCaso,
   } = data;
-  // console.log("data del post", data);
+  console.log("data del post", data);
 
   const URL = "/citas";
   try {

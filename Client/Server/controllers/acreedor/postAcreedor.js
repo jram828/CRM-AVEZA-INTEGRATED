@@ -1,5 +1,7 @@
 import { models } from "../../DB.js";
 import { codigoCiudades } from "../../utils/codigoCiudades.js";
+import fs from "fs";
+import path from "path";
 
 const Acreedor = models.Acreedor;
 
@@ -16,7 +18,7 @@ const createAcreedor = async (
     (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
   );
   // console.log("Ciudad filter:", ciudadfilter);
-
+console.log("id Prospecto:", idProspecto);
   const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
 
   try {

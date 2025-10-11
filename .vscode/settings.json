@@ -12,7 +12,8 @@
         "Cotizacion",
         "Casos",
         "Registro cliente",
-        "Prospectos"
+        "Prospectos",
+        "Database Migration"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

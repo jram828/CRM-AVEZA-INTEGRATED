@@ -1,17 +1,11 @@
 import { google } from 'googleapis';
 import { config } from 'dotenv';
-
+import moment from 'moment-timezone';
 config(); // Cargar variables de entorno desde el archivo .env
 
 const {  GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
 
-/**
- * Crea una cita en Google Calendar usando credenciales de servicio.
- * @param {Object} dataRegistro - Datos de la cita.
- * @param {string} calendarId - El ID del calendario del usuario (usualmente su email de Google).
- * @returns {Promise<Object>} - El evento creado.
- */
-export const createCitaGoogle = async (dataRegistro, calendarId) => {
+export const createCitaGoogle = (dataRegistro, calendarId) => {
   // Formatear fecha y hora para Google Calendar (RFC3339)
 
   console.log("DataRegistro en createCitaGoogle:", dataRegistro);
@@ -38,25 +32,20 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
   return iso.replace('Z', offset); // "2025-10-19T00:00:00-05:00"
 };
 
-const startDateTime = new Date(
-  fechaObj.getFullYear(),
-  fechaObj.getMonth(),
-  fechaObj.getDate(),
-  parseInt(horaHoras, 10),
-  parseInt(horaMinutos, 10)
-);
 
-const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
+
+const startDateTime = moment.tz(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm', 'America/Bogota');
+const endDateTime = startDateTime.clone().add(30, 'minutes');
 
 const event = {
   summary: dataRegistro.titulo,
   description: dataRegistro.descripcion,
   start: {
-    dateTime: formatRFC3339(startDateTime),
+    dateTime: startDateTime.format(), // RFC3339
     timeZone: "America/Bogota",
   },
   end: {
-    dateTime: formatRFC3339(endDateTime),
+    dateTime: endDateTime.format(),
     timeZone: "America/Bogota",
   },
 };

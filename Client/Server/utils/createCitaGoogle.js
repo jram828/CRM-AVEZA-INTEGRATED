@@ -55,14 +55,15 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
     ['https://www.googleapis.com/auth/calendar'],
     calendarId // Impersonate the user
   );
-
+ 
   const calendar = google.calendar({ version: 'v3', auth: jwtClient });
-
+ console.log("Calendar cita:", calendar);
   try {
     const response = calendar.events.insert({
       calendarId,
       resource: event,
     });
+    console.log("Evento creado en Google Calendar:", response.data);
     return response.data;
   } catch (err) {
     console.error("Error al crear evento en Google Calendar:", err);

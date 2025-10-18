@@ -12,9 +12,9 @@ const getCitaHandler = async (req, res)=>{
 }
 
 const postCreateCita = async (req, res) =>{
-    const { titulo, descripcion, fechaCita, horaCita, idCaso } = req.body
+    const { titulo, descripcion, fechaCita, horaCita, idCaso, userEmail  } = req.body
     try {
-        const response = await createCita( titulo, descripcion, fechaCita, horaCita, idCaso)
+        const response = await createCita( titulo, descripcion, fechaCita, horaCita, idCaso, userEmail)
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})

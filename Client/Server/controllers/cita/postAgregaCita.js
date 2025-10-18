@@ -3,7 +3,7 @@ import moment from "moment";
 import { sendEmailCita } from "../../utils/emailNotifier.js";
 
 const { Cita, Cliente, Abogado, Caso } = models;
-const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso) => {
+const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso, email) => {
   const fechaUTC = moment(fechaCita).utc().toDate();
 
   const newCita = await Cita.create({
@@ -13,6 +13,18 @@ const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso) => {
     horaCita: horaCita,
     idCaso: idCaso,
   });
+
+  dataRegistro = {
+    titulo: titulo,
+    descripcion: descripcion,
+    fechaCita: fechaUTC,
+    horaCita: horaCita,
+  };
+
+  // Crear la cita en Google Calendar
+  await createCitaGoogle(dataRegistro, email);
+  
+  // Enviar notificaciones por correo electrónico
   const { cedulaCliente, cedulaAbogado } = await Caso.findByPk(idCaso);
 
   if (cedulaCliente && cedulaAbogado) {

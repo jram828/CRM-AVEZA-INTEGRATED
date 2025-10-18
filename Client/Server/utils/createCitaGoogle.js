@@ -23,56 +23,43 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
 
   console.log("Fecha objeto cita Google:", fechaObj);
   const [horaHoras, horaMinutos] = hora.split(":");
-  const startDateTime = new Date(
-    fechaObj.getFullYear(),
-    fechaObj.getMonth(),
-    fechaObj.getDate(),
-    parseInt(horaHoras, 10),
-    parseInt(horaMinutos, 10)
-  );
 
-  console.log("Fechas cita Google:", startDateTime, endDateTime);
-  // Duración de la cita: 30 minutos (ajusta si es necesario)
-  const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
   // Formato RFC2822 para Google Calendar (devuelve fecha en formato: "Mon, 02 Jan 2006 15:04:05 -0700")
-  const formatRFC3339 = (inputDate) => {
-    const date = inputDate instanceof Date ? inputDate : new Date(inputDate);
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const pad = (n) => String(n).padStart(2, '0');
+  const formatRFC3339 = (date) => {
+  const offsetMs = date.getTimezoneOffset() * 60 * 1000;
+  const localDate = new Date(date.getTime() - offsetMs);
+  const iso = localDate.toISOString(); // "2025-10-19T00:00:00.000Z"
+  const offsetMinutes = -date.getTimezoneOffset();
+  const sign = offsetMinutes >= 0 ? '+' : '-';
+  const absOffset = Math.abs(offsetMinutes);
+  const offsetHours = String(Math.floor(absOffset / 60)).padStart(2, '0');
+  const offsetMins = String(absOffset % 60).padStart(2, '0');
+  const offset = `${sign}${offsetHours}:${offsetMins}`;
+  return iso.replace('Z', offset); // "2025-10-19T00:00:00-05:00"
+};
 
-    // Local components (RFC2822 uses local time with numeric offset)
-    const dayName = days[date.getDay()];
-    const day = pad(date.getDate());
-    const monthName = months[date.getMonth()];
-    const year = date.getFullYear();
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-    const seconds = pad(date.getSeconds());
+const startDateTime = new Date(
+  fechaObj.getFullYear(),
+  fechaObj.getMonth(),
+  fechaObj.getDate(),
+  parseInt(horaHoras, 10),
+  parseInt(horaMinutos, 10)
+);
 
-    // Time zone offset in format ±HHMM
-    const offsetMinutes = -date.getTimezoneOffset(); // minutes ahead of UTC
-    const sign = offsetMinutes >= 0 ? '+' : '-';
-    const absOffset = Math.abs(offsetMinutes);
-    const offsetHours = pad(Math.floor(absOffset / 60));
-    const offsetMins = pad(absOffset % 60);
-    const offset = `${sign}${offsetHours}${offsetMins}`;
+const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
 
-    return `${dayName}, ${day} ${monthName} ${year} ${hours}:${minutes}:${seconds} ${offset}`;
-  };
-
-  const event = {
-    summary: dataRegistro.titulo,
-    description: dataRegistro.descripcion,
-    start: {
-      dateTime: formatRFC3339(startDateTime),
-      timeZone: "America/Bogota",
-    },
-    end: {
-      dateTime: formatRFC3339(endDateTime),
-      timeZone: "America/Bogota",
-    },
-  };
+const event = {
+  summary: dataRegistro.titulo,
+  description: dataRegistro.descripcion,
+  start: {
+    dateTime: formatRFC3339(startDateTime),
+    timeZone: "America/Bogota",
+  },
+  end: {
+    dateTime: formatRFC3339(endDateTime),
+    timeZone: "America/Bogota",
+  },
+};
  console.log("Evento para Google Calendar:", event);
   // Autenticación con cuenta de servicio y delegación (impersonation)
   const jwtClient = new google.auth.JWT(

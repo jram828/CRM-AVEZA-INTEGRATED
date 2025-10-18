@@ -14,9 +14,9 @@ const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso, emai
     horaCita: horaCita,
     idCaso: idCaso,
   });
-  
+
  console.log("Nueva cita creada en la base de datos:", newCita);
-  dataRegistro = {
+ const dataRegistro = {
     titulo: titulo,
     descripcion: descripcion,
     fechaCita: fechaUTC,

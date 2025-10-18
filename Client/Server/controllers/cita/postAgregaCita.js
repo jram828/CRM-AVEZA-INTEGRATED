@@ -1,6 +1,7 @@
 import { models } from "../../DB.js";
 import moment from "moment";
 import { sendEmailCita } from "../../utils/emailNotifier.js";
+import { createCitaGoogle } from "../../utils/createCitaGoogle.js";
 
 const { Cita, Cliente, Abogado, Caso } = models;
 const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso, email) => {
@@ -13,7 +14,8 @@ const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso, emai
     horaCita: horaCita,
     idCaso: idCaso,
   });
-
+  
+ console.log("Nueva cita creada en la base de datos:", newCita);
   dataRegistro = {
     titulo: titulo,
     descripcion: descripcion,
@@ -21,6 +23,8 @@ const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso, emai
     horaCita: horaCita,
   };
 
+
+  console.log("Data para Google Calendar:", dataRegistro, email);
   // Crear la cita en Google Calendar
   await createCitaGoogle(dataRegistro, email);
   

@@ -29,7 +29,7 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
 
   // Duración de la cita: 30 minutos (ajusta si es necesario)
   const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
-
+console.log("Fechas cita Google:", startDateTime, endDateTime);
   // Formato RFC2822 para Google Calendar (devuelve fecha en formato: "Mon, 02 Jan 2006 15:04:05 -0700")
   const formatRFC3339 = (inputDate) => {
     const date = inputDate instanceof Date ? inputDate : new Date(inputDate);
@@ -69,7 +69,7 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
       timeZone: "America/Bogota",
     },
   };
-
+ console.log("Evento para Google Calendar:", event);
   // Autenticación con cuenta de servicio y delegación (impersonation)
   const jwtClient = new google.auth.JWT(
     GOOGLE_CLIENT_EMAIL,
@@ -78,7 +78,7 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
     ['https://www.googleapis.com/auth/calendar'],
     calendarId // Impersonate the user
   );
- 
+  console.log("JWT Client:", jwtClient);
   const calendar = google.calendar({ version: 'v3', auth: jwtClient });
  console.log("Calendar cita:", calendar);
   try {

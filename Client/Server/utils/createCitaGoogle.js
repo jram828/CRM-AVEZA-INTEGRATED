@@ -13,11 +13,15 @@ const {  GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
  */
 export const createCitaGoogle = async (dataRegistro, calendarId) => {
   // Formatear fecha y hora para Google Calendar (RFC3339)
+
+  console.log("DataRegistro en createCitaGoogle:", dataRegistro);
   const fecha = dataRegistro.fechaCita;
   const hora = dataRegistro.horaCita;
 
   // Si fechaCita es un objeto Date, convertirlo a string ISO
   const fechaObj = typeof fecha === "string" ? new Date(fecha) : fecha;
+
+  console.log("Fecha objeto cita Google:", fechaObj);
   const [horaHoras, horaMinutos] = hora.split(":");
   const startDateTime = new Date(
     fechaObj.getFullYear(),
@@ -27,9 +31,9 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
     parseInt(horaMinutos, 10)
   );
 
+  console.log("Fechas cita Google:", startDateTime, endDateTime);
   // Duración de la cita: 30 minutos (ajusta si es necesario)
   const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
-console.log("Fechas cita Google:", startDateTime, endDateTime);
   // Formato RFC2822 para Google Calendar (devuelve fecha en formato: "Mon, 02 Jan 2006 15:04:05 -0700")
   const formatRFC3339 = (inputDate) => {
     const date = inputDate instanceof Date ? inputDate : new Date(inputDate);

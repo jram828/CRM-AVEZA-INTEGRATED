@@ -60,8 +60,8 @@ const event = {
     GOOGLE_CLIENT_EMAIL,
     null,
     GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-    ["https://www.googleapis.com/auth/calendar"],
-    calendarId // Impersonate the user
+    ["https://www.googleapis.com/auth/calendar"]
+    // calendarId // Impersonate the user
   );
   console.log("JWT Client:", jwtClient);
   const calendar = google.calendar({ version: "v3", auth: jwtClient });

@@ -23,7 +23,7 @@ const Cotizacion = () => {
   const caso = useSelector((state) => state.caso);
   const listaacreedores = useSelector((state) => state.listaacreedores);
   console.log("Caso cotizacion:", caso);
-
+console.log("Lista acreedores:", listaacreedores);
   // Estado para el modal y los datos del nuevo acreedor
   const [showAcreedorModal, setShowAcreedorModal] = useState(false);
   const [newAcreedor, setNewAcreedor] = useState({
@@ -530,7 +530,7 @@ const { name, value } = event.target;
     //   [event.target.name]: event.target.value,
     // });
 
-    const foundAcreedor = listaacreedores.filter((acreedor) =>
+    const foundAcreedor = listaacreedores?.filter((acreedor) =>
       acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
     );
     console.log("Acreedores encontrados:", foundAcreedor);

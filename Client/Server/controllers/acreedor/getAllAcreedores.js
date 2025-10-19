@@ -135,7 +135,7 @@ const getAllAcreedores = async (filters) => {
       ],
       order,
       offset: offset || 0,
-      limit: limit2 || 12,
+      limit: limit2 || 10000,
     });
   }
 

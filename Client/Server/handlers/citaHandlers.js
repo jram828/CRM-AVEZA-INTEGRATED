@@ -13,7 +13,7 @@ const getCitaHandler = async (req, res)=>{
 
 const postCreateCita = async (req, res) =>{
     const { titulo, descripcion, fechaCita, horaCita, idCaso, userEmail  } = req.body
-    console.log("Datos recibidos en el handler de creación de cita:", req.body);
+    console.log("Datos recibidos en el handler de creación de cita:", req.body, userEmail);
     try {
         const response = await createCita( titulo, descripcion, fechaCita, horaCita, idCaso, userEmail)
         res.status(200).json(response)

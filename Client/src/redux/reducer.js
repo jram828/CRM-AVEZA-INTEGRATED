@@ -67,6 +67,7 @@ import {
   POST_HONORARIOS,
   COPIAR_HONORARIOS,
   CREAR_ACREEDOR,
+  GET_ACREEDORES,
 } from "./actions";
 
 let initialState = {
@@ -388,6 +389,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         acreedor: action.payload,
+      };
+      case GET_ACREEDORES:
+      return {
+        ...state,
+        listaacreedores: action.payload,
       };
     case CLEAN_USER:
       return initialState;

@@ -61,6 +61,7 @@ export const PUT_DATOS_COTIZACION = "PUT_DATOS_COTIZACION";
 export const POST_HONORARIOS = "POST_HONORARIOS";
 export const COPIAR_HONORARIOS = "COPIAR_HONORARIOS";
 export const CREAR_ACREEDOR = "CREAR_ACREEDOR";
+export const GET_ACREEDORES = "GET_ACREEDORES";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -843,3 +844,17 @@ export const crearAcreedor = (payload) => {
     });
   };
 };
+
+export const buscarAcreedores = (payload) => {
+  const endpoint = `/acreedores`;
+
+  return async (dispatch) => {
+    const data = await axios.get(endpoint, payload);
+
+    return dispatch({
+      type: GET_ACREEDORES,
+      payload: data,
+    });
+  };
+};
+

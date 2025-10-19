@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../cotizacion/cotizacion.css";
 import { Button } from "../Mystyles.js";
-import { listaacreedores } from "../../utils/acreedores.js";
+// import { listaacreedores } from "../../utils/acreedores.js";
 import { generarCotizacion } from "../../handlers/generarCotizacion.jsx";
 import {
+  buscarAcreedores,
   crearAcreedor,
   crearDeudas,
   crearSolicitud,
@@ -20,6 +21,7 @@ import { generarPlanPagosHonorarios } from "../../utils/planPagosHonorarios.js";
 const Cotizacion = () => {
   const prospecto = useSelector((state) => state.prospecto);
   const caso = useSelector((state) => state.caso);
+  const listaacreedores = useSelector((state) => state.listaacreedores);
   console.log("Caso cotizacion:", caso);
 
   // Estado para el modal y los datos del nuevo acreedor
@@ -54,6 +56,10 @@ const Cotizacion = () => {
   const dispatch = useDispatch();
 
   let deudasObj;
+
+  useEffect(() => {
+    dispatch(buscarAcreedores());
+  }, [dispatch]);
 
   // if (caso?.Deuda2s?.length > 0) {
   //   deudasObj = caso.Deuda2s.map((item) => {
@@ -223,9 +229,7 @@ const Cotizacion = () => {
     setPropuestas([...propuestas, initPropuesta]);
   };
 
-  // useEffect(() => {
 
-  // }, [deudas]);
   const formatoNumero = (numero) => {
     return numero.toLocaleString("es-CO", { minimumFractionDigits: 2 });
   };

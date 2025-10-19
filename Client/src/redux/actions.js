@@ -849,7 +849,7 @@ export const buscarAcreedores = (payload) => {
   const endpoint = `/acreedores`;
 
   return async (dispatch) => {
-    const data = await axios.get(endpoint, payload);
+    const {data} = await axios.get(endpoint, payload);
 
     return dispatch({
       type: GET_ACREEDORES,

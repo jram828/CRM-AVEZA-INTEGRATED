@@ -32,25 +32,28 @@ export const createCitaGoogle = (dataRegistro, calendarId) => {
     return iso.replace("Z", offset); // "2025-10-19T00:00:00-05:00"
   };
 
-  const startDateTime = moment.tz(
-    `${fecha} ${hora}`,
-    "YYYY-MM-DD HH:mm",
-    "America/Bogota"
-  );
-  const endDateTime = startDateTime.clone().add(30, "minutes");
+const startDateTime = new Date(
+  fechaObj.getFullYear(),
+  fechaObj.getMonth(),
+  fechaObj.getDate(),
+  parseInt(horaHoras, 10),
+  parseInt(horaMinutos, 10)
+);
 
-  const event = {
-    summary: dataRegistro.titulo,
-    description: dataRegistro.descripcion,
-    start: {
-      dateTime: startDateTime.format(), // RFC3339
-      timeZone: "America/Bogota",
-    },
-    end: {
-      dateTime: endDateTime.format(),
-      timeZone: "America/Bogota",
-    },
-  };
+const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000);
+
+const event = {
+  summary: dataRegistro.titulo,
+  description: dataRegistro.descripcion,
+  start: {
+    dateTime: formatRFC3339(startDateTime),
+    timeZone: "America/Bogota",
+  },
+  end: {
+    dateTime: formatRFC3339(endDateTime),
+    timeZone: "America/Bogota",
+  },
+};
   console.log("Evento para Google Calendar:", event);
   // Autenticación con cuenta de servicio y delegación (impersonation)
   const jwtClient = new google.auth.JWT(
@@ -62,7 +65,7 @@ export const createCitaGoogle = (dataRegistro, calendarId) => {
   );
   console.log("JWT Client:", jwtClient);
   const calendar = google.calendar({ version: "v3", auth: jwtClient });
-  console.log("Calendar cita:", calendar);
+  // console.log("Calendar cita:", calendar);
   try {
     const response = calendar.events.insert({
       calendarId,

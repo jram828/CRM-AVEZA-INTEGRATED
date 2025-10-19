@@ -54,10 +54,10 @@ function AgendarCitas() {
       // Guardar la cita en tu backend
       await postCitaHandlers(dataRegistro);
       // window.alert("Cita creado con éxito");
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error al crear la cita:", error.message);
-      window.alert("No se pudo crear la cita");
+      // window.alert("No se pudo crear la cita");
     } finally {
       setIsLoading(false); // Desactivar el loading después de la solicitud
     }

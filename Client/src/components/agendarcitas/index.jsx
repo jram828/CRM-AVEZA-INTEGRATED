@@ -52,6 +52,7 @@ function AgendarCitas() {
     try {
       setIsLoading(true); // Activar el loading antes de enviar la solicitud
       // Guardar la cita en tu backend
+      console.log("DataRegistro en submitHandlerRegistro:", dataRegistro);
       await postCitaHandlers(dataRegistro);
       // window.alert("Cita creado con éxito");
       // window.location.reload();

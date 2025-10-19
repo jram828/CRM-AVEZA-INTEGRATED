@@ -7,6 +7,7 @@ export async function postCitaHandlers(data) {
     fechaCita, 
     horaCita,
     idCaso,
+    userEmail
   } = data;
   console.log("data del post", data);
 
@@ -18,9 +19,10 @@ export async function postCitaHandlers(data) {
       fechaCita: `${fechaCita}`,
       horaCita: `${horaCita}`,
       idCaso: `${idCaso}`,
+      userEmail: `${userEmail}`
     });
     window.alert("Se ha registrado la cita con éxito.");
   } catch (error) {
-    window.alert("No fue posible registrar la cita.");
+    // window.alert("No fue posible registrar la cita.");
   }
 }

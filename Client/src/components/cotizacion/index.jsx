@@ -207,6 +207,7 @@ console.log("Lista acreedores:", listaacreedores);
   const [acreedorFilt, setAcreedorFilt] = useState(initAcreedorFilt);
   const [listaAcreedores, setListaAcreedores] = useState(listaAcreedoresObj);
   const [editingField, setEditingField] = useState(null);
+  const [editingIndex, setEditingIndex] = useState(null);
   const [posibleCuota, setPosibleCuota] = useState(initPosibleCuota);
   const [showBienesModal, setShowBienesModal] = useState(false);
   const [showHonorariosModal, setShowHonorariosModal] = useState(false);
@@ -240,7 +241,6 @@ console.log("Lista acreedores:", listaacreedores);
   // console.log("Propuestas:", propuestas);
   // console.log("Propuesta:", propuesta);
 
-  // console.log("Posible cuota:", posibleCuota);
   const handleDeudaChange = (index, event) => {
     const { name, value } = event.target;
     const updatedDeudas = [...deudas];
@@ -259,47 +259,49 @@ console.log("Lista acreedores:", listaacreedores);
     //   />;
     // }
     if (name === "capital") {
-      // Cálculo de totales por tipo de deuda
+      // Cálculo de totales por tipo de deuda (usar 0 si parseFloat falla)
       const totalesPorTipo = deudas.reduce((acc, deuda) => {
-        acc[deuda.tipoDeuda] =
-          (acc[deuda.tipoDeuda] || 0) + parseFloat(deuda.capital);
+        const capitalNum = parseFloat(deuda.capital) || 0;
+        acc[deuda.tipoDeuda] = (acc[deuda.tipoDeuda] || 0) + capitalNum;
         return acc;
       }, {});
       // console.log("Totales por tipo:", totalesPorTipo);
 
-      // Cálculo del total general
+      // Cálculo del total general (usar 0 si parseFloat falla)
       let totalDeudas = deudas.reduce(
-        (acc, deuda) => acc + parseFloat(deuda.capital),
+        (acc, deuda) => acc + (parseFloat(deuda.capital) || 0),
         0
       );
       // console.log("Total de deudas:", totalDeudas);
 
       let derechoVotoPorTipo = {};
 
-      // Calcular los porcentajes usando forEach
+      // Calcular los porcentajes usando forEach (evitar división por cero)
       Object.entries(totalesPorTipo).forEach(([key, valor]) => {
-        derechoVotoPorTipo[key] = ((valor / totalDeudas) * 100).toFixed(2);
+        derechoVotoPorTipo[key] =
+          totalDeudas > 0 ? ((valor / totalDeudas) * 100).toFixed(2) : "0.00";
       });
 
       // console.log("Derecho voto por tipo:", derechoVotoPorTipo);
 
       const votoClasePorTipo = deudas.reduce((acc, deuda) => {
         acc[deuda.tipoDeuda] =
-          (acc[deuda.tipoDeuda] || 0) + parseFloat(deuda.votoClase);
+          (acc[deuda.tipoDeuda] || 0) + (parseFloat(deuda.votoClase) || 0);
         return acc;
       }, {});
       // console.log("Voto clase por tipo:", votoClasePorTipo);
 
       const resultados = deudas.map((deuda) => {
+        const capNum = parseFloat(deuda.capital) || 0;
+        const totalPorTipo = totalesPorTipo[deuda.tipoDeuda] || 0;
         const derechoVoto =
-          Math.floor((parseFloat(deuda.capital) / totalDeudas) * 100 * 100) /
-          100;
+          totalDeudas > 0
+            ? Math.floor((capNum / totalDeudas) * 100 * 100) / 100
+            : 0;
         const votoClase =
-          Math.floor(
-            (parseFloat(deuda.capital) / totalesPorTipo[deuda.tipoDeuda]) *
-              100 *
-              100
-          ) / 100;
+          totalPorTipo > 0
+            ? Math.floor((capNum / totalPorTipo) * 100 * 100) / 100
+            : 0;
 
         return {
           ...deuda,
@@ -311,7 +313,7 @@ console.log("Lista acreedores:", listaacreedores);
       // console.log("Resultados:", resultados);
       // Suma de porcentajes
       const sumaDerechoVoto = resultados.reduce(
-        (acc, deuda) => acc + deuda.derechoVoto,
+        (acc, deuda) => acc + (deuda.derechoVoto || 0),
         0
       );
 
@@ -336,9 +338,8 @@ console.log("Lista acreedores:", listaacreedores);
     // console.log("name:", name);
     // console.log("value:", value);
     setEditingField(name);
-    // setAcreedorFilt(initAcreedorFilt);
+    setEditingIndex(index);
   };
-
   const handleBienChange = (index, event) => {
     const { name, value } = event.target;
     console.log("Bienes handle bien change:", bienes);
@@ -347,9 +348,9 @@ console.log("Lista acreedores:", listaacreedores);
     setBienes(updatedBienes);
     console.log("Bienes:", bienes);
     if (name === "valor") {
-      // Cálculo del total
+      // Cálculo del total (usar 0 si parseFloat falla)
       let totalBienes = bienes.reduce(
-        (acc, bien) => acc + parseFloat(bien.valor),
+        (acc, bien) => acc + (parseFloat(bien.valor) || 0),
         0
       );
       // console.log("Total de bienes:", totalBienes);
@@ -364,6 +365,7 @@ console.log("Lista acreedores:", listaacreedores);
     // console.log("name:", name);
     // console.log("value:", value);
     setEditingField(name);
+    setEditingIndex(index);
   };
 
   const handlePropuestaChange = (index, event) => {
@@ -1147,7 +1149,7 @@ const { name, value } = event.target;
                           acreedorFilt.map((acreedor) => (
                             <option
                               key={acreedor.idAcreedor}
-                              value={acreedor.idAcreedor}
+                              value={acreedor.nombre}
                               className="opcionesacreedor"
                             >
                               {acreedor.nombre}
@@ -1266,7 +1268,7 @@ const { name, value } = event.target;
                               className="opcionesacreedor"
                             >
                               {acreedor.nombre}
-                            </option>
+                                                          </option>
                           ))}
                         </select>
                       )}
@@ -1277,10 +1279,11 @@ const { name, value } = event.target;
                       name="capital"
                       id={`capital-${index}`}
                       value={
-                        editingField === "capital" &&
-                        index === deudas.length - 1
+                        editingField === "capital" && editingIndex === index
                           ? deuda.capital
-                          : formatNumero(deuda.capital)
+                          : deuda.capital !== "" && !isNaN(Number(deuda.capital))
+                          ? formatNumero(Number(deuda.capital))
+                          : deuda.capital
                       }
                       onChange={(event) => handleDeudaChange(index, event)}
                       onKeyDown={(event) => handleKeyPress(event, index)}

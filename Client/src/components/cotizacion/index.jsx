@@ -14,7 +14,6 @@ import {
   postHonorarios,
 } from "../../redux/actions.js";
 import { formatNumero } from "../../utils/formatNumero.js";
-import { use } from "react";
 import { Link } from "react-router-dom";
 import { generarPlanPagosHonorarios } from "../../utils/planPagosHonorarios.js";
 
@@ -260,7 +259,9 @@ console.log("Lista acreedores:", listaacreedores);
     // }
     if (name === "capital") {
       // Cálculo de totales por tipo de deuda (usar 0 si parseFloat falla)
+      // Ignorar deudas sin tipoDeuda para no crear claves vacías en totalesPorTipo
       const totalesPorTipo = deudas.reduce((acc, deuda) => {
+        if (!deuda.tipoDeuda) return acc;
         const capitalNum = parseFloat(deuda.capital) || 0;
         acc[deuda.tipoDeuda] = (acc[deuda.tipoDeuda] || 0) + capitalNum;
         return acc;
@@ -284,7 +285,9 @@ console.log("Lista acreedores:", listaacreedores);
 
       // console.log("Derecho voto por tipo:", derechoVotoPorTipo);
 
+      // Ignorar deudas sin tipoDeuda al acumular votos por clase
       const votoClasePorTipo = deudas.reduce((acc, deuda) => {
+        if (!deuda.tipoDeuda) return acc;
         acc[deuda.tipoDeuda] =
           (acc[deuda.tipoDeuda] || 0) + (parseFloat(deuda.votoClase) || 0);
         return acc;

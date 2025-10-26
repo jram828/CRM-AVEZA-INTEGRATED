@@ -1136,146 +1136,111 @@ const { name, value } = event.target;
                         onChange={event => handleAcreedorChange(index, event)}
                         placeholder="Buscar Acreedor..."
                       />
-                    {/* </div>
-                    <div className="infodetaildeudas"> */}
-                      {acreedorFilt.length > 0 && index === deudas.length - 1 ? (
+                    {acreedorFilt.length > 0 &&
+                      (typeof document !== "undefined" &&
+                      document.activeElement?.id === `acreedor-${index}`) ? (
                       <select
                         name="acreedor"
                         id="acreedor"
                         className="cajadeudas"
-                        onChange={(event) => handleDeudaChange(index,event)}
+                        onChange={(event) => handleDeudaChange(index, event)}
                       >
                         <option value="" className="opcionesacreedor">
                           Instituciones encontradas
                         </option>
-                        {
-                          acreedorFilt.map((acreedor) => (
-                            <option
-                              key={acreedor.idAcreedor}
-                              value={acreedor.nombre}
-                              className="opcionesacreedor"
-                            >
-                              {acreedor.nombre}
-                            </option>
-                          ))}
+                        {acreedorFilt.map((acreedor) => (
+                          <option
+                            key={acreedor.idAcreedor}
+                            value={acreedor.nombre}
+                            className="opcionesacreedor"
+                          >
+                            {acreedor.nombre}
+                          </option>
+                        ))}
                       </select>
-                      ):(<div className="crearAcreedor"> 
-                      <span>Debe ingresar los datos del acreedor</span>
-                      <Button
-                        className="botonesiniciosesion"
-                        type="button"
-                        onClick={() => setShowAcreedorModal(true)}
-                      >
-                        Crear Acreedor
-                      </Button>
+                    ) : (
+                      <div className="crearAcreedor">
+                        <span>Debe ingresar los datos del acreedor</span>
+                        <Button
+                          className="botonesiniciosesion"
+                          type="button"
+                          onClick={() => setShowAcreedorModal(true)}
+                        >
+                          Crear Acreedor
+                        </Button>
 
-                      {/* Modal para crear acreedor */}
-                      {showAcreedorModal && (
-                        <div className="modal-overlay">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <span className="titulocotizacion">Crear Acreedor</span>
-                              <button className="close-modal" onClick={() => setShowAcreedorModal(false)}>
-                                &times;
-                              </button>
+                        {showAcreedorModal && (
+                          <div className="modal-overlay">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <span className="titulocotizacion">Crear Acreedor</span>
+                                <button className="close-modal" onClick={() => setShowAcreedorModal(false)}>
+                                  &times;
+                                </button>
+                              </div>
+                              <div className="formacreedor">
+                                <input
+                                  type="text"
+                                  className="cajacotizacion"
+                                  name="nombre"
+                                  placeholder="Nombre"
+                                  value={newAcreedor.nombre}
+                                  onChange={e => setNewAcreedor({ ...newAcreedor, nombre: e.target.value })}
+                                />
+                                <input
+                                  type="text"
+                                  className="cajacotizacion"
+                                  name="NIT"
+                                  placeholder="NIT"
+                                  value={newAcreedor.NIT}
+                                  onChange={e => setNewAcreedor({ ...newAcreedor, NIT: e.target.value })}
+                                />
+                                <input
+                                  type="text"
+                                  className="cajacotizacion"
+                                  name="direccion"
+                                  placeholder="Dirección"
+                                  value={newAcreedor.direccion}
+                                  onChange={e => setNewAcreedor({ ...newAcreedor, direccion: e.target.value })}
+                                />
+                                <input
+                                  type="text"
+                                  className="cajacotizacion"
+                                  name="ciudad"
+                                  placeholder="Ciudad"
+                                  value={newAcreedor.ciudad}
+                                  onChange={e => setNewAcreedor({ ...newAcreedor, ciudad: e.target.value })}
+                                />
+                                <input
+                                  type="text"
+                                  className="cajacotizacion"
+                                  name="telefono"
+                                  placeholder="Teléfono"
+                                  value={newAcreedor.telefono}
+                                  onChange={e => setNewAcreedor({ ...newAcreedor, telefono: e.target.value })}
+                                />
+                                <input
+                                  type="email"
+                                  className="cajacotizacion"
+                                  name="email"
+                                  placeholder="Email"
+                                  value={newAcreedor.email}
+                                  onChange={e => setNewAcreedor({ ...newAcreedor, email: e.target.value })}
+                                />
+                                <Button
+                                  className="botonesiniciosesion"
+                                  type="button"
+                                  onClick={handleGuardarAcreedor}
+                                >
+                                  Guardar
+                                </Button>
+                              </div>
                             </div>
-                            <div className="formacreedor">
-                              <input
-                                type="text"
-                                className="cajacotizacion"
-                                name="nombre"
-                                placeholder="Nombre"
-                                value={newAcreedor.nombre}
-                                onChange={e => setNewAcreedor({ ...newAcreedor, nombre: e.target.value })}
-                              />
-                              <input
-                                type="text"
-                                className="cajacotizacion"
-                                name="NIT"
-                                placeholder="NIT"
-                                value={newAcreedor.NIT}
-                                onChange={e => setNewAcreedor({ ...newAcreedor, NIT: e.target.value })}
-                              />
-                              <input
-                                type="text"
-                                className="cajacotizacion"
-                                name="direccion"
-                                placeholder="Dirección"
-                                value={newAcreedor.direccion}
-                                onChange={e => setNewAcreedor({ ...newAcreedor, direccion: e.target.value })}
-                              />
-                              <input
-                                type="text"
-                                className="cajacotizacion"
-                                name="ciudad"
-                                placeholder="Ciudad"
-                                value={newAcreedor.ciudad}
-                                onChange={e => setNewAcreedor({ ...newAcreedor, ciudad: e.target.value })}
-                              />
-                              <input
-                                type="text"
-                                className="cajacotizacion"
-                                name="telefono"
-                                placeholder="Teléfono"
-                                value={newAcreedor.telefono}
-                                onChange={e => setNewAcreedor({ ...newAcreedor, telefono: e.target.value })}
-                              />
-                              <input
-                                type="email"
-                                className="cajacotizacion"
-                                name="email"
-                                placeholder="Email"
-                                value={newAcreedor.email}
-                                onChange={e => setNewAcreedor({ ...newAcreedor, email: e.target.value })}
-                              />
-                              <Button
-                                className="botonesiniciosesion"
-                                type="button"
-                                onClick={handleGuardarAcreedor}
-                              >
-                                Guardar
-                              </Button>
-                            </div>
+                            <div className="modal-backdrop" onClick={() => setShowAcreedorModal(false)}></div>
                           </div>
-                          <div className="modal-backdrop" onClick={() => setShowAcreedorModal(false)}></div>
-                        </div>
-                      )}
-                      
+                        )}
                       </div>)}
                     </div>
-
-                    {/* <div className="acreedorSelect">
-                      <input
-                        type="text"
-                        value={deuda.acreedor}
-                        name="acreedor"
-                        id={`acreedor-${index}`}
-                        className="cajacotizacion"
-                        placeholder="Buscar acreedor..."
-                        onChange={(event) => handleAcreedorChange(index, event)}
-                      />
-                      {acreedorFilt.length > 0 && index === deudas.length - 1 && (
-                        <select
-                          name="acreedor"
-                          id="acreedor"
-                          className="cajadeudas"
-                          onChange={(event) => handleDeudaChange(index, event)}
-                        >
-                          <option value="" className="opcionesacreedor">
-                            Instituciones encontradas
-                          </option>
-                          {acreedorFilt.map((acreedor) => (
-                            <option
-                              key={acreedor.idAcreedor}
-                              value={acreedor.idAcreedor}
-                              className="opcionesacreedor"
-                            >
-                              {acreedor.nombre}
-                                                          </option>
-                          ))}
-                        </select>
-                      )}
-                    </div> */}
                     <input
                       type="text"
                       className="cajadeudas"

@@ -7,7 +7,7 @@ import { registroProspecto } from "../../handlers/registroProspecto.jsx";
 import { codigoCiudades } from "../../utils/codigoCiudades.js"; // Asegúrate de que la ruta sea correcta
 import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
 
-const RegistroProspecto = () => {
+const RegistroProspectoOLD = () => {
   const [userDataRegistro, setUserDataRegistro] = useState({
     email: "",
     nombres: "",
@@ -232,4 +232,4 @@ const RegistroProspecto = () => {
     </div>
   );
 };
-export default RegistroProspecto;
+export default RegistroProspectoOLD;

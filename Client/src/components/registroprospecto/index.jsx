@@ -18,7 +18,7 @@ import {
   Box,
 } from "@mui/material";
 
-const RegistroProspectoMUI = () => {
+const RegistroProspecto = () => {
   const [userDataRegistro, setUserDataRegistro] = useState({
     email: "",
     nombres: "",
@@ -226,4 +226,4 @@ const RegistroProspectoMUI = () => {
     </Container>
   );
 };
-export default RegistroProspectoMUI;
+export default RegistroProspecto;

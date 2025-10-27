@@ -3,9 +3,9 @@ import "../../App.css";
 import "./registroprospecto.css";
 // removed unused Button import from Mystyles to avoid potential name conflicts
 import { useNavigate } from "react-router-dom";
-import { registroProspecto } from "../../handlers/registroProspecto.jsx";
-import {codigoCiudades} from "../../utils/codigoCiudades.js"; // default import; component will guard against non-array values
-import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
+// import { registroProspecto } from "../../handlers/registroProspecto.jsx";
+// import { codigoCiudades } from "../../utils/codigoCiudades.js"; // default import; component will guard against non-array values
+// import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
 import {
   Container,
   Paper,
@@ -38,9 +38,9 @@ const RegistroProspectoMUI = () => {
   });
 
   // initialize ciudadFilt from codigoCiudades safely (fall back to empty array)
-  const initCiudadFilt = Array.isArray(codigoCiudades) ? codigoCiudades : [];
+  // const initCiudadFilt = Array.isArray(codigoCiudades) ? codigoCiudades : [];
 
-  const [ciudadFilt, setCiudadFilt] = useState(initCiudadFilt);
+  // const [ciudadFilt, setCiudadFilt] = useState(initCiudadFilt);
   const navigate = useNavigate();
 
   const handleChangeRegistro = (e) => {
@@ -52,8 +52,8 @@ const RegistroProspectoMUI = () => {
 
   const submitHandlerRegistro = (e) => {
     e.preventDefault();
-    registroProspecto(userDataRegistro);
-    navigate("/Prospectos");
+    // registroProspecto(userDataRegistro);
+    // navigate("/Prospectos");
   };
 
   const handleCiudadChange = (e) => {
@@ -64,7 +64,7 @@ const RegistroProspectoMUI = () => {
   };
 
   const handlerCargarDatos = async () => {
-    registroProspectoExcel();
+    // registroProspectoExcel();
   };
 
   // Nota: agrega estos imports arriba del archivo:
@@ -156,20 +156,20 @@ const RegistroProspectoMUI = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <Autocomplete
                   freeSolo
-                  options={ciudadFilt.map((c) =>
-                    typeof c === "string" ? c : c?.nombre_ciudad || ""
-                  )}
-                  value={userDataRegistro.nombre_ciudad || ""}
+                  options={ciudadFilt
+                    .map((c) =>
+                      typeof c === "string" ? c : c?.nombre_ciudad || ""
+                    )
+                    .filter((name) => name.trim() !== "")}
+                  inputValue={userDataRegistro.nombre_ciudad}
                   onInputChange={(e, value) => {
-                    // actualiza campo y filtra ciudades en línea
                     setUserDataRegistro({
                       ...userDataRegistro,
                       nombre_ciudad: value,
                     });
-                    // guard against codigoCiudades not being an array (prevents runtime crashes)
                     if (!Array.isArray(codigoCiudades)) {
                       setCiudadFilt([]);
                       return;
@@ -181,11 +181,17 @@ const RegistroProspectoMUI = () => {
                     );
                     setCiudadFilt(foundCiudad);
                   }}
+                  onChange={(event, newValue) => {
+                    setUserDataRegistro({
+                      ...userDataRegistro,
+                      nombre_ciudad: newValue || "",
+                    });
+                  }}
                   renderInput={(params) => (
                     <TextField {...params} label="Ciudad" fullWidth />
                   )}
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12}>
                 <TextField

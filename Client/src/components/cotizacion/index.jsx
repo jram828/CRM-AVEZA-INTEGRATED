@@ -492,13 +492,30 @@ console.log("Lista acreedores:", listaacreedores);
 
   const handlerGenerarCotizacion = () => {
     console.log("Propuestas handler:", propuestas);
+    // Limpiar posiciones vacías en el array deudas antes de generar la cotización
+    const deudasFiltradas = (deudas || []).filter((d) => {
+      if (!d) return false;
+      // Considerar que una deuda tiene datos si al menos una propiedad relevante no está vacía
+      return Object.values(d).some((val) => {
+        if (val === null || val === undefined) return false;
+        if (typeof val === "string") return val.trim() !== "";
+        if (typeof val === "number") return !isNaN(val); // número válido (0 se considera dato)
+        return true; // otros tipos (boolean, objeto) se consideran datos
+      });
+    });
+
+    if (deudasFiltradas.length !== (deudas || []).length) {
+      console.log("Se eliminaron posiciones vacías de deudas. Antes:", deudas.length, "Ahora:", deudasFiltradas.length);
+      setDeudas(deudasFiltradas);
+    }
+
 
     const datoscotizacion = generarCotizacion(
       caso,
       ingreso,
       gasto,
       bienes,
-      deudas,
+      deudasFiltradas,
       propuestas,
       prospecto,
       honorarios,
@@ -508,7 +525,7 @@ console.log("Lista acreedores:", listaacreedores);
     // dispatch(modificarCasoCotizacion(datoscotizacion));
     console.log("Cedula:", prospecto.cedulaProspecto);
     dispatch(
-      crearDeudas({ deudas, cedulaProspecto: prospecto.cedulaProspecto })
+      crearDeudas({ deudasFiltradas, cedulaProspecto: prospecto.cedulaProspecto })
     );
     dispatch(
       postHonorarios({

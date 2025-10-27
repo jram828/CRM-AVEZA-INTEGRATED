@@ -15,7 +15,7 @@ import { registroProspecto } from "../../handlers/registroProspecto.jsx";
 import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
 import { codigoCiudades } from "../../utils/codigoCiudades.js";
 
-const RegistroProspecto= () => {
+const RegistroProspecto = () => {
   const [userDataRegistro, setUserDataRegistro] = useState({
     email: "",
     nombres: "",

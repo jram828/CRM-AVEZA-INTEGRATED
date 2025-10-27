@@ -38,9 +38,7 @@ const RegistroProspectoMUI = () => {
   });
 
   // keep ciudadFilt as an array to avoid type errors when mapping/filtering
-  const initCiudadFilt = {
-    ciudades: [],
-  };
+  const initCiudadFilt = [];
 
   const [ciudadFilt, setCiudadFilt] = useState(initCiudadFilt);
   const navigate = useNavigate();

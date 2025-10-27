@@ -525,7 +525,7 @@ console.log("Lista acreedores:", listaacreedores);
     // dispatch(modificarCasoCotizacion(datoscotizacion));
     console.log("Cedula:", prospecto.cedulaProspecto);
     dispatch(
-      crearDeudas({ deudasFiltradas, cedulaProspecto: prospecto.cedulaProspecto })
+      crearDeudas({ deudas: deudasFiltradas, cedulaProspecto: prospecto.cedulaProspecto })
     );
     dispatch(
       postHonorarios({

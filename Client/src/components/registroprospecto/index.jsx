@@ -4,7 +4,7 @@ import "./registroprospecto.css";
 // removed unused Button import from Mystyles to avoid potential name conflicts
 import { useNavigate } from "react-router-dom";
 import { registroProspecto } from "../../handlers/registroProspecto.jsx";
-import codigoCiudades from "../../utils/codigoCiudades.js"; // prefer default import; guard added later
+import {codigoCiudades} from "../../utils/codigoCiudades.js"; // prefer default import; guard added later
 import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
 import {
   Container,

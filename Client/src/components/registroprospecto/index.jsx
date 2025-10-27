@@ -86,9 +86,7 @@ const RegistroProspecto = () => {
   };
 
   const ciudadOptions = ciudadFilt
-    .map((c) =>
-      typeof c === "object" && c !== null ? c.nombre_ciudad : null
-    )
+    .map((c) => (typeof c === "object" && c !== null ? c.nombre_ciudad : null))
     .filter((name) => typeof name === "string" && name.trim() !== "");
 
   return (
@@ -99,7 +97,7 @@ const RegistroProspecto = () => {
         </Typography>
 
         <Box component="form" onSubmit={submitHandlerRegistro} noValidate>
-          <Stack spacing={3}>
+          <Stack spacing={2}>
             {/* Carga de archivo Excel */}
             <Stack direction="row" spacing={2} alignItems="center">
               <input
@@ -120,6 +118,7 @@ const RegistroProspecto = () => {
 
             {/* Datos personales */}
             <Grid container spacing={2}>
+              {/* Fila 1 */}
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Nombre(s)"
@@ -138,6 +137,8 @@ const RegistroProspecto = () => {
                   fullWidth
                 />
               </Grid>
+
+              {/* Fila 2 */}
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Número de cédula"
@@ -158,6 +159,8 @@ const RegistroProspecto = () => {
                   fullWidth
                 />
               </Grid>
+
+              {/* Fila 3 */}
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Email"
@@ -178,7 +181,7 @@ const RegistroProspecto = () => {
                 />
               </Grid>
 
-              {/* Ciudad con Autocomplete */}
+              {/* Fila 4 */}
               <Grid item xs={12} sm={6}>
                 <Autocomplete
                   freeSolo
@@ -189,7 +192,6 @@ const RegistroProspecto = () => {
                       ...userDataRegistro,
                       nombre_ciudad: value,
                     });
-
                     const foundCiudad = codigoCiudades.filter((ciudad) =>
                       ciudad.nombre_ciudad
                         .toLowerCase()
@@ -202,7 +204,6 @@ const RegistroProspecto = () => {
                       ...userDataRegistro,
                       nombre_ciudad: newValue || "",
                     });
-
                     const ciudadObj = codigoCiudades.find(
                       (c) => c.nombre_ciudad === newValue
                     );
@@ -213,8 +214,11 @@ const RegistroProspecto = () => {
                   )}
                 />
               </Grid>
+              <Grid item xs={12} sm={6}>
+                {/* Puedes dejar este espacio vacío o agregar otro campo aquí */}
+              </Grid>
 
-              {/* Comentarios */}
+              {/* Fila 5: Comentarios ocupa toda la fila */}
               <Grid item xs={12}>
                 <TextField
                   label="Comentarios"

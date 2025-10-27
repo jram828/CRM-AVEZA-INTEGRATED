@@ -97,7 +97,7 @@
 }
 
 .titulocotizacion {
-  width: 130px;
+  width: 180px;
   font-size: medium;
   font-weight: bold;
   margin: 5px;
@@ -127,6 +127,7 @@
 
 .cajacotizacion {
   min-width: 130px;
+  max-width: 170px;
   padding: 2px;
   margin: 3px;
   border: 1px solid black; /* Color del borde */
@@ -290,7 +291,7 @@
   flex-direction: row;
   align-items: flex-start;
   padding: 10px;
-  width: 300px;
+  width: 450px;
 }
 
 .modal-overlay {

@@ -14,7 +14,8 @@
         "Registro cliente",
         "Prospectos",
         "Database Migration",
-        "Google Calendar"
+        "Google Calendar",
+        "Styles"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

@@ -245,7 +245,7 @@ export const codigoCiudades = [
   { codigo_ciudad: 8849, nombre_ciudad: "USIACURI", codigo_departamento: 8 },
   {
     codigo_ciudad: 11001,
-    nombre_ciudad: "BOGOTA. D.C.",
+    nombre_ciudad: "BOGOTA",
     codigo_departamento: 11,
   },
   {

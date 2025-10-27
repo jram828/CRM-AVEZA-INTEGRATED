@@ -1,11 +1,19 @@
-import { useState } from "react";
-import "../../App.css";
-import "./registroprospecto.css";
-import { Button } from "../Mystyles.js";
+import { useState, useEffect } from "react";
+import {
+  Container,
+  Paper,
+  Grid,
+  TextField,
+  Button,
+  Autocomplete,
+  Typography,
+  Stack,
+  Box,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { registroProspecto } from "../../handlers/registroProspecto.jsx";
-import { codigoCiudades } from "../../utils/codigoCiudades.js"; // Asegúrate de que la ruta sea correcta
 import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
+import { codigoCiudades } from "../../utils/codigoCiudades.js";
 
 const RegistroProspecto = () => {
   const [userDataRegistro, setUserDataRegistro] = useState({
@@ -21,215 +29,226 @@ const RegistroProspecto = () => {
     forma_de_pago: "",
     honorarios: "",
     cuotas: "",
-    // password: "",
     comentarios: "",
     valor_pretensiones: "",
   });
 
-  const initCiudadFilt = {
-    ciudades: [],
-  };
-
-  const [ciudadFilt, setCiudadFilt] = useState(initCiudadFilt);
+  const [ciudadFilt, setCiudadFilt] = useState([]);
+  const [ciudadSeleccionada, setCiudadSeleccionada] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Array.isArray(codigoCiudades)) {
+      setCiudadFilt(codigoCiudades);
+    } else {
+      console.error("codigoCiudades no es un array:", codigoCiudades);
+    }
+  }, []);
 
   const handleChangeRegistro = (e) => {
     setUserDataRegistro({
       ...userDataRegistro,
-      [e.target.name]: e.target.value, // Sintaxis ES6 para actualizar la key correspondiente
-    });
-  };
-
-  const submitHandlerRegistro = (e) => {
-    e.preventDefault();
-    registroProspecto(userDataRegistro);
-    navigate("/Prospectos");
-  };
-
-  const handleCiudadChange = (e) => {
-    e.preventDefault();
-
-    setUserDataRegistro({
-      ...userDataRegistro,
       [e.target.name]: e.target.value,
     });
-
-    const foundCiudad = codigoCiudades.filter((ciudad) =>
-      ciudad.nombre_ciudad.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    // console.log("Ciudades encontradas:", foundCiudad);
-    setCiudadFilt(foundCiudad);
   };
 
+  const submitHandlerRegistro = async (e) => {
+    e.preventDefault();
+
+    // Si necesitas enviar el objeto completo de la ciudad:
+    const ciudadObj = codigoCiudades.find(
+      (c) => c.nombre_ciudad === userDataRegistro.nombre_ciudad
+    );
+
+    try {
+      await registroProspecto({
+        ...userDataRegistro,
+        codigo_ciudad: ciudadObj?.codigo_ciudad || null,
+        codigo_departamento: ciudadObj?.codigo_departamento || null,
+      });
+      navigate("/Prospectos");
+    } catch (error) {
+      console.error("Error al registrar prospecto:", error);
+    }
+  };
 
   const handlerCargarDatos = async () => {
-    registroProspectoExcel();
+    const fileInput = document.getElementById("docexcel");
+    if (!fileInput.files.length) {
+      alert("Por favor selecciona un archivo antes de cargar.");
+      return;
+    }
+    try {
+      await registroProspectoExcel(fileInput.files[0]);
+    } catch (error) {
+      console.error("Error al cargar datos desde Excel:", error);
+    }
   };
-  
+
+  const ciudadOptions = ciudadFilt
+    .map((c) =>
+      typeof c === "object" && c !== null ? c.nombre_ciudad : null
+    )
+    .filter((name) => typeof name === "string" && name.trim() !== "");
 
   return (
-    <div className="contenedorregistro">
-      <form className="datos" method="post" onSubmit={submitHandlerRegistro}>
-        <h1 className="titulo">Registro De Prospecto</h1>
-        <br />
-        <div className="menu-registroProspecto">
-                <input type="file" id="docexcel" accept=".xlsx, .xls"  />
-                <Button
-                  className="botonesiniciosesion"
-                  onClick={handlerCargarDatos}
-                >
-                  Cargar datos
+    <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
+        <Typography variant="h5" component="h1" gutterBottom>
+          Registro de Prospecto
+        </Typography>
+
+        <Box component="form" onSubmit={submitHandlerRegistro} noValidate>
+          <Stack spacing={3}>
+            {/* Carga de archivo Excel */}
+            <Stack direction="row" spacing={2} alignItems="center">
+              <input
+                id="docexcel"
+                type="file"
+                accept=".xlsx, .xls"
+                style={{ display: "none" }}
+              />
+              <label htmlFor="docexcel">
+                <Button variant="outlined" component="span">
+                  Seleccionar archivo
                 </Button>
-              </div>
-        <br />
-        <div className="inforegistroProspecto">
-          <label htmlFor="nombre" className="labelregistrodeProspecto">
-            Nombre(s):
-          </label>
-          <input
-            type="text"
-            name="nombres"
-            id="name"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.nombres}
-            onChange={handleChangeRegistro}
-          />
-          <label htmlFor="apellidos" className="labelregistrodeProspecto">
-            Apellido(s):
-          </label>
-          <input
-            type="text"
-            className="cajaregistroProspecto"
-            name="apellidos"
-            id="lastname"
-            value={userDataRegistro.apellidos}
-            onChange={handleChangeRegistro}
-          />
-        </div>
-        <br />
-        <br />
-        <div className="inforegistroProspecto">
-          <label htmlFor="cedula" className="labelregistrodeProspecto">
-            Numero de cédula:
-          </label>
-          <input
-            type="number"
-            className="cajaregistroProspecto"
-            name="cedulaProspecto"
-            id="cedula"
-            value={userDataRegistro.cedula}
-            onChange={handleChangeRegistro}
-          />
+              </label>
+              <Button variant="contained" onClick={handlerCargarDatos}>
+                Cargar datos
+              </Button>
+            </Stack>
 
-          <label htmlFor="telefono" className="labelregistrodeProspecto">
-            {" "}
-            Celular:
-          </label>
-          <input
-            type="number"
-            name="celular"
-            id="celular"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.celular}
-            onChange={handleChangeRegistro}
-          />
-        </div>
+            {/* Datos personales */}
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Nombre(s)"
+                  name="nombres"
+                  value={userDataRegistro.nombres}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Apellido(s)"
+                  name="apellidos"
+                  value={userDataRegistro.apellidos}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Número de cédula"
+                  name="cedulaProspecto"
+                  type="number"
+                  value={userDataRegistro.cedulaProspecto}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Celular"
+                  name="celular"
+                  type="tel"
+                  value={userDataRegistro.celular}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={userDataRegistro.email}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Dirección"
+                  name="direccion"
+                  value={userDataRegistro.direccion}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
 
-        <br />
-        <br />
-        <div className="inforegistroProspecto">
-          <label htmlFor="email" className="labelregistrodeProspecto">
-            Email:
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.email}
-            onChange={handleChangeRegistro}
-          />
-          <label htmlFor="direccion" className="labelregistrodeProspecto">
-            Dirección:
-          </label>
-          <input
-            type="text"
-            name="direccion"
-            id="direccion"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.direccion}
-            onChange={handleChangeRegistro}
-          />
-        </div>
-        <br />
-        <br />
-        <div className="inforegistroProspecto">
-          <label htmlFor="ciudad" className="labelregistrodeProspecto">
-            Ciudad:
-          </label>
-          <input
-            type="text"
-            name="nombre_ciudad"
-            id="ciudad"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.nombre_ciudad}
-            onChange={handleCiudadChange}
-            placeholder="Buscar ciudad..."
-          />
+              {/* Ciudad con Autocomplete */}
+              <Grid item xs={12} sm={6}>
+                <Autocomplete
+                  freeSolo
+                  options={ciudadOptions}
+                  inputValue={userDataRegistro.nombre_ciudad}
+                  onInputChange={(e, value) => {
+                    setUserDataRegistro({
+                      ...userDataRegistro,
+                      nombre_ciudad: value,
+                    });
 
-          <select
-            name="nombre_ciudad"
-            id="ciudad"
-            className="cajaregistroProspecto"
-            onChange={(event) => handleChangeRegistro(event)}
-          >
-            <option value="" className="opcionescuidades">
-              Ciudades encontradas
-            </option>
-            {ciudadFilt.length > 0 &&
-              ciudadFilt.map((ciudad) => (
-                <option
-                  key={ciudad.codigo_ciudad}
-                  value={ciudad.nombre_ciudad}
-                  className="opcionesciudades"
-                >
-                  {ciudad.nombre_ciudad}
-                </option>
-              ))}
-          </select>
-        </div>
-        <div className="comentarios">
-          <br />
-          <label htmlFor="comentarios" className="labelregistrodeProspecto">
-            Comentarios
-          </label>
-          <br />
-          <br />
-          <textarea
-            name="comentarios"
-            id="comentarios"
-            cols="30"
-            rows="5"
-            value={userDataRegistro.comentarios}
-            onChange={handleChangeRegistro}
-          ></textarea>
-        </div>
-        <br />
-        <div className="documentoagenerar">
-          <Button
-            onClick={submitHandlerRegistro}
-            disabled={
-              !userDataRegistro.email ||
-              !userDataRegistro.cedulaProspecto ||
-              !userDataRegistro.nombres ||
-              !userDataRegistro.apellidos
-            }
-          >
-            Guardar
-          </Button>
-        </div>
-      </form>
-    </div>
+                    const foundCiudad = codigoCiudades.filter((ciudad) =>
+                      ciudad.nombre_ciudad
+                        .toLowerCase()
+                        .includes(value.toLowerCase())
+                    );
+                    setCiudadFilt(foundCiudad);
+                  }}
+                  onChange={(event, newValue) => {
+                    setUserDataRegistro({
+                      ...userDataRegistro,
+                      nombre_ciudad: newValue || "",
+                    });
+
+                    const ciudadObj = codigoCiudades.find(
+                      (c) => c.nombre_ciudad === newValue
+                    );
+                    setCiudadSeleccionada(ciudadObj || null);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Ciudad" fullWidth />
+                  )}
+                />
+              </Grid>
+
+              {/* Comentarios */}
+              <Grid item xs={12}>
+                <TextField
+                  label="Comentarios"
+                  name="comentarios"
+                  value={userDataRegistro.comentarios}
+                  onChange={handleChangeRegistro}
+                  multiline
+                  rows={4}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+
+            {/* Botón de guardar */}
+            <Box display="flex" justifyContent="flex-end">
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={
+                  !userDataRegistro.email ||
+                  !userDataRegistro.cedulaProspecto ||
+                  !userDataRegistro.nombres ||
+                  !userDataRegistro.apellidos
+                }
+              >
+                Guardar
+              </Button>
+            </Box>
+          </Stack>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
+
 export default RegistroProspecto;

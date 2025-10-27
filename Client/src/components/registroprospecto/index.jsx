@@ -1,13 +1,24 @@
 import { useState } from "react";
 import "../../App.css";
 import "./registroprospecto.css";
-import { Button } from "../Mystyles.js";
+// removed unused Button import from Mystyles to avoid potential name conflicts
 import { useNavigate } from "react-router-dom";
 import { registroProspecto } from "../../handlers/registroProspecto.jsx";
-import { codigoCiudades } from "../../utils/codigoCiudades.js"; // Asegúrate de que la ruta sea correcta
+import codigoCiudades from "../../utils/codigoCiudades.js"; // prefer default import; guard added later
 import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
+import {
+  Container,
+  Paper,
+  Grid,
+  TextField,
+  Button as MUIButton,
+  Autocomplete,
+  Typography,
+  Stack,
+  Box,
+} from "@mui/material";
 
-const RegistroProspecto = () => {
+const RegistroProspectoMUI = () => {
   const [userDataRegistro, setUserDataRegistro] = useState({
     email: "",
     nombres: "",
@@ -26,6 +37,7 @@ const RegistroProspecto = () => {
     valor_pretensiones: "",
   });
 
+  // keep ciudadFilt as an array to avoid type errors when mapping/filtering
   const initCiudadFilt = {
     ciudades: [],
   };
@@ -49,187 +61,165 @@ const RegistroProspecto = () => {
   const handleCiudadChange = (e) => {
     e.preventDefault();
 
-    setUserDataRegistro({
-      ...userDataRegistro,
-      [e.target.name]: e.target.value,
-    });
-
-    const foundCiudad = codigoCiudades.filter((ciudad) =>
-      ciudad.nombre_ciudad.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    // console.log("Ciudades encontradas:", foundCiudad);
-    setCiudadFilt(foundCiudad);
+    // handleCiudadChange removed because the Autocomplete input uses onInputChange inline;
+    // filtering is handled there and ciudadFilt is kept as an array.
   };
-
 
   const handlerCargarDatos = async () => {
     registroProspectoExcel();
   };
-  
+
+  // Nota: agrega estos imports arriba del archivo:
 
   return (
-    <div className="contenedorregistro">
-      <form className="datos" method="post" onSubmit={submitHandlerRegistro}>
-        <h1 className="titulo">Registro De Prospecto</h1>
-        <br />
-        <div className="menu-registroProspecto">
-                <input type="file" id="docexcel" accept=".xlsx, .xls"  />
-                <Button
-                  className="botonesiniciosesion"
-                  onClick={handlerCargarDatos}
-                >
-                  Cargar datos
-                </Button>
-              </div>
-        <br />
-        <div className="inforegistroProspecto">
-          <label htmlFor="nombre" className="labelregistrodeProspecto">
-            Nombre(s):
-          </label>
-          <input
-            type="text"
-            name="nombres"
-            id="name"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.nombres}
-            onChange={handleChangeRegistro}
-          />
-          <label htmlFor="apellidos" className="labelregistrodeProspecto">
-            Apellido(s):
-          </label>
-          <input
-            type="text"
-            className="cajaregistroProspecto"
-            name="apellidos"
-            id="lastname"
-            value={userDataRegistro.apellidos}
-            onChange={handleChangeRegistro}
-          />
-        </div>
-        <br />
-        <br />
-        <div className="inforegistroProspecto">
-          <label htmlFor="cedula" className="labelregistrodeProspecto">
-            Numero de cédula:
-          </label>
-          <input
-            type="number"
-            className="cajaregistroProspecto"
-            name="cedulaProspecto"
-            id="cedula"
-            value={userDataRegistro.cedula}
-            onChange={handleChangeRegistro}
-          />
+    <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Paper sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}>
+        <Typography variant="h5" component="h1" gutterBottom>
+          Registro de Prospecto
+        </Typography>
 
-          <label htmlFor="telefono" className="labelregistrodeProspecto">
-            {" "}
-            Celular:
-          </label>
-          <input
-            type="number"
-            name="celular"
-            id="celular"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.celular}
-            onChange={handleChangeRegistro}
-          />
-        </div>
+        <Box component="form" onSubmit={submitHandlerRegistro} noValidate>
+          <Stack spacing={3}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <input
+                id="docexcel"
+                type="file"
+                accept=".xlsx, .xls"
+                style={{ display: "none" }}
+              />
+              <label htmlFor="docexcel">
+                <MUIButton variant="outlined" component="span">
+                  Seleccionar archivo
+                </MUIButton>
+              </label>
+              <MUIButton variant="contained" onClick={handlerCargarDatos}>
+                Cargar datos
+              </MUIButton>
+            </Stack>
 
-        <br />
-        <br />
-        <div className="inforegistroProspecto">
-          <label htmlFor="email" className="labelregistrodeProspecto">
-            Email:
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.email}
-            onChange={handleChangeRegistro}
-          />
-          <label htmlFor="direccion" className="labelregistrodeProspecto">
-            Dirección:
-          </label>
-          <input
-            type="text"
-            name="direccion"
-            id="direccion"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.direccion}
-            onChange={handleChangeRegistro}
-          />
-        </div>
-        <br />
-        <br />
-        <div className="inforegistroProspecto">
-          <label htmlFor="ciudad" className="labelregistrodeProspecto">
-            Ciudad:
-          </label>
-          <input
-            type="text"
-            name="nombre_ciudad"
-            id="ciudad"
-            className="cajaregistroProspecto"
-            value={userDataRegistro.nombre_ciudad}
-            onChange={handleCiudadChange}
-            placeholder="Buscar ciudad..."
-          />
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Nombre(s)"
+                  name="nombres"
+                  value={userDataRegistro.nombres}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Apellido(s)"
+                  name="apellidos"
+                  value={userDataRegistro.apellidos}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
 
-          <select
-            name="nombre_ciudad"
-            id="ciudad"
-            className="cajaregistroProspecto"
-            onChange={(event) => handleChangeRegistro(event)}
-          >
-            <option value="" className="opcionescuidades">
-              Ciudades encontradas
-            </option>
-            {ciudadFilt.length > 0 &&
-              ciudadFilt.map((ciudad) => (
-                <option
-                  key={ciudad.codigo_ciudad}
-                  value={ciudad.nombre_ciudad}
-                  className="opcionesciudades"
-                >
-                  {ciudad.nombre_ciudad}
-                </option>
-              ))}
-          </select>
-        </div>
-        <div className="comentarios">
-          <br />
-          <label htmlFor="comentarios" className="labelregistrodeProspecto">
-            Comentarios
-          </label>
-          <br />
-          <br />
-          <textarea
-            name="comentarios"
-            id="comentarios"
-            cols="30"
-            rows="5"
-            value={userDataRegistro.comentarios}
-            onChange={handleChangeRegistro}
-          ></textarea>
-        </div>
-        <br />
-        <div className="documentoagenerar">
-          <Button
-            onClick={submitHandlerRegistro}
-            disabled={
-              !userDataRegistro.email ||
-              !userDataRegistro.cedulaProspecto ||
-              !userDataRegistro.nombres ||
-              !userDataRegistro.apellidos
-            }
-          >
-            Guardar
-          </Button>
-        </div>
-      </form>
-    </div>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Número de cédula"
+                  name="cedulaProspecto"
+                  type="number"
+                  value={userDataRegistro.cedulaProspecto}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Celular"
+                  name="celular"
+                  type="tel"
+                  value={userDataRegistro.celular}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={userDataRegistro.email}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Dirección"
+                  name="direccion"
+                  value={userDataRegistro.direccion}
+                  onChange={handleChangeRegistro}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Autocomplete
+                  freeSolo
+                  options={ciudadFilt.map((c) =>
+                    typeof c === "string" ? c : c?.nombre_ciudad || ""
+                  )}
+                  value={userDataRegistro.nombre_ciudad || ""}
+                  onInputChange={(e, value) => {
+                    // actualiza campo y filtra ciudades en línea
+                    setUserDataRegistro({
+                      ...userDataRegistro,
+                      nombre_ciudad: value,
+                    });
+                    // guard against codigoCiudades not being an array (prevents runtime crashes)
+                    if (!Array.isArray(codigoCiudades)) {
+                      setCiudadFilt([]);
+                      return;
+                    }
+                    const foundCiudad = codigoCiudades.filter((ciudad) =>
+                      String(ciudad.nombre_ciudad || ciudad)
+                        .toLowerCase()
+                        .includes(String(value).toLowerCase())
+                    );
+                    setCiudadFilt(foundCiudad);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Ciudad" fullWidth />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  label="Comentarios"
+                  name="comentarios"
+                  value={userDataRegistro.comentarios}
+                  onChange={handleChangeRegistro}
+                  multiline
+                  rows={4}
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+            <Box display="flex" justifyContent="flex-end">
+              <MUIButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={
+                  !userDataRegistro.email ||
+                  !userDataRegistro.cedulaProspecto ||
+                  !userDataRegistro.nombres ||
+                  !userDataRegistro.apellidos
+                }
+              >
+                Guardar
+              </MUIButton>
+            </Box>
+          </Stack>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
-export default RegistroProspecto;
+export default RegistroProspectoMUI;

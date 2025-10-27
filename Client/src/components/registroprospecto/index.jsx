@@ -4,7 +4,7 @@ import "./registroprospecto.css";
 // removed unused Button import from Mystyles to avoid potential name conflicts
 import { useNavigate } from "react-router-dom";
 import { registroProspecto } from "../../handlers/registroProspecto.jsx";
-import {codigoCiudades} from "../../utils/codigoCiudades.js"; // prefer default import; guard added later
+import {codigoCiudades} from "../../utils/codigoCiudades.js"; // default import; component will guard against non-array values
 import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
 import {
   Container,
@@ -37,8 +37,8 @@ const RegistroProspectoMUI = () => {
     valor_pretensiones: "",
   });
 
-  // keep ciudadFilt as an array to avoid type errors when mapping/filtering
-  const initCiudadFilt = [];
+  // initialize ciudadFilt from codigoCiudades safely (fall back to empty array)
+  const initCiudadFilt = Array.isArray(codigoCiudades) ? codigoCiudades : [];
 
   const [ciudadFilt, setCiudadFilt] = useState(initCiudadFilt);
   const navigate = useNavigate();

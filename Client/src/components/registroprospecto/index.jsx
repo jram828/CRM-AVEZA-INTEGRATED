@@ -1,24 +1,21 @@
 import { useState } from "react";
-import "../../App.css";
-import "./registroprospecto.css";
-// removed unused Button import from Mystyles to avoid potential name conflicts
-import { useNavigate } from "react-router-dom";
-// import { registroProspecto } from "../../handlers/registroProspecto.jsx";
-// import { codigoCiudades } from "../../utils/codigoCiudades.js"; // default import; component will guard against non-array values
-// import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
 import {
   Container,
   Paper,
   Grid,
   TextField,
-  Button as MUIButton,
+  Button,
   Autocomplete,
   Typography,
   Stack,
   Box,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { registroProspecto } from "../../handlers/registroProspecto.jsx";
+import { registroProspectoExcel } from "../../handlers/registroProspectoExcel.jsx";
+import { codigoCiudades } from "../../utils/codigoCiudades.js";
 
-const RegistroProspecto = () => {
+const RegistroProspecto= () => {
   const [userDataRegistro, setUserDataRegistro] = useState({
     email: "",
     nombres: "",
@@ -32,42 +29,45 @@ const RegistroProspecto = () => {
     forma_de_pago: "",
     honorarios: "",
     cuotas: "",
-    // password: "",
     comentarios: "",
     valor_pretensiones: "",
   });
 
-  // initialize ciudadFilt from codigoCiudades safely (fall back to empty array)
-  // const initCiudadFilt = Array.isArray(codigoCiudades) ? codigoCiudades : [];
+  const [ciudadFilt, setCiudadFilt] = useState(
+    Array.isArray(codigoCiudades) ? codigoCiudades : []
+  );
 
-  // const [ciudadFilt, setCiudadFilt] = useState(initCiudadFilt);
   const navigate = useNavigate();
 
   const handleChangeRegistro = (e) => {
     setUserDataRegistro({
       ...userDataRegistro,
-      [e.target.name]: e.target.value, // Sintaxis ES6 para actualizar la key correspondiente
+      [e.target.name]: e.target.value,
     });
   };
 
-  const submitHandlerRegistro = (e) => {
+  const submitHandlerRegistro = async (e) => {
     e.preventDefault();
-    // registroProspecto(userDataRegistro);
-    // navigate("/Prospectos");
-  };
-
-  const handleCiudadChange = (e) => {
-    e.preventDefault();
-
-    // handleCiudadChange removed because the Autocomplete input uses onInputChange inline;
-    // filtering is handled there and ciudadFilt is kept as an array.
+    try {
+      await registroProspecto(userDataRegistro);
+      navigate("/Prospectos");
+    } catch (error) {
+      console.error("Error al registrar prospecto:", error);
+    }
   };
 
   const handlerCargarDatos = async () => {
-    // registroProspectoExcel();
+    const fileInput = document.getElementById("docexcel");
+    if (!fileInput.files.length) {
+      alert("Por favor selecciona un archivo antes de cargar.");
+      return;
+    }
+    try {
+      await registroProspectoExcel(fileInput.files[0]);
+    } catch (error) {
+      console.error("Error al cargar datos desde Excel:", error);
+    }
   };
-
-  // Nota: agrega estos imports arriba del archivo:
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -78,6 +78,7 @@ const RegistroProspecto = () => {
 
         <Box component="form" onSubmit={submitHandlerRegistro} noValidate>
           <Stack spacing={3}>
+            {/* Carga de archivo Excel */}
             <Stack direction="row" spacing={2} alignItems="center">
               <input
                 id="docexcel"
@@ -86,15 +87,16 @@ const RegistroProspecto = () => {
                 style={{ display: "none" }}
               />
               <label htmlFor="docexcel">
-                <MUIButton variant="outlined" component="span">
+                <Button variant="outlined" component="span">
                   Seleccionar archivo
-                </MUIButton>
+                </Button>
               </label>
-              <MUIButton variant="contained" onClick={handlerCargarDatos}>
+              <Button variant="contained" onClick={handlerCargarDatos}>
                 Cargar datos
-              </MUIButton>
+              </Button>
             </Stack>
 
+            {/* Datos personales */}
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -114,7 +116,6 @@ const RegistroProspecto = () => {
                   fullWidth
                 />
               </Grid>
-
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Número de cédula"
@@ -135,7 +136,6 @@ const RegistroProspecto = () => {
                   fullWidth
                 />
               </Grid>
-
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Email"
@@ -156,12 +156,15 @@ const RegistroProspecto = () => {
                 />
               </Grid>
 
-              {/* <Grid item xs={12} sm={6}>
+              {/* Ciudad con Autocomplete */}
+              <Grid item xs={12} sm={6}>
                 <Autocomplete
                   freeSolo
                   options={ciudadFilt
                     .map((c) =>
-                      typeof c === "string" ? c : c?.nombre_ciudad || ""
+                      typeof c === "string"
+                        ? c
+                        : c?.nombre_ciudad || ""
                     )
                     .filter((name) => name.trim() !== "")}
                   inputValue={userDataRegistro.nombre_ciudad}
@@ -170,10 +173,6 @@ const RegistroProspecto = () => {
                       ...userDataRegistro,
                       nombre_ciudad: value,
                     });
-                    if (!Array.isArray(codigoCiudades)) {
-                      setCiudadFilt([]);
-                      return;
-                    }
                     const foundCiudad = codigoCiudades.filter((ciudad) =>
                       String(ciudad.nombre_ciudad || ciudad)
                         .toLowerCase()
@@ -191,8 +190,9 @@ const RegistroProspecto = () => {
                     <TextField {...params} label="Ciudad" fullWidth />
                   )}
                 />
-              </Grid> */}
+              </Grid>
 
+              {/* Comentarios */}
               <Grid item xs={12}>
                 <TextField
                   label="Comentarios"
@@ -205,8 +205,10 @@ const RegistroProspecto = () => {
                 />
               </Grid>
             </Grid>
+
+            {/* Botón de guardar */}
             <Box display="flex" justifyContent="flex-end">
-              <MUIButton
+              <Button
                 type="submit"
                 variant="contained"
                 color="primary"
@@ -218,7 +220,7 @@ const RegistroProspecto = () => {
                 }
               >
                 Guardar
-              </MUIButton>
+              </Button>
             </Box>
           </Stack>
         </Box>
@@ -226,4 +228,5 @@ const RegistroProspecto = () => {
     </Container>
   );
 };
+
 export default RegistroProspecto;

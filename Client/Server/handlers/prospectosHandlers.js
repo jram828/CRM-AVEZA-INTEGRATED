@@ -7,6 +7,7 @@ import { eliminaProspecto } from "../controllers/prospecto/postEliminaProspecto.
 import { actualizaProspecto } from "../controllers/prospecto/postActualizaProspectos.js";
 import { getProspectoByEmail } from "../controllers/prospecto/getProspectoByEmail.js";
 import { actualizaDatosCotizacion } from "../controllers/prospecto/postActualizaDatosCotizacion.js";
+import { corregirAcentos } from "../controllers/prospecto/corregirAcentos.js";
 
 const prospectosHandler = async (req, res) => {
   //const { name } = req.query;
@@ -177,6 +178,17 @@ const postActualizaDatosCotizacion = async (req, res) => {
   }
 };
 
+const corregirAcentosProspectos = async (req, res) => {
+  
+  try {
+    const response = await corregirAcentos();
+    if (response) res.status(200).json(response);
+    else res.status(204).json("No se corrigieron los Prospectos");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 export {
   prospectosHandler,
   prospectosCasosHandler,
@@ -186,4 +198,5 @@ export {
   postActualizaProspectos,
   postActualizaDatosCotizacion,
   getProspectoByEmailHandler,
+  corregirAcentosProspectos,
 };

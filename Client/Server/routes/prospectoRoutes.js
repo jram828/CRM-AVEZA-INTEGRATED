@@ -11,6 +11,7 @@ import {
   postEliminaProspectos,
   postActualizaProspectos,
   postActualizaDatosCotizacion,
+  corregirAcentosProspectos
   // getClientByEmailHandler,
 } from "../handlers/prospectosHandlers.js";
 
@@ -25,6 +26,7 @@ prospectosRouter.post("/registroprospecto", postProspectosHandler);
 prospectosRouter.post("/relacionarpaises", relacionarPaises);
 prospectosRouter.post("/relacionardepartamentos", relacionarDepartamentos);
 prospectosRouter.post("/crearciudades", crearCiudades);
+prospectosRouter.post("/acentos", corregirAcentosProspectos);
 
 prospectosRouter.put("/actualiza", postActualizaProspectos); //Actualizar datos (uno a la vez)
 prospectosRouter.put("/cotizacion", postActualizaDatosCotizacion); 

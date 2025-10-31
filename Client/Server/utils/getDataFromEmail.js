@@ -44,7 +44,7 @@ export const buscarCorreos = async () => {
     console.log(`🟢 Se encontraron ${messages.length} correos filtrados.`);
 
     for (const message of messages) {
-      console.log("🧩 Estructura completa del mensaje:", JSON.stringify(message, null, 2));
+      // console.log("🧩 Estructura completa del mensaje:", JSON.stringify(message, null, 2));
 
       const obtenerContenidoPlano = (parts) => {
         for (const part of parts) {
@@ -60,7 +60,8 @@ export const buscarCorreos = async () => {
       };
 
       const obtenerCharset = (headers) => {
-        const raw = headers["content-type"] || "";
+        const rawHeader = headers["content-type"];
+        const raw = Array.isArray(rawHeader) ? rawHeader[0] : (typeof rawHeader === "string" ? rawHeader : "");
         const match = raw.match(/charset="?([\w\-]+)"?/i);
         return match ? match[1].toLowerCase() : "utf-8";
       };
@@ -68,7 +69,8 @@ export const buscarCorreos = async () => {
       const encoded = obtenerContenidoPlano(message.parts);
       if (!encoded) continue;
 
-      const headers = message.parts.find((p) => p.which === "HEADER")?.body || {};
+      const headerPart = message.parts.find((p) => p.which === "HEADER");
+      const headers = headerPart && headerPart.body ? headerPart.body : {};
       const charset = obtenerCharset(headers);
 
       const decodedQP = qp.decode(encoded);
@@ -77,7 +79,7 @@ export const buscarCorreos = async () => {
       try {
         decoded = iconv.decode(Buffer.from(decodedQP), charset);
       } catch (err) {
-        console.warn(`⚠️ Error con charset "${charset}", usando fallback latin1`);
+        console.warn(`⚠️ Charset "${charset}" no soportado, usando fallback latin1`);
         decoded = iconv.decode(Buffer.from(decodedQP), "latin1");
       }
 
@@ -101,7 +103,7 @@ export const buscarCorreos = async () => {
 
     await connection.end();
   } catch (error) {
-    console.error("❌ Error al procesar correos:", error);
+    console.error("❌ Error al procesar correos:", error.message);
   }
 };
 

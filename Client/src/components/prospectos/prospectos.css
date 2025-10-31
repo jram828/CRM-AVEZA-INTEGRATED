@@ -20,9 +20,53 @@
   flex-direction: row;
 }
 
-   .divprospectos{
+   /* .divprospectos{
     display: grid;
     justify-content: flex-start;
     grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: minmax(20px, auto);
-   }
+   } */
+
+   /* Contenedor general de las columnas tipo Trello */
+.divprospectos {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  flex-wrap: nowrap; /* Evita que las columnas se apilen verticalmente */
+  overflow-x: auto;   /* Permite scroll horizontal si hay muchas columnas */
+}
+
+/* Asegura que cada columna tenga un ancho mínimo y se comporte como columna */
+.MuiGrid-item {
+  flex: 1 1 0;
+  min-width: 200px;
+}
+
+/* Opcional: mejora visual de las tarjetas */
+.MuiCard-root {
+  transition: box-shadow 0.3s ease;
+}
+
+.MuiCard-root:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button-agregar-prospecto {
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+.button-agregar-prospecto:hover {
+  background-color: #115293;
+}
+.button-agregar-prospecto:active {
+  background-color: #0d3c6e;
+}

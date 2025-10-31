@@ -3,6 +3,7 @@ import imaps from "imap-simple";
 import { postProspectoAut } from "../controllers/prospecto/postProspectoAut.js";
 import qp from "quoted-printable";
 import axios from "axios";
+import iconv from "iconv-lite";
 
 dotenv.config();
 
@@ -19,17 +20,14 @@ const config = {
 
 const SUBJECT = "Lead pauta insolvencia";
 
-
 export const keepAlivePing = async () => {
   try {
     await axios.get(`${process.env.VITE_URL}/tiposdecasos`);
-    console.log('📡 Keep-alive enviado correctamente');
+    console.log("📡 Keep-alive enviado correctamente");
   } catch (err) {
-    console.error('❌ Error en keep-alive:', err.message);
+    console.error("❌ Error en keep-alive:", err.message);
   }
 };
-
-
 
 export const buscarCorreos = async () => {
   try {
@@ -38,7 +36,7 @@ export const buscarCorreos = async () => {
 
     const searchCriteria = ["UNSEEN", ["HEADER", "SUBJECT", SUBJECT]];
     const fetchOptions = {
-      bodies: ["TEXT"],
+      bodies: ["HEADER", "TEXT"],
       markSeen: true,
     };
 
@@ -61,10 +59,27 @@ export const buscarCorreos = async () => {
         return "";
       };
 
+      const obtenerCharset = (headers) => {
+        const raw = headers["content-type"] || "";
+        const match = raw.match(/charset="?([\w\-]+)"?/i);
+        return match ? match[1].toLowerCase() : "utf-8";
+      };
+
       const encoded = obtenerContenidoPlano(message.parts);
       if (!encoded) continue;
 
-      const decoded = qp.decode(encoded).toString("utf-8");
+      const headers = message.parts.find((p) => p.which === "HEADER")?.body || {};
+      const charset = obtenerCharset(headers);
+
+      const decodedQP = qp.decode(encoded);
+      let decoded;
+
+      try {
+        decoded = iconv.decode(Buffer.from(decodedQP), charset);
+      } catch (err) {
+        console.warn(`⚠️ Error con charset "${charset}", usando fallback latin1`);
+        decoded = iconv.decode(Buffer.from(decodedQP), "latin1");
+      }
 
       const limpio = decoded
         .replace(/<br\s*\/?>/gi, "\n")
@@ -132,8 +147,7 @@ const extraerDatos = (texto) => {
 
   for (let i = 0; i < campos.length && idx < lineas.length; i++, idx++) {
     const partes = lineas[idx].split(":");
-    datos[campos[i]] =
-      partes.length > 1 ? partes.slice(1).join(":").trim() : "";
+    datos[campos[i]] = partes.length > 1 ? partes.slice(1).join(":").trim() : "";
   }
 
   return datos;

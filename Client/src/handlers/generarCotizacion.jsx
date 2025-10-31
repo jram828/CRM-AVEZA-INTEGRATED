@@ -17,7 +17,9 @@ export const generarCotizacion = (
   totalBienes_letras,       
   honorarios_letras,
   valorRadicar_letras,
-  honorariosLiquidacion_letras
+  honorariosLiquidacion_letras,
+  saldoHonorarios,
+  saldoHonorariosUnificado
 ) => {
   console.log("Datos cotizacion:", {
     caso,
@@ -29,7 +31,8 @@ export const generarCotizacion = (
     cliente,
     honorarios,
     resultadosCotizacion,
-
+    saldoHonorarios,
+    saldoHonorariosUnificado
   });
   const docs = document.getElementById("doc");
 
@@ -103,9 +106,9 @@ export const generarCotizacion = (
       bienes: newBienes,
       deudas: newDeudas,
       honorarios: formatNumero(honorarios.valorHonorarios),
-      saldoHonorarios: formatNumero(honorarios.saldoHonorarios),
+      saldoHonorarios: formatNumero(saldoHonorarios),
       honorariosUnificado: formatNumero(honorarios.valorHonorariosUnificado),
-      saldoHonorariosUnificado: formatNumero(honorarios.saldoHonorariosUnificado),
+      saldoHonorariosUnificado: formatNumero(saldoHonorariosUnificado),
       valorRadicar: formatNumero(honorarios.valorRadicar),
       numeroCuotasUnificado: honorarios.cuotasHonorariosUnificado,
       inicial: formatNumero(honorarios.inicial),

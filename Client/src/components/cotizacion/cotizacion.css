@@ -97,7 +97,7 @@
 }
 
 .titulocotizacion {
-  width: 180px;
+  width: 250px;
   font-size: medium;
   font-weight: bold;
   margin: 5px;
@@ -109,7 +109,7 @@
 }
 
 .titulomodal {
-  width: 200px;
+  width: 260px;
   font-size: medium;
   font-weight: bold;
   margin: 5px;
@@ -240,7 +240,7 @@
 }
 .resumenresultados {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
 }
 .acreedorSelect {
@@ -319,7 +319,7 @@
   border-radius: 8px;
   padding: 2rem;
   z-index: 1001;
-  min-width: 500px;
+  min-width: 900px;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
@@ -337,4 +337,51 @@
   font-size: 2rem;
   cursor: pointer;
   color: #333;
+}
+
+/* .planpagos-honorarios-ambos {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+} */
+
+/* Contenedor que agrupa ambas tablas: usar flex con gap */
+.planpagos-honorarios-ambos {
+  display: flex;
+  gap: 1rem; /* espacio horizontal entre tablas */
+  /*flex-wrap: wrap;  permite que bajen en pantallas pequeñas */
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  border: 1px solid black; /* Color del borde */
+  border-radius: 5px;
+}
+
+/* Cada bloque de tabla */
+.planpagos-honorarios {
+  /* ancho opcional: ajusta según diseño */
+  flex: 1 1 320px; /* crecer, encoger, ancho base */
+  min-width: 280px;
+  margin-bottom: 0.5rem;
+}
+
+/* Estilos de la tabla para que tenga padding y separación visual */
+.tabla-planpagos {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.tabla-planpagos th,
+.tabla-planpagos td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+/* Responsive: en pantallas pequeñas dejar columnas apiladas */
+@media (max-width: 520px) {
+  .planpagos-honorarios-ambos {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }

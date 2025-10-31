@@ -12,7 +12,12 @@ export const generarCotizacion = (
   propuestas,
   cliente,
   honorarios,
-  resultadosCotizacion
+  resultadosCotizacion,
+  totalDeudas_letras,
+  totalBienes_letras,       
+  honorarios_letras,
+  valorRadicar_letras,
+  honorariosLiquidacion_letras
 ) => {
   console.log("Datos cotizacion:", {
     caso,
@@ -24,6 +29,7 @@ export const generarCotizacion = (
     cliente,
     honorarios,
     resultadosCotizacion,
+
   });
   const docs = document.getElementById("doc");
 
@@ -97,12 +103,20 @@ export const generarCotizacion = (
       bienes: newBienes,
       deudas: newDeudas,
       honorarios: formatNumero(honorarios.valorHonorarios),
+      saldoHonorarios: formatNumero(honorarios.saldoHonorarios),
+      honorariosUnificado: formatNumero(honorarios.valorHonorariosUnificado),
+      saldoHonorariosUnificado: formatNumero(honorarios.saldoHonorariosUnificado),
+      valorRadicar: formatNumero(honorarios.valorRadicar),
+      numeroCuotasUnificado: honorarios.cuotasHonorariosUnificado,
       inicial: formatNumero(honorarios.inicial),
       numeroCuotas: honorarios.cuotasHonorarios,
       totalDeudas: formatNumero(resultadosCotizacion.totalDeudas),
+      totalDeudas_letras: totalDeudas_letras,
       totalBienes: formatNumero(resultadosCotizacion.totalBienes),
+      totalBienes_letras: totalBienes_letras,
       gastosMensuales: formatNumero(gasto.gastosmensuales),
       honorariosLiquidacion: formatNumero(honorarios.honorariosLiquidacion),
+      honorariosLiquidacion_letras: honorariosLiquidacion_letras,
       propuestas: newPropuestas,
       registro:
         resultadosCotizacion.sujetoRegistro === "si"

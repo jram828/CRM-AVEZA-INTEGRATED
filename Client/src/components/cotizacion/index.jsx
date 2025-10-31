@@ -16,6 +16,7 @@ import {
 import { formatNumero } from "../../utils/formatNumero.js";
 import { Link } from "react-router-dom";
 import { generarPlanPagosHonorarios } from "../../utils/planPagosHonorarios.js";
+import { numeroALetras } from "../convertiraletras/index.jsx";
 
 const Cotizacion = () => {
   const prospecto = useSelector((state) => state.prospecto);
@@ -100,7 +101,9 @@ console.log("Lista acreedores:", listaacreedores);
 
   const initResultadosCotizacion = {
     totalDeudas: "",
+    totalDeudas_letras: "",
     totalBienes: "",
+    totalBienes_letras: "",
     totalVotoClase: "",
     totalDerechoVoto: "",
     "Primera Clase": {
@@ -154,6 +157,8 @@ console.log("Lista acreedores:", listaacreedores);
     valorHonorarios: "",
     valorRadicar: "",
     honorariosLiquidacion: "",
+    cuotasHonorariosUnificado: "",
+    valorHonorariosUnificado: "",
   };
   // }
   const initPropuesta = {
@@ -490,6 +495,14 @@ console.log("Lista acreedores:", listaacreedores);
     addGasto(gasto);
   };
 
+    const totalDeudas_letras = numeroALetras(Number(resultadosCotizacion.totalDeudas));
+    const totalBienes_letras = numeroALetras(Number(resultadosCotizacion.totalBienes));
+    const honorarios_letras = numeroALetras(Number(honorarios.valorHonorarios));
+    const valorRadicar_letras = numeroALetras(Number(honorarios.valorRadicar));
+    const honorariosLiquidacion_letras = numeroALetras(
+      Number(honorarios.honorariosLiquidacion)
+    );
+    // co
   const handlerGenerarCotizacion = () => {
     console.log("Propuestas handler:", propuestas);
     // Limpiar posiciones vacías en el array deudas antes de generar la cotización
@@ -519,7 +532,12 @@ console.log("Lista acreedores:", listaacreedores);
       propuestas,
       prospecto,
       honorarios,
-      resultadosCotizacion
+      resultadosCotizacion,
+      totalDeudas_letras,
+      totalBienes_letras,
+      honorarios_letras,
+      valorRadicar_letras,
+      honorariosLiquidacion_letras
     );
 
     // dispatch(modificarCasoCotizacion(datoscotizacion));
@@ -532,6 +550,7 @@ console.log("Lista acreedores:", listaacreedores);
         honorarios: honorarios,
         cedulaProspecto: prospecto.cedulaProspecto,
         totalDeudas: resultadosCotizacion.totalDeudas,
+        totalBienes: resultadosCotizacion.totalBienes,
       })
     );
     // console.log("Datos cotizacion:", datoscotizacion);
@@ -849,6 +868,35 @@ const { name, value } = event.target;
                     />
                   </div>
                 </div>
+                <div className="infodeudascotizacion">
+                  <div className="infodetailingresos">
+                    <h6 className="titulomodal">Valor unificado</h6>
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="valorHonorariosUnificado"
+                      id="valorHonorariosUnificado"
+                      onChange={(event) => handleHonorarioChange(event)}
+                      value={honorarios.valorHonorariosUnificado}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+                <div className="infodeudascotizacion">
+                  <div className="infodetailingresos">
+                    <h6 className="titulomodal">Numero de cuotas - Unificado:</h6>
+                    <input
+                      type="number"
+                      className="cajacotizacion"
+                      name="cuotasHonorariosUnificado"
+                      id="cuotasHonorariosUnificado"
+                      onChange={(event) => handleHonorarioChange(event)}
+                      value={honorarios.cuotasHonorariosUnificado}
+                      onKeyDown={(event) => handleKeyPress(event)}
+                    />
+                  </div>
+                </div>
+                
                 {/* Tabla de plan de pagos de honorarios */}
                 {planpagos && planpagos.length > 0 && (
                   <div className="planpagos-honorarios">

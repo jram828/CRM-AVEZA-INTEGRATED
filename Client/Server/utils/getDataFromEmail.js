@@ -44,7 +44,7 @@ export const buscarCorreos = async () => {
     console.log(`🟢 Se encontraron ${messages.length} correos filtrados.`);
 
     for (const message of messages) {
-      // console.log("🧩 Estructura completa del mensaje:", JSON.stringify(message, null, 2));
+      console.log("🧩 Estructura completa del mensaje:", JSON.stringify(message, null, 2));
 
       const obtenerContenidoPlano = (parts) => {
         for (const part of parts) {
@@ -107,6 +107,15 @@ export const buscarCorreos = async () => {
   }
 };
 
+const normalizarTexto = (texto) => {
+  try {
+    const buffer = Buffer.from(texto, "binary");
+    return iconv.decode(buffer, "utf-8");
+  } catch {
+    return texto;
+  }
+};
+
 const extraerDatos = (texto) => {
   const lineas = texto
     .split("\n")
@@ -114,11 +123,11 @@ const extraerDatos = (texto) => {
     .filter((l) => l.length > 0);
 
   const datos = {
-    nombres: lineas[0] || "",
-    apellidos: lineas[1] || "",
-    celular: lineas[2] || "",
-    nombre_ciudad: lineas[3] || "",
-    email: lineas[4] || "",
+    nombres: normalizarTexto(lineas[0] || ""),
+    apellidos: normalizarTexto(lineas[1] || ""),
+    celular: normalizarTexto(lineas[2] || ""),
+    nombre_ciudad: normalizarTexto(lineas[3] || ""),
+    email: normalizarTexto(lineas[4] || ""),
     impuestoLaboral: "",
     vehiculoCooperativas: "",
     hipotecario: "",
@@ -149,7 +158,8 @@ const extraerDatos = (texto) => {
 
   for (let i = 0; i < campos.length && idx < lineas.length; i++, idx++) {
     const partes = lineas[idx].split(":");
-    datos[campos[i]] = partes.length > 1 ? partes.slice(1).join(":").trim() : "";
+    const valor = partes.length > 1 ? partes.slice(1).join(":").trim() : "";
+    datos[campos[i]] = normalizarTexto(valor);
   }
 
   return datos;

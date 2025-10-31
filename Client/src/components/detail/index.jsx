@@ -53,6 +53,8 @@ const Detail = () => {
     idProspecto: "",
     cedula_anterior: "",
     ciudad_anterior: "",
+    nombres_anterior: "",
+    apellidos_anterior: "",
     cedula: "",
     cedulanew: "",
     impuestoLaboral: "",
@@ -69,7 +71,9 @@ const Detail = () => {
     tarjetaProf: "",
     email: "",
     nombres: "",
+    nombresnew: "",
     apellidos: "",
+    apellidosnew: "",
     celular: "",
     direccion: "",
     ciudad: "",
@@ -127,8 +131,10 @@ const Detail = () => {
         departamento:
           datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento || "",
         nombres: datos.nombres,
+        nombres_anterior: datos.nombres,
         tarjetaProf: "",
         apellidos: datos.apellidos,
+        apellidos_anterior: datos.apellidos,
         direccion: datos.direccion,
         comentarios: datos.comentarios,
         cedulanew: datos.cedulaProspecto,
@@ -208,8 +214,8 @@ const Detail = () => {
   const submitHandlerRegistro = (e) => {
     e.preventDefault();
     registroCliente(userDataDetail);
-    dispatch(copyDeudas({ cedulaProspecto: userDataDetail.cedulanew}));
-    dispatch(copyHonorarios({ cedulaProspecto: userDataDetail.cedulanew}));
+    dispatch(copyDeudas({ cedulaProspecto: userDataDetail.cedulanew }));
+    dispatch(copyHonorarios({ cedulaProspecto: userDataDetail.cedulanew }));
     navigate("/clientes");
   };
   // console.log("Nuevos Datos cliente:", userDataDetail);
@@ -342,6 +348,32 @@ const Detail = () => {
         {/* <img className="photo" src={character.image} alt={character.name} /> */}
         <div className="info">
           <div className="personal">
+            <div className="infodetail">
+              <label htmlFor="nombres" className="labeldetail">
+                Nombres:
+              </label>
+              <input
+                type="text"
+                className="cajadetail"
+                name="nombres"
+                id="nombres"
+                value={userDataDetail.nombres}
+                onChange={handleUpdateDetail}
+              />
+            </div>
+            <div className="infodetail">
+              <label htmlFor="apellidos" className="labeldetail">
+                Apellidos:
+              </label>
+              <input
+                type="text"
+                className="cajadetail"
+                name="apellidos"
+                id="apellidos"
+                value={userDataDetail.apellidos}
+                onChange={handleUpdateDetail}
+              />
+            </div>
             <div className="infodetail">
               <label htmlFor="cedula" className="labeldetail">
                 Numero de cédula:

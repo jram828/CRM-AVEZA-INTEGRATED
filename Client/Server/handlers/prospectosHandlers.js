@@ -140,6 +140,8 @@ const postActualizaProspectos = async (req, res) => {
     ciudad_anterior,
     comentarios,
     cedula_anterior,
+    nombres_anterior,
+    apellidos_anterior,
   } = req.body;
 
   const cedula = cedulanew;
@@ -157,7 +159,9 @@ const postActualizaProspectos = async (req, res) => {
       ciudad,
       ciudad_anterior,
       comentarios,
-      cedula_anterior
+      cedula_anterior,
+      nombres_anterior,
+      apellidos_anterior
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el Prospecto");

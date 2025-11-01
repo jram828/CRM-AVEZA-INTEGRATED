@@ -45,6 +45,35 @@
   padding-left: 40px;
 }
 
+.formFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logoContainer {
+  width: 100%;
+  text-align: center;
+}
+
+.logoLogin {
+  height: 90px;
+  width: 90%;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
 /* Responsive styles */
 @media screen and (max-width: 768px) {
   .containerLogin-photo {

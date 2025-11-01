@@ -477,49 +477,7 @@ const Cotizacion = () => {
   const [planpagos, setPlanPagos] = useState([]);
   const [planpagosUnificado, setPlanPagosUnificado] = useState([]);
 
-  // const handleHonorarioChange = (e) => {
-  //   const updatedHonorarios = {
-  //     ...honorarios,
-  //     [e.target.name]: e.target.value,
-  //   };
-  //   setHonorarios(updatedHonorarios);
-  //   setEditingField(e.target.name);
-  //   if (
-  //     updatedHonorarios.valorHonorarios !== "" &&
-  //     updatedHonorarios.cuotasHonorarios !== "" &&
-  //     updatedHonorarios.inicial !== ""
-  //   ) {
-  //     const nuevoPlan = generarPlanPagosHonorarios(
-  //       updatedHonorarios.valorHonorarios,
-  //       updatedHonorarios.cuotasHonorarios,
-  //       updatedHonorarios.inicial,
-  //       honorarios.cuota6,
-  //       honorarios.cuota12
-  //     );
-  //     setPlanPagos(nuevoPlan);
-  //   } else {
-  //     setPlanPagos([]);
-  //   }
-
-  //   if (
-  //     updatedHonorarios.valorHonorariosUnificado !== "" &&
-  //     updatedHonorarios.cuotasHonorariosUnificado !== "" &&
-  //     updatedHonorarios.inicial !== ""
-  //   ) {
-  //     const nuevoPlanUnificado = generarPlanPagosHonorarios(
-  //       updatedHonorarios.valorHonorariosUnificado,
-  //       updatedHonorarios.cuotasHonorariosUnificado,
-  //       updatedHonorarios.inicial,
-  //       honorarios.cuota6,
-  //       honorarios.cuota12
-  //     );
-  //     setPlanPagosUnificado(nuevoPlanUnificado);
-  //   } else {
-  //     setPlanPagosUnificado([]);
-  //   }
-  //   // console.log("Plan de pagos en honorarios:", planpagos);
-  // };
-
+  
   const handleHonorarioChange = (e) => {
     const target = e?.target || {};
     const name = target.name;
@@ -764,10 +722,10 @@ const Cotizacion = () => {
       // console.log("Tasa:", tasa);
       // console.log("Cuotas:", cuotas);
       updatedData[tipo].valorCuota =
-        cuotas > 0
+        cuotas > 0 && tasa>0
           ? Math.round(totalPorTipo * (tasa / 100)) /
             (1 - Math.pow(1 + tasa / 100, -cuotas))
-          : "";
+          : cuotas > 0 && tasa===0?(totalPorTipo / cuotas):0;
     }
     // Calcular la suma de cuotas y valorCuota
     let totalCuotas = 0;

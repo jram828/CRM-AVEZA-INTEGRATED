@@ -262,18 +262,13 @@ function DetailCasos() {
             >
               Generar documentos
             </MuiButton>
-            <MuiButton variant="contained" onClick={handleUpdateCaso}>
+            <MuiButton variant="outlined" onClick={handleUpdateCaso}>
               Actualizar
             </MuiButton>
-            <MuiButton variant="outlined" color="error" onClick={handleDelete}>
+            <MuiButton variant="outlined" onClick={handleDelete}>
               Eliminar
             </MuiButton>
-            <MuiButton
-              component={Link}
-              to="/casos"
-              variant="outlined"
-              size="small"
-            >
+            <MuiButton component={Link} to="/casos" variant="outlined">
               Volver
             </MuiButton>
           </Box>
@@ -282,378 +277,393 @@ function DetailCasos() {
         <Divider sx={{ mb: 2 }} />
 
         <Grid container spacing={2} className="infotodos">
-          <Grid item xs={12} md={6} className="infocaso">
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Consecutivo de caso"
-                name="idCaso"
-                id="idCaso"
-                value={casoDetail.idCaso}
-                onChange={handleUpdateDetailCaso}
-                disabled
-                size="small"
-              />
-            </Box>
-
-            {tipoDescripcion !== "Insolvencia" && (
+          <Grid item xs={12} md={6} className="infocaso2">
+            <Grid item xs={12} md={6} className="infocaso">
               <Box mb={1}>
                 <TextField
                   fullWidth
-                  label="N° Radicado Juzgado"
-                  name="radicado"
-                  id="radicado"
-                  value={casoDetail.radicado}
+                  label="Consecutivo de caso"
+                  name="idCaso"
+                  id="idCaso"
+                  value={casoDetail.idCaso}
                   onChange={handleUpdateDetailCaso}
+                  disabled
                   size="small"
                 />
               </Box>
-            )}
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Tipo de caso"
-                name="tipoDeCasoFlat"
-                id="tipoDeCasoFlat"
-                value={tipoDescripcion}
-                onChange={handleUpdateDetailCaso}
-                size="small"
-              />
-            </Box>
+              {tipoDescripcion !== "Insolvencia" && (
+                <Box mb={1}>
+                  <TextField
+                    fullWidth
+                    label="N° Radicado Juzgado"
+                    name="radicado"
+                    id="radicado"
+                    value={casoDetail.radicado}
+                    onChange={handleUpdateDetailCaso}
+                    size="small"
+                  />
+                </Box>
+              )}
 
-            {tipoDescripcion === "Insolvencia" && (
-              <Box className="botonescotizacion" display="flex" gap={1} mb={1}>
-                <MuiButton variant="outlined" onClick={handlerSolicitud}>
-                  Solicitud
-                </MuiButton>
-                <MuiButton variant="outlined" onClick={handlerCotizacion}>
-                  Cotización
-                </MuiButton>
-              </Box>
-            )}
-
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Etapa"
-                name="etapa"
-                id="etapa"
-                value={casoDetail.etapa}
-                onChange={handleUpdateDetailCaso}
-                size="small"
-              />
-            </Box>
-
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Fecha"
-                name="fecha"
-                id="fecha"
-                value={formatDate(casoDetail.fecha)}
-                onChange={handleUpdateDetailCaso}
-                size="small"
-              />
-            </Box>
-
-            <Box mb={1}>
-              {casoDetail.fechaFin ? (
+              <Box mb={1}>
                 <TextField
                   fullWidth
-                  label="Fecha de finalización"
-                  name="fechaFin"
-                  id="fechaFin"
-                  value={formatDate(casoDetail.fechaFin)}
+                  label="Tipo de caso"
+                  name="tipoDeCasoFlat"
+                  id="tipoDeCasoFlat"
+                  value={tipoDescripcion}
                   onChange={handleUpdateDetailCaso}
                   size="small"
                 />
-              ) : (
-                <Box display="flex" alignItems="center">
-                  <Typography variant="body2" sx={{ mr: 1 }}>
-                    Fecha de finalización:
-                  </Typography>
-                  <MuiButton variant="outlined" onClick={handleFinalizar}>
-                    Finalizar
+              </Box>
+
+              {tipoDescripcion === "Insolvencia" && (
+                <Box
+                  className="botonescotizacion"
+                  display="flex"
+                  gap={1}
+                  mb={1}
+                >
+                  <MuiButton variant="outlined" onClick={handlerSolicitud}>
+                    Solicitud
+                  </MuiButton>
+                  <MuiButton variant="outlined" onClick={handlerCotizacion}>
+                    Cotización
                   </MuiButton>
                 </Box>
               )}
-            </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Valor total deudas"
-                name="valor_pretensiones"
-                id="valor_pretensiones"
-                value={casoDetail.valor_pretensiones || ""}
-                onChange={handleUpdateDetailCaso}
-                onKeyDown={handleKeyPress}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Etapa"
+                  name="etapa"
+                  id="etapa"
+                  value={casoDetail.etapa}
+                  onChange={handleUpdateDetailCaso}
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Valor honorarios"
-                name="honorarios"
-                id="honorarios"
-                type="number"
-                value={casoDetail.honorarios || ""}
-                onChange={handleUpdateDetailCaso}
-                onKeyDown={handleKeyPress}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Fecha"
+                  name="fecha"
+                  id="fecha"
+                  value={formatDate(casoDetail.fecha)}
+                  onChange={handleUpdateDetailCaso}
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Número de cuotas"
-                name="cuotas"
-                id="cuotas"
-                value={casoDetail.cuotas || ""}
-                onChange={handleUpdateDetailCaso}
-                onKeyDown={handleKeyPress}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                {casoDetail.fechaFin ? (
+                  <TextField
+                    fullWidth
+                    label="Fecha de finalización"
+                    name="fechaFin"
+                    id="fechaFin"
+                    value={formatDate(casoDetail.fechaFin)}
+                    onChange={handleUpdateDetailCaso}
+                    size="small"
+                  />
+                ) : (
+                  <Box display="flex" alignItems="center">
+                    <Typography variant="body2" sx={{ mr: 1 }}>
+                      Fecha de finalización:
+                    </Typography>
+                    <MuiButton variant="outlined" onClick={handleFinalizar}>
+                      Finalizar
+                    </MuiButton>
+                  </Box>
+                )}
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Cuota inicial"
-                name="porcentajeInicial"
-                id="porcentajeInicial"
-                value={casoDetail.porcentajeInicial || ""}
-                onChange={handleUpdateDetailCaso}
-                onKeyDown={handleKeyPress}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Aceptación de cotización"
+                  name="aceptacion_cotizacion"
+                  id="aceptacion_cotizacion"
+                  value={casoDetail.aceptacion_cotizacion}
+                  onChange={handleUpdateDetailCaso}
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Valor para radicar"
-                name="valorRadicar"
-                id="valorRadicar"
-                value={casoDetail.valorRadicar || ""}
-                onChange={handleUpdateDetailCaso}
-                onKeyDown={handleKeyPress}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Tiene contrato?"
+                  name="tiene_contrato"
+                  id="tiene_contrato"
+                  value={casoDetail.tiene_contrato}
+                  onChange={handleUpdateDetailCaso}
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Mensualidad liquidación"
-                name="honorariosLiquidacion"
-                id="honorariosLiquidacion"
-                value={casoDetail.honorariosLiquidacion || ""}
-                onChange={handleUpdateDetailCaso}
-                onKeyDown={handleKeyPress}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Descripcion"
+                  name="descripcion"
+                  id="descripcion"
+                  value={casoDetail.descripcion}
+                  onChange={handleUpdateDetailCaso}
+                  multiline
+                  rows={3}
+                  size="small"
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6} className="infocaso">
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Valor total deudas"
+                  name="valor_pretensiones"
+                  id="valor_pretensiones"
+                  value={casoDetail.valor_pretensiones || ""}
+                  onChange={handleUpdateDetailCaso}
+                  onKeyDown={handleKeyPress}
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Aceptación de cotización"
-                name="aceptacion_cotizacion"
-                id="aceptacion_cotizacion"
-                value={casoDetail.aceptacion_cotizacion}
-                onChange={handleUpdateDetailCaso}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Valor honorarios"
+                  name="honorarios"
+                  id="honorarios"
+                  type="number"
+                  value={casoDetail.honorarios || ""}
+                  onChange={handleUpdateDetailCaso}
+                  onKeyDown={handleKeyPress}
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Tiene contrato?"
-                name="tiene_contrato"
-                id="tiene_contrato"
-                value={casoDetail.tiene_contrato}
-                onChange={handleUpdateDetailCaso}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Número de cuotas"
+                  name="cuotas"
+                  id="cuotas"
+                  value={casoDetail.cuotas || ""}
+                  onChange={handleUpdateDetailCaso}
+                  onKeyDown={handleKeyPress}
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Descripcion"
-                name="descripcion"
-                id="descripcion"
-                value={casoDetail.descripcion}
-                onChange={handleUpdateDetailCaso}
-                multiline
-                rows={3}
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Cuota inicial"
+                  name="porcentajeInicial"
+                  id="porcentajeInicial"
+                  value={casoDetail.porcentajeInicial || ""}
+                  onChange={handleUpdateDetailCaso}
+                  onKeyDown={handleKeyPress}
+                  size="small"
+                />
+              </Box>
+
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Valor para radicar"
+                  name="valorRadicar"
+                  id="valorRadicar"
+                  value={casoDetail.valorRadicar || ""}
+                  onChange={handleUpdateDetailCaso}
+                  onKeyDown={handleKeyPress}
+                  size="small"
+                />
+              </Box>
+
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Mensualidad liquidación"
+                  name="honorariosLiquidacion"
+                  id="honorariosLiquidacion"
+                  value={casoDetail.honorariosLiquidacion || ""}
+                  onChange={handleUpdateDetailCaso}
+                  onKeyDown={handleKeyPress}
+                  size="small"
+                />
+              </Box>
+            </Grid>
           </Grid>
+          <Grid item xs={12} md={6} className="infocaso2">
+            <Grid item xs={12} md={6} className="infocliente">
+              <Box className="encabezadoAbogado" mb={1}>
+                <Typography variant="subtitle1" className="titulo">
+                  Cliente
+                </Typography>
+              </Box>
 
-          <Grid item xs={12} md={6} className="infocliente">
-            <Box className="encabezadoAbogado" mb={1}>
-              <Typography variant="subtitle1" className="titulo">
-                Cliente
-              </Typography>
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Número de cédula"
+                  name="ClienteCedulaCliente"
+                  id="ClienteCedulaCliente"
+                  value={casoDetail.ClienteCedulaCliente}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Número de cédula"
-                name="ClienteCedulaCliente"
-                id="ClienteCedulaCliente"
-                value={casoDetail.ClienteCedulaCliente}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Nombre (s)"
+                  name="nombresCliente"
+                  id="nombresCliente"
+                  value={Cliente.nombres || ""}
+                  disabled
+                  size="small"
+                  InputProps={{
+                    sx: {
+                      color: "text.primary", // fuerza el color del texto
+                    },
+                  }}
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Nombre (s)"
-                name="nombresCliente"
-                id="nombresCliente"
-                value={Cliente.nombres || ""}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Apellido (s)"
+                  name="apellidosCliente"
+                  id="apellidosCliente"
+                  value={Cliente.apellidos || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Apellido (s)"
-                name="apellidosCliente"
-                id="apellidosCliente"
-                value={Cliente.apellidos || ""}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Número de celular"
+                  name="celularCliente"
+                  id="celularCliente"
+                  value={Cliente.celular || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Número de celular"
-                name="celularCliente"
-                id="celularCliente"
-                value={Cliente.celular || ""}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Correo electrónico"
+                  name="emailCliente"
+                  id="emailCliente"
+                  value={Cliente.email || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Correo electrónico"
-                name="emailCliente"
-                id="emailCliente"
-                value={Cliente.email || ""}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={2}>
+                <TextField
+                  fullWidth
+                  label="Dirección"
+                  name="direccionCliente"
+                  id="direccionCliente"
+                  value={Cliente.direccion || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6} className="infocliente">
+              <Box className="encabezadoAbogado" mb={1}>
+                <Typography variant="subtitle1" className="titulo">
+                  Abogado
+                </Typography>
+              </Box>
 
-            <Box mb={2}>
-              <TextField
-                fullWidth
-                label="Dirección"
-                name="direccionCliente"
-                id="direccionCliente"
-                value={Cliente.direccion || ""}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Número de cédula"
+                  name="AbogadoCedulaAbogado"
+                  id="AbogadoCedulaAbogado"
+                  value={casoDetail.AbogadoCedulaAbogado}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box className="encabezadoAbogado" mb={1}>
-              <Typography variant="subtitle1" className="titulo">
-                Abogado
-              </Typography>
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Nombre (s)"
+                  name="nombresAbogado"
+                  id="nombresAbogado"
+                  value={Abogado.nombres || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Número de cédula"
-                name="AbogadoCedulaAbogado"
-                id="AbogadoCedulaAbogado"
-                value={casoDetail.AbogadoCedulaAbogado}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Apellido (s)"
+                  name="apellidosAbogado"
+                  id="apellidosAbogado"
+                  value={Abogado.apellidos || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Nombre (s)"
-                name="nombresAbogado"
-                id="nombresAbogado"
-                value={Abogado.nombres || ""}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Número de celular"
+                  name="celularAbogado"
+                  id="celularAbogado"
+                  value={Abogado.celular || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Apellido (s)"
-                name="apellidosAbogado"
-                id="apellidosAbogado"
-                value={Abogado.apellidos || ""}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Correo electrónico"
+                  name="emailAbogado"
+                  id="emailAbogado"
+                  value={Abogado.email || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
 
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Número de celular"
-                name="celularAbogado"
-                id="celularAbogado"
-                value={Abogado.celular || ""}
-                disabled
-                size="small"
-              />
-            </Box>
-
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Correo electrónico"
-                name="emailAbogado"
-                id="emailAbogado"
-                value={Abogado.email || ""}
-                disabled
-                size="small"
-              />
-            </Box>
-
-            <Box mb={1}>
-              <TextField
-                fullWidth
-                label="Dirección"
-                name="direccionAbogado"
-                id="direccionAbogado"
-                value={Abogado.direccion || ""}
-                disabled
-                size="small"
-              />
-            </Box>
+              <Box mb={1}>
+                <TextField
+                  fullWidth
+                  label="Dirección"
+                  name="direccionAbogado"
+                  id="direccionAbogado"
+                  value={Abogado.direccion || ""}
+                  disabled
+                  size="small"
+                />
+              </Box>
+            </Grid>
           </Grid>
         </Grid>
       </Paper>

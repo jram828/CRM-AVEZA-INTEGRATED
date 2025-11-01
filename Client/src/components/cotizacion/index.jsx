@@ -17,6 +17,30 @@ import { formatNumero } from "../../utils/formatNumero.js";
 import { Link } from "react-router-dom";
 import { generarPlanPagosHonorarios } from "../../utils/planPagosHonorarios.js";
 import { numeroALetras } from "../convertiraletras/index.jsx";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  Box,
+  Grid,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Button as MUIButton,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+  Autocomplete,
+} from "@mui/material";
 
 const Cotizacion = () => {
   const prospecto = useSelector((state) => state.prospecto);
@@ -55,7 +79,13 @@ const Cotizacion = () => {
 
   const dispatch = useDispatch();
 
-  let deudasObj;
+  let deudasObj = {
+    tipoDeuda: "",
+    acreedor: "",
+    capital: "",
+    derechoVoto: 0,
+    votoClase: 0,
+  };
 
   useEffect(() => {
     dispatch(buscarAcreedores());
@@ -391,8 +421,8 @@ const Cotizacion = () => {
         tipoDeuda: "",
         acreedor: "",
         capital: "",
-        derechoVoto: "",
-        votoClase: "",
+        derechoVoto: 0,
+        votoClase: 0,
       },
     ]);
     setAcreedorFilt(initAcreedorFilt);
@@ -693,7 +723,7 @@ const Cotizacion = () => {
       totalPagado +=
         parseInt(data.cuotas, 10) * parseFloat(data.valorCuota) || 0;
 
-        console.log("total pagado interim:", totalPagado);
+      console.log("total pagado interim:", totalPagado);
     });
 
     updatedData.sumaCuotas = totalCuotas;
@@ -702,53 +732,6 @@ const Cotizacion = () => {
     // console.log("Suma de cuotas:", totalCuotas);
     setResultadosCotizacion(updatedData);
   };
-  // const handleCuotasChange = (tipo, field, value) => {
-  //   const updatedData = { ...resultadosCotizacion };
-  //   updatedData[tipo][field] = value;
-
-  //   // Calcular el valor de la cuota
-  //   if (field === "tasa" || field === "cuotas") {
-  //     const tasa = parseFloat(updatedData[tipo].tasa) || 0;
-  //     const cuotas = parseInt(updatedData[tipo].cuotas, 10) || 0;
-  //     const totalPorTipo = resultadosCotizacion.totalesPorTipo[tipo];
-
-  //     updatedData[tipo].valorCuota =
-  //       cuotas > 0
-  //         ? Math.round(totalPorTipo * (tasa / 100)) /
-  //           (1 - Math.pow(1 + tasa / 100, -cuotas))
-  //         : "";
-  //   }
-
-  //   // Calcular totales
-  //   let totalCuotas = 0;
-  //   let totalValorCuota = 0;
-  //   let totalPagado = 0;
-
-  //   Object.keys(updatedData).forEach((key) => {
-  //     const data = updatedData[key];
-  //     const cuotas = parseInt(data.cuotas, 10) || 0;
-
-  //     // Limpieza robusta del valorCuota
-  //     let valorCuota = data.valorCuota;
-
-  //     if (typeof valorCuota === "string") {
-  //       // Eliminar puntos como separadores de miles y convertir coma decimal a punto
-  //       valorCuota = valorCuota.replace(/\./g, "").replace(",", ".");
-  //     }
-
-  //     valorCuota = parseFloat(valorCuota) || 0;
-
-  //     totalCuotas += cuotas;
-  //     totalValorCuota += valorCuota;
-  //     totalPagado += cuotas * valorCuota;
-  //   });
-
-  //   updatedData.sumaCuotas = totalCuotas;
-  //   updatedData.sumaValorCuota = totalValorCuota;
-  //   updatedData.totalPagado = totalPagado;
-
-  //   setResultadosCotizacion(updatedData);
-  // };
 
   // Modal open/close handlers
   const openBienesModal = () => setShowBienesModal(true);
@@ -760,731 +743,328 @@ const Cotizacion = () => {
 
   const openIngresosModal = () => setShowIngresosModal(true);
   const closeIngresosModal = () => setShowIngresosModal(false);
+  // Material UI container UI + dialogs (replace $PLACEHOLDER$ with this block)
 
+  /*
+    NOTE: this block returns a full Material-UI based layout early,
+    keeping all existing handlers and state intact. The original return
+    below the placeholder becomes unreachable (intentionally) so the
+    new MUI UI replaces the old markup while preserving behaviour.
+  */
   return (
-    <div className="contenedorcotizacion">
-      <div className="encabezado">
-        <span className="titulo">Datos para la Cotización</span>
-      </div>
-      <br />
-      <div className="menu-cotizacion">
-        <Button as="label" htmlFor="doc" className="botonesiniciosesion">
-          Seleccionar archivo
-          <input type="file" id="doc" style={{ display: "none" }} />
-        </Button>
-        <Button
-          className="botonesiniciosesion"
-          onClick={handlerGenerarCotizacion}
-          type="button"
-        >
-          Generar cotización
-        </Button>
-
-        <Link to="/detail">
-          <Button>Volver</Button>
-        </Link>
-      </div>
-      {/* Bienes Modal */}
-      {showBienesModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <span className="titulocotizacion">Bienes</span>
-              <button className="close-modal" onClick={closeBienesModal}>
-                &times;
-              </button>
-            </div>
-            <div className="formbienes">
-              <div className="infoseccioncotizacion">
-                <div className="encabezadoingresos">
-                  <h6 className="titulocotizacion">Tipo de bien</h6>
-                  <h6 className="titulocotizacion">Valor comercial</h6>
-                </div>
-                {bienes.map((bien, index) => (
-                  <div className="infodeudascotizacion" key={`bienes-${index}`}>
-                    <input
-                      type="text"
-                      className="cajacotizacion"
-                      name="tipoBien"
-                      id="tipoBien"
-                      value={bien.tipoBien}
-                      onChange={(event) => handleBienChange(index, event)}
-                    />
-                    <input
-                      type="text"
-                      className="cajacotizacion"
-                      name="valor"
-                      id="valorBien"
-                      onChange={(event) => handleBienChange(index, event)}
-                      value={bien.valor}
-                      onKeyDown={(event) => handleKeyPress(event, index)}
-                    />
-                  </div>
-                ))}
-                <div className="encabezadopropuesta">
-                  <h6 className="titulocotizacion">TOTAL BIENES</h6>
-                  <h6 className="titulocotizacion">
-                    {formatNumero(resultadosCotizacion.totalBienes)}
-                  </h6>
-                </div>
-                <div className="encabezadopropuesta">
-                  <label>Sujeto a registro?</label>
-                  <div>
-                    <input
-                      type="radio"
-                      id="si"
-                      name="registro"
-                      value="si"
-                      checked={resultadosCotizacion.sujetoRegistro === "si"}
-                      onChange={(event) => handleSujetoChange(event)}
-                    />
-                    <label htmlFor="si">Sí</label>
-                  </div>
-                  <div>
-                    <input
-                      type="radio"
-                      id="no"
-                      name="registro"
-                      value="no"
-                      checked={resultadosCotizacion.sujetoRegistro === "no"}
-                      onChange={(event) => handleSujetoChange(event)}
-                    />
-                    <label htmlFor="no">No</label>
-                  </div>
-                </div>
-                <Button onClick={handleAddBien} type="button">
-                  Agregar bien
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div className="modal-backdrop" onClick={closeBienesModal}></div>
-        </div>
-      )}
-
-      {/* Honorarios Modal */}
-      {showHonorariosModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <span className="titulocotizacion">Honorarios</span>
-              <button className="close-modal" onClick={closeHonorariosModal}>
-                &times;
-              </button>
-            </div>
-
-            <div className="resumenresultados">
-              <div className="infoseccionmodal">
-                <div className="infodeudascotizacion">
-                  <div className="infodetailingresos">
-                    <h6 className="titulomodal">Valor</h6>
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="valorHonorarios"
-                      id="valorHonorarios"
-                      onChange={(event) => handleHonorarioChange(event)}
-                      value={honorarios.valorHonorarios}
-                      onKeyDown={(event) => handleKeyPress(event)}
-                    />
-                  </div>
-                </div>
-
-                <div className="infodeudascotizacion">
-                  <div className="infodetailingresos">
-                    <h6 className="titulomodal">Cuota inicial:</h6>
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="inicial"
-                      id="inicial"
-                      onChange={(event) => handleHonorarioChange(event)}
-                      value={honorarios.inicial}
-                      onKeyDown={(event) => handleKeyPress(event)}
-                    />
-                  </div>
-                </div>
-
-                <div className="infodeudascotizacion">
-                  <div className="infodetailingresos">
-                    <h6 className="titulomodal">Numero de cuotas:</h6>
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="cuotasHonorarios"
-                      id="cuotasHonorarios"
-                      onChange={(event) => handleHonorarioChange(event)}
-                      value={honorarios.cuotasHonorarios}
-                      onKeyDown={(event) => handleKeyPress(event)}
-                    />
-                  </div>
-                </div>
-                <div className="infodeudascotizacion">
-                  <div className="infodetailingresos">
-                    <h6 className="titulomodal">Valor para radicar:</h6>
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="valorRadicar"
-                      id="valorRadicar"
-                      onChange={(event) => handleHonorarioChange(event)}
-                      value={honorarios.valorRadicar}
-                      onKeyDown={(event) => handleKeyPress(event)}
-                    />
-                  </div>
-                </div>
-                <div className="infodeudascotizacion">
-                  <div className="infodetailingresos">
-                    <h6 className="titulomodal">Mensualidad liquidación:</h6>
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="honorariosLiquidacion"
-                      id="honorariosLiquidacion"
-                      onChange={(event) => handleHonorarioChange(event)}
-                      value={honorarios.honorariosLiquidacion}
-                      onKeyDown={(event) => handleKeyPress(event)}
-                    />
-                  </div>
-                </div>
-                <div className="infodeudascotizacion">
-                  <div className="infodetailingresos">
-                    <h6 className="titulomodal">Valor unificado</h6>
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="valorHonorariosUnificado"
-                      id="valorHonorariosUnificado"
-                      onChange={(event) => handleHonorarioChange(event)}
-                      value={honorarios.valorHonorariosUnificado}
-                      onKeyDown={(event) => handleKeyPress(event)}
-                    />
-                  </div>
-                </div>
-                <div className="infodeudascotizacion">
-                  <div className="infodetailingresos">
-                    <h6 className="titulomodal">
-                      Numero de cuotas - Unificado:
-                    </h6>
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="cuotasHonorariosUnificado"
-                      id="cuotasHonorariosUnificado"
-                      onChange={(event) => handleHonorarioChange(event)}
-                      value={honorarios.cuotasHonorariosUnificado}
-                      onKeyDown={(event) => handleKeyPress(event)}
-                    />
-                  </div>
-                </div>
-              </div>
-              <br />
-              {/* Tabla de plan de pagos de honorarios */}
-              <div className="planpagos-honorarios-ambos">
-                {planpagos && planpagos.length > 0 && (
-                  <div className="planpagos-honorarios">
-                    <h6 className="titulocotizacion">Plan de pagos</h6>
-                    <table className="tabla-planpagos">
-                      <thead>
-                        <tr>
-                          <th className="celda-planpagos">Periodo</th>
-                          <th className="celda-planpagos">Cuota fija</th>
-                          <th className="celda-planpagos">Saldo</th>
-                          <th className="celda-planpagos">Fecha de pago</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {planpagos.map((pago, idx) => (
-                          <tr key={idx}>
-                            <td className="celda-planpagos">
-                              {pago.numeroCuota}
-                            </td>
-                            <td className="celda-planpagos">
-                              {formatNumero(pago.cuotaMensual)}
-                            </td>
-                            <td className="celda-planpagos">
-                              {formatNumero(pago.saldo)}
-                            </td>
-                            <td className="celda-planpagos">
-                              {pago.fechapago}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-                {planpagosUnificado && planpagosUnificado.length > 0 && (
-                  <div className="planpagos-honorarios">
-                    <h6 className="titulocotizacion">
-                      Plan de pagos Unificado
-                    </h6>
-                    <table className="tabla-planpagos">
-                      <thead>
-                        <tr>
-                          <th className="celda-planpagos">Periodo</th>
-                          <th className="celda-planpagos">Cuota fija</th>
-                          <th className="celda-planpagos">Saldo</th>
-                          <th className="celda-planpagos">Fecha de pago</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {planpagosUnificado.map((pago, idx) => (
-                          <tr key={idx}>
-                            <td className="celda-planpagos">
-                              {pago.numeroCuota}
-                            </td>
-                            <td className="celda-planpagos">
-                              {formatNumero(pago.cuotaMensual)}
-                            </td>
-                            <td className="celda-planpagos">
-                              {formatNumero(pago.saldo)}
-                            </td>
-                            <td className="celda-planpagos">
-                              {pago.fechapago}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="modal-backdrop" onClick={closeHonorariosModal}></div>
-        </div>
-      )}
-
-      {showIngresosModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <span className="titulocotizacion">
+    <Box
+      className="contenedorcotizacion"
+      sx={{
+        p: { xs: 2, md: 4 },
+        bgcolor: "background.paper",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Grid container spacing={2} alignItems="center" justifyContent="center">
+        <Grid item xs={12}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            flexDirection="column"
+            gap="10px"
+          >
+            <Typography variant="h6">Datos para la Cotización</Typography>
+            <Box display="flex" flexWrap="wrap" gap="10px">
+              <MUIButton variant="outlined" onClick={openBienesModal}>
+                Bienes
+              </MUIButton>
+              <MUIButton variant="outlined" onClick={openHonorariosModal}>
+                Honorarios
+              </MUIButton>
+              <MUIButton variant="outlined" onClick={openIngresosModal}>
                 Ingresos / Gastos / Cuota
-              </span>
-              <button className="close-modal" onClick={closeIngresosModal}>
-                &times;
-              </button>
-            </div>
+              </MUIButton>
+              <label htmlFor="doc">
+                <MUIButton variant="outlined" component="span" sx={{ mr: 1 }}>
+                  Seleccionar archivo
+                </MUIButton>
+              </label>
+              <input id="doc" type="file" style={{ display: "none" }} />
+              <MUIButton
+                variant="contained"
+                color="primary"
+                onClick={handlerGenerarCotizacion}
+                sx={{ mr: 1 }}
+              >
+                Generar cotización
+              </MUIButton>
+              <Link to="/detail" style={{ textDecoration: "none" }}>
+                <MUIButton variant="outlined">Volver</MUIButton>
+              </Link>
+            </Box>
+          </Box>
+        </Grid>
 
-            <div className="resumen">
-              <div className="formgastos">
-                <div className="infoseccioncotizacion2">
-                  <div className="encabezadoingresos">
-                    <h6 className="titulocotizacion">Ingresos mensuales</h6>
-                  </div>
-                  <div className="infodeudascotizacion">
-                    <div className="infodetailingresos">
-                      <input
-                        type="number"
-                        className="cajacotizacion"
-                        name="Valor"
-                        id="valor"
-                        onChange={(event) => handleIngresoChange(event)}
-                        value={ingreso.Valor}
-                        onKeyDown={(event) => handleKeyPress(event)}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="infoseccioncotizacion2">
-                  <div className="encabezadogastos">
-                    <h6 className="titulocotizacion">Gastos mensuales</h6>
-                  </div>
+        <Grid item xs={12} md={8}>
+          <Paper variant="outlined" sx={{ p: 2, gap: "3px" }}>
+            <Typography variant="subtitle1" gutterBottom>
+              Propuesta de pago
+            </Typography>
 
-                  <div className="infodetailingresos">
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="gastosmensuales"
-                      id="gastosmensuales"
-                      onChange={(event) => handleGastoChange(event)}
-                      value={gasto.gastosmensuales}
-                    />
-                  </div>
-                </div>
-                <div className="infoseccioncotizacion2">
-                  <div className="encabezadogastos">
-                    <h6 className="titulocotizacion">Posible cuota mensual</h6>
-                  </div>
-
-                  <div className="infodetailingresos">
-                    <input
-                      type="number"
-                      className="cajacotizacion"
-                      name="mensual"
-                      id="mensual"
-                      onChange={(event) => handleCuotaChange(event)}
-                      value={posibleCuota.mensual}
-                      onKeyDown={(event) => handleKeyPress(event)}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="modal-backdrop" onClick={closeIngresosModal}></div>
-        </div>
-      )}
-
-      <form
-        // onSubmit={handlerGenerarCotizacion}
-        className="datoscotizacion"
-        id="contcotizacion"
-      >
-        <div className="infotodoscotizacion">
-          <div className="infocotizaciondatos">
-            <div className="formdeudascotizacion">
-              {/* Bienes section replaced by modal button */}
-              <div style={{ marginBottom: "1rem" }}>
-                <Button
-                  className="botonesiniciosesion"
-                  onClick={openBienesModal}
-                  type="button"
-                >
-                  Bienes
-                </Button>
-
-                <Button
-                  className="botonesiniciosesion"
-                  onClick={openHonorariosModal}
-                  type="button"
-                >
-                  Honorarios
-                </Button>
-
-                <Button
-                  className="botonesiniciosesion"
-                  onClick={openIngresosModal}
-                  type="button"
-                >
-                  Ingresos / Gastos / Cuota
-                </Button>
-              </div>
-            </div>
-
-            <div className="formingresos">
-              <div className="infoseccion">
-                <div className="encabezadodeudas">
-                  <h6 className="titulocotizacion">Propuesta de pago</h6>
-                </div>
-                <br />
-                <div className="encabezadopropuesta">
-                  <h6 className="titulocotizacion">
-                    Clasificación del crédito
-                  </h6>
-                  <h6 className="titulocotizacion">Subtotal clase</h6>
-                  <h6 className="titulocotizacion">Derecho de voto</h6>
-                  <h6 className="titulocotizacion">Tasa de interés</h6>
-                  <h6 className="titulocotizacion">Número de cuotas</h6>
-                  <h6 className="titulocotizacion">Valor de la cuota</h6>
-                </div>
-                {resultadosCotizacion.totalesPorTipo &&
-                  Object.entries(resultadosCotizacion.totalesPorTipo).map(
-                    (tipo, valor) => (
-                      <div className="infodeudascotizacion" key={tipo}>
-                        <h6 className="titulocotizacion">{tipo[0]}</h6>
-                        <input
-                          type="text"
-                          value={formatNumero(
-                            Number.parseFloat(
-                              resultadosCotizacion.totalesPorTipo[tipo[0]]
-                            )
-                          )}
-                          className="inputDerechoVoto"
-                          readOnly
-                        />
-                        <input
-                          type="text"
-                          value={
-                            resultadosCotizacion.derechoVotoPorTipo &&
-                            resultadosCotizacion.derechoVotoPorTipo[tipo[0]]
-                          }
-                          className="inputDerechoVoto"
-                          readOnly
-                        />
-                        <input
-                          type="number"
-                          placeholder="Tasa (%)"
-                          value={
-                            (resultadosCotizacion &&
-                              resultadosCotizacion[tipo[0]].tasa) ||
-                            ""
-                          }
-                          onChange={(e) =>
-                            handleCuotasChange(tipo[0], "tasa", e.target.value)
-                          }
-                          className="inputTasa"
-                        />
-                        <input
-                          type="number"
-                          placeholder="Cuotas"
-                          value={resultadosCotizacion[tipo[0]].cuotas}
-                          onChange={(e) =>
-                            handleCuotasChange(
-                              tipo[0],
-                              "cuotas",
-                              e.target.value
-                            )
-                          }
-                          className="inputCuotas"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Valor Cuota"
-                          value={formatNumero(
-                            Math.round(resultadosCotizacion[tipo[0]].valorCuota)
-                          )}
-                          readOnly
-                          className="inputValorCuota"
-                        />
-                      </div>
-                    )
-                  )}
-                <div className="encabezadopropuesta">
-                  <h6 className="titulocotizacion">TOTAL</h6>
-                  <h6 className="titulocotizacion">
-                    {formatNumero(resultadosCotizacion.totalDeudas)}
-                  </h6>
-                  <h6 className="titulocotizacion">
-                    {Math.round(resultadosCotizacion.totalDerechoVoto)}
-                  </h6>
-                  <h6 className="titulocotizacion">{"              "} </h6>
-                  <h6 className="titulocotizacion">
-                    {resultadosCotizacion.sumaCuotas}
-                  </h6>
-                  <h6 className="titulocotizacion">
-                    {formatNumero(
-                      Math.round(resultadosCotizacion.sumaValorCuota)
-                    )}
-                  </h6>
-                </div>
-                <div className="encabezadopropuesta">
-                  <h6 className="titulocotizacion">TOTAL PAGADO</h6>
-                  <h6 className="titulocotizacion">
-                    {formatNumero(
-                      Math.round(resultadosCotizacion.totalPagado)
-                    )}
-                  </h6>
-                </div>
-              </div>
-            </div>
-
-            <div className="formingresos">
-              <div className="infoseccion">
-                <div className="encabezadodeudas">
-                  <h6 className="titulocotizacion">Deudas</h6>
-                </div>
-                <div className="encabezadopropuesta">
-                  <h6 className="titulocotizacion">Tipo de Deuda</h6>
-                  <h6 className="titulocotizacion">Acreedor</h6>
-                  <h6 className="titulocotizacion">Capital</h6>
-                  <h6 className="titulocotizacion">Derecho de voto</h6>
-                  <h6 className="titulocotizacion">
-                    Derecho de voto por clase
-                  </h6>
-                </div>
-                {deudas.map((deuda, index) => (
-                  <div
-                    className="infodeudascotizacion"
-                    key={`tipodeuda-${index}`}
+            {/* Propuestas: iterate totalesPorTipo if present */}
+            {resultadosCotizacion.totalesPorTipo &&
+              Object.keys(resultadosCotizacion.totalesPorTipo).map(
+                (tipoKey) => (
+                  <Grid
+                    container
+                    spacing={1}
+                    key={tipoKey}
+                    alignItems="center"
+                    sx={{ mt: 4, mb: 2 }}
                   >
-                    <select
-                      name="tipoDeuda"
-                      id={`tipodeuda-${index}`}
-                      className="cajacotizacion"
-                      value={deuda.tipoDeuda}
-                      onChange={(event) => handleDeudaChange(index, event)}
-                    >
-                      <option value="" className="cajacotizacion">
-                        Seleccione tipo de deuda
-                      </option>
-                      <option value="Primera Clase" className="cajacotizacion">
-                        Primera Clase
-                      </option>
-                      <option value="Segunda Clase" className="cajacotizacion">
-                        Segunda Clase
-                      </option>
-                      <option value="Tercera Clase" className="cajacotizacion">
-                        Tercera Clase
-                      </option>
-                      <option value="Cuarta Clase" className="cajacotizacion">
-                        Cuarta Clase
-                      </option>
-                      <option value="Quinta Clase" className="cajacotizacion">
-                        Quinta Clase
-                      </option>
-                    </select>
+                    <Grid item xs={12} sm={3} sx={{ minWidth: 180 }}>
+                      <Typography>{tipoKey}</Typography>
+                    </Grid>
 
-                    <div className="acreedorSelect">
-                      <input
-                        type="text"
-                        value={deuda.acreedor}
-                        name="acreedor"
-                        id={`acreedor-${index}`}
-                        className="cajacotizacion"
-                        onChange={(event) => handleAcreedorChange(index, event)}
-                        placeholder="Buscar Acreedor..."
+                    <Grid item xs={4} sm={2}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Subtotal clase"
+                        value={formatNumero(
+                          Number.parseFloat(
+                            resultadosCotizacion.totalesPorTipo[tipoKey]
+                          )
+                        )}
+                        InputProps={{ readOnly: true }}
                       />
-                      {/*
-                        Mostrar el select de instituciones encontradas o
-                        el mensaje + botón de crear acreedor solo cuando:
-                          - el input está activo (focused)
-                          - y estamos editando la última deuda
-                      */}
-                      {acreedorFilt.length > 0 &&
+                    </Grid>
+
+                    <Grid item xs={4} sm={2}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Derecho voto %"
+                        value={
+                          resultadosCotizacion.derechoVotoPorTipo &&
+                          resultadosCotizacion.derechoVotoPorTipo[tipoKey]
+                        }
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={4} sm={2}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Tasa (%)"
+                        type="number"
+                        value={
+                          (resultadosCotizacion &&
+                            resultadosCotizacion[tipoKey].tasa) ||
+                          ""
+                        }
+                        onChange={(e) =>
+                          handleCuotasChange(tipoKey, "tasa", e.target.value)
+                        }
+                      />
+                    </Grid>
+
+                    <Grid item xs={4} sm={2}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Cuotas"
+                        type="number"
+                        value={resultadosCotizacion[tipoKey].cuotas}
+                        onChange={(e) =>
+                          handleCuotasChange(tipoKey, "cuotas", e.target.value)
+                        }
+                      />
+                    </Grid>
+
+                    <Grid item xs={4} sm={2}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Valor cuota"
+                        value={formatNumero(
+                          Math.round(
+                            resultadosCotizacion[tipoKey].valorCuota || 0
+                          )
+                        )}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                  </Grid>
+                )
+              )}
+
+            <Box
+              mt={2}
+              display="flex"
+              justifyContent="space-between"
+              flexDirection="row"
+            >
+              <Typography variant="subtitle2">TOTAL</Typography>
+
+              <Typography>
+                {formatNumero(resultadosCotizacion.totalDeudas)}
+              </Typography>
+              <Typography>
+                Derecho voto:{" "}
+                {Math.round(resultadosCotizacion.totalDerechoVoto || 0)}
+              </Typography>
+              <Typography>
+                Cuotas: {resultadosCotizacion.sumaCuotas || 0}
+              </Typography>
+              <Typography>
+                Valor cuotas:{" "}
+                {formatNumero(
+                  Math.round(resultadosCotizacion.sumaValorCuota || 0)
+                )}
+              </Typography>
+              <Typography>
+                Total pagado:{" "}
+                {formatNumero(
+                  Math.round(resultadosCotizacion.totalPagado || 0)
+                )}
+              </Typography>
+            </Box>
+          </Paper>
+
+          <Box mt={2}>
+            <Paper variant="outlined" sx={{ p: 2 }}>
+              <Typography variant="subtitle1" gutterBottom>
+                Deudas
+              </Typography>
+
+              {(deudas.length > 0
+                ? deudas
+                : [
+                    {
+                      tipoDeuda: "",
+                      acreedor: "",
+                      capital: "",
+                      derechoVoto: 0,
+                      votoClase: 0,
+                    },
+                  ]
+              ).map((deuda, index) => (
+                <Grid
+                  container
+                  spacing={3}
+                  key={`deuda-mui-${index}`}
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
+                  <Grid item xs={12} sx={{ minWidth: 180 }}>
+                    <FormControl fullWidth size="small">
+                      <InputLabel id={`tipo-label-${index}`}>Tipo</InputLabel>
+                      <Select
+                        labelId={`tipo-label-${index}`}
+                        label="Tipo"
+                        value={deuda.tipoDeuda}
+                        name="tipoDeuda"
+                        onChange={(event) => handleDeudaChange(index, event)}
+                      >
+                        <MenuItem value="">
+                          <em>Seleccione</em>
+                        </MenuItem>
+                        <MenuItem value="Primera Clase">Primera Clase</MenuItem>
+                        <MenuItem value="Segunda Clase">Segunda Clase</MenuItem>
+                        <MenuItem value="Tercera Clase">Tercera Clase</MenuItem>
+                        <MenuItem value="Cuarta Clase">Cuarta Clase</MenuItem>
+                        <MenuItem value="Quinta Clase">Quinta Clase</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12} sm={4}>
+                    {/* Autocomplete para acreedor, mantiene búsqueda y permite crear */}
+                    <Autocomplete
+                      freeSolo
+                      fullWidth
+                      options={(listaacreedores || []).map((a) => a.nombre)}
+                      inputValue={deuda.acreedor || ""}
+                      onInputChange={(event, value, reason) => {
+                        // actualizar el campo de la deuda con lo que escribe el usuario
+                        const updated = [...deudas];
+                        updated[index] = { ...updated[index], acreedor: value };
+                        setDeudas(updated);
+
+                        // filtrar lista de acreedores para mantener la lógica de búsqueda
+                        const foundAcreedor = (
+                          listaacreedores || []
+                        ).filter((acreedor) =>
+                          acreedor.nombre
+                            .toLowerCase()
+                            .includes(String(value || "").toLowerCase())
+                        );
+                        setAcreedorFilt(foundAcreedor);
+                      }}
+                      onChange={(event, value) => {
+                        // cuando selecciona una opción existente
+                        const updated = [...deudas];
+                        updated[index] = {
+                          ...updated[index],
+                          acreedor: value || "",
+                        };
+                        setDeudas(updated);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          id={`acreedor-${index}`}
+                          label="Acreedor"
+                          size="small"
+                          placeholder="Buscar Acreedor..."
+                          fullWidth
+                          sx={{ minWidth: 240 }}
+                        />
+                      )}
+                    />
+
+                    {/* Si no hay coincidencias y el input está enfocado en la última fila,
+                        mostrar opción para crear acreedor (conservar comportamiento anterior) */}
+                    {acreedorFilt.length === 0 &&
                       typeof document !== "undefined" &&
                       document.activeElement?.id === `acreedor-${index}` &&
-                      index === deudas.length - 1 ? (
-                        <select
-                          name="acreedor"
-                          id={`acreedor-select-${index}`}
-                          className="cajadeudas"
-                          onChange={(event) => handleDeudaChange(index, event)}
+                      index === deudas.length - 1 && (
+                        <Box
+                          sx={{
+                            mt: 1,
+                            display: "flex",
+                            gap: 1,
+                            alignItems: "center",
+                          }}
                         >
-                          <option value="" className="opcionesacreedor">
-                            Instituciones encontradas
-                          </option>
-                          {acreedorFilt.map((acreedor) => (
-                            <option
-                              key={acreedor.idAcreedor}
-                              value={acreedor.nombre}
-                              className="opcionesacreedor"
-                            >
-                              {acreedor.nombre}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
-                        typeof document !== "undefined" &&
-                        document.activeElement?.id === `acreedor-${index}` &&
-                        index === deudas.length - 1 && (
-                          <div className="crearAcreedor">
-                            <span>Debe ingresar los datos del acreedor</span>
-                            <Button
-                              className="botonesiniciosesion"
-                              type="button"
-                              onClick={() => setShowAcreedorModal(true)}
-                            >
-                              Crear Acreedor
-                            </Button>
-
-                            {showAcreedorModal && (
-                              <div className="modal-overlay">
-                                <div className="modal-content">
-                                  <div className="modal-header">
-                                    <span className="titulocotizacion">
-                                      Crear Acreedor
-                                    </span>
-                                    <button
-                                      className="close-modal"
-                                      onClick={() => setShowAcreedorModal(false)}
-                                    >
-                                      &times;
-                                    </button>
-                                  </div>
-                                  <div className="formacreedor">
-                                    <input
-                                      type="text"
-                                      className="cajacotizacion"
-                                      name="nombre"
-                                      placeholder="Nombre"
-                                      value={newAcreedor.nombre}
-                                      onChange={(e) =>
-                                        setNewAcreedor({
-                                          ...newAcreedor,
-                                          nombre: e.target.value,
-                                        })
-                                      }
-                                    />
-                                    <input
-                                      type="text"
-                                      className="cajacotizacion"
-                                      name="NIT"
-                                      placeholder="NIT"
-                                      value={newAcreedor.NIT}
-                                      onChange={(e) =>
-                                        setNewAcreedor({
-                                          ...newAcreedor,
-                                          NIT: e.target.value,
-                                        })
-                                      }
-                                    />
-                                    <input
-                                      type="text"
-                                      className="cajacotizacion"
-                                      name="direccion"
-                                      placeholder="Dirección"
-                                      value={newAcreedor.direccion}
-                                      onChange={(e) =>
-                                        setNewAcreedor({
-                                          ...newAcreedor,
-                                          direccion: e.target.value,
-                                        })
-                                      }
-                                    />
-                                    <input
-                                      type="text"
-                                      className="cajacotizacion"
-                                      name="ciudad"
-                                      placeholder="Ciudad"
-                                      value={newAcreedor.ciudad}
-                                      onChange={(e) =>
-                                        setNewAcreedor({
-                                          ...newAcreedor,
-                                          ciudad: e.target.value,
-                                        })
-                                      }
-                                    />
-                                    <input
-                                      type="text"
-                                      className="cajacotizacion"
-                                      name="telefono"
-                                      placeholder="Teléfono"
-                                      value={newAcreedor.telefono}
-                                      onChange={(e) =>
-                                        setNewAcreedor({
-                                          ...newAcreedor,
-                                          telefono: e.target.value,
-                                        })
-                                      }
-                                    />
-                                    <input
-                                      type="email"
-                                      className="cajacotizacion"
-                                      name="email"
-                                      placeholder="Email"
-                                      value={newAcreedor.email}
-                                      onChange={(e) =>
-                                        setNewAcreedor({
-                                          ...newAcreedor,
-                                          email: e.target.value,
-                                        })
-                                      }
-                                    />
-                                    <Button
-                                      className="botonesiniciosesion"
-                                      type="button"
-                                      onClick={handleGuardarAcreedor}
-                                    >
-                                      Guardar
-                                    </Button>
-                                  </div>
-                                </div>
-                                <div
-                                  className="modal-backdrop"
-                                  onClick={() => setShowAcreedorModal(false)}
-                                ></div>
-                              </div>
-                            )}
-                          </div>
-                        )
+                          <Typography variant="caption">
+                            No existe acreedor
+                          </Typography>
+                          <MUIButton
+                            size="small"
+                            variant="outlined"
+                            onClick={() => {
+                              // pre-llenar nombre del nuevo acreedor con lo escrito
+                              setNewAcreedor({
+                                ...newAcreedor,
+                                nombre: deuda.acreedor || "",
+                                idProspecto: prospecto?.idProspecto || "",
+                              });
+                              setShowAcreedorModal(true);
+                            }}
+                          >
+                            Crear Acreedor
+                          </MUIButton>
+                        </Box>
                       )}
-                    </div>
-                    <input
-                      type="text"
-                      className="cajadeudas"
+                  </Grid>
+
+                  <Grid item xs={4} sm={2}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Capital"
                       name="capital"
                       id={`capital-${index}`}
                       value={
@@ -1498,33 +1078,480 @@ const Cotizacion = () => {
                       onChange={(event) => handleDeudaChange(index, event)}
                       onKeyDown={(event) => handleKeyPress(event, index)}
                     />
-                    <input
+                  </Grid>
+
+                  <Grid item xs={4} sm={2}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Derecho voto"
                       type="number"
-                      className="cajadeudas"
                       name="derechoVoto"
                       id={`derechoVoto-${index}`}
                       value={Number.parseFloat(deuda.derechoVoto).toFixed(2)}
                       onChange={(event) => handleDeudaChange(index, event)}
                     />
-                    <input
+                  </Grid>
+
+                  <Grid item xs={4} sm={2}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label="Voto clase"
                       type="number"
-                      className="cajadeudas"
                       name="votoClase"
                       id={`votoClase-${index}`}
                       value={Number.parseFloat(deuda.votoClase).toFixed(0)}
                       onChange={(event) => handleDeudaChange(index, event)}
                     />
-                  </div>
-                ))}
-                <Button onClick={handleAddDeuda} value="Guardar" type="button">
+                  </Grid>
+                </Grid>
+              ))}
+
+              <Box display="flex" justifyContent="flex-start" mt={1}>
+                <MUIButton
+                  variant="contained"
+                  size="small"
+                  onClick={handleAddDeuda}
+                >
                   Agregar deuda
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
+                </MUIButton>
+              </Box>
+            </Paper>
+          </Box>
+        </Grid>
+      </Grid>
+
+      {/* DIALOG: Bienes */}
+      <Dialog
+        open={showBienesModal}
+        onClose={closeBienesModal}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>
+          Bienes
+          <IconButton
+            aria-label="close"
+            onClick={closeBienesModal}
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Grid container spacing={2}>
+            {bienes.map((bienItem, idx) => (
+              <Grid item xs={12} sm={6} key={`bien-mui-${idx}`}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Tipo de bien"
+                  name="tipoBien"
+                  value={bienItem.tipoBien}
+                  onChange={(e) => handleBienChange(idx, e)}
+                />
+                <Box mt={1}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label="Valor comercial"
+                    name="valor"
+                    value={bienItem.valor}
+                    onChange={(e) => handleBienChange(idx, e)}
+                    onKeyDown={(e) => handleKeyPress(e, idx)}
+                  />
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+
+          <Box
+            mt={2}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography>
+              Total Bienes: {formatNumero(resultadosCotizacion.totalBienes)}
+            </Typography>
+            <Box>
+              <FormControl component="fieldset" sx={{ mr: 2 }}>
+                <InputLabel shrink>Sujeto a registro?</InputLabel>
+                <Box mt={1} display="flex" gap={1}>
+                  <MUIButton
+                    size="small"
+                    variant={
+                      resultadosCotizacion.sujetoRegistro === "si"
+                        ? "contained"
+                        : "outlined"
+                    }
+                    onClick={() =>
+                      handleSujetoChange({
+                        target: { value: "si" },
+                        preventDefault: () => {},
+                      })
+                    }
+                  >
+                    Sí
+                  </MUIButton>
+                  <MUIButton
+                    size="small"
+                    variant={
+                      resultadosCotizacion.sujetoRegistro === "no"
+                        ? "contained"
+                        : "outlined"
+                    }
+                    onClick={() =>
+                      handleSujetoChange({
+                        target: { value: "no" },
+                        preventDefault: () => {},
+                      })
+                    }
+                  >
+                    No
+                  </MUIButton>
+                </Box>
+              </FormControl>
+
+              <MUIButton
+                sx={{ ml: 1 }}
+                onClick={handleAddBien}
+                variant="outlined"
+              >
+                Agregar bien
+              </MUIButton>
+            </Box>
+          </Box>
+        </DialogContent>
+      </Dialog>
+
+      {/* DIALOG: Honorarios */}
+      <Dialog
+        open={showHonorariosModal}
+        onClose={closeHonorariosModal}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>
+          Honorarios
+          <IconButton
+            aria-label="close"
+            onClick={closeHonorariosModal}
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent dividers>
+          <Grid container spacing={2} sx={{flexDirection: "column"}}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Valor"
+                width="180px"
+                size="small"
+                type="number"
+                name="valorHonorarios"
+                value={honorarios.valorHonorarios}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Cuota inicial"
+                width="180px"
+                size="small"
+                type="number"
+                name="inicial"
+                value={honorarios.inicial}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Numero de cuotas"
+                width="180px"
+                size="small"
+                type="number"
+                name="cuotasHonorarios"
+                value={honorarios.cuotasHonorarios}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Valor para radicar"
+                width="180px"
+                size="small"
+                type="number"
+                name="valorRadicar"
+                value={honorarios.valorRadicar}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Mensualidad liquidación"
+                width="180px"
+                size="small"
+                type="number"
+                name="honorariosLiquidacion"
+                value={honorarios.honorariosLiquidacion}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Valor unificado"
+                width="180px"
+                size="small"
+                type="number"
+                name="valorHonorariosUnificado"
+                value={honorarios.valorHonorariosUnificado}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Numero de cuotas - Unificado"
+                width="180px"
+                size="small"
+                type="number"
+                name="cuotasHonorariosUnificado"
+                value={honorarios.cuotasHonorariosUnificado}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="subtitle2">Plan de pagos</Typography>
+              {planpagos && planpagos.length > 0 && (
+                <Table size="small" sx={{ mt: 1 }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Periodo</TableCell>
+                      <TableCell>Cuota fija</TableCell>
+                      <TableCell>Saldo</TableCell>
+                      <TableCell>Fecha de pago</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {planpagos.map((p, i) => (
+                      <TableRow key={`p-${i}`}>
+                        <TableCell>{p.numeroCuota}</TableCell>
+                        <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
+                        <TableCell>{formatNumero(p.saldo)}</TableCell>
+                        <TableCell>{p.fechapago}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+
+              {planpagosUnificado && planpagosUnificado.length > 0 && (
+                <>
+                  <Typography sx={{ mt: 2 }} variant="subtitle2">
+                    Plan Unificado
+                  </Typography>
+                  <Table size="small" sx={{ mt: 1 }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Periodo</TableCell>
+                        <TableCell>Cuota fija</TableCell>
+                        <TableCell>Saldo</TableCell>
+                        <TableCell>Fecha de pago</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {planpagosUnificado.map((p, i) => (
+                        <TableRow key={`pu-${i}`}>
+                          <TableCell>{p.numeroCuota}</TableCell>
+                          <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
+                          <TableCell>{formatNumero(p.saldo)}</TableCell>
+                          <TableCell>{p.fechapago}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </>
+              )}
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+
+      {/* DIALOG: Ingresos / Gastos / Cuota */}
+      <Dialog
+        open={showIngresosModal}
+        onClose={closeIngresosModal}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          Ingresos / Gastos / Cuota
+          <IconButton
+            aria-label="close"
+            onClick={closeIngresosModal}
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                size="small"
+                label="Ingresos mensuales"
+                name="Valor"
+                type="number"
+                value={ingreso.Valor}
+                onChange={handleIngresoChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                size="small"
+                label="Gastos mensuales"
+                name="gastosmensuales"
+                type="number"
+                value={gasto.gastosmensuales}
+                onChange={handleGastoChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                size="small"
+                label="Posible cuota mensual"
+                name="mensual"
+                type="number"
+                value={posibleCuota.mensual}
+                onChange={handleCuotaChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+
+      {/* DIALOG: Crear Acreedor (reuses newAcreedor state & handleGuardarAcreedor) */}
+      <Dialog
+        open={showAcreedorModal}
+        onClose={() => setShowAcreedorModal(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>
+          Crear Acreedor
+          <IconButton
+            aria-label="close"
+            onClick={() => setShowAcreedorModal(false)}
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Nombre"
+                fullWidth
+                size="small"
+                value={newAcreedor.nombre}
+                onChange={(e) =>
+                  setNewAcreedor({ ...newAcreedor, nombre: e.target.value })
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="NIT"
+                fullWidth
+                size="small"
+                value={newAcreedor.NIT}
+                onChange={(e) =>
+                  setNewAcreedor({ ...newAcreedor, NIT: e.target.value })
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Dirección"
+                fullWidth
+                size="small"
+                value={newAcreedor.direccion}
+                onChange={(e) =>
+                  setNewAcreedor({ ...newAcreedor, direccion: e.target.value })
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Ciudad"
+                fullWidth
+                size="small"
+                value={newAcreedor.ciudad}
+                onChange={(e) =>
+                  setNewAcreedor({ ...newAcreedor, ciudad: e.target.value })
+                }
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Teléfono"
+                fullWidth
+                size="small"
+                value={newAcreedor.telefono}
+                onChange={(e) =>
+                  setNewAcreedor({ ...newAcreedor, telefono: e.target.value })
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Email"
+                fullWidth
+                size="small"
+                type="email"
+                value={newAcreedor.email}
+                onChange={(e) =>
+                  setNewAcreedor({ ...newAcreedor, email: e.target.value })
+                }
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <MUIButton onClick={() => setShowAcreedorModal(false)}>
+            Cancelar
+          </MUIButton>
+          <MUIButton variant="contained" onClick={handleGuardarAcreedor}>
+            Guardar
+          </MUIButton>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 export default Cotizacion;

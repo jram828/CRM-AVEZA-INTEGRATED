@@ -40,6 +40,7 @@ import {
   TableRow,
   Paper,
   Autocomplete,
+  FormControlLabel,
 } from "@mui/material";
 
 const Cotizacion = () => {
@@ -476,13 +477,67 @@ const Cotizacion = () => {
   const [planpagos, setPlanPagos] = useState([]);
   const [planpagosUnificado, setPlanPagosUnificado] = useState([]);
 
+  // const handleHonorarioChange = (e) => {
+  //   const updatedHonorarios = {
+  //     ...honorarios,
+  //     [e.target.name]: e.target.value,
+  //   };
+  //   setHonorarios(updatedHonorarios);
+  //   setEditingField(e.target.name);
+  //   if (
+  //     updatedHonorarios.valorHonorarios !== "" &&
+  //     updatedHonorarios.cuotasHonorarios !== "" &&
+  //     updatedHonorarios.inicial !== ""
+  //   ) {
+  //     const nuevoPlan = generarPlanPagosHonorarios(
+  //       updatedHonorarios.valorHonorarios,
+  //       updatedHonorarios.cuotasHonorarios,
+  //       updatedHonorarios.inicial,
+  //       honorarios.cuota6,
+  //       honorarios.cuota12
+  //     );
+  //     setPlanPagos(nuevoPlan);
+  //   } else {
+  //     setPlanPagos([]);
+  //   }
+
+  //   if (
+  //     updatedHonorarios.valorHonorariosUnificado !== "" &&
+  //     updatedHonorarios.cuotasHonorariosUnificado !== "" &&
+  //     updatedHonorarios.inicial !== ""
+  //   ) {
+  //     const nuevoPlanUnificado = generarPlanPagosHonorarios(
+  //       updatedHonorarios.valorHonorariosUnificado,
+  //       updatedHonorarios.cuotasHonorariosUnificado,
+  //       updatedHonorarios.inicial,
+  //       honorarios.cuota6,
+  //       honorarios.cuota12
+  //     );
+  //     setPlanPagosUnificado(nuevoPlanUnificado);
+  //   } else {
+  //     setPlanPagosUnificado([]);
+  //   }
+  //   // console.log("Plan de pagos en honorarios:", planpagos);
+  // };
+
   const handleHonorarioChange = (e) => {
+    const target = e?.target || {};
+    const name = target.name;
+    // Si no hay name, no procesar
+    if (!name) return;
+
+    // Para checkboxes usar checked, para el resto usar value
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    console.log("Honorarios change:", name, value);
     const updatedHonorarios = {
       ...honorarios,
-      [e.target.name]: e.target.value,
+      [name]: value,
     };
+
     setHonorarios(updatedHonorarios);
-    setEditingField(e.target.name);
+    setEditingField(name);
+
+    // Generar plan de pagos si hay los datos mínimos
     if (
       updatedHonorarios.valorHonorarios !== "" &&
       updatedHonorarios.cuotasHonorarios !== "" &&
@@ -491,7 +546,9 @@ const Cotizacion = () => {
       const nuevoPlan = generarPlanPagosHonorarios(
         updatedHonorarios.valorHonorarios,
         updatedHonorarios.cuotasHonorarios,
-        updatedHonorarios.inicial
+        updatedHonorarios.inicial,
+        !!updatedHonorarios.cuota6,
+        !!updatedHonorarios.cuota12
       );
       setPlanPagos(nuevoPlan);
     } else {
@@ -506,13 +563,14 @@ const Cotizacion = () => {
       const nuevoPlanUnificado = generarPlanPagosHonorarios(
         updatedHonorarios.valorHonorariosUnificado,
         updatedHonorarios.cuotasHonorariosUnificado,
-        updatedHonorarios.inicial
+        updatedHonorarios.inicial,
+        !!updatedHonorarios.cuota6,
+        !!updatedHonorarios.cuota12
       );
       setPlanPagosUnificado(nuevoPlanUnificado);
     } else {
       setPlanPagosUnificado([]);
     }
-    // console.log("Plan de pagos en honorarios:", planpagos);
   };
 
   const handleGastoChange = (e) => {
@@ -1225,8 +1283,6 @@ const Cotizacion = () => {
           </Box>
         </DialogContent>
       </Dialog>
-
-      {/* DIALOG: Honorarios */}
       <Dialog
         open={showHonorariosModal}
         onClose={closeHonorariosModal}
@@ -1245,7 +1301,7 @@ const Cotizacion = () => {
         </DialogTitle>
 
         <DialogContent dividers>
-          <Grid container spacing={2} sx={{flexDirection: "column"}}>
+          <Grid container spacing={2} sx={{ flexDirection: "column" }}>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Valor"
@@ -1336,7 +1392,35 @@ const Cotizacion = () => {
                 onKeyDown={handleKeyPress}
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <input
+                    type="checkbox"
+                    name="cuota6"
+                    checked={!!honorarios.cuota6}
+                    onChange={handleHonorarioChange}
+                    aria-label="cuota6-checkbox"
+                  />
+                }
+                label="Cuota extra Junio"
+              />
+            </Grid>
 
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <input
+                    type="checkbox"
+                    name="cuota12"
+                    checked={!!honorarios.cuota12}
+                    onChange={handleHonorarioChange}
+                    aria-label="cuota12-checkbox"
+                  />
+                }
+                label="Cuota extra Diciembre"
+              />
+            </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle2">Plan de pagos</Typography>
               {planpagos && planpagos.length > 0 && (

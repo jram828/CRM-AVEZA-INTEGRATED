@@ -1227,7 +1227,7 @@ const Cotizacion = () => {
                   <h6 className="titulocotizacion">Derecho de voto</h6>
                   <h6 className="titulocotizacion">
                     Derecho de voto por clase
-                  </h6>
+                  </h6>     
                 </div>
                 {deudas.map((deuda, index) => (
                   <div

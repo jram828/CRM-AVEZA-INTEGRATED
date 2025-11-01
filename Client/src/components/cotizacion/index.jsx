@@ -106,6 +106,7 @@ const Cotizacion = () => {
     totalBienes_letras: "",
     totalVotoClase: "",
     totalDerechoVoto: "",
+    totalPagado: "",
     "Primera Clase": {
       tasa: "",
       cuotas: "",
@@ -664,13 +665,8 @@ const Cotizacion = () => {
   };
 
   const handleCuotasChange = (tipo, field, value) => {
-    const updatedData = { ...resultadosCotizacion };
-    // console.log("Updated data:", updatedData);
-    // console.log("Tipo:", tipo);
-    // console.log("Field:", field);
-    // console.log("Value:", value);
+    const updatedData = { ...resultadosCotizacion }; // console.log("Updated data:", updatedData); // console.log("Tipo:", tipo); // console.log("Field:", field); // console.log("Value:", value);
     updatedData[tipo][field] = value;
-
     // Calcular el valor de la cuota
     if (field === "tasa" || field === "cuotas") {
       const tasa = parseFloat(updatedData[tipo].tasa) || 0;
@@ -688,18 +684,71 @@ const Cotizacion = () => {
     // Calcular la suma de cuotas y valorCuota
     let totalCuotas = 0;
     let totalValorCuota = 0;
+    let totalPagado = 0;
 
     Object.keys(updatedData).forEach((key) => {
       const data = updatedData[key];
       totalCuotas += parseInt(data.cuotas, 10) || 0;
       totalValorCuota += parseFloat(data.valorCuota) || 0;
+      totalPagado +=
+        parseInt(data.cuotas, 10) * parseFloat(data.valorCuota) || 0;
+
+        console.log("total pagado interim:", totalPagado);
     });
 
     updatedData.sumaCuotas = totalCuotas;
     updatedData.sumaValorCuota = totalValorCuota;
+    updatedData.totalPagado = totalPagado;
     // console.log("Suma de cuotas:", totalCuotas);
     setResultadosCotizacion(updatedData);
   };
+  // const handleCuotasChange = (tipo, field, value) => {
+  //   const updatedData = { ...resultadosCotizacion };
+  //   updatedData[tipo][field] = value;
+
+  //   // Calcular el valor de la cuota
+  //   if (field === "tasa" || field === "cuotas") {
+  //     const tasa = parseFloat(updatedData[tipo].tasa) || 0;
+  //     const cuotas = parseInt(updatedData[tipo].cuotas, 10) || 0;
+  //     const totalPorTipo = resultadosCotizacion.totalesPorTipo[tipo];
+
+  //     updatedData[tipo].valorCuota =
+  //       cuotas > 0
+  //         ? Math.round(totalPorTipo * (tasa / 100)) /
+  //           (1 - Math.pow(1 + tasa / 100, -cuotas))
+  //         : "";
+  //   }
+
+  //   // Calcular totales
+  //   let totalCuotas = 0;
+  //   let totalValorCuota = 0;
+  //   let totalPagado = 0;
+
+  //   Object.keys(updatedData).forEach((key) => {
+  //     const data = updatedData[key];
+  //     const cuotas = parseInt(data.cuotas, 10) || 0;
+
+  //     // Limpieza robusta del valorCuota
+  //     let valorCuota = data.valorCuota;
+
+  //     if (typeof valorCuota === "string") {
+  //       // Eliminar puntos como separadores de miles y convertir coma decimal a punto
+  //       valorCuota = valorCuota.replace(/\./g, "").replace(",", ".");
+  //     }
+
+  //     valorCuota = parseFloat(valorCuota) || 0;
+
+  //     totalCuotas += cuotas;
+  //     totalValorCuota += valorCuota;
+  //     totalPagado += cuotas * valorCuota;
+  //   });
+
+  //   updatedData.sumaCuotas = totalCuotas;
+  //   updatedData.sumaValorCuota = totalValorCuota;
+  //   updatedData.totalPagado = totalPagado;
+
+  //   setResultadosCotizacion(updatedData);
+  // };
 
   // Modal open/close handlers
   const openBienesModal = () => setShowBienesModal(true);
@@ -928,80 +977,79 @@ const Cotizacion = () => {
                     />
                   </div>
                 </div>
-                </div>
-                <br />
-                {/* Tabla de plan de pagos de honorarios */}
-                <div className="planpagos-honorarios-ambos">
-                  {planpagos && planpagos.length > 0 && (
-                    <div className="planpagos-honorarios">
-                      <h6 className="titulocotizacion">Plan de pagos</h6>
-                      <table className="tabla-planpagos">
-                        <thead>
-                          <tr>
-                            <th className="celda-planpagos">Periodo</th>
-                            <th className="celda-planpagos">Cuota fija</th>
-                            <th className="celda-planpagos">Saldo</th>
-                            <th className="celda-planpagos">Fecha de pago</th>
+              </div>
+              <br />
+              {/* Tabla de plan de pagos de honorarios */}
+              <div className="planpagos-honorarios-ambos">
+                {planpagos && planpagos.length > 0 && (
+                  <div className="planpagos-honorarios">
+                    <h6 className="titulocotizacion">Plan de pagos</h6>
+                    <table className="tabla-planpagos">
+                      <thead>
+                        <tr>
+                          <th className="celda-planpagos">Periodo</th>
+                          <th className="celda-planpagos">Cuota fija</th>
+                          <th className="celda-planpagos">Saldo</th>
+                          <th className="celda-planpagos">Fecha de pago</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {planpagos.map((pago, idx) => (
+                          <tr key={idx}>
+                            <td className="celda-planpagos">
+                              {pago.numeroCuota}
+                            </td>
+                            <td className="celda-planpagos">
+                              {formatNumero(pago.cuotaMensual)}
+                            </td>
+                            <td className="celda-planpagos">
+                              {formatNumero(pago.saldo)}
+                            </td>
+                            <td className="celda-planpagos">
+                              {pago.fechapago}
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {planpagos.map((pago, idx) => (
-                            <tr key={idx}>
-                              <td className="celda-planpagos">
-                                {pago.numeroCuota}
-                              </td>
-                              <td className="celda-planpagos">
-                                {formatNumero(pago.cuotaMensual)}
-                              </td>
-                              <td className="celda-planpagos">
-                                {formatNumero(pago.saldo)}
-                              </td>
-                              <td className="celda-planpagos">
-                                {pago.fechapago}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                  {planpagosUnificado && planpagosUnificado.length > 0 && (
-                    <div className="planpagos-honorarios">
-                      <h6 className="titulocotizacion">
-                        Plan de pagos Unificado
-                      </h6>
-                      <table className="tabla-planpagos">
-                        <thead>
-                          <tr>
-                            <th className="celda-planpagos">Periodo</th>
-                            <th className="celda-planpagos">Cuota fija</th>
-                            <th className="celda-planpagos">Saldo</th>
-                            <th className="celda-planpagos">Fecha de pago</th>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {planpagosUnificado && planpagosUnificado.length > 0 && (
+                  <div className="planpagos-honorarios">
+                    <h6 className="titulocotizacion">
+                      Plan de pagos Unificado
+                    </h6>
+                    <table className="tabla-planpagos">
+                      <thead>
+                        <tr>
+                          <th className="celda-planpagos">Periodo</th>
+                          <th className="celda-planpagos">Cuota fija</th>
+                          <th className="celda-planpagos">Saldo</th>
+                          <th className="celda-planpagos">Fecha de pago</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {planpagosUnificado.map((pago, idx) => (
+                          <tr key={idx}>
+                            <td className="celda-planpagos">
+                              {pago.numeroCuota}
+                            </td>
+                            <td className="celda-planpagos">
+                              {formatNumero(pago.cuotaMensual)}
+                            </td>
+                            <td className="celda-planpagos">
+                              {formatNumero(pago.saldo)}
+                            </td>
+                            <td className="celda-planpagos">
+                              {pago.fechapago}
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {planpagosUnificado.map((pago, idx) => (
-                            <tr key={idx}>
-                              <td className="celda-planpagos">
-                                {pago.numeroCuota}
-                              </td>
-                              <td className="celda-planpagos">
-                                {formatNumero(pago.cuotaMensual)}
-                              </td>
-                              <td className="celda-planpagos">
-                                {formatNumero(pago.saldo)}
-                              </td>
-                              <td className="celda-planpagos">
-                                {pago.fechapago}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className="modal-backdrop" onClick={closeHonorariosModal}></div>
@@ -1212,6 +1260,14 @@ const Cotizacion = () => {
                     )}
                   </h6>
                 </div>
+                <div className="encabezadopropuesta">
+                  <h6 className="titulocotizacion">TOTAL PAGADO</h6>
+                  <h6 className="titulocotizacion">
+                    {formatNumero(
+                      Math.round(resultadosCotizacion.totalPagado)
+                    )}
+                  </h6>
+                </div>
               </div>
             </div>
 
@@ -1227,7 +1283,7 @@ const Cotizacion = () => {
                   <h6 className="titulocotizacion">Derecho de voto</h6>
                   <h6 className="titulocotizacion">
                     Derecho de voto por clase
-                  </h6>     
+                  </h6>
                 </div>
                 {deudas.map((deuda, index) => (
                   <div
@@ -1271,12 +1327,19 @@ const Cotizacion = () => {
                         onChange={(event) => handleAcreedorChange(index, event)}
                         placeholder="Buscar Acreedor..."
                       />
+                      {/*
+                        Mostrar el select de instituciones encontradas o
+                        el mensaje + botón de crear acreedor solo cuando:
+                          - el input está activo (focused)
+                          - y estamos editando la última deuda
+                      */}
                       {acreedorFilt.length > 0 &&
                       typeof document !== "undefined" &&
-                      document.activeElement?.id === `acreedor-${index}` ? (
+                      document.activeElement?.id === `acreedor-${index}` &&
+                      index === deudas.length - 1 ? (
                         <select
                           name="acreedor"
-                          id="acreedor"
+                          id={`acreedor-select-${index}`}
                           className="cajadeudas"
                           onChange={(event) => handleDeudaChange(index, event)}
                         >
@@ -1294,125 +1357,129 @@ const Cotizacion = () => {
                           ))}
                         </select>
                       ) : (
-                        <div className="crearAcreedor">
-                          <span>Debe ingresar los datos del acreedor</span>
-                          <Button
-                            className="botonesiniciosesion"
-                            type="button"
-                            onClick={() => setShowAcreedorModal(true)}
-                          >
-                            Crear Acreedor
-                          </Button>
+                        typeof document !== "undefined" &&
+                        document.activeElement?.id === `acreedor-${index}` &&
+                        index === deudas.length - 1 && (
+                          <div className="crearAcreedor">
+                            <span>Debe ingresar los datos del acreedor</span>
+                            <Button
+                              className="botonesiniciosesion"
+                              type="button"
+                              onClick={() => setShowAcreedorModal(true)}
+                            >
+                              Crear Acreedor
+                            </Button>
 
-                          {showAcreedorModal && (
-                            <div className="modal-overlay">
-                              <div className="modal-content">
-                                <div className="modal-header">
-                                  <span className="titulocotizacion">
-                                    Crear Acreedor
-                                  </span>
-                                  <button
-                                    className="close-modal"
-                                    onClick={() => setShowAcreedorModal(false)}
-                                  >
-                                    &times;
-                                  </button>
+                            {showAcreedorModal && (
+                              <div className="modal-overlay">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <span className="titulocotizacion">
+                                      Crear Acreedor
+                                    </span>
+                                    <button
+                                      className="close-modal"
+                                      onClick={() => setShowAcreedorModal(false)}
+                                    >
+                                      &times;
+                                    </button>
+                                  </div>
+                                  <div className="formacreedor">
+                                    <input
+                                      type="text"
+                                      className="cajacotizacion"
+                                      name="nombre"
+                                      placeholder="Nombre"
+                                      value={newAcreedor.nombre}
+                                      onChange={(e) =>
+                                        setNewAcreedor({
+                                          ...newAcreedor,
+                                          nombre: e.target.value,
+                                        })
+                                      }
+                                    />
+                                    <input
+                                      type="text"
+                                      className="cajacotizacion"
+                                      name="NIT"
+                                      placeholder="NIT"
+                                      value={newAcreedor.NIT}
+                                      onChange={(e) =>
+                                        setNewAcreedor({
+                                          ...newAcreedor,
+                                          NIT: e.target.value,
+                                        })
+                                      }
+                                    />
+                                    <input
+                                      type="text"
+                                      className="cajacotizacion"
+                                      name="direccion"
+                                      placeholder="Dirección"
+                                      value={newAcreedor.direccion}
+                                      onChange={(e) =>
+                                        setNewAcreedor({
+                                          ...newAcreedor,
+                                          direccion: e.target.value,
+                                        })
+                                      }
+                                    />
+                                    <input
+                                      type="text"
+                                      className="cajacotizacion"
+                                      name="ciudad"
+                                      placeholder="Ciudad"
+                                      value={newAcreedor.ciudad}
+                                      onChange={(e) =>
+                                        setNewAcreedor({
+                                          ...newAcreedor,
+                                          ciudad: e.target.value,
+                                        })
+                                      }
+                                    />
+                                    <input
+                                      type="text"
+                                      className="cajacotizacion"
+                                      name="telefono"
+                                      placeholder="Teléfono"
+                                      value={newAcreedor.telefono}
+                                      onChange={(e) =>
+                                        setNewAcreedor({
+                                          ...newAcreedor,
+                                          telefono: e.target.value,
+                                        })
+                                      }
+                                    />
+                                    <input
+                                      type="email"
+                                      className="cajacotizacion"
+                                      name="email"
+                                      placeholder="Email"
+                                      value={newAcreedor.email}
+                                      onChange={(e) =>
+                                        setNewAcreedor({
+                                          ...newAcreedor,
+                                          email: e.target.value,
+                                        })
+                                      }
+                                    />
+                                    <Button
+                                      className="botonesiniciosesion"
+                                      type="button"
+                                      onClick={handleGuardarAcreedor}
+                                    >
+                                      Guardar
+                                    </Button>
+                                  </div>
                                 </div>
-                                <div className="formacreedor">
-                                  <input
-                                    type="text"
-                                    className="cajacotizacion"
-                                    name="nombre"
-                                    placeholder="Nombre"
-                                    value={newAcreedor.nombre}
-                                    onChange={(e) =>
-                                      setNewAcreedor({
-                                        ...newAcreedor,
-                                        nombre: e.target.value,
-                                      })
-                                    }
-                                  />
-                                  <input
-                                    type="text"
-                                    className="cajacotizacion"
-                                    name="NIT"
-                                    placeholder="NIT"
-                                    value={newAcreedor.NIT}
-                                    onChange={(e) =>
-                                      setNewAcreedor({
-                                        ...newAcreedor,
-                                        NIT: e.target.value,
-                                      })
-                                    }
-                                  />
-                                  <input
-                                    type="text"
-                                    className="cajacotizacion"
-                                    name="direccion"
-                                    placeholder="Dirección"
-                                    value={newAcreedor.direccion}
-                                    onChange={(e) =>
-                                      setNewAcreedor({
-                                        ...newAcreedor,
-                                        direccion: e.target.value,
-                                      })
-                                    }
-                                  />
-                                  <input
-                                    type="text"
-                                    className="cajacotizacion"
-                                    name="ciudad"
-                                    placeholder="Ciudad"
-                                    value={newAcreedor.ciudad}
-                                    onChange={(e) =>
-                                      setNewAcreedor({
-                                        ...newAcreedor,
-                                        ciudad: e.target.value,
-                                      })
-                                    }
-                                  />
-                                  <input
-                                    type="text"
-                                    className="cajacotizacion"
-                                    name="telefono"
-                                    placeholder="Teléfono"
-                                    value={newAcreedor.telefono}
-                                    onChange={(e) =>
-                                      setNewAcreedor({
-                                        ...newAcreedor,
-                                        telefono: e.target.value,
-                                      })
-                                    }
-                                  />
-                                  <input
-                                    type="email"
-                                    className="cajacotizacion"
-                                    name="email"
-                                    placeholder="Email"
-                                    value={newAcreedor.email}
-                                    onChange={(e) =>
-                                      setNewAcreedor({
-                                        ...newAcreedor,
-                                        email: e.target.value,
-                                      })
-                                    }
-                                  />
-                                  <Button
-                                    className="botonesiniciosesion"
-                                    type="button"
-                                    onClick={handleGuardarAcreedor}
-                                  >
-                                    Guardar
-                                  </Button>
-                                </div>
+                                <div
+                                  className="modal-backdrop"
+                                  onClick={() => setShowAcreedorModal(false)}
+                                ></div>
                               </div>
-                              <div
-                                className="modal-backdrop"
-                                onClick={() => setShowAcreedorModal(false)}
-                              ></div>
-                            </div>
-                          )}
-                        </div>
+                            )}
+                          </div>
+                        )
                       )}
                     </div>
                     <input
@@ -1444,7 +1511,7 @@ const Cotizacion = () => {
                       className="cajadeudas"
                       name="votoClase"
                       id={`votoClase-${index}`}
-                      value={Number.parseFloat(deuda.votoClase).toFixed(2)}
+                      value={Number.parseFloat(deuda.votoClase).toFixed(0)}
                       onChange={(event) => handleDeudaChange(index, event)}
                     />
                   </div>

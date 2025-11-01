@@ -126,8 +126,9 @@
 }
 
 .cajacotizacion {
-  min-width: 130px;
-  max-width: 170px;
+  /* min-width: 130px; */
+  /* max-width: 170px; */
+  width: 250px;
   padding: 2px;
   margin: 3px;
   border: 1px solid black; /* Color del borde */

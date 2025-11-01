@@ -27,7 +27,7 @@ export const generarPlanPagosHonorarios = (
   let fechaPago = new Date(fechaInicio);
 
   // Paso 1: calcular unidades de cuota
-  let unidadesCuota = numCuotas;
+
   let cuotasDobles = [];
 
   for (let i = 0; i < numCuotas; i++) {
@@ -44,9 +44,7 @@ export const generarPlanPagosHonorarios = (
   const unidadesFinales = cuotasFinales + cuotasDoblesActivadas;
 
   // Calcular valor por unidad
-  const valorPorUnidad = Math.round(
-    (valorHonorarios - inicial) / unidadesFinales
-  );
+  const valorPorUnidad = Math.round((valorHonorarios - inicial) / unidadesFinales);
 
   // Agregar cuota inicial
   fechaPago = new Date(fechaInicio);
@@ -66,7 +64,14 @@ export const generarPlanPagosHonorarios = (
   for (let i = 1; i <= cuotasFinales; i++) {
     const mes = fechaPago.getMonth();
     const esDoble = (mes === 5 && cuota6) || (mes === 11 && cuota12);
-    const cuotaActual = esDoble ? valorPorUnidad * 2 : valorPorUnidad;
+    let cuotaActual = esDoble ? valorPorUnidad * 2 : valorPorUnidad;
+
+    // Si es la última cuota y queda saldo, ajustarla
+    if (i === cuotasFinales && saldo - cuotaActual !== 0) {
+      const ajusteFinal = saldo - cuotaActual;
+      cuotaActual += ajusteFinal;
+    }
+
     const saldoProyectado = saldo - cuotaActual;
 
     planPagos.push({

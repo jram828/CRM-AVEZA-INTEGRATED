@@ -23,23 +23,31 @@
   display: flex;
   flex-direction: row;
   gap: 1rem;              /* para separar los botones */
-  flex-wrap: wrap;        /* que se adapten en pantallas chicas */
+  /* flex-wrap: wrap;        que se adapten en pantallas chicas */
   width: 100%;
   max-width: 900px;
   margin-bottom: 1rem;
 }
 
-.divabogados {
+/* .divabogados {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* más responsive */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* más responsive 
   grid-auto-rows: minmax(20px, auto);
-  gap: 1rem;              /* espacio entre items */
-  overflow-y: auto;       /* scroll vertical solo acá */
-  flex-grow: 1;           /* para que crezca y ocupe espacio */
+  gap: 1rem;              /* espacio entre items 
+  overflow-y: auto;       /* scroll vertical solo acá 
+  flex-grow: 1;           /* para que crezca y ocupe espacio 
   width: 100%;
   max-width: 900px;
-  padding-right: 10px;    /* para que el scroll no tape contenido */
+  padding-right: 10px;    /* para que el scroll no tape contenido 
   box-sizing: border-box;
+} */
+
+
+.divabogados{
+  display: grid;
+  justify-content: flex-start;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(20px, auto);
 }
 
 /* Responsive para pantallas más chicas */

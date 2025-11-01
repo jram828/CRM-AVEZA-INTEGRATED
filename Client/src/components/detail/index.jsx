@@ -244,8 +244,10 @@ const Detail = () => {
           <Button className="botonesiniciosesion" onClick={submitUpdateDetail}>
             Actualizar
           </Button>
-          <Button onClick={handleDelete} className="botonesiniciosesion">
-            {/* <svg
+          {datos?.tarjetaProf ? (
+            <div className="botonesabogado">
+              <Button onClick={handleDelete} className="botonesiniciosesion">
+                {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               width="1.2em"
               height="1.2em"
@@ -256,12 +258,11 @@ const Detail = () => {
                 d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
               ></path>
             </svg> */}
-            Eliminar
-          </Button>
-          {datos?.tarjetaProf ? (
-            <Link to="/abogados">
-              <Button>
-                {/* <svg
+                Eliminar
+              </Button>
+              <Link to="/abogados">
+                <Button>
+                  {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.2em"
                   height="1.2em"
@@ -276,9 +277,10 @@ const Detail = () => {
                     d="M244 400L100 256l144-144M120 256h292"
                   ></path>
                 </svg> */}
-                Volver
-              </Button>
-            </Link>
+                  Volver
+                </Button>
+              </Link>
+            </div>
           ) : source === "prospecto" ? (
             <div className="botonesprospecto">
               <Link to="/cotizacion">
@@ -291,7 +293,20 @@ const Detail = () => {
               >
                 Convertir en Cliente
               </Button>
-
+              <Button onClick={handleDelete} className="botonesiniciosesion">
+                {/* <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1.2em"
+              height="1.2em"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="black"
+                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
+              ></path>
+            </svg> */}
+                Eliminar
+              </Button>
               <Link to="/prospectos">
                 <Button>
                   {/* <svg
@@ -314,9 +329,24 @@ const Detail = () => {
               </Link>
             </div>
           ) : (
-            <Link to="/clientes">
-              <Button>
+            <div>
+              <Button onClick={handleDelete} className="botonesiniciosesion">
                 {/* <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1.2em"
+              height="1.2em"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="black"
+                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
+              ></path>
+            </svg> */}
+                Eliminar
+              </Button>
+              <Link to="/clientes">
+                <Button>
+                  {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.2em"
                   height="1.2em"
@@ -331,9 +361,10 @@ const Detail = () => {
                     d="M244 400L100 256l144-144M120 256h292"
                   ></path>
                 </svg> */}
-                Volver
-              </Button>
-            </Link>
+                  Volver
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
         {/* <div className="generardocumento">

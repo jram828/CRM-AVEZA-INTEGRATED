@@ -220,8 +220,8 @@ function DetailCasos() {
   const tipoDescripcion = casoDetail.TipoDeCaso?.descripcion || "";
 
   return (
-    <div className="contenedordetailcaso">
-      <Paper elevation={2} className="detailcaso" sx={{ padding: 2 }}>
+
+      <Paper elevation={2} className="contenedordetailcaso" sx={{ padding: 2, backgroundColor: '#e1eaee' }}>
         <Box className="encabezado" mb={2}>
           <Typography variant="h6" className="titulo">
             Detalles del caso
@@ -667,7 +667,7 @@ function DetailCasos() {
           </Grid>
         </Grid>
       </Paper>
-    </div>
+
   );
 }
 

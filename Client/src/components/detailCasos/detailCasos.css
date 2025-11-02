@@ -1,7 +1,7 @@
 .detailcaso{
    border-radius: 10px;
    font-size: 100%;
-   background-color: white;
+   background-color: #e1eaee;
    width: 100%;
    display:grid;
    grid-template-columns: repeat(1, 1fr);
@@ -14,7 +14,7 @@
 }
 
 .contenedordetailcaso{
-  background-color: white;
+  background-color: #e1eaee;
   opacity: 0.85;
   border-radius: 10px;
   padding: 10px;
@@ -67,7 +67,7 @@
     border-color: black; */
     border-radius: 10px;
     padding: 5px;
-    border-width: 1px;
+    /* border-width: 1px; */
     display: flex;
     flex-direction: row;
     justify-content: flex-start;

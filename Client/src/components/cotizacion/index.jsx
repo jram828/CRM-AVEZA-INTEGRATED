@@ -784,7 +784,7 @@ const Cotizacion = () => {
       className="contenedorcotizacion"
       sx={{
         p: { xs: 2, md: 4 },
-        bgcolor: "background.paper",
+        // bgcolor: "background.paper",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

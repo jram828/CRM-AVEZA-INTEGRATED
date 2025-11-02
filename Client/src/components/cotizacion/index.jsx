@@ -5,6 +5,7 @@ import "../cotizacion/cotizacion.css";
 import { Button } from "../Mystyles.js";
 // import { listaacreedores } from "../../utils/acreedores.js";
 import { generarCotizacion } from "../../handlers/generarCotizacion.jsx";
+import { debounce } from "lodash";
 import {
   buscarAcreedores,
   crearAcreedor,
@@ -49,6 +50,10 @@ const Cotizacion = () => {
   const listaacreedores = useSelector((state) => state.listaacreedores);
   console.log("Caso cotizacion:", caso);
   console.log("Lista acreedores:", listaacreedores);
+
+  const [focusedIndex, setFocusedIndex] = useState(null);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
   // Estado para el modal y los datos del nuevo acreedor
   const [showAcreedorModal, setShowAcreedorModal] = useState(false);
   const [newAcreedor, setNewAcreedor] = useState({
@@ -92,6 +97,10 @@ const Cotizacion = () => {
     dispatch(buscarAcreedores());
   }, [dispatch]);
 
+  // Debounce input value
+
+  // Filtrar acreedores con el valor debounced
+
   // if (caso?.Deuda2s?.length > 0) {
   //   deudasObj = caso.Deuda2s.map((item) => {
   //     const {
@@ -117,6 +126,7 @@ const Cotizacion = () => {
   // } else {
   deudasObj = [];
   // }
+
   const propuestasObj = [];
 
   const initDeuda = {
@@ -248,6 +258,7 @@ const Cotizacion = () => {
   const [showBienesModal, setShowBienesModal] = useState(false);
   const [showHonorariosModal, setShowHonorariosModal] = useState(false);
   const [showIngresosModal, setShowIngresosModal] = useState(false);
+  const [deleteDeudas, setDeleteDeudas] = useState(false);
   const [resultadosCotizacion, setResultadosCotizacion] = useState(
     initResultadosCotizacion
   );
@@ -477,7 +488,6 @@ const Cotizacion = () => {
   const [planpagos, setPlanPagos] = useState([]);
   const [planpagosUnificado, setPlanPagosUnificado] = useState([]);
 
-  
   const handleHonorarioChange = (e) => {
     const target = e?.target || {};
     const name = target.name;
@@ -621,6 +631,7 @@ const Cotizacion = () => {
       crearDeudas({
         deudas: deudasFiltradas,
         cedulaProspecto: prospecto.cedulaProspecto,
+        deleteDeudas: deleteDeudas,
       })
     );
     dispatch(
@@ -629,6 +640,7 @@ const Cotizacion = () => {
         cedulaProspecto: prospecto.cedulaProspecto,
         totalDeudas: resultadosCotizacion.totalDeudas,
         totalBienes: resultadosCotizacion.totalBienes,
+        deleteDeudas: deleteDeudas,
       })
     );
     // console.log("Datos cotizacion:", datoscotizacion);
@@ -722,10 +734,12 @@ const Cotizacion = () => {
       // console.log("Tasa:", tasa);
       // console.log("Cuotas:", cuotas);
       updatedData[tipo].valorCuota =
-        cuotas > 0 && tasa>0
+        cuotas > 0 && tasa > 0
           ? Math.round(totalPorTipo * (tasa / 100)) /
             (1 - Math.pow(1 + tasa / 100, -cuotas))
-          : cuotas > 0 && tasa===0?(totalPorTipo / cuotas):0;
+          : cuotas > 0 && tasa === 0
+          ? totalPorTipo / cuotas
+          : 0;
     }
     // Calcular la suma de cuotas y valorCuota
     let totalCuotas = 0;
@@ -835,7 +849,7 @@ const Cotizacion = () => {
                     spacing={1}
                     key={tipoKey}
                     alignItems="center"
-                    sx={{ mt: 4, mb: 2 }}
+                    sx={{ mt: 1, mb: 2 }}
                   >
                     <Grid item xs={12} sm={3} sx={{ minWidth: 180 }}>
                       <Typography>{tipoKey}</Typography>
@@ -953,7 +967,21 @@ const Cotizacion = () => {
               <Typography variant="subtitle1" gutterBottom>
                 Deudas
               </Typography>
-
+              <FormControlLabel
+                label="Sobre escribir deudas si ya existen"
+                labelPlacement="start"
+                control={
+                  <input
+                    type="checkbox"
+                    name="deleteDeudas"
+                    checked={!!deleteDeudas}
+                    onChange={(e) =>
+                      setDeleteDeudas && setDeleteDeudas(e.target.checked)
+                    }
+                    aria-label="delete-deudas-checkbox"
+                  />
+                }
+              />
               {(deudas.length > 0
                 ? deudas
                 : [
@@ -971,7 +999,7 @@ const Cotizacion = () => {
                   spacing={3}
                   key={`deuda-mui-${index}`}
                   alignItems="center"
-                  sx={{ mb: 1 }}
+                  sx={{ mt: 1, mb: 2 }}
                 >
                   <Grid item xs={12} sx={{ minWidth: 180 }}>
                     <FormControl fullWidth size="small">
@@ -997,6 +1025,7 @@ const Cotizacion = () => {
 
                   <Grid item xs={12} sm={4}>
                     {/* Autocomplete para acreedor, mantiene búsqueda y permite crear */}
+
                     <Autocomplete
                       freeSolo
                       fullWidth
@@ -1036,16 +1065,16 @@ const Cotizacion = () => {
                           placeholder="Buscar Acreedor..."
                           fullWidth
                           sx={{ minWidth: 240 }}
+                          onFocus={() => setFocusedIndex(index)}
+                          onBlur={() => setFocusedIndex(null)}
                         />
                       )}
                     />
 
-                    {/* Si no hay coincidencias y el input está enfocado en la última fila,
-                        mostrar opción para crear acreedor (conservar comportamiento anterior) */}
+                    {/* Si no hay coincidencias y el input está enfocado, mostrar opción para crear acreedor */}
                     {acreedorFilt.length === 0 &&
-                      typeof document !== "undefined" &&
-                      document.activeElement?.id === `acreedor-${index}` &&
-                      index === deudas.length - 1 && (
+                      focusedIndex === index &&
+                      deuda.acreedor && (
                         <Box
                           sx={{
                             mt: 1,

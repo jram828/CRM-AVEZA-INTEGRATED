@@ -101,11 +101,11 @@ const finCasoHandler = async (req, res) => {
 };
 
 const createDeudasHandler = async (req, res) => {
-  const { deudas, cedulaProspecto } = req.body;
+  const { deudas, cedulaProspecto, deleteDeudas } = req.body;
   console.log("body handler crear deudas:", req.body);
 
   try {
-    const response = await createDeudas(deudas, cedulaProspecto);
+    const response = await createDeudas(deudas, cedulaProspecto, deleteDeudas);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -222,7 +222,7 @@ const postActualizaCasoCotizacion = async (req, res) => {
 };
 
 const postHonorariosHandler = async (req, res) => {
-  const { cedulaProspecto, honorarios, totalDeudas } = req.body;
+  const { cedulaProspecto, honorarios, totalDeudas,deleteDeudas } = req.body;
 
   const {
     inicial,
@@ -241,7 +241,8 @@ const postHonorariosHandler = async (req, res) => {
       valorHonorarios,
       valorRadicar,
       honorariosLiquidacion,
-      totalDeudas
+      totalDeudas,
+      deleteDeudas
     );
     res.status(200).json(response);
   } catch (error) {

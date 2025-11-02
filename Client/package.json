@@ -47,6 +47,7 @@
     "jszip": "^2.7.0",
     "jszip-utils": "^0.1.0",
     "jwt-decode": "^4.0.0",
+    "lodash": "^4.17.21",
     "mailparser": "^3.7.4",
     "mammoth": "^1.7.1",
     "mercadopago": "^2.0.15",

@@ -3,6 +3,7 @@ import { getAcreedorById } from "../controllers/acreedor/getAcreedorById.js";
 import { getAllAcreedores } from "../controllers/acreedor/getAllAcreedores.js";
 import { createAcreedor } from "../controllers/acreedor/postAcreedor.js";
 import { actualizaAcreedor } from "../controllers/acreedor/actualizaAcreedor.js";
+import { deleteDuplicatesAcreedor } from "../controllers/acreedor/deleteDuplicatesAcreedor copy.js";
 
 const getAcreedoresHandler = async (req, res) => {
   let response;
@@ -77,6 +78,16 @@ const deleteAcreedorHandler = async (req, res) => {
   }
 };
 
+const deleteDuplicatesAcreedorHandler = async (req, res) => {
+  const { NIT } = req.body;
+  try {
+    const response = await deleteDuplicatesAcreedor(NIT);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const postActualizaAcreedor = async (req, res) => {
   console.log("Body actualiza Acreedor: ", req.body);
   const {
@@ -115,5 +126,6 @@ export {
   getAcreedorDetailHandler,
   postAcreedorHandler,
   deleteAcreedorHandler,
+  deleteDuplicatesAcreedorHandler,
   postActualizaAcreedor,
 };

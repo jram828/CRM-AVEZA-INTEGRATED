@@ -1,21 +1,17 @@
-import  { models }  from "../../DB.js";
+import { models } from "../../DB.js";
 
-const Abogado=models.Abogado
+const deleteAcreedor = async (NIT) => {
+  const Acreedor = models.Acreedor;
 
-const deleteAcreedor = async (cedulaAbogado) => {
-  await Abogado.update(
-    {
-      activo: false,
+  // Borrar definitivamente el acreedor por NIT
+  const deletedCount = await Acreedor.destroy({
+    where: {
+      NIT,
     },
-    {
-      where: {
-        cedulaAbogado: cedulaAbogado,
-      },
-    },
-  );
+  });
+
+  if (deletedCount === 0) return "Acreedor no encontrado";
   return "Delete complete";
 };
 
-export  {
-  deleteAcreedor,
-};
+export { deleteAcreedor };

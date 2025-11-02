@@ -236,9 +236,7 @@ const Cotizacion = () => {
     descripcionBien: "",
   };
 
-  const initAcreedorFilt = {
-    acreedores: [],
-  };
+  const initAcreedorFilt = [];
 
   const [ingreso, setIngreso] = useState(initIngreso);
   const [ingresos, setIngresos] = useState(ingresosObj);
@@ -1066,7 +1064,7 @@ const Cotizacion = () => {
                           fullWidth
                           sx={{ minWidth: 240 }}
                           onFocus={() => setFocusedIndex(index)}
-                          onBlur={() => setFocusedIndex(null)}
+                          onBlur={() => setTimeout(() => setFocusedIndex(null), 150)}
                         />
                       )}
                     />
@@ -1088,6 +1086,7 @@ const Cotizacion = () => {
                           </Typography>
                           <MUIButton
                             size="small"
+                            type="button"
                             variant="outlined"
                             onClick={() => {
                               // pre-llenar nombre del nuevo acreedor con lo escrito

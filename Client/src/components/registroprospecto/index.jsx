@@ -306,11 +306,12 @@ const RegistroProspecto = () => {
                   ...prev,
                   nombre_ciudad: value,
                 }));
-              }}
-              onChange={(_event, value) => {
+                }}
+                onChange={(_event, value) => {
+                const nombre = value ? String(value).split(",")[0].trim() : "";
                 setUserDataRegistro((prev) => ({
                   ...prev,
-                  nombre_ciudad: value || "",
+                  nombre_ciudad: nombre,
                 }));
 
                 const ciudadObj = ciudadOpciones.find(

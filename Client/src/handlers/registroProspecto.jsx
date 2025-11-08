@@ -8,7 +8,7 @@ export async function registroProspecto(userDataRegistro) {
     cedulaProspecto,
     celular,
     direccion,
-    nombre_ciudad,
+    nombreEnviar,
     tipo_usuario,
     tipo_de_caso,
     forma_de_pago,
@@ -18,7 +18,7 @@ export async function registroProspecto(userDataRegistro) {
     valor_pretensiones,
   } = userDataRegistro;
 
-  // console.log("User data registro:", userDataRegistro);
+  console.log("User data registro:", userDataRegistro);
   
   const URL = "/prospectos/registroprospecto";
   try {
@@ -30,7 +30,7 @@ export async function registroProspecto(userDataRegistro) {
       cedulaProspecto: `${cedulaProspecto}`,
       celular: `${celular}`,
       direccion: `${direccion}`,
-      nombre_ciudad: `${nombre_ciudad}`,
+      nombre_ciudad: `${nombreEnviar}`,
       tipo_usuario: `${tipo_usuario}`,
       tipo_de_caso: `${tipo_de_caso}`,
       forma_de_pago: `${forma_de_pago}`,

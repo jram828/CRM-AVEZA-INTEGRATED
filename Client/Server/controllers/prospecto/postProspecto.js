@@ -20,7 +20,7 @@ const postProspecto = async (req, res) => {
     comentarios,
     valor_pretensiones,
   } = req.body;
-
+ console.log("Nombre ciudad recibido:", nombre_ciudad);
   const ciudadfilter = codigoCiudades.filter(
     (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
   );

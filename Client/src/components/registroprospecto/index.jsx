@@ -34,6 +34,7 @@ const RegistroProspecto = () => {
     cuotas: "",
     comentarios: "",
     valor_pretensiones: "",
+    nombreEnviar: "",
   });
 
   const [ciudadFilt, setCiudadFilt] = useState([]);
@@ -98,13 +99,13 @@ const RegistroProspecto = () => {
 
     // Si necesitas enviar el objeto completo de la ciudad:
     const ciudadObj = codigoCiudades.find(
-      (c) => c.nombre_ciudad === userDataRegistro.nombre_ciudad
+      (c) => c.nombre_ciudad === userDataRegistro.nombreEnviar
     );
-
+ console.log("Ciudad objeto a enviar:", ciudadObj);
     try {
       await registroProspecto({
         ...userDataRegistro,
-        codigo_ciudad: ciudadObj?.codigo_ciudad || null,
+        codigo_ciudad: ciudadObj?.codigo_ciudad|| null,
         codigo_departamento: ciudadObj?.codigo_departamento || null,
       });
       navigate("/Prospectos");
@@ -149,7 +150,8 @@ const RegistroProspecto = () => {
     return ciudadNombres.filter((nombre) => nombre.includes(input));
   }, [userDataRegistro.nombre_ciudad, ciudadNombres]);
 
-  console.log("Input actual:", userDataRegistro.nombre_ciudad);
+  console.log("Input actual:", userDataRegistro);
+  console.log("ciudad seleccionada:", ciudadSeleccionada);
   return (
     // <Container maxWidth="md" sx={{ mt: 4 }}>
     //   <Paper
@@ -311,7 +313,7 @@ const RegistroProspecto = () => {
                 const nombre = value ? String(value).split(",")[0].trim() : "";
                 setUserDataRegistro((prev) => ({
                   ...prev,
-                  nombre_ciudad: nombre,
+                  nombreEnviar: nombre,
                 }));
 
                 const ciudadObj = ciudadOpciones.find(

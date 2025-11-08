@@ -44,7 +44,7 @@ export const buscarCorreos = async () => {
     console.log(`🟢 Se encontraron ${messages.length} correos filtrados.`);
 
     for (const message of messages) {
-      console.log("🧩 Estructura completa del mensaje:", JSON.stringify(message, null, 2));
+      // console.log("🧩 Estructura completa del mensaje:", JSON.stringify(message, null, 2));
 
       const obtenerContenidoPlano = (parts) => {
         for (const part of parts) {

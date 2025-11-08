@@ -71,7 +71,7 @@ const getProspectoByEmailHandler = async (req, res) => {
 };
 
 const postProspectosHandler = async (req, res) => {
-  console.log("Body post prospecto handler:", req.body);
+  // console.log("Body post prospecto handler:", req.body);
   const {
     email,
     nombres,

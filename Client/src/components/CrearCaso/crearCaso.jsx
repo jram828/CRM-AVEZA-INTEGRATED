@@ -4,10 +4,20 @@ import { getAbogados } from "../../handlers/todosAbogados";
 import { getClientesCasos } from "../../handlers/todosClientes";
 import "./crearCaso.css";
 import { Link } from "react-router-dom";
-
 import { getTiposCasos } from "../../handlers/todosTiposdecasos";
-import { Button } from "../Mystyles";
 import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Autocomplete,
+  Grid,
+  Typography,
+  Button,
+  Box,
+} from "@mui/material";
 
 function CrearCaso() {
   const [userDataRegistro, setUserDataRegistro] = useState({
@@ -25,10 +35,11 @@ function CrearCaso() {
     radicado: "",
     juzgado: "",
   });
-  // console.log(userDataRegistro);
 
-  const [clientesFilt, setClientesFilt] = useState([]);
+  const [clientes, setClientes] = useState([]);
   const [abogados, setAbogados] = useState([]);
+  const [tipos, setTipos] = useState({ allTipoDeCaso: [] });
+  const [selectedClient, setSelectedClient] = useState(null);
 
   const navigate = useNavigate();
 
@@ -45,15 +56,11 @@ function CrearCaso() {
     obtenerAbogados();
   }, []);
 
-  // console.log("abogados", abogados);
-
-  const [clientes, setClientes] = useState([]);
-
   useEffect(() => {
     const obtenerClientes = async () => {
       try {
         const listaClientes = await getClientesCasos();
-        setClientes(listaClientes);
+        setClientes(listaClientes || []);
       } catch (error) {
         console.error("Error al obtener los clientes:", error);
       }
@@ -61,8 +68,6 @@ function CrearCaso() {
 
     obtenerClientes();
   }, []);
-
-  const [tipos, setTipos] = useState({ allTipoDeCaso: [] });
 
   useEffect(() => {
     const obtenerTipos = async () => {
@@ -91,297 +96,282 @@ function CrearCaso() {
       [name]: value,
     }));
   };
-  const handleClienteChange = (e) => {
-    const { value } = e.target;
 
-    const foundCliente = clientes.filter((cliente) =>
-          cliente.apellidos.toLowerCase().includes(value.toLowerCase())
-        );
-        console.log("Clientes encontrados:", foundCliente);
-        setClientesFilt(foundCliente.sort((a, b) => a.nombres.localeCompare(b.nombres)));
-  };  
-
-        
   const submitHandlerRegistro = async (e) => {
     e.preventDefault();
     try {
       await postCaso(userDataRegistro);
-
-      // if (userDataRegistro.TipoDeCasoid === "1") {
-      //   const isConfirmed = window.confirm(
-      //     "¿Desea ingresar los datos para la solicitud de insolvencia?"
-      //   );
-
-      //   if (isConfirmed) {
-      //     // dispatch(deleteCaso(id));
-      //     // dispatch(getCasos());
-      //     // console.log("id", id);
-      //     navigate("/insolvencia");
-      //   }
-      // } else {
-      //   navigate("/casos");
-      // }
-      // window.alert("Caso creado con éxito");
       navigate("/casos");
     } catch (error) {
       console.error("Error al crear el caso:", error.message);
       window.alert("No se pudo crear el caso");
     }
   };
-
-  // console.log('Tipos de caso:', tipos)
+  console.log("userDataRegistro:", userDataRegistro);
   return (
-    <div className="contenedorcrearcaso">
-      <div className="encabezado">
-        <h1 className="titulo">Crear caso</h1>
-      </div>
-      <form onSubmit={submitHandlerRegistro} className="datoscrearcaso">
-        <div className="inputcrearcaso">
-          <label htmlFor="TipoDeCasoid" className="labelcrearcaso">
-            Selecciona el tipo de caso:
-          </label>
-          <select
-            name="TipoDeCasoid"
-            id="TipoDeCasoid"
-            className="cajacrearcaso"
-            onChange={(event) => handleChangeRegistro(event)}
-          >
-            <option value="" className="tipodecaso">
-              Tipo de caso
-            </option>
-            {tipos.allTipoDeCaso.map((tipo) => (
-              <option
-                key={tipo.TipoDeCasoid}
-                value={tipo.TipoDeCasoid}
-                className="opcionestipodecaso"
+    <Box className="contenedorcrearcaso" sx={{ p: 2 }}>
+      <Box className="encabezado" sx={{ mb: 2 }}>
+        <Typography variant="h4" className="titulo">
+          Crear caso
+        </Typography>
+      </Box>
+
+      <form
+        onSubmit={submitHandlerRegistro}
+        className="datoscrearcaso"
+        noValidate
+      >
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Grid item xs={12} md={6} sx={{ display: "flex", gap: 2, mt: 2 }}>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <FormControl variant="outlined">
+                <InputLabel id="tipo-caso-label">Tipo de caso</InputLabel>
+                <Select
+                  labelId="tipo-caso-label"
+                  name="TipoDeCasoid"
+                  id="TipoDeCasoid"
+                  value={userDataRegistro.TipoDeCasoid}
+                  onChange={handleChangeRegistro}
+                  label="Tipo de caso"
+                  sx={{ bgcolor: "#fff", minWidth: "300px" }}
+                >
+                  <MenuItem value="">
+                    <em>Tipo de caso</em>
+                  </MenuItem>
+                  {tipos.allTipoDeCaso.map((tipo) => (
+                    <MenuItem key={tipo.TipoDeCasoid} value={tipo.TipoDeCasoid}>
+                      {tipo.descripcion}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {userDataRegistro.TipoDeCasoid !== 1 && (
+                <Grid item xs={12} md={6} sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}>
+                  <TextField
+                    // fullWidth
+                    margin="normal"
+                    label="Fecha inicio"
+                    type="date"
+                    name="fecha"
+                    value={userDataRegistro.fecha}
+                    onChange={handleChangeRegistro}
+                    InputLabelProps={{ shrink: true }}
+                    sx={{ bgcolor: "#fff", minWidth: "300px" }}
+                  />
+
+                  <TextField
+                    // fullWidth
+                    margin="normal"
+                    label="Fecha final"
+                    type="date"
+                    name="fechaFin"
+                    value={userDataRegistro.fechaFin}
+                    onChange={handleChangeRegistro}
+                    InputLabelProps={{ shrink: true }}
+                    sx={{ bgcolor: "#fff", minWidth: "300px" }}
+                  />
+                </Grid>
+              )}
+
+              <FormControl margin="normal">
+                <InputLabel id="abogado-label">Abogado</InputLabel>
+                <Select
+                  labelId="abogado-label"
+                  name="cedulaAbogado"
+                  id="cedulaAbogado"
+                  value={userDataRegistro.cedulaAbogado}
+                  onChange={handleChangeRegistro}
+                  label="Abogado"
+                  sx={{ bgcolor: "#fff", minWidth: "300px" }}
+                >
+                  <MenuItem value="">
+                    <em>Abogados</em>
+                  </MenuItem>
+                  {abogados.map((abogado) => (
+                    <MenuItem
+                      key={abogado.cedulaAbogado}
+                      value={abogado.cedulaAbogado}
+                    >
+                      {abogado.nombres} {abogado.apellidos}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {/* Autocomplete para cliente: busca por apellido y al seleccionar asigna cedulaCliente */}
+              <Autocomplete
+                // fullWidth
+                options={clientes}
+                getOptionLabel={(option) =>
+                  option ? `${option.nombres} ${option.apellidos}` : ""
+                }
+                filterOptions={(options, { inputValue }) => {
+                  const filtered = options.filter((c) =>
+                    c.apellidos.toLowerCase().includes(inputValue.toLowerCase())
+                  );
+                  return filtered.sort((a, b) =>
+                    a.nombres.localeCompare(b.nombres)
+                  );
+                }}
+                onChange={(e, newValue) => {
+                  setSelectedClient(newValue);
+                  setUserDataRegistro((prev) => ({
+                    ...prev,
+                    cedulaCliente: newValue ? newValue.cedulaCliente : "",
+                  }));
+                }}
+                
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Buscar cliente por apellido..."
+                    placeholder="Buscar por apellido..."
+                    margin="normal"
+                    sx={{ bgcolor: "#fff", minWidth: "300px" }}
+                  />
+                )}
+                value={selectedClient}
+                isOptionEqualToValue={(option, value) =>
+                  option &&
+                  value &&
+                  option.cedulaCliente === value.cedulaCliente
+                }
+              />
+              <TextField
+                // fullWidth
+                margin="normal"
+                label="Descripción"
+                name="descripcion"
+                value={userDataRegistro.descripcion}
+                onChange={handleChangeRegistro}
+                multiline
+                rows={6}
+                sx={{ bgcolor: "#fff", minWidth: "300px" }}
+              />
+            </Grid>
+
+            {userDataRegistro.TipoDeCasoid !== 1 && (
+              <Grid
+                item
+                xs={12}
+                md={6}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "flex-start"
+                }}
               >
-                {tipo.descripcion}
-              </option>
-            ))}
-          </select>
-          {userDataRegistro.TipoDeCasoid === 1 && (
-            <>
-              <label htmlFor="numerocedula" className="labelcrearcaso">
-                Valor pretensiones:
-              </label>
-              <input
-                type="number"
-                className="cajacrearcaso"
-                name="valor_pretensiones"
-                id="valorpretensiones"
-                value={userDataRegistro.valor_pretensiones}
-                onChange={handleChangeRegistro}
-              />
-            </>
-          )}
-        </div>
-        {userDataRegistro.TipoDeCasoid === 1 && (
-          <>
-            <div className="inputcrearcaso">
-              <label htmlFor="fecha" className="labelcrearcaso">
-                Fecha inicio:
-              </label>
-              <input
-                className="cajacrearcaso"
-                name="fecha"
-                id="fecha"
-                type="date"
-                value={userDataRegistro.fecha}
-                onChange={handleChangeRegistro}
-              />
-              <label htmlFor="honorarios" className="labelcrearcaso">
-                Honorarios:
-              </label>
-              <input
-                type="number"
-                className="cajacrearcaso"
-                name="honorarios"
-                id="honorarios"
-                value={userDataRegistro.honorarios}
-                onChange={handleChangeRegistro}
-              />
-            </div>
-
-            <div className="inputcrearcaso">
-              <label htmlFor="fechaFin" className="labelcrearcaso">
-                Fecha final:
-              </label>
-              <input
-                className="cajacrearcaso"
-                name="fechaFin"
-                id="fechaFin"
-                type="date"
-                value={userDataRegistro.fechaFin}
-                onChange={handleChangeRegistro}
-              />
-              <label htmlFor="tipodeusuario" className="labelcrearcaso">
-                Forma de pago:
-              </label>
-              <select
-                className="cajacrearcaso"
-                name="forma_de_pago"
-                id="idusuario"
-                onChange={handleChangeRegistro}
-                value={userDataRegistro.forma_de_pago}
-              >
-                <option value="">Elija una opcion</option>
-                <option value="Contado">Contado</option>
-                <option value="Crédito">Crédito</option>
-              </select>
-            </div>
-          </>
-        )}
-
-        <div className="inputcrearcaso">
-          <label htmlFor="Abogado" className="labelcrearcaso">
-            Selecciona el abogado:
-          </label>
-          <select
-            name="cedulaAbogado"
-            id="cedulaAbogado"
-            className="cajacrearcaso"
-            onChange={(event) => handleChangeRegistro(event)}
-          >
-            <option value="" className="tipodecaso">
-              Abogados
-            </option>
-            {abogados.map((abogado) => (
-              <option
-                key={abogado.cedulaAbogado}
-                value={abogado.cedulaAbogado}
-                className="opcionestipodecaso"
-              >
-                {abogado.nombres} {abogado.apellidos}
-              </option>
-            ))}
-          </select>
-          {userDataRegistro.TipoDeCasoid === 1 && (
-            <>
-              <label htmlFor="cuotas" className="labelcrearcaso">
-                Numero de cuotas:
-              </label>
-              <input
-                type="number"
-                className="cajacrearcaso"
-                name="cuotas"
-                id="cuotas"
-                value={userDataRegistro.cuotas}
-                onChange={handleChangeRegistro}
-              />
-            </>
-          )}
-        </div>
-
-        <div className="inputcrearcaso">
-          <label htmlFor="cedulaCliente" className="labelcrearcaso">
-            Selecciona el cliente:
-          </label>
-          <div className="buscarcliente">  
-          {clientesFilt.length > 0 && (
-          <select
-            name="cedulaCliente"
-            id="cedulaCliente"
-            onChange={handleChangeRegistro}
-            className="opcionestipodecaso"
-          >
-            <option value="" className="clientes">
-              Clientes
-            </option>
-            {clientesFilt.map((cliente) => (
-              <option
-                key={cliente.cedulaCliente}
-                value={cliente.cedulaCliente}
-                className="opcionestipodecaso"
-              >
-                {cliente.nombres} {cliente.apellidos}
-              </option>
-            ))}
-          </select>
-          )}
-          <input
-              type="text"
-              // value={cliente.cedulaCliente}
-              name="cliente"
-              id="buscarCliente"
-              className="cajacrearcaso"
-              placeholder="Buscar por apellido..."
-              onChange={(event) => handleClienteChange(event)}
-            />
-            </div> 
-          {userDataRegistro.TipoDeCasoid === 1 && (
-            <>
-              <label htmlFor="radicado" className="labelcrearcaso">
-                N° Radicado juzgado:
-              </label>
-              <input
-                type="number"
-                className="cajacrearcaso"
-                name="radicado"
-                id="radicado"
-                value={userDataRegistro.radicado}
-                onChange={handleChangeRegistro}
-              />
-            </>
-          )}
-        </div>
-
-        <div className="inputcrearcaso">
-          <label htmlFor="descripcion" className="labelcrearcaso">
-            Descripción
-          </label>
-          <textarea
-            // className="cajacrearcaso"
-            name="descripcion"
-            id="descripcion"
-            value={userDataRegistro.descripcion}
-            onChange={handleChangeRegistro}
-            placeholder="Descripción"
-            cols="160"
-            rows="8"
-            className="textareacrear"
-          ></textarea>
-          {userDataRegistro.TipoDeCasoid === 1 && (
-            <>
-              <label htmlFor="juzgado" className="labelcrearcaso">
-                Nombre juzgado:
-              </label>
-              <input
-                type="text"
-                className="cajacrearcaso"
-                name="juzgado"
-                id="juzgado"
-                value={userDataRegistro.juzgado}
-                onChange={handleChangeRegistro}
-              />
-            </>
-          )}
-          {userDataRegistro.TipoDeCasoid === 1 && (
-            <>
-              <label htmlFor="cuotas" className="labelcrearcaso">
-                Porcentaje cuota inicial:
-              </label>
-              <input
-                type="number"
-                className="cajacrearcaso"
-                name="porcentajeInicial"
-                id="porcentajeInicial"
-                value={userDataRegistro.porcentajeInicial}
-                onChange={handleChangeRegistro}
-              />
-            </>
-          )}
-        </div>
-
-        <div className="botonescrearcaso">
-          <Button type="submit" value="Guardar">
-            Guardar
-          </Button>
-          <Link to="/casos">
-            <Button>Volver</Button>
-          </Link>
-        </div>
+                <TextField
+                  // fullWidth
+                  // margin="normal"
+                  label="Valor pretensiones"
+                  type="number"
+                  name="valor_pretensiones"
+                  value={userDataRegistro.valor_pretensiones}
+                  onChange={handleChangeRegistro}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
+                />
+                <TextField
+                  // fullWidth
+                  margin="normal"
+                  label="Honorarios"
+                  type="number"
+                  name="honorarios"
+                  value={userDataRegistro.honorarios}
+                  onChange={handleChangeRegistro}
+                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                />
+                <FormControl margin="normal">
+                  <InputLabel id="forma-pago-label">Forma de pago</InputLabel>
+                  <Select
+                    labelId="forma-pago-label"
+                    name="forma_de_pago"
+                    value={userDataRegistro.forma_de_pago}
+                    onChange={handleChangeRegistro}
+                    label="Forma de pago"
+                    sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                  >
+                    <MenuItem value="">
+                      <em>Elija una opción</em>
+                    </MenuItem>
+                    <MenuItem value="Contado">Contado</MenuItem>
+                    <MenuItem value="Crédito">Crédito</MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField
+                  // fullWidth
+                  margin="normal"
+                  label="Numero de cuotas"
+                  type="number"
+                  name="cuotas"
+                  value={userDataRegistro.cuotas}
+                  onChange={handleChangeRegistro}
+                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                />
+                <TextField
+                  // fullWidth
+                  margin="normal"
+                  label="Porcentaje cuota inicial"
+                  type="number"
+                  name="porcentajeInicial"
+                  value={userDataRegistro.porcentajeInicial}
+                  onChange={handleChangeRegistro}
+                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                />
+                <TextField
+                  // fullWidth
+                  margin="normal"
+                  label="Nombre juzgado"
+                  name="juzgado"
+                  value={userDataRegistro.juzgado}
+                  onChange={handleChangeRegistro}
+                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                />
+                <TextField
+                  // fullWidth
+                  margin="normal"
+                  label="N° Radicado juzgado"
+                  type="number"
+                  name="radicado"
+                  value={userDataRegistro.radicado}
+                  onChange={handleChangeRegistro}
+                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                />
+              </Grid>
+            )}
+          </Grid>
+          <Grid item xs={12} sx={{ display: "flex", gap: 2, mt: 2 }}>
+            <Button variant="contained" color="primary" type="submit">
+              Guardar
+            </Button>
+            <Link to="/casos" style={{ textDecoration: "none" }}>
+              <Button variant="outlined">Volver</Button>
+            </Link>
+          </Grid>
+        </Grid>
       </form>
-    </div>
+    </Box>
   );
 }
 

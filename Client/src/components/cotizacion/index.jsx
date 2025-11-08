@@ -1,5 +1,5 @@
 import "../../App.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../cotizacion/cotizacion.css";
 import { Button } from "../Mystyles.js";
@@ -486,6 +486,9 @@ const Cotizacion = () => {
   const [planpagos, setPlanPagos] = useState([]);
   const [planpagosUnificado, setPlanPagosUnificado] = useState([]);
 
+  // Debounced generator to avoid heavy sync recalculations on every keystroke
+  const generatePlansDebouncedRef = useRef(null);
+
   const handleHonorarioChange = (e) => {
     const target = e?.target || {};
     const name = target.name;
@@ -500,44 +503,65 @@ const Cotizacion = () => {
       [name]: value,
     };
 
+    // actualizar estado inmediatamente (controlado)
     setHonorarios(updatedHonorarios);
     setEditingField(name);
 
-    // Generar plan de pagos si hay los datos mínimos
-    if (
-      updatedHonorarios.valorHonorarios !== "" &&
-      updatedHonorarios.cuotasHonorarios !== "" &&
-      updatedHonorarios.inicial !== ""
-    ) {
-      const nuevoPlan = generarPlanPagosHonorarios(
-        updatedHonorarios.valorHonorarios,
-        updatedHonorarios.cuotasHonorarios,
-        updatedHonorarios.inicial,
-        !!updatedHonorarios.cuota6,
-        !!updatedHonorarios.cuota12
-      );
-      setPlanPagos(nuevoPlan);
-    } else {
-      setPlanPagos([]);
+    // inicializar el debounced si no existe
+    if (!generatePlansDebouncedRef.current) {
+      generatePlansDebouncedRef.current = debounce((hon) => {
+        // Generar plan de pagos si hay los datos mínimos
+        if (
+          hon.valorHonorarios !== "" &&
+          hon.cuotasHonorarios !== "" &&
+          hon.inicial !== ""
+        ) {
+          const nuevoPlan = generarPlanPagosHonorarios(
+            Number(hon.valorHonorarios),
+            Number(hon.cuotasHonorarios),
+            Number(hon.inicial),
+            !!hon.cuota6,
+            !!hon.cuota12
+          );
+          setPlanPagos(nuevoPlan);
+        } else {
+          setPlanPagos([]);
+        }
+
+        if (
+          hon.valorHonorariosUnificado !== "" &&
+          hon.cuotasHonorariosUnificado !== "" &&
+          hon.inicial !== ""
+        ) {
+          const nuevoPlanUnificado = generarPlanPagosHonorarios(
+            Number(hon.valorHonorariosUnificado),
+            Number(hon.cuotasHonorariosUnificado),
+            Number(hon.inicial),
+            !!hon.cuota6,
+            !!hon.cuota12
+          );
+          setPlanPagosUnificado(nuevoPlanUnificado);
+        } else {
+          setPlanPagosUnificado([]);
+        }
+      }, 1200); // ajustar delay según necesidad
     }
 
-    if (
-      updatedHonorarios.valorHonorariosUnificado !== "" &&
-      updatedHonorarios.cuotasHonorariosUnificado !== "" &&
-      updatedHonorarios.inicial !== ""
-    ) {
-      const nuevoPlanUnificado = generarPlanPagosHonorarios(
-        updatedHonorarios.valorHonorariosUnificado,
-        updatedHonorarios.cuotasHonorariosUnificado,
-        updatedHonorarios.inicial,
-        !!updatedHonorarios.cuota6,
-        !!updatedHonorarios.cuota12
-      );
-      setPlanPagosUnificado(nuevoPlanUnificado);
-    } else {
-      setPlanPagosUnificado([]);
-    }
+    // Llamar al debounced con la versión actualizada del objeto
+    generatePlansDebouncedRef.current(updatedHonorarios);
   };
+
+  // cleanup al desmontar para cancelar debounce y evitar work pendientes
+  useEffect(() => {
+    return () => {
+      if (
+        generatePlansDebouncedRef.current &&
+        generatePlansDebouncedRef.current.cancel
+      ) {
+        generatePlansDebouncedRef.current.cancel();
+      }
+    };
+  }, []);
 
   const handleGastoChange = (e) => {
     setGasto({
@@ -837,7 +861,6 @@ const Cotizacion = () => {
             <Typography variant="subtitle1" gutterBottom>
               Propuesta de pago
             </Typography>
-
             {/* Propuestas: iterate totalesPorTipo if present */}
             {resultadosCotizacion.totalesPorTipo &&
               Object.keys(resultadosCotizacion.totalesPorTipo).map(
@@ -1064,7 +1087,9 @@ const Cotizacion = () => {
                           fullWidth
                           sx={{ minWidth: 240 }}
                           onFocus={() => setFocusedIndex(index)}
-                          onBlur={() => setTimeout(() => setFocusedIndex(null), 150)}
+                          onBlur={() =>
+                            setTimeout(() => setFocusedIndex(null), 150)
+                          }
                         />
                       )}
                     />
@@ -1167,304 +1192,349 @@ const Cotizacion = () => {
       </Grid>
 
       {/* DIALOG: Bienes */}
-      <Dialog
-        open={showBienesModal}
-        onClose={closeBienesModal}
-        fullWidth
-        maxWidth="md"
-      >
-        <DialogTitle>
-          Bienes
-          <IconButton
-            aria-label="close"
-            onClick={closeBienesModal}
-            sx={{ position: "absolute", right: 8, top: 8 }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent dividers>
-          <Grid container spacing={2}>
-            {bienes.map((bienItem, idx) => (
-              <Grid item xs={12} sm={6} key={`bien-mui-${idx}`}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  label="Tipo de bien"
-                  name="tipoBien"
-                  value={bienItem.tipoBien}
-                  onChange={(e) => handleBienChange(idx, e)}
-                />
-                <Box mt={1}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    label="Valor comercial"
-                    name="valor"
-                    value={bienItem.valor}
-                    onChange={(e) => handleBienChange(idx, e)}
-                    onKeyDown={(e) => handleKeyPress(e, idx)}
-                  />
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
+        <Dialog
+          open={showBienesModal}
+          onClose={closeBienesModal}
+          fullWidth
+          maxWidth="md"
+        >
+          <DialogTitle>
+            Bienes
+            <IconButton
+          aria-label="close"
+          onClick={closeBienesModal}
+          sx={{ position: "absolute", right: 8, top: 8 }}
+            >
+          <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent dividers>
+            <Grid container spacing={2}>
+          {bienes.map((bienItem, idx) => (
+            <Grid item xs={12} sm={6} key={`bien-mui-${idx}`}>
+              <TextField
+            fullWidth
+            size="small"
+            label="Tipo de bien"
+            name="tipoBien"
+            value={bienItem.tipoBien}
+            onChange={(e) => handleBienChange(idx, e)}
+              />
+              <Box mt={1}>
+            <TextField
+              fullWidth
+              size="small"
+              label="Valor comercial"
+              name="valor"
+              value={bienItem.valor}
+              onChange={(e) => handleBienChange(idx, e)}
+              onKeyDown={(e) => handleKeyPress(e, idx)}
+            />
+              </Box>
+            </Grid>
+          ))}
+            </Grid>
 
-          <Box
-            mt={2}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography>
-              Total Bienes: {formatNumero(resultadosCotizacion.totalBienes)}
-            </Typography>
-            <Box>
-              <FormControl component="fieldset" sx={{ mr: 2 }}>
-                <InputLabel shrink>Sujeto a registro?</InputLabel>
-                <Box mt={1} display="flex" gap={1}>
-                  <MUIButton
-                    size="small"
-                    variant={
-                      resultadosCotizacion.sujetoRegistro === "si"
-                        ? "contained"
-                        : "outlined"
-                    }
-                    onClick={() =>
-                      handleSujetoChange({
-                        target: { value: "si" },
-                        preventDefault: () => {},
-                      })
-                    }
-                  >
-                    Sí
-                  </MUIButton>
-                  <MUIButton
-                    size="small"
-                    variant={
-                      resultadosCotizacion.sujetoRegistro === "no"
-                        ? "contained"
-                        : "outlined"
-                    }
-                    onClick={() =>
-                      handleSujetoChange({
-                        target: { value: "no" },
-                        preventDefault: () => {},
-                      })
-                    }
-                  >
-                    No
-                  </MUIButton>
-                </Box>
-              </FormControl>
+            <Box
+          mt={2}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+            >
+          <Typography>
+            Total Bienes: {formatNumero(resultadosCotizacion.totalBienes)}
+          </Typography>
+          <Box>
+            <FormControl component="fieldset" sx={{ mr: 2 }}>
+              <InputLabel shrink>Sujeto a registro?</InputLabel>
+              <Box mt={1} display="flex" gap={1}>
+            <MUIButton
+              size="small"
+              variant={
+          resultadosCotizacion.sujetoRegistro === "si"
+              ? "contained"
+              : "outlined"
+              }
+              onClick={() =>
+          handleSujetoChange({
+              target: { value: "si" },
+              preventDefault: () => {},
+          })
+              }
+            >
+              Sí
+            </MUIButton>
+            <MUIButton
+              size="small"
+              variant={
+          resultadosCotizacion.sujetoRegistro === "no"
+              ? "contained"
+              : "outlined"
+              }
+              onClick={() =>
+          handleSujetoChange({
+              target: { value: "no" },
+              preventDefault: () => {},
+          })
+              }
+            >
+              No
+            </MUIButton>
+              </Box>
+            </FormControl>
 
-              <MUIButton
-                sx={{ ml: 1 }}
-                onClick={handleAddBien}
-                variant="outlined"
-              >
-                Agregar bien
-              </MUIButton>
-            </Box>
+            <MUIButton
+              sx={{ ml: 1 }}
+              onClick={handleAddBien}
+              variant="outlined"
+            >
+              Agregar bien
+            </MUIButton>
           </Box>
-        </DialogContent>
-      </Dialog>
-      <Dialog
-        open={showHonorariosModal}
-        onClose={closeHonorariosModal}
-        fullWidth
-        maxWidth="md"
-      >
-        <DialogTitle>
-          Honorarios
-          <IconButton
-            aria-label="close"
-            onClick={closeHonorariosModal}
-            sx={{ position: "absolute", right: 8, top: 8 }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+            </Box>
+          </DialogContent>
+        </Dialog>
+        <Dialog
+          open={showHonorariosModal}
+          onClose={closeHonorariosModal}
+          fullWidth
+          maxWidth="md"
+        >
+          <DialogTitle>
+            Honorarios
+            <IconButton
+          aria-label="close"
+          onClick={closeHonorariosModal}
+          sx={{ position: "absolute", right: 8, top: 8 }}
+            >
+          <CloseIcon />
+            </IconButton>
+          </DialogTitle>
 
-        <DialogContent dividers>
-          <Grid container spacing={2} sx={{ flexDirection: "column" }}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Valor"
-                width="180px"
-                size="small"
-                type="number"
-                name="valorHonorarios"
-                value={honorarios.valorHonorarios}
-                onChange={handleHonorarioChange}
-                onKeyDown={handleKeyPress}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Cuota inicial"
-                width="180px"
-                size="small"
-                type="number"
-                name="inicial"
-                value={honorarios.inicial}
-                onChange={handleHonorarioChange}
-                onKeyDown={handleKeyPress}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Numero de cuotas"
-                width="180px"
-                size="small"
-                type="number"
-                name="cuotasHonorarios"
-                value={honorarios.cuotasHonorarios}
-                onChange={handleHonorarioChange}
-                onKeyDown={handleKeyPress}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Valor para radicar"
-                width="180px"
-                size="small"
-                type="number"
-                name="valorRadicar"
-                value={honorarios.valorRadicar}
-                onChange={handleHonorarioChange}
-                onKeyDown={handleKeyPress}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Mensualidad liquidación"
-                width="180px"
-                size="small"
-                type="number"
-                name="honorariosLiquidacion"
-                value={honorarios.honorariosLiquidacion}
-                onChange={handleHonorarioChange}
-                onKeyDown={handleKeyPress}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Valor unificado"
-                width="180px"
-                size="small"
-                type="number"
-                name="valorHonorariosUnificado"
-                value={honorarios.valorHonorariosUnificado}
-                onChange={handleHonorarioChange}
-                onKeyDown={handleKeyPress}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Numero de cuotas - Unificado"
-                width="180px"
-                size="small"
-                type="number"
-                name="cuotasHonorariosUnificado"
-                value={honorarios.cuotasHonorariosUnificado}
-                onChange={handleHonorarioChange}
-                onKeyDown={handleKeyPress}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <input
-                    type="checkbox"
-                    name="cuota6"
-                    checked={!!honorarios.cuota6}
-                    onChange={handleHonorarioChange}
-                    aria-label="cuota6-checkbox"
-                  />
-                }
-                label="Cuota extra Junio"
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <input
-                    type="checkbox"
-                    name="cuota12"
-                    checked={!!honorarios.cuota12}
-                    onChange={handleHonorarioChange}
-                    aria-label="cuota12-checkbox"
-                  />
-                }
-                label="Cuota extra Diciembre"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="subtitle2">Plan de pagos</Typography>
-              {planpagos && planpagos.length > 0 && (
-                <Table size="small" sx={{ mt: 1 }}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Periodo</TableCell>
-                      <TableCell>Cuota fija</TableCell>
-                      <TableCell>Saldo</TableCell>
-                      <TableCell>Fecha de pago</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {planpagos.map((p, i) => (
-                      <TableRow key={`p-${i}`}>
-                        <TableCell>{p.numeroCuota}</TableCell>
-                        <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
-                        <TableCell>{formatNumero(p.saldo)}</TableCell>
-                        <TableCell>{p.fechapago}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-
-              {planpagosUnificado && planpagosUnificado.length > 0 && (
-                <>
-                  <Typography sx={{ mt: 2 }} variant="subtitle2">
-                    Plan Unificado
-                  </Typography>
-                  <Table size="small" sx={{ mt: 1 }}>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Periodo</TableCell>
-                        <TableCell>Cuota fija</TableCell>
-                        <TableCell>Saldo</TableCell>
-                        <TableCell>Fecha de pago</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {planpagosUnificado.map((p, i) => (
-                        <TableRow key={`pu-${i}`}>
-                          <TableCell>{p.numeroCuota}</TableCell>
-                          <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
-                          <TableCell>{formatNumero(p.saldo)}</TableCell>
-                          <TableCell>{p.fechapago}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </>
-              )}
-            </Grid>
+          <DialogContent dividers>
+            <Grid container spacing={2} sx={{ flexDirection: "column" }}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Valor"
+              width="180px"
+              size="small"
+              type="text"
+              name="valorHonorarios"
+              value={
+          editingField === "valorHonorarios"
+            ? honorarios.valorHonorarios ?? ""
+            : honorarios.valorHonorarios !== "" &&
+              !isNaN(Number(honorarios.valorHonorarios))
+            ? formatNumero(Number(honorarios.valorHonorarios))
+            : honorarios.valorHonorarios ?? ""
+              }
+              onChange={handleHonorarioChange}
+              onFocus={() => setEditingField("valorHonorarios")}
+              onBlur={() => setEditingField(null)}
+              onKeyDown={handleKeyPress}
+            />
           </Grid>
-        </DialogContent>
-      </Dialog>
 
-      {/* DIALOG: Ingresos / Gastos / Cuota */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Cuota inicial"
+              width="180px"
+              size="small"
+              type="text"
+              name="inicial"
+              value={
+          editingField === "inicial"
+            ? honorarios.inicial ?? ""
+            : honorarios.inicial !== "" &&
+              !isNaN(Number(honorarios.inicial))
+            ? formatNumero(Number(honorarios.inicial))
+            : honorarios.inicial ?? ""
+              }
+              onChange={handleHonorarioChange}
+              onFocus={() => setEditingField("inicial")}
+              onBlur={() => setEditingField(null)}
+              onKeyDown={handleKeyPress}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Numero de cuotas"
+              width="180px"
+              size="small"
+              type="number"
+              name="cuotasHonorarios"
+              value={honorarios.cuotasHonorarios}
+              onChange={handleHonorarioChange}
+              onKeyDown={handleKeyPress}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Valor para radicar"
+              width="180px"
+              size="small"
+              type="text"
+              name="valorRadicar"
+              value={
+          editingField === "valorRadicar"
+            ? honorarios.valorRadicar ?? ""
+            : honorarios.valorRadicar !== "" &&
+              !isNaN(Number(honorarios.valorRadicar))
+            ? formatNumero(Number(honorarios.valorRadicar))
+            : honorarios.valorRadicar ?? ""
+              }
+              onChange={handleHonorarioChange}
+              onFocus={() => setEditingField("valorRadicar")}
+              onBlur={() => setEditingField(null)}
+              onKeyDown={handleKeyPress}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Mensualidad liquidación"
+              width="180px"
+              size="small"
+              type="text"
+              name="honorariosLiquidacion"
+              value={
+          editingField === "honorariosLiquidacion"
+            ? honorarios.honorariosLiquidacion ?? ""
+            : honorarios.honorariosLiquidacion !== "" &&
+              !isNaN(Number(honorarios.honorariosLiquidacion))
+            ? formatNumero(Number(honorarios.honorariosLiquidacion))
+            : honorarios.honorariosLiquidacion ?? ""
+              }
+              onChange={handleHonorarioChange}
+              onFocus={() => setEditingField("honorariosLiquidacion")}
+              onBlur={() => setEditingField(null)}
+              onKeyDown={handleKeyPress}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Valor unificado"
+              width="180px"
+              size="small"
+              type="text"
+              name="valorHonorariosUnificado"
+              value={
+          editingField === "valorHonorariosUnificado"
+            ? honorarios.valorHonorariosUnificado ?? ""
+            : honorarios.valorHonorariosUnificado !== "" &&
+              !isNaN(Number(honorarios.valorHonorariosUnificado))
+            ? formatNumero(Number(honorarios.valorHonorariosUnificado))
+            : ""
+              }
+              onChange={handleHonorarioChange}
+              onFocus={() => setEditingField("valorHonorariosUnificado")}
+              onBlur={() => setEditingField(null)}
+              onKeyDown={handleKeyPress}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Numero de cuotas - Unificado"
+              width="180px"
+              size="small"
+              type="number"
+              name="cuotasHonorariosUnificado"
+              value={honorarios.cuotasHonorariosUnificado}
+              onChange={handleHonorarioChange}
+              onKeyDown={handleKeyPress}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControlLabel
+              control={
+            <input
+              type="checkbox"
+              name="cuota6"
+              checked={!!honorarios.cuota6}
+              onChange={handleHonorarioChange}
+              aria-label="cuota6-checkbox"
+            />
+              }
+              label="Cuota extra Junio"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <FormControlLabel
+              control={
+            <input
+              type="checkbox"
+              name="cuota12"
+              checked={!!honorarios.cuota12}
+              onChange={handleHonorarioChange}
+              aria-label="cuota12-checkbox"
+            />
+              }
+              label="Cuota extra Diciembre"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="subtitle2">Plan de pagos</Typography>
+            {planpagos && planpagos.length > 0 && (
+              <Table size="small" sx={{ mt: 1 }}>
+            <TableHead>
+              <TableRow>
+          <TableCell>Periodo</TableCell>
+          <TableCell>Cuota fija</TableCell>
+          <TableCell>Saldo</TableCell>
+          <TableCell>Fecha de pago</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {planpagos.map((p, i) => (
+          <TableRow key={`p-${i}`}>
+              <TableCell>{p.numeroCuota}</TableCell>
+              <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
+              <TableCell>{formatNumero(p.saldo)}</TableCell>
+              <TableCell>{p.fechapago}</TableCell>
+          </TableRow>
+              ))}
+            </TableBody>
+              </Table>
+            )}
+
+            {planpagosUnificado && planpagosUnificado.length > 0 && (
+              <>
+            <Typography sx={{ mt: 2 }} variant="subtitle2">
+              Plan Unificado
+            </Typography>
+            <Table size="small" sx={{ mt: 1 }}>
+              <TableHead>
+          <TableRow>
+              <TableCell>Periodo</TableCell>
+              <TableCell>Cuota fija</TableCell>
+              <TableCell>Saldo</TableCell>
+              <TableCell>Fecha de pago</TableCell>
+          </TableRow>
+              </TableHead>
+              <TableBody>
+          {planpagosUnificado.map((p, i) => (
+              <TableRow key={`pu-${i}`}>
+          <TableCell>{p.numeroCuota}</TableCell>
+          <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
+          <TableCell>{formatNumero(p.saldo)}</TableCell>
+          <TableCell>{p.fechapago}</TableCell>
+              </TableRow>
+          ))}
+              </TableBody>
+            </Table>
+              </>
+            )}
+          </Grid>
+            </Grid>
+          </DialogContent>
+        </Dialog>
+
+        {/* DIALOG: Ingresos / Gastos / Cuota */}
       <Dialog
         open={showIngresosModal}
         onClose={closeIngresosModal}

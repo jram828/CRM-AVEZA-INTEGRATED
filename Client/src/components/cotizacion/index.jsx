@@ -644,7 +644,9 @@ const Cotizacion = () => {
       valorRadicar_letras,
       honorariosLiquidacion_letras,
       saldoHonorarios,
-      saldoHonorariosUnificado
+      saldoHonorariosUnificado,
+      planpagos,
+      planpagosUnificado
     );
 
     // dispatch(modificarCasoCotizacion(datoscotizacion));

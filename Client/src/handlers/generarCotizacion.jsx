@@ -19,7 +19,9 @@ export const generarCotizacion = (
   valorRadicar_letras,
   honorariosLiquidacion_letras,
   saldoHonorarios,
-  saldoHonorariosUnificado
+  saldoHonorariosUnificado,
+  planPagos,
+  planPagosUnificado
 ) => {
   console.log("Datos cotizacion:", {
     caso,
@@ -32,7 +34,9 @@ export const generarCotizacion = (
     honorarios,
     resultadosCotizacion,
     saldoHonorarios,
-    saldoHonorariosUnificado
+    saldoHonorariosUnificado,
+    planPagos,
+    planPagosUnificado,
   });
   const docs = document.getElementById("doc");
 
@@ -46,6 +50,8 @@ export const generarCotizacion = (
     cliente,
     honorarios,
     resultadosCotizacion,
+    planPagos,
+    planPagosUnificado,
   };
 
   const reader = new FileReader();
@@ -121,6 +127,8 @@ export const generarCotizacion = (
       honorariosLiquidacion: formatNumero(honorarios.honorariosLiquidacion),
       honorariosLiquidacion_letras: honorariosLiquidacion_letras,
       propuestas: newPropuestas,
+      planpagos: planPagos,
+      planpagosUnificado: planPagosUnificado,
       registro:
         resultadosCotizacion.sujetoRegistro === "si"
           ? "Si (x) No ()"

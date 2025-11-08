@@ -15,7 +15,8 @@
         "Prospectos",
         "Database Migration",
         "Google Calendar",
-        "Styles"
+        "Styles",
+        "Agenda"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

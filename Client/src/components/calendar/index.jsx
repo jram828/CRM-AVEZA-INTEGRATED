@@ -122,7 +122,7 @@ function Calendario() {
       <div
         style={{
           height: "100%",
-          width: "800px",
+          width: "850px",
         }}
       >
         <Calendar

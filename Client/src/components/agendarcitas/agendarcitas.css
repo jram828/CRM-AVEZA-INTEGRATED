@@ -23,6 +23,7 @@
   margin-bottom: 20px;
   min-height: 80vh;
   justify-content: flex-start;
+  flex-wrap: nowrap;
 }
 
 .formCita {

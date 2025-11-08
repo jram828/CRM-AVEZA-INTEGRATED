@@ -8,13 +8,29 @@ import { getCasos, getCasosTodos, setFiltro } from "../../redux/actions";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postCitaHandlers } from "../../handlers/crearCita";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "../Mystyles";
 import loading from "../../assets/loading.gif";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+
+import {
+  Box,
+  Grid,
+  Paper,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Button as MuiButton,
+} from "@mui/material";
+import moment from "moment";
 
 function AgendarCitas() {
-
   const userData = JSON.parse(localStorage.getItem("loggedUser"));
   const [dataRegistro, setDataRegistro] = useState({
     titulo: "",
@@ -22,12 +38,13 @@ function AgendarCitas() {
     fechaCita: "",
     horaCita: "",
     idCaso: "",
-    userEmail: userData?.email?.includes("@gmail.com") ? userData.email : ""
+    userEmail: userData?.email?.includes("@gmail.com") ? userData.email : "",
   });
 
   const [errors, setErrors] = useState({});
 
   const [isLoading, setIsLoading] = useState(true); // Estado para controlar la visualización del loading
+  const [descripcion, setDescripcion] = useState("");
 
   console.log(dataRegistro);
 
@@ -53,7 +70,7 @@ function AgendarCitas() {
       setIsLoading(true); // Activar el loading antes de enviar la solicitud
       // Guardar la cita en tu backend
       console.log("DataRegistro en submitHandlerRegistro:", dataRegistro);
-      await postCitaHandlers(dataRegistro);
+      await postCitaHandlers({ ...dataRegistro, descripcion });
       // window.alert("Cita creado con éxito");
       // window.location.reload();
     } catch (error) {
@@ -99,122 +116,175 @@ function AgendarCitas() {
     );
   }
 
+  const handleDescripcionChange = (e) => {
+    setDescripcion(e.target.value);
+  };
   //  console.log("casos2", casos);
 
   // console.log("registro", dataRegistro);
 
-  return (
-    <div className="containerDiary">
-      <div className="encabezado">
-        <p className="titulo">Agendar Cita</p>
-      </div>
-      <div className="calendario">
-        <br />
-        <Calendario></Calendario>
-        <div className="containerCita">
-          <select
-            name="filtrocita"
-            id="estado"
-            className="selectcita"
-            onChange={(e) => handleChangeSelect(e)}
-          >
-            <option value="" className="tipodecaso">
-              Ver citas de:
-            </option>
-            <option value="todos" className="selectcita">
-              Todos
-            </option>
-            <option value="usuario" className="selectcita">
-              Usuario actual
-            </option>
-          </select>
+  /* Añadir estos imports al inicio del archivo:
+   */
 
-          <form onSubmit={submitHandlerRegistro} className="formularioCita">
-            <h1 className="tituloCita">Crear Cita</h1>
-            <div className="input-row">
-              <div className="infoCrearCita">
-                <label className="labelCrearCita">Titulo:</label>
-                <input
-                  type="text"
-                  name="titulo"
-                  id="titulo"
-                  className="inputCrearCita"
-                  value={dataRegistro.titulo}
-                  onChange={handleChangeRegistro}
-                />
-              </div>
-              <div className="infoCrearCita">
-                <label className="labelCrearCita">Fecha:</label>
+  return (
+    <Box sx={{ p: 2 }} className="containerDiary">
+      <Typography variant="h5">Agendar Cita</Typography>
+
+      <Grid
+        container
+        spacing={2}
+        sx={{ mt: 2, flexWrap: "nowrap" }}
+        className="calendario"
+      >
+        {/* <Grid item xs={12} md={6}> */}
+        {/* <Box> */}
+        <Calendario />
+        {/* </Box> */}
+        {/* </Grid> */}
+
+        {/* <Grid item xs={12} md={6} > */}
+        <Paper sx={{ p: 2 }} elevation={1} className="containerCita">
+          <FormControl sx={{ minWidth: "250px" }}>
+            <InputLabel id="filtro-cita-label">Ver citas de</InputLabel>
+            <Select
+              labelId="filtro-cita-label"
+              id="filtrocita"
+              name="filtrocita"
+              label="Ver citas de"
+              onChange={(e) => handleChangeSelect(e)}
+              defaultValue=""
+            >
+              <MenuItem value="">
+                <em>Ver citas de:</em>
+              </MenuItem>
+              <MenuItem value="todos">Todos</MenuItem>
+              <MenuItem value="usuario">Usuario actual</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Box
+            component="form"
+            onSubmit={submitHandlerRegistro}
+            className="formularioCita"
+            noValidate
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h6" className="tituloCita">
+              Crear Cita
+            </Typography>
+
+            <TextField
+              // fullWidth
+              label="Titulo"
+              name="titulo"
+              id="titulo"
+              value={dataRegistro.titulo}
+              onChange={handleChangeRegistro}
+              // className="inputCrearCita"
+              sx={{ minWidth: "250px" }}
+            />
+
+            <Box>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
                 <DatePicker
-                  className="inputCrearCita"
-                  selected={dataRegistro.fechaCita}
-                  name="fechaCita"
-                  id="fechaCita"
+                  label="Fecha"
+                  value={
+                    dataRegistro.fechaCita
+                      ? moment(dataRegistro.fechaCita)
+                      : null
+                  }
                   onChange={(date) =>
                     handleChangeRegistro({
-                      target: { name: "fechaCita", value: date },
+                      target: {
+                        name: "fechaCita",
+                        value: date?.toDate() ?? null, // Convertir moment a Date
+                      },
                     })
                   }
+                  format="DD/MM/YYYY"
+                  slotProps={{
+                    textField: {
+                      name: "fechaCita",
+                      id: "fechaCita",
+                      fullWidth: true,
+                    },
+                  }}
                 />
-              </div>
-              <div className="infoCrearCita">
-                <label className="labelCrearCita">Hora:</label>
-                <input
-                  className="inputCrearCita"
-                  type="time"
-                  name="horaCita"
-                  id="horaCita"
-                  value={dataRegistro.horaCita}
-                  onChange={handleChangeRegistro}
-                />
-              </div>
-              <div className="infoCrearCita">
-                <label className="labelCrearCita">Caso:</label>
-                <select
-                  className="inputCrearCita"
-                  name="idCaso"
-                  id="idCaso"
-                  onChange={(event) => handleChangeRegistro(event)}
-                >
-                  <option value="" className="inputCrearCita">
-                    Seleccionar caso
-                  </option>
-                  {pages.datosPagina?.map((caso) => (
-                    <option
-                      key={caso.id}
-                      value={caso.id}
-                      className="inputCrearCita"
-                    >
-                      {`${caso.tipoCaso} - ${caso.apellidosAbogado}/${caso.apellidosCliente}`}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <br></br>
-            <div className="infoCrearCita">
-              <label className="labelCrearCita">Detalles:</label>
-              <textarea
-                className="inputCrearCita"
-                type="textarea"
-                name="descripcion"
-                id="descripcion"
-                cols="50"
-                rows="6"
-                value={dataRegistro.descripcion}
-                onChange={handleChangeRegistro}
-              ></textarea>
-            </div>
-            <div className="botonescrearcita">
-              <Button onClick={submitHandlerRegistro}> Crear</Button>
-              <Link to="/">
-                <Button className="button">Volver</Button>
+              </LocalizationProvider>
+            </Box>
+
+            <TextField
+              // fullWidth
+              label="Hora"
+              type="time"
+              name="horaCita"
+              id="horaCita"
+              value={dataRegistro.horaCita}
+              onChange={handleChangeRegistro}
+              InputLabelProps={{ shrink: true }}
+              // className="inputCrearCita"
+              sx={{ minWidth: "250px" }}
+            />
+
+            <FormControl>
+              <InputLabel id="idCaso-label">Caso</InputLabel>
+              <Select
+                labelId="idCaso-label"
+                id="idCaso"
+                name="idCaso"
+                value={dataRegistro.idCaso || ""}
+                label="Caso"
+                onChange={(event) => handleChangeRegistro(event)}
+                // className="inputCrearCita"
+                sx={{ minWidth: "250px" }}
+              >
+                <MenuItem value="">
+                  <em>Seleccionar caso</em>
+                </MenuItem>
+                {pages.datosPagina?.map((caso) => (
+                  <MenuItem key={caso.id} value={caso.id}>
+                    {`${caso.tipoCaso} - ${caso.apellidosAbogado}/${caso.apellidosCliente}`}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <TextField
+              label="Detalles"
+              name="descripcion"
+              id="descripcion"
+              multiline
+              rows={6}
+              value={descripcion}
+              onChange={handleDescripcionChange}
+              className="inputCrearCita"
+              sx={{ minWidth: "250px" }}
+            />
+
+            <Box className="botonescrearcita" sx={{ display: "flex", gap: 1 }}>
+              <MuiButton
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={submitHandlerRegistro}
+              >
+                Crear
+              </MuiButton>
+
+              <Link to="/" style={{ textDecoration: "none" }}>
+                <MuiButton variant="outlined">Volver</MuiButton>
               </Link>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+            </Box>
+          </Box>
+        </Paper>
+        {/* </Grid> */}
+      </Grid>
+    </Box>
   );
 }
 

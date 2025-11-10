@@ -20,7 +20,7 @@ import { cn } from "../../utils/cn";
 
 export default function SidebarDemo({ logout }) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const links = [
     {

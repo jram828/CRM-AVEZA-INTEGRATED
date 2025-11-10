@@ -239,10 +239,11 @@ const Detail = () => {
   // NOTE: Add these imports at the top of the file:
  
   return (
-    <Box sx={{ p: 2 }}>
-      <Paper elevation={3} sx={{ p: 2 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} mb={2}>
-          <Typography variant="h6">Detalles</Typography>
+    
+      <Paper elevation={3} sx={{ p: 2, backgroundColor:"#e1eaee", padding: "5px", gap: "5px" }} className="contenedordetail">
+         <Typography variant="h5">Detalles</Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} mb={1}>
+         
 
           <Stack direction="row" spacing={1}>
             <MUIButton variant="contained" color="primary" onClick={submitUpdateDetail}>
@@ -286,10 +287,8 @@ const Detail = () => {
           </Stack>
         </Stack>
 
-        <Divider sx={{ mb: 2 }} />
-
         {datos.nombres && (
-          <Typography variant="h5" sx={{ textTransform: "uppercase", mb: 2 }}>
+          <Typography variant="h6" sx={{ textTransform: "uppercase", mb: 1 }}>
             {datos.nombres} {datos.apellidos}
           </Typography>
         )}
@@ -304,6 +303,7 @@ const Detail = () => {
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff"}}
               />
               <TextField
                 label="Apellidos"
@@ -312,6 +312,7 @@ const Detail = () => {
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff"}}
               />
               <TextField
                 label="Numero de cédula"
@@ -321,6 +322,7 @@ const Detail = () => {
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff"}}
               />
               <TextField
                 label="Celular"
@@ -330,6 +332,7 @@ const Detail = () => {
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff"}}
               />
               <TextField
                 label="Correo"
@@ -339,6 +342,7 @@ const Detail = () => {
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff"}}
               />
               <TextField
                 label="Dirección"
@@ -348,6 +352,7 @@ const Detail = () => {
                 fullWidth
                 small
                 inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff"}}
               />
               <TextField
                 label="Ciudad"
@@ -356,6 +361,7 @@ const Detail = () => {
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff"}}
               />
               <TextField
                 label="Departamento"
@@ -364,6 +370,7 @@ const Detail = () => {
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff"}}
               />
 
               {datos?.comentarios && (
@@ -376,6 +383,7 @@ const Detail = () => {
                   multiline
                   minRows={3}
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
               )}
 
@@ -429,6 +437,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Vehículo o cooperativas"
@@ -437,6 +446,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Crédito hipotecario"
@@ -445,6 +455,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Crédito proveedores"
@@ -453,6 +464,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Crédito con Bancos o personas"
@@ -461,6 +473,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Tiene bienes?"
@@ -469,6 +482,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Bienes"
@@ -477,6 +491,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Total bienes"
@@ -485,6 +500,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Total deudas"
@@ -493,6 +509,7 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
                 <TextField
                   label="Modo de contacto"
@@ -501,13 +518,14 @@ const Detail = () => {
                   onChange={handleUpdateDetail}
                   fullWidth
                   inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff"}}
                 />
               </Stack>
             )}
           </Stack>
         </Box>
       </Paper>
-    </Box>
+    
   );
 };
 

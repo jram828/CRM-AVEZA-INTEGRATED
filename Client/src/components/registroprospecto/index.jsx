@@ -41,19 +41,7 @@ const RegistroProspecto = () => {
   const [ciudadSeleccionada, setCiudadSeleccionada] = useState(null);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (Array.isArray(codigoCiudades)) {
-  //     const sorted = [...codigoCiudades].sort((a, b) =>
-  //       a.nombre_ciudad.localeCompare(b.nombre_ciudad, "es", {
-  //         sensitivity: "base",
-  //       })
-  //     );
-  //     setCiudadFilt(sorted);
-  //   } else {
-  //     console.error("codigoCiudades no es un array:", codigoCiudades);
-  //   }
-  // }, []);
-  const ciudadOpciones = useMemo(() => {
+   const ciudadOpciones = useMemo(() => {
     const nombresUnicos = new Set();
 
     return codigoCiudades
@@ -153,11 +141,7 @@ const RegistroProspecto = () => {
   console.log("Input actual:", userDataRegistro);
   console.log("ciudad seleccionada:", ciudadSeleccionada);
   return (
-    // <Container maxWidth="md" sx={{ mt: 4 }}>
-    //   <Paper
-    //     className="contenedorregistro"
-    //     sx={{ p: 3, borderRadius: 2, boxShadow: 3 }}
-    //   >
+
     <Box
       className="contenedorregistroprospecto"
       component="form"
@@ -192,7 +176,7 @@ const RegistroProspecto = () => {
 
         {/* Datos personales */}
         <Stack direction="row" spacing={2} alignItems="center">
-          {/* Fila 1 */}
+         
 
           <Grid item xs={12} sm={6}>
             <TextField
@@ -218,7 +202,7 @@ const RegistroProspecto = () => {
           </Grid>
         </Stack>
 
-        {/* Fila 2 */}
+        
         <Stack direction="row" spacing={2} alignItems="center">
           <Grid item xs={12} sm={6}>
             <TextField

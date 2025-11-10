@@ -1,11 +1,20 @@
-import { useState } from "react";
-import "../../App.css";
-import "./registrocliente.css";
-import { Button } from "../Mystyles";
+import { useState, useEffect } from "react";
+import {
+  Grid,
+  TextField,
+  Button,
+  Autocomplete,
+  Typography,
+  Stack,
+  Box,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { registroCliente } from "../../handlers/registroCliente";
-import { codigoCiudades } from "../../utils/codigoCiudades.js"; // Asegúrate de que la ruta sea correcta
+import { registroCliente } from "../../handlers/registroCliente.jsx";
 import { registroClienteExcel } from "../../handlers/registroClienteExcel.jsx";
+import { codigoCiudades } from "../../utils/codigoCiudades.js";
+import { codigoDepartamentos } from "../../utils/codigoDepartamentos.js";
+import "./registrocliente.css";
+import { useMemo } from "react";
 
 const RegistroCliente = () => {
   const [userDataRegistro, setUserDataRegistro] = useState({
@@ -21,215 +30,326 @@ const RegistroCliente = () => {
     forma_de_pago: "",
     honorarios: "",
     cuotas: "",
-    // password: "",
     comentarios: "",
     valor_pretensiones: "",
+    nombreEnviar: "",
   });
 
-  const initCiudadFilt = {
-    ciudades: [],
-  };
-
-  const [ciudadFilt, setCiudadFilt] = useState(initCiudadFilt);
+ 
+  const [ciudadSeleccionada, setCiudadSeleccionada] = useState(null);
   const navigate = useNavigate();
+
+   const ciudadOpciones = useMemo(() => {
+    const nombresUnicos = new Set();
+
+    return codigoCiudades
+      .map((c) => {
+        const departamento = codigoDepartamentos.find(
+          (d) => d.codigo_departamento === c.codigo_departamento
+        );
+        const nombreDepto =
+          departamento?.nombre_departamento || "SIN DEPARTAMENTO";
+
+        const etiqueta = `${c.nombre_ciudad}, ${nombreDepto}`;
+
+        return {
+          etiqueta,
+          ciudad: c.nombre_ciudad,
+          departamento: nombreDepto,
+          codigo: c.codigo_ciudad,
+        };
+      })
+      .filter((c) => {
+        if (nombresUnicos.has(c.etiqueta)) return false;
+        nombresUnicos.add(c.etiqueta);
+        return true;
+      });
+  }, []);
+
+  const ciudadFiltrada = useMemo(() => {
+    const input = userDataRegistro.nombre_ciudad.toUpperCase();
+    return ciudadOpciones.filter((c) =>
+      c.etiqueta.toUpperCase().includes(input)
+    );
+  }, [userDataRegistro.nombre_ciudad, ciudadOpciones]);
 
   const handleChangeRegistro = (e) => {
     setUserDataRegistro({
       ...userDataRegistro,
-      [e.target.name]: e.target.value, // Sintaxis ES6 para actualizar la key correspondiente
-    });
-  };
-
-  const submitHandlerRegistro = (e) => {
-    e.preventDefault();
-    registroCliente(userDataRegistro);
-    navigate("/clientes");
-  };
-
-  const handleCiudadChange = (e) => {
-    e.preventDefault();
-
-    setUserDataRegistro({
-      ...userDataRegistro,
       [e.target.name]: e.target.value,
     });
-
-    const foundCiudad = codigoCiudades.filter((ciudad) =>
-      ciudad.nombre_ciudad.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    // console.log("Ciudades encontradas:", foundCiudad);
-    setCiudadFilt(foundCiudad);
   };
 
+  const submitHandlerRegistro = async (e) => {
+    e.preventDefault();
+
+    // Si necesitas enviar el objeto completo de la ciudad:
+    const ciudadObj = codigoCiudades.find(
+      (c) => c.nombre_ciudad === userDataRegistro.nombreEnviar
+    );
+ console.log("Ciudad objeto a enviar:", ciudadObj);
+    try {
+      await registroCliente({
+        ...userDataRegistro,
+        codigo_ciudad: ciudadObj?.codigo_ciudad|| null,
+        codigo_departamento: ciudadObj?.codigo_departamento || null,
+      });
+      navigate("/Clientes");
+    } catch (error) {
+      console.error("Error al registrar cliente:", error);
+    }
+  };
 
   const handlerCargarDatos = async () => {
-    registroClienteExcel();
+    const fileInput = document.getElementById("docexcel");
+    if (!fileInput.files.length) {
+      alert("Por favor selecciona un archivo antes de cargar.");
+      return;
+    }
+    try {
+      await registroClienteExcel(fileInput.files[0]);
+    } catch (error) {
+      console.error("Error al cargar datos desde Excel:", error);
+    }
   };
-  
 
+  // Validaciones simples en render
+  const isEmailValid = /^\S+@\S+\.\S+$/.test(userDataRegistro.email);
+  const isCedulaValid = /^\d{6,10}$/.test(
+    String(userDataRegistro.cedulaCliente)
+  );
+  const isCelularValid = /^\+?\d{10,10}$/.test(
+    String(userDataRegistro.celular)
+  );
+  const requiredFieldsFilled =
+    userDataRegistro.email &&
+    userDataRegistro.cedulaCliente &&
+    userDataRegistro.nombres &&
+    userDataRegistro.apellidos;
+  const isFormValid =
+    requiredFieldsFilled && isEmailValid && isCedulaValid && isCelularValid;
+
+  console.log("Input actual:", userDataRegistro);
+  console.log("ciudad seleccionada:", ciudadSeleccionada);
   return (
-    <div className="contenedorregistro">
-      <form className="datos" method="post" onSubmit={submitHandlerRegistro}>
-        <h1 className="titulo">Registro De Cliente</h1>
-        <br />
-        <div className="menu-registrocliente">
-                <input type="file" id="docexcel" accept=".xlsx, .xls"  />
-                <Button
-                  className="botonesiniciosesion"
-                  onClick={handlerCargarDatos}
-                >
-                  Cargar datos
-                </Button>
-              </div>
-        <br />
-        <div className="inforegistrocliente">
-          <label htmlFor="nombre" className="labelregistrodecliente">
-            Nombre(s):
-          </label>
-          <input
-            type="text"
-            name="nombres"
-            id="name"
-            className="cajaregistrocliente"
-            value={userDataRegistro.nombres}
-            onChange={handleChangeRegistro}
-          />
-          <label htmlFor="apellidos" className="labelregistrodecliente">
-            Apellido(s):
-          </label>
-          <input
-            type="text"
-            className="cajaregistrocliente"
-            name="apellidos"
-            id="lastname"
-            value={userDataRegistro.apellidos}
-            onChange={handleChangeRegistro}
-          />
-        </div>
-        <br />
-        <br />
-        <div className="inforegistrocliente">
-          <label htmlFor="cedula" className="labelregistrodecliente">
-            Numero de cédula:
-          </label>
-          <input
-            type="number"
-            className="cajaregistrocliente"
-            name="cedulaCliente"
-            id="cedula"
-            value={userDataRegistro.cedula}
-            onChange={handleChangeRegistro}
-          />
 
-          <label htmlFor="telefono" className="labelregistrodecliente">
-            {" "}
-            Celular:
-          </label>
+    <Box
+      className="contenedorregistro"
+      component="form"
+      onSubmit={submitHandlerRegistro}
+      noValidate
+      sx={{
+        p: { xs: 2, md: 4 },
+        // bgcolor: "background.paper",
+      }}
+    >
+      <Typography variant="h5" component="h1" gutterBottom>
+        Registro de Cliente
+      </Typography>
+      <Stack spacing={2}>
+        {/* Carga de archivo Excel */}
+        <Stack direction="row" spacing={2} alignItems="center">
           <input
-            type="number"
-            name="celular"
-            id="celular"
-            className="cajaregistrocliente"
-            value={userDataRegistro.celular}
-            onChange={handleChangeRegistro}
+            id="docexcel"
+            type="file"
+            accept=".xlsx, .xls"
+            style={{ display: "none" }}
           />
-        </div>
+          <label htmlFor="docexcel">
+            <Button variant="outlined" component="span">
+              Seleccionar archivo
+            </Button>
+          </label>
+          <Button variant="contained" onClick={handlerCargarDatos}>
+            Cargar datos
+          </Button>
+        </Stack>
 
-        <br />
-        <br />
-        <div className="inforegistrocliente">
-          <label htmlFor="email" className="labelregistrodecliente">
-            Email:
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="cajaregistrocliente"
-            value={userDataRegistro.email}
-            onChange={handleChangeRegistro}
-          />
-          <label htmlFor="direccion" className="labelregistrodecliente">
-            Dirección:
-          </label>
-          <input
-            type="text"
-            name="direccion"
-            id="direccion"
-            className="cajaregistrocliente"
-            value={userDataRegistro.direccion}
-            onChange={handleChangeRegistro}
-          />
-        </div>
-        <br />
-        <br />
-        <div className="inforegistrocliente">
-          <label htmlFor="ciudad" className="labelregistrodecliente">
-            Ciudad:
-          </label>
-          <input
-            type="text"
-            name="nombre_ciudad"
-            id="ciudad"
-            className="cajaregistrocliente"
-            value={userDataRegistro.nombre_ciudad}
-            onChange={handleCiudadChange}
-            placeholder="Buscar ciudad..."
-          />
+        {/* Datos personales */}
+        <Stack direction="row" spacing={2} alignItems="center">
+         
 
-          <select
-            name="nombre_ciudad"
-            id="ciudad"
-            className="cajaregistrocliente"
-            onChange={(event) => handleChangeRegistro(event)}
-          >
-            <option value="" className="opcionescuidades">
-              Ciudades encontradas
-            </option>
-            {ciudadFilt.length > 0 &&
-              ciudadFilt.map((ciudad) => (
-                <option
-                  key={ciudad.codigo_ciudad}
-                  value={ciudad.nombre_ciudad}
-                  className="opcionesciudades"
-                >
-                  {ciudad.nombre_ciudad}
-                </option>
-              ))}
-          </select>
-        </div>
-        <div className="comentarios">
-          <br />
-          <label htmlFor="comentarios" className="labelregistrodecliente">
-            Comentarios
-          </label>
-          <br />
-          <br />
-          <textarea
-            name="comentarios"
-            id="comentarios"
-            cols="30"
-            rows="5"
-            value={userDataRegistro.comentarios}
-            onChange={handleChangeRegistro}
-          ></textarea>
-        </div>
-        <br />
-        <div className="documentoagenerar">
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Nombre(s)"
+              name="nombres"
+              value={userDataRegistro.nombres}
+              onChange={handleChangeRegistro}
+              fullWidth
+              required
+              sx={{bgcolor: "#fff",}}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Apellido(s)"
+              name="apellidos"
+              value={userDataRegistro.apellidos}
+              onChange={handleChangeRegistro}
+              fullWidth
+              required
+              sx={{bgcolor: "#fff",}}
+            />
+          </Grid>
+        </Stack>
+
+        
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Número de cédula"
+              name="cedulaCliente"
+              type="text"
+              value={userDataRegistro.cedulaCliente}
+              onChange={handleChangeRegistro}
+              fullWidth
+              required
+              error={
+                Boolean(userDataRegistro.cedulaCliente) && !isCedulaValid
+              }
+              helperText={
+                Boolean(userDataRegistro.cedulaCliente) && !isCedulaValid
+                  ? "Cédula inválida (solo dígitos, 6-10 caracteres)"
+                  : ""
+              }
+              inputProps={{ inputMode: "numeric", pattern: "\\d*" }}
+              sx={{bgcolor: "#fff",}}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Celular"
+              name="celular"
+              type="tel"
+              value={userDataRegistro.celular}
+              onChange={handleChangeRegistro}
+              fullWidth
+              required
+              error={Boolean(userDataRegistro.celular) && !isCelularValid}
+              helperText={
+                Boolean(userDataRegistro.celular) && !isCelularValid
+                  ? "Celular inválido (10 dígitos, puede incluir +)"
+                  : ""
+              }
+              inputProps={{ inputMode: "tel" }}
+              sx={{bgcolor: "#fff",}}
+            />
+          </Grid>
+        </Stack>
+        {/* Fila 3 */}
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Email"
+              name="email"
+              type="email"
+              value={userDataRegistro.email}
+              onChange={handleChangeRegistro}
+              fullWidth
+              required
+              error={Boolean(userDataRegistro.email) && !isEmailValid}
+              helperText={
+                Boolean(userDataRegistro.email) && !isEmailValid
+                  ? "Formato de email inválido"
+                  : ""
+              }
+              sx={{bgcolor: "#fff",}}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Dirección"
+              name="direccion"
+              value={userDataRegistro.direccion}
+              onChange={handleChangeRegistro}
+              fullWidth
+              sx={{bgcolor: "#fff",}}
+            />
+          </Grid>
+        </Stack>
+
+        {/* Fila 4 */}
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Grid item xs={12} sm={6}>
+            <Autocomplete
+              freeSolo
+              fullWidth
+              disableClearable
+              autoHighlight
+              options={ciudadFiltrada.map((c) => c.etiqueta)}
+              inputValue={userDataRegistro.nombre_ciudad}
+              onInputChange={(_event, value) => {
+                setUserDataRegistro((prev) => ({
+                  ...prev,
+                  nombre_ciudad: value,
+                }));
+                }}
+                onChange={(_event, value) => {
+                const nombre = value ? String(value).split(",")[0].trim() : "";
+                setUserDataRegistro((prev) => ({
+                  ...prev,
+                  nombreEnviar: nombre,
+                }));
+
+                const ciudadObj = ciudadOpciones.find(
+                  (c) => c.etiqueta === value
+                );
+                setCiudadSeleccionada(ciudadObj || null);
+                }}
+                renderInput={(params) => (
+                <TextField
+                  {...params}
+                  id="ciudad"
+                  label="Ciudad"
+                  size="small"
+                  placeholder="Buscar ciudad..."
+                  fullWidth
+                  sx={{
+                  minWidth: 220,
+                  bgcolor: "#fff",
+                  // Asegura que el Input interno también tenga fondo blanco
+                  "& .MuiInputBase-root": { bgcolor: "#fff" },
+                  }}
+                  InputProps={{
+                  ...params.InputProps,
+                  sx: { bgcolor: "#fff" },
+                  }}
+                  xs={12}
+                  sm={6}
+                />
+                )}
+              />
+              </Grid>
+              
+          <Grid item xs={12}>
+            <TextField
+              label="Comentarios"
+              name="comentarios"
+              value={userDataRegistro.comentarios}
+              onChange={handleChangeRegistro}
+              multiline
+              rows={5}
+              fullWidth
+              sx={{ minWidth: "220px", bgcolor: "#fff" }}
+            />
+          </Grid>
+        </Stack>
+
+        {/* Botón de guardar */}
+        <Box display="flex" justifyContent="flex-end">
           <Button
-            onClick={submitHandlerRegistro}
-            disabled={
-              !userDataRegistro.email ||
-              !userDataRegistro.cedulaCliente ||
-              !userDataRegistro.nombres ||
-              !userDataRegistro.apellidos
-            }
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={!isFormValid}
           >
             Guardar
           </Button>
-        </div>
-      </form>
-    </div>
+        </Box>
+      </Stack>
+    </Box>
+ 
   );
 };
+
 export default RegistroCliente;

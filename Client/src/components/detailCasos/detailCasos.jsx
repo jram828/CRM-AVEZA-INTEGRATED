@@ -223,7 +223,7 @@ function DetailCasos() {
 
       <Paper elevation={2} className="contenedordetailcaso" sx={{ padding: 2, backgroundColor: '#e1eaee' }}>
         <Box className="encabezado" mb={2}>
-          <Typography variant="h6" className="titulo">
+          <Typography variant="h5" className="titulo">
             Detalles del caso
           </Typography>
         </Box>
@@ -289,6 +289,7 @@ function DetailCasos() {
                   onChange={handleUpdateDetailCaso}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -302,6 +303,7 @@ function DetailCasos() {
                     value={casoDetail.radicado}
                     onChange={handleUpdateDetailCaso}
                     size="small"
+                    sx={{ minWidth: "250px", bgcolor: "#fff"}}
                   />
                 </Box>
               )}
@@ -315,6 +317,7 @@ function DetailCasos() {
                   value={tipoDescripcion}
                   onChange={handleUpdateDetailCaso}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -343,6 +346,7 @@ function DetailCasos() {
                   value={casoDetail.etapa}
                   onChange={handleUpdateDetailCaso}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -355,6 +359,7 @@ function DetailCasos() {
                   value={formatDate(casoDetail.fecha)}
                   onChange={handleUpdateDetailCaso}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -368,6 +373,7 @@ function DetailCasos() {
                     value={formatDate(casoDetail.fechaFin)}
                     onChange={handleUpdateDetailCaso}
                     size="small"
+                    sx={{ minWidth: "250px", bgcolor: "#fff"}}
                   />
                 ) : (
                   <Box display="flex" alignItems="center">
@@ -390,6 +396,7 @@ function DetailCasos() {
                   value={casoDetail.aceptacion_cotizacion}
                   onChange={handleUpdateDetailCaso}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -402,6 +409,7 @@ function DetailCasos() {
                   value={casoDetail.tiene_contrato}
                   onChange={handleUpdateDetailCaso}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -416,6 +424,7 @@ function DetailCasos() {
                   multiline
                   rows={3}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
             </Grid>
@@ -430,6 +439,7 @@ function DetailCasos() {
                   onChange={handleUpdateDetailCaso}
                   onKeyDown={handleKeyPress}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -444,6 +454,7 @@ function DetailCasos() {
                   onChange={handleUpdateDetailCaso}
                   onKeyDown={handleKeyPress}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -457,6 +468,7 @@ function DetailCasos() {
                   onChange={handleUpdateDetailCaso}
                   onKeyDown={handleKeyPress}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -470,6 +482,7 @@ function DetailCasos() {
                   onChange={handleUpdateDetailCaso}
                   onKeyDown={handleKeyPress}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -483,6 +496,7 @@ function DetailCasos() {
                   onChange={handleUpdateDetailCaso}
                   onKeyDown={handleKeyPress}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -496,6 +510,7 @@ function DetailCasos() {
                   onChange={handleUpdateDetailCaso}
                   onKeyDown={handleKeyPress}
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
             </Grid>
@@ -517,6 +532,7 @@ function DetailCasos() {
                   value={casoDetail.ClienteCedulaCliente}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -534,6 +550,7 @@ function DetailCasos() {
                       color: "text.primary", // fuerza el color del texto
                     },
                   }}
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -546,6 +563,7 @@ function DetailCasos() {
                   value={Cliente.apellidos || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -558,6 +576,7 @@ function DetailCasos() {
                   value={Cliente.celular || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -570,6 +589,7 @@ function DetailCasos() {
                   value={Cliente.email || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -582,6 +602,7 @@ function DetailCasos() {
                   value={Cliente.direccion || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
             </Grid>
@@ -601,6 +622,7 @@ function DetailCasos() {
                   value={casoDetail.AbogadoCedulaAbogado}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -613,6 +635,7 @@ function DetailCasos() {
                   value={Abogado.nombres || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -625,6 +648,7 @@ function DetailCasos() {
                   value={Abogado.apellidos || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -637,6 +661,7 @@ function DetailCasos() {
                   value={Abogado.celular || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -649,6 +674,7 @@ function DetailCasos() {
                   value={Abogado.email || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
 
@@ -661,6 +687,7 @@ function DetailCasos() {
                   value={Abogado.direccion || ""}
                   disabled
                   size="small"
+                  sx={{ minWidth: "250px", bgcolor: "#fff"}}
                 />
               </Box>
             </Grid>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Button2, Button3 } from "../Mystyles";
-import SearchBar from "../searchBarClientes";
+import SearchBar from "../searchBarClientes/indexOLD";
 import OrderClientes from "../orderCliente/orderCliente";
 import { Link } from "react-router-dom";
 import loading from "../../assets/loading.gif";

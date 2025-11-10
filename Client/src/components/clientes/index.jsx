@@ -11,7 +11,7 @@ import {
   getClientesTodos,
   setSource,
 } from "../../redux/actions";
-import SearchBar from "../searchBarClientes";
+import SearchBar from "../searchBarClientes/index.jsx";
 import OrderClientes from "../orderCliente/orderCliente";
 import { Link } from "react-router-dom";
 import { Container, Box, Typography, Stack, Button as MUIButton, IconButton, Pagination, CircularProgress } from "@mui/material";
@@ -80,15 +80,19 @@ const Clientes = () => {
         <MUIButton
           variant="contained"
           color="primary"
-          // startIcon={<AddIcon />}
           component={Link}
           to="/registrocliente"
+          sx={{ whiteSpace: "nowrap", minWidth: "auto" }}
         >
           Crear cliente
         </MUIButton>
 
         {filterApplied && (
-          <MUIButton variant="outlined" onClick={handleVerTodosClick}>
+          <MUIButton
+            variant="outlined"
+            onClick={handleVerTodosClick}
+            sx={{ whiteSpace: "nowrap", minWidth: "auto" }}
+          >
             Ver todos
           </MUIButton>
         )}

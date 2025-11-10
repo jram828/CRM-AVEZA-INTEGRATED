@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "../Mystyles";
+// import { Button } from "../Mystyles";
 import "../detail/detail.css";
 import {
   copyDeudas,
@@ -15,6 +15,8 @@ import {
   updateCotizacionData,
 } from "../../redux/actions";
 import { registroCliente } from "../../handlers/registroCliente";
+ import { Box, Paper, Typography, Button as MUIButton, TextField, Checkbox, FormControlLabel, FormGroup, Stack, Divider } from "@mui/material";
+
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
 
@@ -234,451 +236,278 @@ const Detail = () => {
       })
     );
   };
+  // NOTE: Add these imports at the top of the file:
+ 
   return (
-    <div className="contenedordetail">
-      <div className="detail" key={userDataDetail.cedula}>
-        <div className="encabezado">
-          <h5 className="titulo">Detalles</h5>
-        </div>
-        <div className="menu-detail">
-          <Button className="botonesiniciosesion" onClick={submitUpdateDetail}>
-            Actualizar
-          </Button>
-          {datos?.tarjetaProf ? (
-            <div className="botonesabogado">
-              <Button onClick={handleDelete} className="botonesiniciosesion">
-                {/* <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1.2em"
-              height="1.2em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="black"
-                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
-              ></path>
-            </svg> */}
-                Eliminar
-              </Button>
-              <Link to="/abogados">
-                <Button>
-                  {/* <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.2em"
-                  height="1.2em"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="none"
-                    stroke="black"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={50.5}
-                    d="M244 400L100 256l144-144M120 256h292"
-                  ></path>
-                </svg> */}
-                  Volver
-                </Button>
-              </Link>
-            </div>
-          ) : source === "prospecto" ? (
-            <div className="botonesprospecto">
-              <Link to="/cotizacion">
-                <Button>Cotizacion</Button>
-              </Link>
+    <Box sx={{ p: 2 }}>
+      <Paper elevation={3} sx={{ p: 2 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} mb={2}>
+          <Typography variant="h6">Detalles</Typography>
 
-              <Button
-                onClick={submitHandlerRegistro}
-                className="botonesiniciosesion"
-              >
-                Convertir en Cliente
-              </Button>
-              <Button onClick={handleDelete} className="botonesiniciosesion">
-                {/* <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1.2em"
-              height="1.2em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="black"
-                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
-              ></path>
-            </svg> */}
-                Eliminar
-              </Button>
-              <Link to="/prospectos">
-                <Button>
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1.2em"
-                    height="1.2em"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      fill="none"
-                      stroke="black"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={50.5}
-                      d="M244 400L100 256l144-144M120 256h292"
-                    ></path>
-                  </svg> */}
+          <Stack direction="row" spacing={1}>
+            <MUIButton variant="contained" color="primary" onClick={submitUpdateDetail}>
+              Actualizar
+            </MUIButton>
+
+            {datos?.tarjetaProf ? (
+              <Stack direction="row" spacing={1}>
+                <MUIButton variant="outlined" color="primary" onClick={handleDelete}>
+                  Eliminar
+                </MUIButton>
+                <MUIButton component={Link} to="/abogados" variant="contained">
                   Volver
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <Button onClick={handleDelete} className="botonesiniciosesion">
-                {/* <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1.2em"
-              height="1.2em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="black"
-                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
-              ></path>
-            </svg> */}
-                Eliminar
-              </Button>
-              <Link to="/clientes">
-                <Button>
-                  {/* <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.2em"
-                  height="1.2em"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="none"
-                    stroke="black"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={50.5}
-                    d="M244 400L100 256l144-144M120 256h292"
-                  ></path>
-                </svg> */}
+                </MUIButton>
+              </Stack>
+            ) : source === "prospecto" ? (
+              <Stack direction="row" spacing={1}>
+                <MUIButton component={Link} to="/cotizacion" variant="contained">
+                  Cotizacion
+                </MUIButton>
+                <MUIButton variant="contained" color="primary" onClick={submitHandlerRegistro}>
+                  Convertir en Cliente
+                </MUIButton>
+                <MUIButton variant="outlined" color="primary" onClick={handleDelete}>
+                  Eliminar
+                </MUIButton>
+                <MUIButton component={Link} to="/prospectos" variant="contained">
                   Volver
-                </Button>
-              </Link>
-            </div>
-          )}
-        </div>
-        {/* <div className="generardocumento">
-          <input type="file" id="doc" />
-        </div> */}
+                </MUIButton>
+              </Stack>
+            ) : (
+              <Stack direction="row" spacing={1}>
+                <MUIButton variant="outlined" color="primary" onClick={handleDelete}>
+                  Eliminar
+                </MUIButton>
+                <MUIButton component={Link} to="/clientes" variant="contained">
+                  Volver
+                </MUIButton>
+              </Stack>
+            )}
+          </Stack>
+        </Stack>
+
+        <Divider sx={{ mb: 2 }} />
+
         {datos.nombres && (
-          <h4 className="nombredetail">
-            {datos.nombres.toUpperCase()} {datos.apellidos.toUpperCase()}{" "}
-          </h4>
+          <Typography variant="h5" sx={{ textTransform: "uppercase", mb: 2 }}>
+            {datos.nombres} {datos.apellidos}
+          </Typography>
         )}
-        {/* </div> */}
-        {/* <img className="photo" src={character.image} alt={character.name} /> */}
-        <div className="info">
-          <div className="personal">
-            <div className="infodetail">
-              <label htmlFor="nombres" className="labeldetail">
-                Nombres:
-              </label>
-              <input
-                type="text"
-                className="cajadetail"
+
+        <Box component="form" noValidate autoComplete="off">
+          <Stack direction={{ xs: "column", md: "row" }} spacing={2} mb={2}>
+            <Stack spacing={2} flex={1}>
+              <TextField
+                label="Nombres"
                 name="nombres"
-                id="nombres"
                 value={userDataDetail.nombres}
                 onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
               />
-            </div>
-            <div className="infodetail">
-              <label htmlFor="apellidos" className="labeldetail">
-                Apellidos:
-              </label>
-              <input
-                type="text"
-                className="cajadetail"
+              <TextField
+                label="Apellidos"
                 name="apellidos"
-                id="apellidos"
                 value={userDataDetail.apellidos}
                 onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
               />
-            </div>
-            <div className="infodetail">
-              <label htmlFor="cedula" className="labeldetail">
-                Numero de cédula:
-              </label>
-              <input
-                type="number"
-                className="cajadetail"
+              <TextField
+                label="Numero de cédula"
                 name="cedulanew"
-                id="cedula"
+                type="number"
                 value={userDataDetail.cedulanew}
                 onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
               />
-            </div>
-            <div className="infodetail">
-              <label htmlFor="celular" className="labeldetail">
-                Celular:
-              </label>
-              <input
-                type="number"
-                className="cajadetail"
+              <TextField
+                label="Celular"
                 name="celular"
-                id="celular"
+                type="number"
                 value={userDataDetail.celular}
                 onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
               />
-            </div>
-            <div className="infodetail">
-              <label htmlFor="email" className="labeldetail">
-                Correo:
-              </label>
-              <input
-                type="email"
-                className="cajadetail"
+              <TextField
+                label="Correo"
                 name="email"
-                id="email"
+                type="email"
                 value={userDataDetail.email}
                 onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
               />
-            </div>
-            <div className="infodetail">
-              <label htmlFor="direccion" className="labeldetail">
-                Dirección:
-              </label>
-              <input
-                type="text"
-                className="cajadetail"
+              <TextField
+                label="Dirección"
                 name="direccion"
-                id="direccion"
                 value={userDataDetail?.direccion?.toUpperCase()}
                 onChange={handleUpdateDetail}
+                fullWidth
+                small
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
               />
-            </div>
-            <div className="infodetail">
-              <label htmlFor="ciudad" className="labeldetail">
-                Ciudad:
-              </label>
-              <input
-                type="text"
-                className="cajadetail"
+              <TextField
+                label="Ciudad"
                 name="ciudad"
-                id="ciudad"
                 value={userDataDetail?.ciudad?.toUpperCase()}
                 onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
               />
-            </div>
-            <div className="infodetail">
-              <label htmlFor="departamento" className="labeldetail">
-                Departamento:
-              </label>
-              <input
-                type="text"
-                className="cajadetail"
+              <TextField
+                label="Departamento"
                 name="departamento"
-                id="departamento"
                 value={userDataDetail?.departamento?.toUpperCase()}
                 onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
               />
-            </div>
-            {datos?.comentarios && (
-              <div className="infodetail">
-                <label htmlFor="comentarios" className="labeldetail">
-                  Comentarios:
-                </label>
-                <textarea
-                  className="cajadetail"
-                  cols="30"
-                  rows="5"
+
+              {datos?.comentarios && (
+                <TextField
+                  label="Comentarios"
                   name="comentarios"
-                  id="comentarios"
                   value={userDataDetail.comentarios}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  multiline
+                  minRows={3}
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-            )}
+              )}
+
+              {source === "prospecto" && (
+                <Box>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          name="contactado"
+                          checked={userDataDetail.contactado === "Si"}
+                          onChange={handleCotizacionChange}
+                        />
+                      }
+                      label="Contactado"
+                    />
+                  </FormGroup>
+
+                  <FormGroup row>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          name="tieneCotizacion"
+                          checked={userDataDetail.tieneCotizacion === "Si"}
+                          onChange={handleCotizacionChange}
+                        />
+                      }
+                      label="Generada"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          name="cotizacionAprobada"
+                          checked={userDataDetail.cotizacionAprobada === "Si"}
+                          onChange={handleCotizacionChange}
+                        />
+                      }
+                      label="Aprobada"
+                    />
+                  </FormGroup>
+                </Box>
+              )}
+            </Stack>
 
             {source === "prospecto" && (
-              <div className="personal">
-                <div className="infodetail">
-                  <label htmlFor="contactado" className="labeldetail">
-                    Contactado:
-                  </label>
-
-                  <input
-                    type="checkbox"
-                    name="contactado"
-                    checked={userDataDetail.contactado === "Si"}
-                    onChange={handleCotizacionChange}
-                  />
-                </div>
-                <div className="infodetail">
-                  <label htmlFor="departamento" className="labeldetail">
-                    Cotización:
-                  </label>
-                  <div className="checkbox-group">
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="tieneCotizacion"
-                        checked={userDataDetail.tieneCotizacion === "Si"}
-                        onChange={handleCotizacionChange}
-                      />
-                      Generada
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="cotizacionAprobada"
-                        checked={userDataDetail.cotizacionAprobada === "Si"}
-                        onChange={handleCotizacionChange}
-                      />
-                      Aprobada
-                    </label>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-          {source === "prospecto" && (
-            <div className="personal">
-              <div className="infodetail">
-                <label htmlFor="impuestoLaboral" className="labeldetail">
-                  Impuestos o laborales:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+              <Stack spacing={2} flex={1}>
+                <TextField
+                  label="Impuestos o laborales"
                   name="impuestoLaboral"
-                  id="impuestoLaboral"
                   value={userDataDetail.impuestoLaboral}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="vehiculoCooperativas" className="labeldetail">
-                  Vehículo o cooperativas:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Vehículo o cooperativas"
                   name="vehiculoCooperativas"
-                  id="vehiculoCooperativas"
                   value={userDataDetail.vehiculoCooperativas}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="hipotecario" className="labeldetail">
-                  Crédito hipotecario:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Crédito hipotecario"
                   name="hipotecario"
-                  id="hipotecario"
                   value={userDataDetail.hipotecario}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="proveedores" className="labeldetail">
-                  Crédito proveedores:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Crédito proveedores"
                   name="proveedores"
-                  id="proveedores"
                   value={userDataDetail.proveedores}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="bancoPersonas" className="labeldetail">
-                  Crédito con Bancos o personas:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Crédito con Bancos o personas"
                   name="bancoPersonas"
-                  id="bancoPersonas"
                   value={userDataDetail.bancoPersonas}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="tieneBienes" className="labeldetail">
-                  Tiene bienes?:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Tiene bienes?"
                   name="tieneBienes"
-                  id="tieneBienes"
                   value={userDataDetail.tieneBienes}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="bienes" className="labeldetail">
-                  Bienes:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Bienes"
                   name="bienes"
-                  id="bienes"
                   value={userDataDetail.bienes}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="totalBienes" className="labeldetail">
-                  Total bienes:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Total bienes"
                   name="totalBienes"
-                  id="totalBienes"
                   value={userDataDetail.totalBienes}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="totalDeudas" className="labeldetail">
-                  Total deudas:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Total deudas"
                   name="totalDeudas"
-                  id="totalDeudas"
                   value={userDataDetail.totalDeudas}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-              <div className="infodetail">
-                <label htmlFor="modoContacto" className="labeldetail">
-                  Modo de contacto:
-                </label>
-                <input
-                  type="text"
-                  className="cajadetail"
+                <TextField
+                  label="Modo de contacto"
                   name="modoContacto"
-                  id="modoContacto"
                   value={userDataDetail.modoContacto}
                   onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
                 />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+              </Stack>
+            )}
+          </Stack>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

@@ -240,7 +240,7 @@ const Detail = () => {
  
   return (
     
-      <Paper elevation={3} sx={{ p: 2, backgroundColor:"#e1eaee", padding: "5px", gap: "5px", height: "90vh" }} className="contenedordetail">
+      <Paper elevation={3} sx={{ p: 2, backgroundColor:"#e1eaee", padding: "5px", gap: "5px", height: "85vh" }} className="contenedordetail">
          <Typography variant="h5">Detalles</Typography>
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} mb={1}>
          

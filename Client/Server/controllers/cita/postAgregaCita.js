@@ -38,12 +38,7 @@ const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso, emai
       sendEmailCita(cliente, abogado, newCita);
     }
   }
-
-  //  newAbogado.addCliente(clientes);
-
   return newCita;
-
-  // return await Abogado.create({nombre, duracion,dificultad, temporada}); //?ASI También puede ser
 };
 
 export { createCita };

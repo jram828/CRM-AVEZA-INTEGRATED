@@ -13,7 +13,7 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [1, 20],
+          len: [1, 200],
         },
       },
       descripcion: {

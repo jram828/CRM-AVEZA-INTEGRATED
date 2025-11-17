@@ -1,30 +1,29 @@
 import axios from "axios";
 
-export async function postCitaHandlers(data) {
+export async function postCitaGoogleHandlers(data) {
   const {
     titulo,
     descripcion, 
     fechaCita, 
     horaCita,
-    idCaso,
     email,
     calendarId,
     nombres,
+    apellidos,
   } = data;
   console.log("data del post", data);
 
 
   try {
-    await axios.post('citas', {
+    await axios.post('citas/google', {
       titulo: `${titulo}`,
       descripcion: `${descripcion}`,
       fechaCita: `${fechaCita}`,
       horaCita: `${horaCita}`,
-      idCaso: `${idCaso}`,
       email: `${email}`,
       calendarId: `${calendarId}`,
       nombres: `${nombres}`,
-
+      apellidos: `${apellidos}`,
     });
     window.alert("Se ha registrado la cita con éxito.");
   } catch (error) {

@@ -6,7 +6,7 @@ import "dayjs/locale/es";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import React, { useEffect, useState } from "react";
-import { getCitas } from "../../redux/actions";
+import { getCitas, obtenerCitasCalendar, setSource } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 dayjs.locale("es");
@@ -19,6 +19,8 @@ dayjs.tz.setDefault(DEFAULT_TIMEZONE);
 function Calendario() {
   const datos = JSON.parse(localStorage.getItem("loggedUser"));
   const filtroCita = JSON.parse(localStorage.getItem("filtroCita"));
+  const source = useSelector((state) => state.source);
+
   const messages = {
     allDay: "Todo el día",
     previous: "Anterior",
@@ -42,42 +44,44 @@ function Calendario() {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
-    dispatch(getCitas());
-  }, [dispatch, filtro]);
+    if (source !== "google") {
+      dispatch(getCitas());
+    } else {
+      dispatch(obtenerCitasCalendar());
+    }
+  }, [dispatch, filtro , source]);
 
-  console.log("Citas: ", citas);
+    console.log("Citas: ", citas);
 
   let filteredCitas = [];
   useEffect(() => {
     if (citas) {
-
-      console.log('filtro calendario:', filtro)
+      console.log("filtro calendario:", filtro);
       const filteredCitas = datos.administrador
-        ? (filtro==='todos'?citas.datosPagina:citas.datosPagina?.filter(
-            (cita) =>
-              // (cita.nombreAbogado === datos.nombres &&
+        ? filtro === "todos"
+          ? citas.datosPagina
+          : citas.datosPagina?.filter(
+              (cita) =>
+                // (cita.nombreAbogado === datos.nombres &&
                 cita.apellidoAbogado === datos.apellidos
-          ))
+            )
         : citas.datosPagina?.filter(
             (cita) =>
               (cita.nombreCliente === datos.nombres &&
                 cita.apellidoCliente === datos.apellidos) ||
               (cita.nombreAbogado === datos.nombres &&
                 cita.apellidoAbogado === datos.apellidos)
-        );
+          );
       console.log("Citas filtradas:", filteredCitas);
       setCitasId(filteredCitas);
     }
-  }, [citas,filtro]);
+  }, [citas, filtro]);
 
   console.log("Citas calendario: ", citasId);
 
   const events = citasId
     ?.map((cita) => {
-      const fechaCita = dayjs.tz(
-        cita.fechaCita,
-        "America/Bogota"
-      );
+      const fechaCita = dayjs.tz(cita.fechaCita, "America/Bogota");
       const [hour, minute, second] = cita.horaCita.split(":").map(Number);
 
       if (
@@ -119,24 +123,24 @@ function Calendario() {
   };
 
   return (
-      <div
-        style={{
-          height: "100%",
-          width: "850px",
-        }}
-      >
-        <Calendar
-          localizer={localizer}
-          events={events}
-          messages={messages}
-          tooltipAccessor={(event) => event.description}
-          onSelectEvent={handleSelectEvent}
-          view={view}
-          date={date}
-          onNavigate={setDate}
-          onView={setView}
-        />
-      </div>
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+      }}
+    >
+      <Calendar
+        localizer={localizer}
+        events={events}
+        messages={messages}
+        tooltipAccessor={(event) => event.description}
+        onSelectEvent={handleSelectEvent}
+        view={view}
+        date={date}
+        onNavigate={setDate}
+        onView={setView}
+      />
+    </div>
   );
 }
 

@@ -1,126 +1,120 @@
-import nodemailer from 'nodemailer';
-const { EMAIL_PASSWORD,EMAIL } = process.env
-import fs from 'fs'
-import path from 'path';
+import nodemailer from "nodemailer";
+const { EMAIL_PASSWORD, EMAIL } = process.env;
+import fs from "fs";
+import path from "path";
+import moment from "moment";
 
-import { fileURLToPath } from 'url';
-
-
+import { fileURLToPath } from "url";
 
 // Obtener el nombre de este archivo
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
 
-console.log('Email', EMAIL, 'Password:', EMAIL_PASSWORD)
+console.log("Email", EMAIL, "Password:", EMAIL_PASSWORD);
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: EMAIL,
-        pass: EMAIL_PASSWORD
-    }
+  service: "gmail",
+  auth: {
+    user: EMAIL,
+    pass: EMAIL_PASSWORD,
+  },
 });
-
-
 
 // const templatePath = path.join(__dirname, "templateCliente.html");
 // const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
 
-const sendEmailCliente = ({nombres, email}) => {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
+const sendEmailCliente = ({ nombres, email }) => {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
-    const templatePath = path.join(__dirname, '', "templateCliente.html");
-    const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
+  const templatePath = path.join(__dirname, "", "templateCliente.html");
+  const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
 
-       const personalizedHtml = htmlTemplate
-         .replace("{{nombre}}", nombres)
-         .replace("{{correo}}", email);
+  const personalizedHtml = htmlTemplate
+    .replace("{{nombre}}", nombres)
+    .replace("{{correo}}", email);
 
-       const mailOptions = {
-         from: `CRM AVEZA <${EMAIL}>`,
-         to: email,
-         subject: "🚀 Bienvenido a CRM AVEZA!!",
-         html: personalizedHtml,
-       };
+  const mailOptions = {
+    from: `CRM AVEZA <${EMAIL}>`,
+    to: email,
+    subject: "🚀 Bienvenido a CRM AVEZA!!",
+    html: personalizedHtml,
+  };
 
-       transporter.sendMail(mailOptions, function (error) {
-         if (error) {
-           console.log("⚠️" + error);
-         } else {
-           console.log("✅ Email sent: " + nombres);
-         }
-       });
-} 
+  transporter.sendMail(mailOptions, function (error) {
+    if (error) {
+      console.log("⚠️" + error);
+    } else {
+      console.log("✅ Email sent: " + nombres);
+    }
+  });
+};
 
-const sendEmailProspecto = ({nombres, email}) => {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
+const sendEmailProspecto = ({ nombres, email }) => {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
-    const templatePath = path.join(__dirname, '', "templateProspecto.html");
-    const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
+  const templatePath = path.join(__dirname, "", "templateProspecto.html");
+  const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
 
-       const personalizedHtml = htmlTemplate
-         .replace("{{nombre}}", nombres)
-         .replace("{{correo}}", email);
+  const personalizedHtml = htmlTemplate
+    .replace("{{nombre}}", nombres)
+    .replace("{{correo}}", email);
 
-       const mailOptions = {
-         from: `CRM AVEZA <${EMAIL}>`,
-         to: email,
-         subject: "🚀 Bienvenido a CRM AVEZA!!",
-         html: personalizedHtml,
-       };
+  const mailOptions = {
+    from: `CRM AVEZA <${EMAIL}>`,
+    to: email,
+    subject: "🚀 Bienvenido a CRM AVEZA!!",
+    html: personalizedHtml,
+  };
 
-       transporter.sendMail(mailOptions, function (error) {
-         if (error) {
-           console.log("⚠️" + error);
-         } else {
-           console.log("✅ Email sent: " + nombres);
-         }
-       });
-}
+  transporter.sendMail(mailOptions, function (error) {
+    if (error) {
+      console.log("⚠️" + error);
+    } else {
+      console.log("✅ Email sent: " + nombres);
+    }
+  });
+};
 
+// const templatePath = path.join(__dirname, "templateCliente.html");
+// const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
 
+// const mailOptions = {
+//     from: EMAIL,
+//     to: correo,
+//     subject: '🚀 Bienvenido a Legaltech!!',
+//     text: 'Te han registrado en LegalTech.'
+// };
 
-    // const templatePath = path.join(__dirname, "templateCliente.html");
-    // const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
-
-    // const mailOptions = {
-    //     from: EMAIL,
-    //     to: correo,
-    //     subject: '🚀 Bienvenido a Legaltech!!',
-    //     text: 'Te han registrado en LegalTech.'
-    // };
-
-    // transporter.sendMail(mailOptions, function(error){
-    //     if (error) {
-    //         console.log('⚠️' + error)
-    //     } else {
-    //         console.log('✅ Email sent: '+ nombre)
-    //     }
-    // })
-
+// transporter.sendMail(mailOptions, function(error){
+//     if (error) {
+//         console.log('⚠️' + error)
+//     } else {
+//         console.log('✅ Email sent: '+ nombre)
+//     }
+// })
 
 const sendEmailPassword = (nombre, correo, cedula) => {
-    console.log("Datos email:", nombre, correo, cedula);
-    
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
+  console.log("Datos email:", nombre, correo, cedula);
 
-    const templatePath = path.join(__dirname, "", "templatePassword.html");
-    const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
-    console.log("Datos email password:", nombre, correo, cedula);
+  const templatePath = path.join(__dirname, "", "templatePassword.html");
+  const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
 
-    const link= `https://crm-aveza-integrated.onrender.com/#/cambiarcontrasena?cedula=${cedula}&correo=${correo}`
-    var personalizedHtml = htmlTemplate
-      .replace("{{nombre}}", nombre)
-      .replace("{{link}}", link);
+  console.log("Datos email password:", nombre, correo, cedula);
+
+  const link = `https://crm-aveza-integrated.onrender.com/#/cambiarcontrasena?cedula=${cedula}&correo=${correo}`;
+  var personalizedHtml = htmlTemplate
+    .replace("{{nombre}}", nombre)
+    .replace("{{link}}", link);
 
   const mailOptions = {
     from: ` CRM AVEZA ${EMAIL}`,
     to: correo,
-      subject: "🚀 Recordatorio de contraseña, CRM AVEZA.",
-    html: personalizedHtml
+    subject: "🚀 Recordatorio de contraseña, CRM AVEZA.",
+    html: personalizedHtml,
     // text: `${nombre}. Bienvenido a Legal Tech! Nos has solicitado recordar tu contraseña, aquí la tienes: ${password}`,
   };
 
@@ -133,36 +127,76 @@ const sendEmailPassword = (nombre, correo, cedula) => {
   });
 };
 
-const sendEmailCita = (cliente, abogado, newCita)=>{
+const sendEmailCita = (data) => {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
-    // const templatePath = path.join(__dirname, 'templateCitas.html');
-    // const htmlTemplate = fs.readFileSync(templatePath, 'Utf8')
+  console.log("Data email cita:", data);
 
-    const personalizedHtml = htmlTemplate
-    .replace('{{cliente}}', cliente.nombre)
-    .replace('{{abogado}}', abogado.nombre)
-    .replace('{{horaCita}}', newCita.horaCita)
-    .replace('{{fechaCita}}', newCita.fechaCita);
+  const templatePath = path.join(__dirname, "templateCitas.html");
+  const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
 
-    const mailOptions = {
-        from: EMAIL,
-        to: correo,
-        subject: `☕ Tienes una nueva cita ${cliente.nombre}`,
-        html: personalizedHtml
-    };
+      const fechaStr = typeof data.fechaCita === "string"
+        ? data.fechaCita.slice(0, 10)
+        : moment(data.fechaCita).format("YYYY-MM-DD");
 
-    transporter.sendMail(mailOptions, function(error){
-        if (error) {
-            console.log('⚠️' + error)
-        } else {
-            console.log('✅ Email sent: '+ nombre)
-        }
-    })
-}
+  const personalizedHtml = htmlTemplate
+    .replace("{{cliente}}", data.nombres)
+    .replace("{{abogado}}", "Julián Avellaneda")
+    .replace("{{horaCita}}", data.horaCita)
+    .replace("{{fechaCita}}", fechaStr)
+    .replace("{{linkReunion}}", data.URLReunion);
 
+  const mailOptions = {
+    from: EMAIL,
+    to: data.invitados[0],
+    subject: `☕ ${data.nombres}, Tienes una nueva cita agendada con Julián Avellaneda`,
+    html: personalizedHtml,
+  };
+
+  transporter.sendMail(mailOptions, function (error) {
+    if (error) {
+      console.log("⚠️" + error);
+    } else {
+      console.log("✅ Email sent: " + data.nombres);
+    }
+  });
+};
+
+const sendEmailCitaAveza = (data) => {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  
+  const templatePath = path.join(__dirname, "templateCitasAveza.html");
+  const htmlTemplate = fs.readFileSync(templatePath, "Utf8");
+ const fechaStr = typeof data.fechaCita === "string"
+        ? data.fechaCita.slice(0, 10)
+        : moment(data.fechaCita).format("YYYY-MM-DD");
+  const personalizedHtml = htmlTemplate
+    .replace("{{cliente}}", `${data.nombres} ${data.apellidos}`)
+    .replace("{{horaCita}}", data.horaCita)
+    .replace("{{fechaCita}}", fechaStr)
+    .replace("{{linkReunion}}", data.URLReunion);
+
+  const mailOptions = {
+    from: EMAIL,
+    to: "comercial@aveza.co",
+    subject: `☕ Primera Asesoría agendada con ${data.nombres} ${data.apellidos}`,
+    html: personalizedHtml,
+  };
+
+  transporter.sendMail(mailOptions, function (error) {
+    if (error) {
+      console.log("⚠️" + error);
+    } else {
+      console.log("✅ Email sent to comercial@aveza.co");
+    }
+  });
+};
 export {
-    sendEmailCliente,
-    sendEmailProspecto,
-    sendEmailCita,
-    sendEmailPassword
-}
+  sendEmailCliente,
+  sendEmailProspecto,
+  sendEmailCita,
+  sendEmailCitaAveza,
+  sendEmailPassword,
+};

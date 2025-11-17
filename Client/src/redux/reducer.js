@@ -38,6 +38,7 @@ import {
   GET_CASO_BY_ID,
   POST_CITA,
   GET_CITAS,
+  GET_CITAS_CALENDAR,
   POST_CONSULTA,
   // LOGIN,
   // LOGIN_FAILED,
@@ -68,6 +69,7 @@ import {
   COPIAR_HONORARIOS,
   CREAR_ACREEDOR,
   GET_ACREEDORES,
+  GET_DISPONIBILIDAD,
 } from "./actions";
 
 let initialState = {
@@ -94,6 +96,7 @@ let initialState = {
   reviews: [],
   pages: [],
   insolvencia: [],
+  horasDisponibles: [],
   solicitud: {},
   reviewError: "",
   // userGit: null,
@@ -305,6 +308,16 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         citas: action.payload,
       };
+    case GET_CITAS_CALENDAR:
+      return {
+        ...state,
+        citasCalendar: action.payload,
+      };
+    case GET_DISPONIBILIDAD:
+      return {
+        ...state,
+        horasDisponibles: action.payload,
+      };
     case FILTER_CITAS:
       return {
         ...state,
@@ -390,7 +403,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         acreedor: action.payload,
       };
-      case GET_ACREEDORES:
+    case GET_ACREEDORES:
       return {
         ...state,
         listaacreedores: action.payload,

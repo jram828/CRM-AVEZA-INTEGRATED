@@ -8,6 +8,7 @@ import { actualizaProspecto } from "../controllers/prospecto/postActualizaProspe
 import { getProspectoByEmail } from "../controllers/prospecto/getProspectoByEmail.js";
 import { actualizaDatosCotizacion } from "../controllers/prospecto/postActualizaDatosCotizacion.js";
 import { corregirAcentos } from "../controllers/prospecto/corregirAcentos.js";
+import { postProspectoAut } from "../controllers/prospecto/postProspectoAut.js";
 
 const prospectosHandler = async (req, res) => {
   //const { name } = req.query;
@@ -114,6 +115,35 @@ const postProspectosHandler = async (req, res) => {
   }
 };
 
+const postProspectosAutoHandler = async (req, res) => {
+  // console.log("Body post prospecto handler:", req.body);
+  const {
+    email,
+    nombres,
+    apellidos,
+    cedulaProspecto,
+    celular,
+    direccion,
+    nombre_ciudad,
+    tipo_usuario,
+    tipo_de_caso,
+    forma_de_pago,
+    honorarios,
+    cuotas,
+    comentarios,
+    valor_pretensiones,
+  } = req.body;
+
+  try {
+    const response = await postProspectoAut(req.body);
+    console.log("Response crear prospecto", response);
+    if (response) res.status(200).json(response);
+    else res.status(200).send("La cedula ya existe");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const postEliminaProspectos = async (req, res) => {
   const { cedulaProspecto } = req.body;
 
@@ -198,6 +228,7 @@ export {
   prospectosCasosHandler,
   prospectosDetailHandler,
   postProspectosHandler,
+  postProspectosAutoHandler,
   postEliminaProspectos,
   postActualizaProspectos,
   postActualizaDatosCotizacion,

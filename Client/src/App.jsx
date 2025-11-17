@@ -25,6 +25,7 @@ import Clientes from "./components/clientes/index.jsx";
 import Contrato from "./components/contrato/index.jsx";
 import ConfigurarRecordatorios from "./components/configurarrecordatorios/index.jsx";
 import AgendarCitas from "./components/agendarcitas/index.jsx";
+import AgendarCitasPriv from "./components/agendarcitaspriv/index.jsx";
 import RegistroCliente from "./components/registrocliente/index.jsx";
 import PDF from "./components/PDF/index.jsx";
 import Autorizacion from "./components/autorizacion/index.jsx";
@@ -59,6 +60,7 @@ function App() {
     "/recordatoriocontrasena",
     "/cambiarcontrasena",
     "/consultas",
+    "/agendarcitas",
   ];
 
   async function login(userData) {
@@ -137,6 +139,7 @@ function App() {
         <Route path="/recordatoriocontrasena" element={<RecordatorioContrasena />} />
         <Route path="/cambiarcontrasena" element={<CambiarContrasena />} />
         <Route path="/consultas" element={<Consultas />} />
+        <Route path="/agendarcitas" element={<AgendarCitas />} />
 
         {/* Rutas privadas (con layout/sidebar) */}
         <Route
@@ -165,7 +168,7 @@ function App() {
                 <Route path="/detail" element={<Detail />} />
                 <Route path="/previsualizarcontrato" element={<PrevisualizarContrato />} />
                 <Route path="/configurarrecordatorios" element={<ConfigurarRecordatorios />} />
-                <Route path="/agendarcitas" element={<AgendarCitas />} />
+                <Route path="/agendarcitaspriv" element={<AgendarCitasPriv />} />
                 <Route path="/documentoslegales" element={<DocumentosLegales />} />
                 <Route path="/contrato" element={<Contrato />} />
                 <Route path="/clientes" element={<Clientes />} />

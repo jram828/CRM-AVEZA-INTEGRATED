@@ -11,7 +11,8 @@ import {
   postEliminaProspectos,
   postActualizaProspectos,
   postActualizaDatosCotizacion,
-  corregirAcentosProspectos
+  corregirAcentosProspectos,
+  postProspectosAutoHandler
   // getClientByEmailHandler,
 } from "../handlers/prospectosHandlers.js";
 
@@ -22,7 +23,7 @@ prospectosRouter.get("/prospectoscasos", prospectosCasosHandler);
 prospectosRouter.get("/:cedulaprospecto", prospectosDetailHandler); // obtiene un único C
 
 prospectosRouter.post("/registroprospecto", postProspectosHandler);
-
+prospectosRouter.post("/registroprospectoauto", postProspectosAutoHandler);
 prospectosRouter.post("/relacionarpaises", relacionarPaises);
 prospectosRouter.post("/relacionardepartamentos", relacionarDepartamentos);
 prospectosRouter.post("/crearciudades", crearCiudades);

@@ -38,6 +38,7 @@ export const DELETE_CASO = "DELETE_CASO;";
 export const FIN_CASO = "FIN_CASO;";
 export const POST_CITA = "POST_CITA";
 export const GET_CITAS = "GET_CITAS";
+export const GET_CITAS_CALENDAR = "GET_CITAS_CALENDAR";
 export const FILTER_CITAS = "FILTER_CITAS";
 export const SET_FILTRO = "SET_FILTRO";
 export const POST_CONSULTA = "POST_CONSULTA";
@@ -62,6 +63,7 @@ export const POST_HONORARIOS = "POST_HONORARIOS";
 export const COPIAR_HONORARIOS = "COPIAR_HONORARIOS";
 export const CREAR_ACREEDOR = "CREAR_ACREEDOR";
 export const GET_ACREEDORES = "GET_ACREEDORES";
+export const GET_DISPONIBILIDAD = "GET_ DISPONIBILIDAD";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -858,3 +860,28 @@ export const buscarAcreedores = (payload) => {
   };
 };
 
+export const obtenerCitasCalendar = (payload) => {
+  const endpoint = `/citas/calendar`;
+
+  return async (dispatch) => {
+    const data = await axios.get(endpoint, payload);
+
+    return dispatch({
+      type: GET_CITAS_CALENDAR,
+      payload: data,
+    });
+  };
+};
+
+export const obtenerDisponibilidad = (payload) => {
+  const endpoint = `/citas/disponibilidad`;
+
+  return async (dispatch) => {
+    const response = await axios.get(endpoint, { params: payload });
+
+    return dispatch({
+      type: GET_DISPONIBILIDAD,
+      payload: response.data,
+    });
+  };
+};

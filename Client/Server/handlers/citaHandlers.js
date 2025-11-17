@@ -1,7 +1,7 @@
 import { calendar } from 'googleapis/build/src/apis/calendar/index.js'
 import { getAllCita } from '../controllers/cita/getAllCita.js'
 import { createCita } from '../controllers/cita/postAgregaCita.js'
-import { createCitaCalendar } from '../controllers/cita/postAgregaCitacalendar.js'
+import { createCitaCalendar } from '../controllers/cita/postAgregaCitaCalendar.js'
 import { obtenerDisponibilidad } from '../controllers/cita/getAvailability.js'
 
 

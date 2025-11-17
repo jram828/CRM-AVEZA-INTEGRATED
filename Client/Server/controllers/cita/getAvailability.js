@@ -55,22 +55,6 @@ while (actual.isBefore(finDia)) {
 
   actual = siguiente;
 }
-//     const horasPosibles = [];
-//     for (let h = 8; h <= 17; h++) {
-//       const inicio = moment.tz(`${fecha} ${h}:00`, zona);
-//       const fin = inicio.clone().add(30, "minutes");
-
-//       const estaOcupado = ocupados.some(
-//         (bloque) =>
-//           inicio.isBefore(moment(bloque.end)) &&
-//           fin.isAfter(moment(bloque.start))
-//       );
-
-//       if (!estaOcupado) {
-//         horasPosibles.push(inicio.format("HH:mm"));
-//       }
-//     }
-
     return horasPosibles;
   } catch (err) {
     console.error("Error al consultar disponibilidad:", err.message);

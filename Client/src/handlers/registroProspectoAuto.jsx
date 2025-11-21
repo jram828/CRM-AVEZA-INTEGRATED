@@ -39,9 +39,9 @@ export async function registroProspectoAuto(userDataRegistro) {
       comentarios: `${comentarios}`,
       valor_pretensiones: `${valor_pretensiones}`,
     });
-    window.alert("Se ha registrado el prospecto con éxito.");
+    // window.alert("Se ha registrado el prospecto con éxito.");
    
   } catch (error) {
-    window.alert("No fue posible registrar el prospecto.");
+    // window.alert("No fue posible registrar el prospecto.");
   }
 }

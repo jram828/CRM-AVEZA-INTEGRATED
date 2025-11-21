@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 
 config();
 
-const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
+const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, EMAIL_CALENDAR } = process.env;
 
 export const obtenerDisponibilidad = async (req, res) => {
   try {
@@ -29,15 +29,15 @@ export const obtenerDisponibilidad = async (req, res) => {
         timeMin: startOfDay,
         timeMax: endOfDay,
         timeZone: zona,
-        items: [{ id: "jram828@gmail.com" }],
+        items: [{ id: EMAIL_CALENDAR}],
       },
     });
 
-    const ocupados = response.data.calendars["jram828@gmail.com"].busy;
+    const ocupados = response.data.calendars[EMAIL_CALENDAR].busy;
  console.log("Bloques ocupados:", ocupados);
     const horasPosibles = [];
 const inicioDia = moment.tz(`${fecha} 08:00`, zona);
-const finDia = moment.tz(`${fecha} 17:00`, zona);
+const finDia = moment.tz(`${fecha} 18:00`, zona);
 
 let actual = inicioDia.clone();
 while (actual.isBefore(finDia)) {

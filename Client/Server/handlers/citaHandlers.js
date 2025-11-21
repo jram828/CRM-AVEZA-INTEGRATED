@@ -24,9 +24,12 @@ const getAvailabilityHandler = async (req, res)=>{
 }
 
 const postCreateCita = async (req, res) =>{
+
+    const {EMAIL_NOTIFICACION } = process.env;
+    
     const { titulo, descripcion, fechaCita, horaCita, idCaso, email, calendarId, nombres  } = req.body
     console.log("Datos recibidos en el handler de creación de cita:", req.body, email);
-    if(!email){ email = "comercial@aveza.co" }
+    if(!email){ email = EMAIL_NOTIFICACION }
     try {
         const response = await createCita( titulo, descripcion, fechaCita, horaCita, idCaso, email, calendarId, nombres )
         res.status(200).json(response)

@@ -61,7 +61,7 @@ const AgendarCita = () => {
   }, [dispatch]);
 
   const abogado = "Julián Avellaneda";
-  const duracion = "30 minutos";
+  const duracion = "30 min";
   const zonaHoraria = "America/Bogota";
 
   useEffect(() => {
@@ -117,7 +117,7 @@ dispatch(obtenerDisponibilidad({ fecha: moment(fechaSeleccionada).format("YYYY-M
   const submitHandlerRegistro = async (e) => {
     e.preventDefault();
     try {
-      setIsLoading(true); // Activar el loading antes de enviar la solicitud
+      // setIsLoading(true); // Activar el loading antes de enviar la solicitud
       console.log("DataRegistro en submitHandlerRegistro:", dataRegistro);
       await registroProspecto(dataRegistro);
       await postCitaGoogleHandlers({
@@ -132,9 +132,9 @@ dispatch(obtenerDisponibilidad({ fecha: moment(fechaSeleccionada).format("YYYY-M
     } catch (error) {
       console.error("Error al crear la cita:", error.message);
       // window.alert("No se pudo crear la cita");
-    } finally {
-      setIsLoading(false); // Desactivar el loading después de la solicitud
-    }
+    }//finally {
+    //   // setIsLoading(false); // Desactivar el loading después de la solicitud
+    // }
   };
 
   const handleChangeRegistro = (e) => {

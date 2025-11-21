@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-const { EMAIL_PASSWORD, EMAIL } = process.env;
+const { EMAIL_PASSWORD, EMAIL, EMAIL_NOTIFICACION } = process.env;
 import fs from "fs";
 import path from "path";
 import moment from "moment";
@@ -180,7 +180,7 @@ const sendEmailCitaAveza = (data) => {
 
   const mailOptions = {
     from: EMAIL,
-    to: "comercial@aveza.co",
+    to: EMAIL_NOTIFICACION,
     subject: `☕ Primera Asesoría agendada con ${data.nombres} ${data.apellidos}`,
     html: personalizedHtml,
   };
@@ -189,7 +189,7 @@ const sendEmailCitaAveza = (data) => {
     if (error) {
       console.log("⚠️" + error);
     } else {
-      console.log("✅ Email sent to comercial@aveza.co");
+      console.log(`✅ Email sent to ${EMAIL_NOTIFICACION}`);
     }
   });
 };

@@ -1,5 +1,5 @@
 // import "./agendarcitas.css";
-// import logo from "../../img/logoAveza.png";
+import foto from "../../img/fotoPerfil.jpg";
 import { Link } from "react-router-dom";
 import {
   obtenerDisponibilidad,
@@ -33,6 +33,11 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { registroProspectoAuto } from "../../handlers/registroProspectoAuto.jsx";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import PublicIcon from "@mui/icons-material/Public";
+import { Avatar, Stack } from "@mui/material";
 
 const AgendarCita = () => {
   const [dataRegistro, setDataRegistro] = useState({
@@ -141,7 +146,7 @@ const AgendarCita = () => {
         horaCita: horaSeleccionada,
       });
       // Redirigir a la página de confirmación
-    window.location.href = "https://aveza.co/cita_confirmada/";
+      window.location.href = "https://aveza.co/cita_confirmada/";
 
       // window.alert("Cita creado con éxito");
       // window.location.reload();
@@ -175,312 +180,331 @@ const AgendarCita = () => {
     );
   }
 
- return (
-  <Box
-    sx={{
-      display: "grid",
-      gridTemplateColumns: {
-        xs: "1fr",
-        md: mostrarFormulario ? "1fr 2fr" : "1fr 1fr 1fr",
-      },
-      gap: 4,
-      p: 4,
-    }}
-  >
-    {/* Columna 1: Info de la cita */}
+  return (
     <Box
       sx={{
-        borderRight: { md: 1 },
-        borderColor: "divider",
-        pr: { md: 2 },
-        mb: { xs: 3, md: 0 },
+        display: "grid",
+        gridTemplateColumns: {
+          xs: "1fr",
+          md: mostrarFormulario ? "1fr 2fr" : "1fr 1fr 1fr",
+        },
+        gap: 4,
+        p: 4,
       }}
     >
-      <Typography variant="h5" gutterBottom>
-        Primera Asesoría Gratuita
-      </Typography>
-      <Typography>
-        <strong>Abogado:</strong> {abogado}
-      </Typography>
-      {fechaSeleccionada && (
+      {/* Columna 1: Info de la cita */}
+      <Box
+        sx={{
+          borderRight: { md: 1 },
+          borderColor: "divider",
+          pr: { md: 2 },
+          mb: { xs: 3, md: 0 },
+        }}
+      >
+        <Typography variant="h5" gutterBottom>
+          Primera Asesoría Gratuita
+        </Typography>
+        {/* Foto del abogado */}
+        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
+          <Avatar
+            alt={abogado}
+            src={foto} // Asegúrate que esta ruta sea correcta
+            sx={{ width: 56, height: 56 }}
+          />
+          <Typography variant="body1">{abogado}</Typography>
+        </Stack>
+
+        {/* Detalles de la cita con íconos */}
+        {fechaSeleccionada && (
+          <Stack spacing={1}>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <CalendarTodayIcon fontSize="small" />
+              <Typography variant="body2">
+                {moment(fechaSeleccionada).format("DD/MM/YYYY")}
+              </Typography>
+            </Stack>
+
+            {horaSeleccionada && (
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <AccessTimeIcon fontSize="small" />
+                <Typography variant="body2">{horaSeleccionada}</Typography>
+              </Stack>
+            )}
+
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <ScheduleIcon fontSize="small" />
+              <Typography variant="body2">{duracion}</Typography>
+            </Stack>
+
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <PublicIcon fontSize="small" />
+              <Typography variant="body2">{zonaHoraria}</Typography>
+            </Stack>
+          </Stack>
+        )}
+      </Box>
+
+      {/* Columna 2: Calendario/Horas */}
+      {!mostrarFormulario && (
         <>
-          <Typography>
-            <strong>Fecha:</strong>{" "}
-            {moment(fechaSeleccionada).format("DD/MM/YYYY")}
-          </Typography>
-          {horaSeleccionada && (
-            <Typography>
-              <strong>Hora:</strong> {horaSeleccionada}
-            </Typography>
+          {isMobile ? (
+            !fechaSeleccionada ? (
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Selecciona una fecha
+                </Typography>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DateCalendar
+                    value={fechaSeleccionada}
+                    onChange={(newDate) => {
+                      setFechaSeleccionada(newDate);
+                      setHoraSeleccionada(null);
+                    }}
+                  />
+                </LocalizationProvider>
+              </Box>
+            ) : (
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Horas disponibles
+                </Typography>
+                {horasDisponibles.length === 0 ? (
+                  <Typography variant="body2">
+                    Selecciona una fecha para ver disponibilidad
+                  </Typography>
+                ) : (
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+                  >
+                    {horasDisponibles.map((hora) =>
+                      hora === horaSeleccionada ? (
+                        <Box key={hora} sx={{ display: "flex", gap: 2 }}>
+                          <Button
+                            sx={{ flex: 1 }}
+                            variant="contained"
+                            onClick={() => setHoraSeleccionada(hora)}
+                          >
+                            {hora}
+                          </Button>
+                          <Button
+                            sx={{ flex: 1 }}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => setMostrarFormulario(true)}
+                          >
+                            Siguiente
+                          </Button>
+                        </Box>
+                      ) : (
+                        <Button
+                          key={hora}
+                          fullWidth
+                          variant="outlined"
+                          onClick={() => setHoraSeleccionada(hora)}
+                        >
+                          {hora}
+                        </Button>
+                      )
+                    )}
+                  </Box>
+                )}
+              </Box>
+            )
+          ) : (
+            <>
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Selecciona una fecha
+                </Typography>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DateCalendar
+                    value={fechaSeleccionada}
+                    onChange={(newDate) => {
+                      setFechaSeleccionada(newDate);
+                      setHoraSeleccionada(null);
+                    }}
+                  />
+                </LocalizationProvider>
+              </Box>
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Horas disponibles
+                </Typography>
+                {horasDisponibles.length === 0 ? (
+                  <Typography variant="body2">
+                    Selecciona una fecha para ver disponibilidad
+                  </Typography>
+                ) : (
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+                  >
+                    {horasDisponibles.map((hora) =>
+                      hora === horaSeleccionada ? (
+                        <Box key={hora} sx={{ display: "flex", gap: 2 }}>
+                          <Button
+                            sx={{ flex: 1 }}
+                            variant="contained"
+                            onClick={() => setHoraSeleccionada(hora)}
+                          >
+                            {hora}
+                          </Button>
+                          <Button
+                            sx={{ flex: 1 }}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => setMostrarFormulario(true)}
+                          >
+                            Siguiente
+                          </Button>
+                        </Box>
+                      ) : (
+                        <Button
+                          key={hora}
+                          fullWidth
+                          variant="outlined"
+                          onClick={() => setHoraSeleccionada(hora)}
+                        >
+                          {hora}
+                        </Button>
+                      )
+                    )}
+                  </Box>
+                )}
+              </Box>
+            </>
           )}
-          <Typography>
-            <strong>Duración:</strong> {duracion}
-          </Typography>
-          <Typography>
-            <strong>Zona horaria:</strong> {zonaHoraria}
-          </Typography>
         </>
       )}
-    </Box>
 
-    {/* Columna 2: Calendario/Horas */}
-    {!mostrarFormulario && (
-      <>
-        {isMobile ? (
-          !fechaSeleccionada ? (
-            <Box>
-              <Typography variant="h6" gutterBottom>
-                Selecciona una fecha
-              </Typography>
-              <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DateCalendar
-                  value={fechaSeleccionada}
-                  onChange={(newDate) => {
-                    setFechaSeleccionada(newDate);
-                    setHoraSeleccionada(null);
-                  }}
-                />
-              </LocalizationProvider>
-            </Box>
-          ) : (
-            <Box>
-              <Typography variant="h6" gutterBottom>
-                Horas disponibles
-              </Typography>
-              {horasDisponibles.length === 0 ? (
-                <Typography variant="body2">
-                  Selecciona una fecha para ver disponibilidad
-                </Typography>
-              ) : (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                  {horasDisponibles.map((hora) =>
-                    hora === horaSeleccionada ? (
-                      <Box key={hora} sx={{ display: "flex", gap: 2 }}>
-                        <Button
-                          sx={{ flex: 1 }}
-                          variant="contained"
-                          onClick={() => setHoraSeleccionada(hora)}
-                        >
-                          {hora}
-                        </Button>
-                        <Button
-                          sx={{ flex: 1 }}
-                          variant="contained"
-                          color="primary"
-                          onClick={() => setMostrarFormulario(true)}
-                        >
-                          Siguiente
-                        </Button>
-                      </Box>
-                    ) : (
-                      <Button
-                        key={hora}
-                        fullWidth
-                        variant="outlined"
-                        onClick={() => setHoraSeleccionada(hora)}
-                      >
-                        {hora}
-                      </Button>
-                    )
-                  )}
-                </Box>
-              )}
-            </Box>
-          )
-        ) : (
-          <>
-            <Box>
-              <Typography variant="h6" gutterBottom>
-                Selecciona una fecha
-              </Typography>
-              <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DateCalendar
-                  value={fechaSeleccionada}
-                  onChange={(newDate) => {
-                    setFechaSeleccionada(newDate);
-                    setHoraSeleccionada(null);
-                  }}
-                />
-              </LocalizationProvider>
-            </Box>
-
-            <Box>
-              <Typography variant="h6" gutterBottom>
-                Horas disponibles
-              </Typography>
-              {horasDisponibles.length === 0 ? (
-                <Typography variant="body2">
-                  Selecciona una fecha para ver disponibilidad
-                </Typography>
-              ) : (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                  {horasDisponibles.map((hora) =>
-                    hora === horaSeleccionada ? (
-                      <Box key={hora} sx={{ display: "flex", gap: 2 }}>
-                        <Button
-                          sx={{ flex: 1 }}
-                          variant="contained"
-                          onClick={() => setHoraSeleccionada(hora)}
-                        >
-                          {hora}
-                        </Button>
-                        <Button
-                          sx={{ flex: 1 }}
-                          variant="contained"
-                          color="primary"
-                          onClick={() => setMostrarFormulario(true)}
-                        >
-                          Siguiente
-                        </Button>
-                      </Box>
-                    ) : (
-                      <Button
-                        key={hora}
-                        fullWidth
-                        variant="outlined"
-                        onClick={() => setHoraSeleccionada(hora)}
-                      >
-                        {hora}
-                      </Button>
-                    )
-                  )}
-                </Box>
-              )}
-            </Box>
-          </>
-        )}
-      </>
-    )}
-
-    {/* Columna 3: Formulario */}
-    {mostrarFormulario && (
-      <Paper sx={{ p: 3 }}>
-        <Typography variant="h6" gutterBottom>
-          Por favor ingresa tus datos
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={submitHandlerRegistro}
-          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-        >
-          <TextField
-            label="Nombre(s)"
-            name="nombres"
-            value={dataRegistro.nombres}
-            onChange={handleChangeRegistro}
-            fullWidth
-            required
-            sx={{ bgcolor: "#fff" }}
-          />
-          <TextField
-            label="Apellido(s)"
-            name="apellidos"
-            value={dataRegistro.apellidos}
-            onChange={handleChangeRegistro}
-            fullWidth
-            required
-            sx={{ bgcolor: "#fff" }}
-          />
-          <TextField
-            label="Celular"
-            name="celular"
-            type="tel"
-            value={dataRegistro.celular}
-            onChange={handleChangeRegistro}
-            fullWidth
-            required
-            error={Boolean(dataRegistro.celular) && !isCelularValid}
-            helperText={
-              Boolean(dataRegistro.celular) && !isCelularValid
-                ? "Celular inválido (10 dígitos, puede incluir +)"
-                : ""
-            }
-            inputProps={{ inputMode: "tel" }}
-            sx={{ bgcolor: "#fff" }}
-          />
-          <TextField
-            label="Email"
-            name="email"
-            type="email"
-            value={dataRegistro.email}
-            onChange={handleChangeRegistro}
-            fullWidth
-            required
-            error={Boolean(dataRegistro.email) && !isEmailValid}
-            helperText={
-              Boolean(dataRegistro.email) && !isEmailValid
-                ? "Formato de email inválido"
-                : ""
-            }
-            sx={{ bgcolor: "#fff" }}
-          />
-          <Autocomplete
-            freeSolo
-            fullWidth
-            disableClearable
-            autoHighlight
-            options={ciudadFiltrada.map((c) => c.etiqueta)}
-            inputValue={dataRegistro.nombre_ciudad}
-            onInputChange={(_event, value) => {
-              setDataRegistro((prev) => ({
-                ...prev,
-                nombre_ciudad: value,
-              }));
-            }}
-            onChange={(_event, value) => {
-              const nombre = value ? String(value).split(",")[0].trim() : "";
-              setDataRegistro((prev) => ({
-                ...prev,
-                nombreEnviar: nombre,
-              }));
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                id="ciudad"
-                label="Ciudad"
-                size="small"
-                placeholder="Buscar ciudad..."
-                fullWidth
-                sx={{
-                  minWidth: 220,
-                  bgcolor: "#fff",
-                  "& .MuiInputBase-root": { bgcolor: "#fff" },
-                }}
-                InputProps={{
-                  ...params.InputProps,
-                  sx: { bgcolor: "#fff" },
-                }}
-              />
-            )}
-          />
-          <FormControl fullWidth required>
-            <InputLabel id="monto-deuda-label">
-              ¿Cuánto suman todas tus deudas?
-            </InputLabel>
-            <Select
-              labelId="monto-deuda-label"
-              name="totalDeudas"
-              value={dataRegistro.totalDeudas}
-              label="¿Cuánto suman todas tus deudas?"
+      {/* Columna 3: Formulario */}
+      {mostrarFormulario && (
+        <Paper sx={{ p: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            Por favor ingresa tus datos
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={submitHandlerRegistro}
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          >
+            <TextField
+              label="Nombre(s)"
+              name="nombres"
+              value={dataRegistro.nombres}
               onChange={handleChangeRegistro}
-            >
-              {opcionesDeuda.map((opcion) => (
-                <MenuItem key={opcion} value={opcion}>
-                  {opcion}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Button type="submit" variant="contained" color="primary">
-            Programar una cita
-          </Button>
-        </Box>
-      </Paper>
-    )}
-  </Box>
-);
-
+              fullWidth
+              required
+              sx={{ bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Apellido(s)"
+              name="apellidos"
+              value={dataRegistro.apellidos}
+              onChange={handleChangeRegistro}
+              fullWidth
+              required
+              sx={{ bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Celular"
+              name="celular"
+              type="tel"
+              value={dataRegistro.celular}
+              onChange={handleChangeRegistro}
+              fullWidth
+              required
+              error={Boolean(dataRegistro.celular) && !isCelularValid}
+              helperText={
+                Boolean(dataRegistro.celular) && !isCelularValid
+                  ? "Celular inválido (10 dígitos, puede incluir +)"
+                  : ""
+              }
+              inputProps={{ inputMode: "tel" }}
+              sx={{ bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Email"
+              name="email"
+              type="email"
+              value={dataRegistro.email}
+              onChange={handleChangeRegistro}
+              fullWidth
+              required
+              error={Boolean(dataRegistro.email) && !isEmailValid}
+              helperText={
+                Boolean(dataRegistro.email) && !isEmailValid
+                  ? "Formato de email inválido"
+                  : ""
+              }
+              sx={{ bgcolor: "#fff" }}
+            />
+            <Autocomplete
+              freeSolo
+              fullWidth
+              disableClearable
+              autoHighlight
+              options={ciudadFiltrada.map((c) => c.etiqueta)}
+              inputValue={dataRegistro.nombre_ciudad}
+              onInputChange={(_event, value) => {
+                setDataRegistro((prev) => ({
+                  ...prev,
+                  nombre_ciudad: value,
+                }));
+              }}
+              onChange={(_event, value) => {
+                const nombre = value ? String(value).split(",")[0].trim() : "";
+                setDataRegistro((prev) => ({
+                  ...prev,
+                  nombreEnviar: nombre,
+                }));
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  id="ciudad"
+                  label="Ciudad"
+                  size="small"
+                  placeholder="Buscar ciudad..."
+                  fullWidth
+                  sx={{
+                    minWidth: 220,
+                    bgcolor: "#fff",
+                    "& .MuiInputBase-root": { bgcolor: "#fff" },
+                  }}
+                  InputProps={{
+                    ...params.InputProps,
+                    sx: { bgcolor: "#fff" },
+                  }}
+                />
+              )}
+            />
+            <FormControl fullWidth required>
+              <InputLabel id="monto-deuda-label">
+                ¿Cuánto suman todas tus deudas?
+              </InputLabel>
+              <Select
+                labelId="monto-deuda-label"
+                name="totalDeudas"
+                value={dataRegistro.totalDeudas}
+                label="¿Cuánto suman todas tus deudas?"
+                onChange={handleChangeRegistro}
+              >
+                {opcionesDeuda.map((opcion) => (
+                  <MenuItem key={opcion} value={opcion}>
+                    {opcion}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Button type="submit" variant="contained" color="primary">
+              Programar una cita
+            </Button>
+          </Box>
+        </Paper>
+      )}
+    </Box>
+  );
 };
 
 export default AgendarCita;

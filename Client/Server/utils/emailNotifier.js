@@ -22,22 +22,6 @@ const oAuth2Client = new google.auth.OAuth2(
 
 oAuth2Client.setCredentials({ refresh_token: GOOGLE_REFRESH_TOKEN });
 
-// Crear transporter dinámico
-async function createTransporter() {
-  const accessToken = await oAuth2Client.getAccessToken();
-
-  return nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: EMAIL,
-      clientId: CRON_GOOGLE_ID,
-      clientSecret: CRON_GOOGLE_API_KEY,
-      refreshToken: GOOGLE_REFRESH_TOKEN,
-      accessToken: accessToken.token,
-    },
-  });
-}
 
 // Helper para cargar templates HTML
 function loadTemplate(fileName) {
@@ -45,6 +29,36 @@ function loadTemplate(fileName) {
   const __dirname = path.dirname(__filename);
   const templatePath = path.join(__dirname, fileName);
   return fs.readFileSync(templatePath, "utf8");
+}
+
+// Función genérica para enviar correo vía Gmail API
+async function sendMail({ to, subject, html }) {
+  const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
+
+  // Construir mensaje MIME
+  const message = [
+    `From: CRM AVEZA <${EMAIL}>`,
+    `To: ${to}`,
+    `Subject: ${subject}`,
+    "Content-Type: text/html; charset=utf-8",
+    "",
+    html,
+  ].join("\n");
+
+  // Codificar en Base64URL
+  const encodedMessage = Buffer.from(message)
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  // Enviar
+  await gmail.users.messages.send({
+    userId: "me",
+    requestBody: { raw: encodedMessage },
+  });
+
+  console.log("✅ Email enviado a:", to);
 }
 
 // ------------------ FUNCIONES DE ENVÍO ------------------
@@ -55,20 +69,11 @@ const sendEmailCliente = async ({ nombres, email }) => {
     .replace("{{nombre}}", nombres)
     .replace("{{correo}}", email);
 
-  const mailOptions = {
-    from: `CRM AVEZA <${EMAIL}>`,
+  await sendMail({
     to: email,
     subject: "🚀 Bienvenido a CRM AVEZA!!",
     html: personalizedHtml,
-  };
-
-  try {
-    const transporter = await createTransporter();
-    await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent:", nombres);
-  } catch (error) {
-    console.error("⚠️ Error:", error);
-  }
+  });
 };
 
 const sendEmailProspecto = async ({ nombres, email }) => {
@@ -77,20 +82,11 @@ const sendEmailProspecto = async ({ nombres, email }) => {
     .replace("{{nombre}}", nombres)
     .replace("{{correo}}", email);
 
-  const mailOptions = {
-    from: `CRM AVEZA <${EMAIL}>`,
+  await sendMail({
     to: email,
     subject: "🚀 Bienvenido a CRM AVEZA!!",
     html: personalizedHtml,
-  };
-
-  try {
-    const transporter = await createTransporter();
-    await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent:", nombres);
-  } catch (error) {
-    console.error("⚠️ Error:", error);
-  }
+  });
 };
 
 const sendEmailPassword = async (nombre, correo, cedula) => {
@@ -101,24 +97,14 @@ const sendEmailPassword = async (nombre, correo, cedula) => {
     .replace("{{nombre}}", nombre)
     .replace("{{link}}", link);
 
-  const mailOptions = {
-    from: `CRM AVEZA <${EMAIL}>`,
+  await sendMail({
     to: correo,
     subject: "🚀 Recordatorio de contraseña, CRM AVEZA.",
     html: personalizedHtml,
-  };
-
-  try {
-    const transporter = await createTransporter();
-    await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent:", nombre);
-  } catch (error) {
-    console.error("⚠️ Error:", error);
-  }
+  });
 };
 
 const sendEmailCita = async (data) => {
-   console.log("Data email cita:", data);
   const htmlTemplate = loadTemplate("templateCitas.html");
   const fechaStr =
     typeof data.fechaCita === "string"
@@ -132,24 +118,14 @@ const sendEmailCita = async (data) => {
     .replace("{{fechaCita}}", fechaStr)
     .replace("{{linkReunion}}", data.URLReunion);
 
-  const mailOptions = {
-    from: EMAIL,
+  await sendMail({
     to: data.invitados[0],
     subject: `☕ ${data.nombres}, Tienes una nueva cita agendada con Julián Avellaneda`,
     html: personalizedHtml,
-  };
-console.log("Mail options:", mailOptions);  
-  try {
-    const transporter = await createTransporter();
-    await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent:", data.nombres);
-  } catch (error) {
-    console.error("⚠️ Error:", error);
-  }
+  });
 };
 
 const sendEmailCitaAveza = async (data) => {
-  console.log("Data email cita Aveza:", data);
   const htmlTemplate = loadTemplate("templateCitasAveza.html");
   const fechaStr =
     typeof data.fechaCita === "string"
@@ -162,21 +138,13 @@ const sendEmailCitaAveza = async (data) => {
     .replace("{{fechaCita}}", fechaStr)
     .replace("{{linkReunion}}", data.URLReunion);
 
-  const mailOptions = {
-    from: EMAIL,
+  await sendMail({
     to: EMAIL_NOTIFICACION,
     subject: `☕ Primera Asesoría agendada con ${data.nombres} ${data.apellidos}`,
     html: personalizedHtml,
-  };
-console.log("Mail options Aveza:", mailOptions);
-  try {
-    const transporter = await createTransporter();
-    await transporter.sendMail(mailOptions);
-    console.log(`✅ Email sent to ${EMAIL_NOTIFICACION}`);
-  } catch (error) {
-    console.error("⚠️ Error:", error);
-  }
+  });
 };
+
 
 // ------------------ EXPORTS ------------------
 

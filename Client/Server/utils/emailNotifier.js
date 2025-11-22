@@ -35,11 +35,12 @@ function loadTemplate(fileName) {
 async function sendMail({ to, subject, html }) {
   const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
 
-  // Construir mensaje MIME
+  const encodedSubject = `=?UTF-8?B?${Buffer.from(subject).toString("base64")}?=`;
+
   const message = [
     `From: CRM AVEZA <${EMAIL}>`,
     `To: ${to}`,
-    `Subject: ${subject}`,
+    `Subject: ${encodedSubject}`,
     "Content-Type: text/html; charset=utf-8",
     "",
     html,

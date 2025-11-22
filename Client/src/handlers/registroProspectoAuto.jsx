@@ -16,6 +16,7 @@ export async function registroProspectoAuto(userDataRegistro) {
     cuotas,
     comentarios,
     valor_pretensiones,
+    totalDeudas,
   } = userDataRegistro;
 
   console.log("User data registro:", userDataRegistro);
@@ -38,6 +39,7 @@ export async function registroProspectoAuto(userDataRegistro) {
       cuotas: `${cuotas}`,
       comentarios: `${comentarios}`,
       valor_pretensiones: `${valor_pretensiones}`,
+      totalDeudas: `${totalDeudas}`,
     });
     // window.alert("Se ha registrado el prospecto con éxito.");
    

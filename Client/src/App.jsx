@@ -60,7 +60,7 @@ function App() {
     "/recordatoriocontrasena",
     "/cambiarcontrasena",
     "/consultas",
-    "/agendarcitas",
+    "/AsesoriaGratuita",
   ];
 
   async function login(userData) {
@@ -139,7 +139,7 @@ function App() {
         <Route path="/recordatoriocontrasena" element={<RecordatorioContrasena />} />
         <Route path="/cambiarcontrasena" element={<CambiarContrasena />} />
         <Route path="/consultas" element={<Consultas />} />
-        <Route path="/agendarcitas" element={<AgendarCitas />} />
+        <Route path="/AsesoriaGratuita" element={<AgendarCitas />} />
 
         {/* Rutas privadas (con layout/sidebar) */}
         <Route
@@ -168,7 +168,7 @@ function App() {
                 <Route path="/detail" element={<Detail />} />
                 <Route path="/previsualizarcontrato" element={<PrevisualizarContrato />} />
                 <Route path="/configurarrecordatorios" element={<ConfigurarRecordatorios />} />
-                <Route path="/agendarcitaspriv" element={<AgendarCitasPriv />} />
+                <Route path="/agendarcitas" element={<AgendarCitasPriv />} />
                 <Route path="/documentoslegales" element={<DocumentosLegales />} />
                 <Route path="/contrato" element={<Contrato />} />
                 <Route path="/clientes" element={<Clientes />} />

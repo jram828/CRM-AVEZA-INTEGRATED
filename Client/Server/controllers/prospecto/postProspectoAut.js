@@ -80,12 +80,21 @@ export async function postProspectoAut(userDataRegistro) {
     res.status(400).send("Faltan datos");
   } else {
     try {
+      // convertir celular a número si no lo es (limpiando caracteres no numéricos)
+      const celularParsed = (typeof celular === "number")
+        ? celular
+        : (() => {
+        const cleaned = String(celular || "").replace(/\D/g, "");
+        const n = cleaned ? Number(cleaned) : NaN;
+        return Number.isFinite(n) ? n : null;
+          })();
+
       const newProspecto = await Prospecto.create({
         cedulaProspecto: cedula,
         email: email,
         nombres: nombres,
         apellidos: apellidos,
-        celular: celular,
+        celular: celularParsed,
         direccion: direccion,
         forma_de_pago: forma_de_pago,
         honorarios: honorarios,

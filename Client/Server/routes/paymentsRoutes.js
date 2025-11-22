@@ -10,7 +10,7 @@ import {
 import { crearOrdenHandler } from "../handlers/paymentsHandler.js";
 
 const paymentsRouter = Router();
-console.log('Estoyen routes de MP')
+// console.log('Estoyen routes de MP')
 paymentsRouter.get("/", getPaymentsHandler);
 paymentsRouter.get("/status/:id", statusHandler);
 paymentsRouter.post("/webhook", webhookHandler);

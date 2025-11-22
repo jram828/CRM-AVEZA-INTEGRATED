@@ -117,22 +117,6 @@ const postProspectosHandler = async (req, res) => {
 
 const postProspectosAutoHandler = async (req, res) => {
   // console.log("Body post prospecto handler:", req.body);
-  const {
-    email,
-    nombres,
-    apellidos,
-    cedulaProspecto,
-    celular,
-    direccion,
-    nombre_ciudad,
-    tipo_usuario,
-    tipo_de_caso,
-    forma_de_pago,
-    honorarios,
-    cuotas,
-    comentarios,
-    valor_pretensiones,
-  } = req.body;
 
   try {
     const response = await postProspectoAut(req.body);

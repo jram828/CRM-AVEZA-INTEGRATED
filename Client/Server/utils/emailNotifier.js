@@ -118,6 +118,7 @@ const sendEmailPassword = async (nombre, correo, cedula) => {
 };
 
 const sendEmailCita = async (data) => {
+   console.log("Data email cita:", data);
   const htmlTemplate = loadTemplate("templateCitas.html");
   const fechaStr =
     typeof data.fechaCita === "string"
@@ -137,7 +138,7 @@ const sendEmailCita = async (data) => {
     subject: `☕ ${data.nombres}, Tienes una nueva cita agendada con Julián Avellaneda`,
     html: personalizedHtml,
   };
-
+console.log("Mail options:", mailOptions);  
   try {
     const transporter = await createTransporter();
     await transporter.sendMail(mailOptions);
@@ -148,6 +149,7 @@ const sendEmailCita = async (data) => {
 };
 
 const sendEmailCitaAveza = async (data) => {
+  console.log("Data email cita Aveza:", data);
   const htmlTemplate = loadTemplate("templateCitasAveza.html");
   const fechaStr =
     typeof data.fechaCita === "string"
@@ -166,7 +168,7 @@ const sendEmailCitaAveza = async (data) => {
     subject: `☕ Primera Asesoría agendada con ${data.nombres} ${data.apellidos}`,
     html: personalizedHtml,
   };
-
+console.log("Mail options Aveza:", mailOptions);
   try {
     const transporter = await createTransporter();
     await transporter.sendMail(mailOptions);

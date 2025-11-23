@@ -109,7 +109,7 @@ const getAllProspecto = async (filters) => {
       ],
       order,
       offset: offset || 0,
-      limit: limit2 || 3,
+      limit: limit2 || 100000,
     };
     allProspecto = await Prospecto.findAll(consulta);
   }

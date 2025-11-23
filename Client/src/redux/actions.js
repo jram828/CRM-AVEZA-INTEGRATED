@@ -64,6 +64,7 @@ export const COPIAR_HONORARIOS = "COPIAR_HONORARIOS";
 export const CREAR_ACREEDOR = "CREAR_ACREEDOR";
 export const GET_ACREEDORES = "GET_ACREEDORES";
 export const GET_DISPONIBILIDAD = "GET_ DISPONIBILIDAD";
+export const PUT_STATUS = "PUT_STATUS";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -215,7 +216,8 @@ export const getClientes = (page) => {
 };
 
 export const getProspectos = (page) => {
-  const endpoint = `/prospectos/prospectos?pagina=${page}&porPagina=12`;
+  const endpoint = `/prospectos/prospectos?pagina=${page}&porPagina=15`;
+  // const endpoint = `/prospectos/prospectos`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
     return dispatch({
@@ -569,6 +571,17 @@ export const updateCotizacionData = (cotizacionData) => {
     const { data } = await axios.put(endpoint, cotizacionData);
     return dispatch({
       type: PUT_DATOS_COTIZACION,
+      payload: data,
+    });
+  };
+};
+
+export const updateStatus = (dataStatus) => {
+  const endpoint = `/prospectos/status`;
+  return async (dispatch) => {
+    const { data } = await axios.put(endpoint, dataStatus);
+    return dispatch({
+      type: PUT_STATUS,
       payload: data,
     });
   };

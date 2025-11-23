@@ -70,6 +70,7 @@ import {
   CREAR_ACREEDOR,
   GET_ACREEDORES,
   GET_DISPONIBILIDAD,
+  PUT_STATUS,
 } from "./actions";
 
 let initialState = {
@@ -384,6 +385,11 @@ const rootReducer = (state = initialState, action) => {
         deudas: action.payload,
       };
     case PUT_DATOS_COTIZACION:
+      return {
+        ...state,
+        prospecto: action.payload,
+      };
+    case PUT_STATUS:
       return {
         ...state,
         prospecto: action.payload,

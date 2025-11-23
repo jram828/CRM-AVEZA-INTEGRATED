@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import "./searchBarProspectos.css";
 import { filterProspecto } from "../../redux/actions";
+import { Button } from "../Mystyles";
 import { Link } from "react-router-dom";
-import { Box, TextField, Button } from "@mui/material";
+
 const SearchBar = ({ onFilter }) => {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -37,58 +38,44 @@ const SearchBar = ({ onFilter }) => {
 
   const formatInputValue = (value) => {
     if (!value) return "";
-    return value;
+    return value
   };
 
   return (
-    <div
-      className="searchbar"
-      style={{ display: "flex", gap: 8, alignItems: "center" }}
-    >
-      <TextField
-        label="Nombre"
+
+    <div className="searchbar">
+
+      <input
         placeholder="Nombre"
+        type="text"
         value={nombre}
         onKeyDown={handleKeyDown}
         onChange={(e) => handleInputChange(e, setNombre)}
-        size="small"
-        variant="outlined"
         className="inputfiltrocliente"
-        InputProps={{ "aria-label": "nombre" }}
       />
-
-      <TextField
-        label="Apellido"
+      <input
         placeholder="Apellido"
+        type="text"
         value={apellido}
         onKeyDown={handleKeyDown}
         onChange={(e) => handleInputChange(e, setApellido)}
-        size="small"
-        variant="outlined"
         className="inputfiltrocliente"
-        InputProps={{ "aria-label": "apellido" }}
       />
-      <TextField
-        label="Número de Cédula"
+      <input
         placeholder="Número de Cédula"
+        type="text"
         value={cedula}
         onKeyDown={handleKeyDown}
         onChange={(e) => handleInputChange(e, setCedula)}
-        size="small"
-        variant="outlined"
         className="inputfiltrocliente"
-        InputProps={{ "aria-label": "cedula" }}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSearch}
-        className="buscar"
-        size="medium"
-      >
+
+      <Button onClick={handleSearch} className="buscar">
         Buscar
       </Button>
+
     </div>
+
   );
 };
 

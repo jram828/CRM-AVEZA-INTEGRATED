@@ -5,7 +5,9 @@ import {
   filterProspecto,
   getProspectoAllCasos,
   getProspectos,
+  prospectoActual,
   setSource,
+  updateStatus,
   // updateProspectoStatus // ← Descomenta si tienes esta acción para backend
 } from "../../redux/actions";
 import { Button, Button2, Button3 } from "../Mystyles";
@@ -22,55 +24,37 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-} from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./prospectos.css";
 import "../../App.css";
+import { useNavigate } from "react-router-dom";
 
 const Prospectos = () => {
   const dispatch = useDispatch();
-  const reduxProspectos = useSelector((state) => state.pages); // ✅ Usar pages como fuente
+  const navigate = useNavigate();
+  const reduxProspectos = useSelector((state) => state.prospectos);
+  // const pages = useSelector((state) => state.pages);
 
+  console.log("Redux Prospectos:", reduxProspectos);
   const [filterApplied, setFilterApplied] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [prospectos, setProspectos] = useState([]);
 
-  const totalPages = Math.ceil(reduxProspectos?.length / 12);
-const contarEstados = (lista) => {
-  let contactado = 0;
-  let tieneCotizacion = 0;
-  let cotizacionAprobada = 0;
+  const totalPages = Math.ceil(prospectos?.length / 12);
 
-  lista.forEach((p) => {
-    if (p.contactado === "Si") contactado++;
-    if (p.tieneCotizacion === "Si") tieneCotizacion++;
-    if (p.cotizacionAprobada === "Si") cotizacionAprobada++;
-  });
-
-  console.log("Conteo de prospectos por estado:");
-  console.log("Contactado:", contactado);
-  console.log("Tiene Cotización:", tieneCotizacion);
-  console.log("Cotización Aprobada:", cotizacionAprobada);
-};
-
-  useEffect(() => {
-    dispatch(getProspectoAllCasos());
-    dispatch(setSource("prospecto"));
-    // contarEstados(reduxProspectos);
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getProspectoAllCasos());
+  //   dispatch(setSource("prospecto"));
+  // }, [dispatch]);
 
   useEffect(() => {
     dispatch(getProspectos(currentPage));
+    dispatch(setSource("prospecto"));
   }, [dispatch, currentPage]);
 
   useEffect(() => {
-    // console.log("Prospectos recibidos desde Redux:", reduxProspectos); // ✅ Verifica que llegan datos
     setProspectos(reduxProspectos);
-
   }, [reduxProspectos]);
 
   const handleVerTodosClick = () => {
@@ -90,62 +74,114 @@ const contarEstados = (lista) => {
     setCurrentPage(newPage);
   };
 
-  const getStatus = (prospecto) => {
-    if (prospecto.cotizacionAprobada === "Si") return "cotizacionAprobada";
-    if (prospecto.tieneCotizacion === "Si") return "tieneCotizacion";
-    if (prospecto.contactado === "Si") return "contactado";
-    return "sinEstado";
-  };
-
   const handleStatusChange = (idProspecto, newStatus) => {
-    const updated = prospectos.map((p) => {
-      if (p.idProspecto !== idProspecto) return p;
-      return {
-        ...p,
-        contactado: newStatus === "contactado" ? "Si" : "No",
-        tieneCotizacion: newStatus === "tieneCotizacion" ? "Si" : "No",
-        cotizacionAprobada: newStatus === "cotizacionAprobada" ? "Si" : "No",
-      };
-    });
-    setProspectos(updated);
+    setProspectos((prev) =>
+      prev.map((p) =>
+        p.idProspecto === idProspecto ? { ...p, status: newStatus } : p
+      )
+    );
+   dispatch(
+      updateStatus({
+        idProspecto: idProspecto,
+        field: "status",
+        value: newStatus,
+      })
+    )
 
-    // dispatch(updateProspectoStatus(idProspecto, newStatus)); // ← Aquí iría la llamada al backend
   };
 
+  const groupedProspectos = {
+    sininiciar: [],
+    intentodecontacto: [],
+    nuevointentoseg1: [],
+    nuevointentoseg2: [],
+    asesoriaag: [],
+    asesoriaenreag: [],
+    noasesoria: [],
+    nocalificado: [],
+    calificado: [],
+    cotizacion: [],
+    nocontacto: [],
+  };
+
+  prospectos.forEach((p) => {
+    if (groupedProspectos[p.status]) {
+      groupedProspectos[p.status].push(p);
+    }
+  });
+
+  const onClickDetail = (prospecto) => {
+    dispatch(prospectoActual(prospecto));
+    window.localStorage.setItem("prospecto", JSON.stringify(prospecto));
+    navigate("/detail");
+  };
+  const handleDragUpdate = (update) => {
+    const container = document.querySelector(".divprospectos2");
+    if (!container) return;
+
+    const { destination } = update;
+    if (!destination) return;
+
+    const buffer = 100; // margen antes de activar scroll
+    const scrollSpeed = 20;
+
+    const { clientX } = update; // posición del mouse
+    const { left, right } = container.getBoundingClientRect();
+
+    if (clientX - left < buffer) {
+      container.scrollLeft -= scrollSpeed; // scroll hacia la izquierda
+    } else if (right - clientX < buffer) {
+      container.scrollLeft += scrollSpeed; // scroll hacia la derecha
+    }
+  };
   const handleDragEnd = (result) => {
     const { source, destination, draggableId } = result;
     if (!destination || source.droppableId === destination.droppableId) return;
 
-    const updated = prospectos.map((p) => {
-      if (p.idProspecto.toString() !== draggableId) return p;
-      return {
-        ...p,
-        contactado: destination.droppableId === "contactado" ? "Si" : "No",
-        tieneCotizacion: destination.droppableId === "tieneCotizacion" ? "Si" : "No",
-        cotizacionAprobada: destination.droppableId === "cotizacionAprobada" ? "Si" : "No",
-      };
-    });
-    setProspectos(updated);
+    const movedProspecto = prospectos.find(
+      (p) => String(p.idProspecto) === draggableId
+    );
+    if (!movedProspecto) return;
 
-    // dispatch(updateProspectoStatus(parseInt(draggableId), destination.droppableId)); // ← Aquí iría la llamada al backend
-  };
-contarEstados(reduxProspectos);
-  const groupedProspectos = {
-    contactado: [],
-    tieneCotizacion: [],
-    cotizacionAprobada: [],
-  };
+    const updatedProspectos = prospectos?.map((p) =>
+      String(p.idProspecto) === draggableId
+        ? { ...p, status: destination.droppableId }
+        : p
+    );
 
-  prospectos.forEach((p) => {
-    const status = getStatus(p);
-    if (groupedProspectos[status]) {
-      groupedProspectos[status].push(p);
+    // Si cambió de columna
+    if (destination.droppableId !== source.droppableId) {
+      dispatch(
+        updateStatus({
+          idProspecto: draggableId, // el id de la card
+          field: "status",
+          value: destination.droppableId, // la nueva columna
+        })
+      );
     }
-  });
+    setProspectos(updatedProspectos);
+
+    // dispatch(updateProspectoStatus(draggableId, destination.droppableId)); // ← Aquí iría la llamada al backend
+  };
 
   const renderColumn = (title, statusKey) => (
-    <Grid item xs={12} md={4}>
-      <Paper elevation={3} style={{ padding: "1rem", minHeight: "70vh" }}>
+    <div
+      style={{
+        minWidth: "300px",
+        marginRight: "1rem",
+        flexShrink: 0,
+        flex: "0 0 320px",
+      }}
+    >
+      <Paper
+        elevation={3}
+        style={{
+          padding: "1rem",
+          minHeight: "70vh",
+          maxHeight: "70vh", // altura fija
+          overflowY: "auto", // scroll vertical dentro de la columna
+        }}
+      >
         <Typography variant="h6" align="center" gutterBottom>
           {title}
         </Typography>
@@ -156,10 +192,10 @@ contarEstados(reduxProspectos);
               {...provided.droppableProps}
               style={{ minHeight: "60vh" }}
             >
-              {groupedProspectos[statusKey].map((prospecto, index) => (
+              {groupedProspectos[statusKey]?.map((prospecto, index) => (
                 <Draggable
-                  key={prospecto.idProspecto}
-                  draggableId={prospecto.idProspecto.toString()}
+                  key={String(prospecto.idProspecto)}
+                  draggableId={String(prospecto.idProspecto)}
                   index={index}
                 >
                   {(provided) => (
@@ -174,21 +210,62 @@ contarEstados(reduxProspectos);
                       }}
                     >
                       <CardContent>
-                        <Typography variant="subtitle1">
-                          {prospecto.nombres} {prospecto.apellidos}
-                        </Typography>
-                        <FormControl fullWidth size="small" style={{ marginTop: "0.5rem" }}>
+                        <Link
+                          to={"/detail"}
+                          onClick={() => onClickDetail(prospecto)}
+                          className="link"
+                        >
+                          <Typography variant="subtitle1">
+                            {prospecto.nombres} {prospecto.apellidos}
+                          </Typography>
+                        </Link>
+                        <FormControl
+                          fullWidth
+                          size="small"
+                          style={{ marginTop: "0.5rem" }}
+                        >
                           <InputLabel>Status</InputLabel>
                           <Select
-                            value={getStatus(prospecto)}
+                            value={prospecto.status}
                             label="Status"
                             onChange={(e) =>
-                              handleStatusChange(prospecto.idProspecto, e.target.value)
+                              handleStatusChange(
+                                prospecto.idProspecto,
+                                e.target.value
+                              )
                             }
                           >
-                            <MenuItem value="contactado">Contactado</MenuItem>
-                            <MenuItem value="tieneCotizacion">Tiene Cotización</MenuItem>
-                            <MenuItem value="cotizacionAprobada">Cotización Aprobada</MenuItem>
+                            <MenuItem value="sininiciar">Sin iniciar</MenuItem>
+                            <MenuItem value="intentodecontacto">
+                              Intento de contacto
+                            </MenuItem>
+                            <MenuItem value="nuevointentoseg1">
+                              Nuevo Intento - Seguimiento 1
+                            </MenuItem>
+                            <MenuItem value="nuevointentoseg2">
+                              Nuevo Intento - Seguimiento 2
+                            </MenuItem>
+                            <MenuItem value="nocontacto">
+                              Nunca hubo contacto
+                            </MenuItem>
+                            <MenuItem value="asesoriaag">
+                              Asesoría agendada
+                            </MenuItem>
+                            <MenuItem value="asesoriaenreag">
+                              Asesoría en reagendamiento
+                            </MenuItem>
+                            <MenuItem value="noasesoria">
+                              No se logró primera asesoria
+                            </MenuItem>
+                            <MenuItem value="nocalificado">
+                              No calificado después de asesoría
+                            </MenuItem>
+                            <MenuItem value="calificado">
+                              Calificado | En esspera de documentos
+                            </MenuItem>
+                            <MenuItem value="cotizacion">
+                              Cotización o espera de contrato
+                            </MenuItem>
                           </Select>
                         </FormControl>
                       </CardContent>
@@ -201,7 +278,7 @@ contarEstados(reduxProspectos);
           )}
         </Droppable>
       </Paper>
-    </Grid>
+    </div>
   );
 
   return (
@@ -236,7 +313,7 @@ contarEstados(reduxProspectos);
         </div>
       )}
 
-      <div className="divprospectos">
+      <div className="divprospectos2">
         {searchPerformed && prospectos.length === 0 && (
           <p>No hay coincidencias</p>
         )}
@@ -245,18 +322,49 @@ contarEstados(reduxProspectos);
             <img className="loading-image" src={loading} alt="loading" />
           </div>
         )}
+
         {prospectos.length > 0 && (
-          <DragDropContext onDragEnd={handleDragEnd}>
-            <Grid container spacing={2}>
-              {renderColumn("Contactado", "contactado")}
-              {renderColumn("Tiene Cotización", "tieneCotizacion")}
-              {renderColumn("Cotización Aprobada", "cotizacionAprobada")}
-            </Grid>
+          <DragDropContext
+            onDragEnd={handleDragEnd}
+            onDragUpdate={handleDragUpdate}
+          >
+            {/* contenedor con scroll horizontal */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "nowrap",
+              }}
+            >
+              {renderColumn("Sin iniciar", "sininiciar")}
+              {renderColumn("Intento de contacto", "intentodecontacto")}
+              {renderColumn(
+                "Nuevo Intento - Seguimiento 1",
+                "nuevointentoseg1"
+              )}
+              {renderColumn(
+                "Nuevo Intento - Seguimiento 2",
+                "nuevointentoseg2"
+              )}
+              {renderColumn("Nunca hubo contacto", "nocontacto")}
+              {renderColumn("Asesoría agendada", "asesoriaag")}
+              {renderColumn("Asesoría en reagendamiento", "asesoriaenreag")}
+              {renderColumn("No se logró primera asesoria", "noasesoria")}
+              {renderColumn(
+                "No calificado después de asesoría",
+                "nocalificado"
+              )}
+              {renderColumn(
+                "Calificado | En espera de documentos",
+                "calificado"
+              )}
+              {renderColumn("Cotización o espera de contrato", "cotizacion")}
+            </div>
           </DragDropContext>
         )}
       </div>
     </div>
   );
-}
+};
 
 export default Prospectos;

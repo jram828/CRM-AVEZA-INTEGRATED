@@ -23,6 +23,7 @@ prospectosRouter.get("/prospectos", prospectosHandler);
 prospectosRouter.get("/prospectoscasos", prospectosCasosHandler);
 prospectosRouter.get("/:cedulaprospecto", prospectosDetailHandler); // obtiene un único C
 
+
 prospectosRouter.post("/registroprospecto", postProspectosHandler);
 prospectosRouter.post("/registroprospectoauto", postProspectosAutoHandler);
 prospectosRouter.post("/relacionarpaises", relacionarPaises);

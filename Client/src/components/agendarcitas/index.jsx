@@ -280,6 +280,8 @@ const AgendarCita = () => {
                         setFechaSeleccionada(newDate);
                         setHoraSeleccionada(null);
                       }}
+                      shouldDisableDate={(date) => date.day() === 0} // 🚫 bloquea domingos
+                      minDate={moment()} // 🔑 bloquea fechas anteriores a hoy
                       sx={{
                         color: "black", // color general
                         "& .MuiTypography-root": {
@@ -353,6 +355,8 @@ const AgendarCita = () => {
                   </Typography>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DateCalendar
+                      shouldDisableDate={(date) => date.day() === 0} // 🚫 bloquea domingos
+                      minDate={moment()} // 🔑 bloquea fechas anteriores a hoy
                       value={fechaSeleccionada}
                       onChange={(newDate) => {
                         setFechaSeleccionada(newDate);

@@ -7,6 +7,7 @@ import { Sequelize } from "sequelize";
 import abogadoModel from "./models/Abogado.js";
 import casoModel from "./models/Caso.js";
 import citaModel from "./models/Cita.js";
+import tareaModel from "./models/Tarea.js";
 import clienteModel from "./models/Cliente.js";
 import prospectoModel from "./models/Prospecto.js";
 // import prospecto2Model from "./models/Prospecto.js";
@@ -81,6 +82,7 @@ const DocumentoLegal = documentosLegalesModel(sequelize);
 const TipoNotificacion = tipoNotificacionModel(sequelize);
 const Usuario = usuarioModel(sequelize);
 const Cita = citaModel(sequelize);
+const Tarea = tareaModel(sequelize);
 const Pais= paisModel(sequelize);
 const Ciudad=ciudadModel(sequelize);
 const Departamento=departamentoModel(sequelize);
@@ -225,6 +227,18 @@ Acreedor.belongsToMany(Cliente, { through: "Cliente_Acreedor" });
 
 Ciudad.belongsToMany(Acreedor, { through: "Ciudad_Acreedor" });
 Acreedor.belongsToMany(Ciudad, { through: "Ciudad_Acreedor" });
+
+Prospecto.belongsToMany(Tarea, { through: "Prospecto_Tarea" });
+Tarea.belongsToMany(Prospecto, { through: "Prospecto_Tarea" });
+
+Prospecto.belongsToMany(Cita, { through: "Prospecto_Cita" });
+Cita.belongsToMany(Prospecto, { through: "Prospecto_Cita" });
+
+Abogado.belongsToMany(Tarea, { through: "Abogado_Tarea" });
+Tarea.belongsToMany(Abogado, { through: "Abogado_Tarea" });
+
+Abogado.belongsToMany(Cita, { through: "Abogado_Cita" });
+Cita.belongsToMany(Abogado, { through: "Abogado_Cita" });
 
 const models = {
   ...sequelize.models,

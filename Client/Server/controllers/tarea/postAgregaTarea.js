@@ -3,7 +3,7 @@ import moment from "moment";
 import { sendEmailCita } from "../../utils/emailNotifier.js";
 
 
-const { Tarea, Prospecto, Abogado, Caso } = models;
+const { Tarea, Prospecto} = models;
 const createTarea = async (idProspecto, asunto, fechaVencimiento, recordatorio, tipoRecordatorio,repetir, frecuencia, repeticiones) => {
   const fechaUTC = moment(fechaVencimiento).utc().toDate();
 
@@ -19,6 +19,13 @@ const createTarea = async (idProspecto, asunto, fechaVencimiento, recordatorio, 
   });
 
  console.log("Nueva tareea creada en la base de datos:", newTarea);
+
+  const prospecto = await Prospecto.findByPk(idProspecto);
+  if (!prospecto) throw Error("Prospecto no encontrado");
+
+  await prospecto.addTarea(newTarea);
+
+
 //  const dataRegistro = {
 //     titulo: titulo,
 //     descripcion: descripcion,

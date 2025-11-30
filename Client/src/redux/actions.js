@@ -37,7 +37,11 @@ export const GET_CASO_BY_ID = "GET_CASO_BY_ID";
 export const DELETE_CASO = "DELETE_CASO;";
 export const FIN_CASO = "FIN_CASO;";
 export const POST_CITA = "POST_CITA";
+export const POST_TAREA = "POST_TAREA";
 export const GET_CITAS = "GET_CITAS";
+export const GET_CITAS_BY_ID = "GET_CITAS_BY_ID";
+export const GET_TAREAS = "GET_TAREAS";
+export const GET_TAREAS_BY_ID = "GET_TAREAS_BY_ID";
 export const GET_CITAS_CALENDAR = "GET_CITAS_CALENDAR";
 export const FILTER_CITAS = "FILTER_CITAS";
 export const SET_FILTRO = "SET_FILTRO";
@@ -216,8 +220,8 @@ export const getClientes = (page) => {
 };
 
 export const getProspectos = (page) => {
-  const endpoint = `/prospectos/prospectos?pagina=${page}&porPagina=15`;
-  // const endpoint = `/prospectos/prospectos`;
+  // const endpoint = `/prospectos/prospectos?pagina=${page}&porPagina=15`;
+  const endpoint = `/prospectos/prospectos`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
     return dispatch({
@@ -269,6 +273,30 @@ export const getByIdProspecto = (cedulaProspecto) => {
     const { data } = await axios.get(endpoint);
     return dispatch({
       type: GET_BY_ID_PROSPECTO,
+      payload: data,
+    });
+  };
+};
+
+export const getTareasById = (idProspecto) => {
+  const endpoint = `/tareas/${idProspecto}`;
+  // console.log("URL", endpoint);
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_TAREAS_BY_ID,
+      payload: data,
+    });
+  };
+};
+
+export const getCitasById = (idProspecto) => {
+  const endpoint = `/citas/${idProspecto}`;
+  // console.log("URL", endpoint);
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_CITAS_BY_ID,
       payload: data,
     });
   };
@@ -525,6 +553,28 @@ export const filterCitas = (filtro) => {
   };
 };
 
+export const getTareas = () => {
+  // const endpoint = `/tareas?porPagina=20`;
+  return async (dispatch) => {
+    const { data } = await axios.get("/tareas");
+    return dispatch({
+      type: GET_TAREAS,
+      payload: data,
+    });
+  };
+};
+
+export const postTarea = (payload) => {
+  const endpoint = `/tareas`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+    return dispatch({
+      type: POST_TAREA,
+      payload: data,
+    });
+  };
+};
 export const setFiltro = (filtro) => {
   return {
     type: SET_FILTRO,

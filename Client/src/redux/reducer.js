@@ -38,7 +38,10 @@ import {
   GET_CASO_BY_ID,
   POST_CITA,
   GET_CITAS,
+  GET_CITAS_BY_ID,
   GET_CITAS_CALENDAR,
+  GET_TAREAS,
+  GET_TAREAS_BY_ID,
   POST_CONSULTA,
   // LOGIN,
   // LOGIN_FAILED,
@@ -71,6 +74,7 @@ import {
   GET_ACREEDORES,
   GET_DISPONIBILIDAD,
   PUT_STATUS,
+  POST_TAREA,
 } from "./actions";
 
 let initialState = {
@@ -88,7 +92,9 @@ let initialState = {
   casos: [],
   caso: {},
   cita: [],
+  tarea: [],
   citas: [],
+  tareas: [],
   deudas: [],
   filtro: [],
   consultas: [],
@@ -302,12 +308,32 @@ const rootReducer = (state = initialState, action) => {
     case POST_CITA:
       return {
         ...state,
-        citas: action.payload,
+        cita: action.payload,
       };
     case GET_CITAS:
       return {
         ...state,
+        citas: action.payload.datosPagina,
+      };
+    case GET_CITAS_BY_ID:
+      return {
+        ...state,
         citas: action.payload,
+      };
+    case POST_TAREA:
+      return {
+        ...state,
+        tarea: action.payload,
+      };
+    case GET_TAREAS:
+      return {
+        ...state,
+        tareas: action.payload.datosPagina,
+      };
+    case GET_TAREAS_BY_ID:
+      return {
+        ...state,
+        tareas: action.payload,
       };
     case GET_CITAS_CALENDAR:
       return {

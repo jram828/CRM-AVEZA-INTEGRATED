@@ -1,8 +1,8 @@
 import { models } from "../../DB.js";
 
-const { Prospecto, Tarea } = models;
+const { Prospecto, Cita } = models;
 
-const getTareaById = async (idProspecto) => {
+const getCitaById = async (idProspecto) => {
   const consulta = {
     where: {
       idProspecto: idProspecto,
@@ -10,7 +10,7 @@ const getTareaById = async (idProspecto) => {
     },
     include: [
       {
-        model: Tarea,
+        model: Cita,
         through: { attributes: [] }, // evita traer datos de la tabla intermedia
       },
     ],
@@ -20,7 +20,7 @@ const getTareaById = async (idProspecto) => {
   if (!prospecto) throw Error("Cliente no Registrado o no existe");
 
   // devolvemos solo las tareas asociadas
-  return prospecto.Tareas;
+  return prospecto.Citas;
 };
 
-export { getTareaById };
+export { getCitaById };

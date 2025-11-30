@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   filterProspecto,
-  getProspectoAllCasos,
+  getCitas,
   getProspectos,
+  getTareas,
+  postCita,
+  postTarea,
   prospectoActual,
   setSource,
   updateStatus,
   // updateProspectoStatus // ← Descomenta si tienes esta acción para backend
 } from "../../redux/actions";
-import { Button, Button2, Button3 } from "../Mystyles";
+import { Button2, Button3 } from "../Mystyles";
 import SearchBar from "../searchBarProspectos";
 import loading from "../../assets/loading.gif";
 import {
-  Grid,
   Paper,
   Typography,
   Select,
@@ -23,23 +25,46 @@ import {
   CardContent,
   FormControl,
   InputLabel,
+  Tooltip,
+  IconButton,
+  Box,
+  Popover,
+  Button,
+  Stack,
+  Divider,
 } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./prospectos.css";
 import "../../App.css";
 import { useNavigate } from "react-router-dom";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import TaskIcon from "@mui/icons-material/Task";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import TaskForm from "./taskForm";
+import CitaForm from "./citaForm";
+import WhatsappForm from "./whatsappForm";
 
 const Prospectos = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const reduxProspectos = useSelector((state) => state.prospectos);
+  const citas = useSelector((state) => state.citas);
+  const tareas = useSelector((state) => state.tareas);
   // const pages = useSelector((state) => state.pages);
+
+  console.log("Citas from Redux:", citas);
+  console.log("Tareas from Redux:", tareas);
 
   console.log("Redux Prospectos:", reduxProspectos);
   const [filterApplied, setFilterApplied] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [prospectos, setProspectos] = useState([]);
+  const [selectedProspecto, setSelectedProspecto] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null); // primer popover
+  const [anchorTaskEl, setAnchorTaskEl] = useState(null); // Tarea popover
+  const [anchorCitaEl, setAnchorCitaEl] = useState(null); // Cita popover
+  const [anchorWhatsappEl, setAnchorWhatsappEl] = useState(null); // Cita popover
 
   const totalPages = Math.ceil(prospectos?.length / 12);
 
@@ -48,14 +73,45 @@ const Prospectos = () => {
   //   dispatch(setSource("prospecto"));
   // }, [dispatch]);
 
+  // Cargar prospectos solo una vez al montar
+
   useEffect(() => {
     dispatch(getProspectos(currentPage));
     dispatch(setSource("prospecto"));
-  }, [dispatch, currentPage]);
+    dispatch(getTareas());
+    dispatch(getCitas());
+  }, [dispatch]); // 👈 solo una vez
 
   useEffect(() => {
-    setProspectos(reduxProspectos);
+    if (reduxProspectos && Array.isArray(reduxProspectos)) {
+      setProspectos(reduxProspectos);
+    }
   }, [reduxProspectos]);
+
+  const groupedProspectos = useMemo(() => {
+    const groups = {
+      sininiciar: [],
+      intentodecontacto: [],
+      nuevointentoseg1: [],
+      nuevointentoseg2: [],
+      asesoriaag: [],
+      asesoriaenreag: [],
+      noasesoria: [],
+      nocalificado: [],
+      calificado: [],
+      cotizacion: [],
+      nocontacto: [],
+    };
+
+    prospectos.forEach((p) => {
+      const key = p.status;
+      if (groups[key]) {
+        groups[key].push(p);
+      }
+    });
+
+    return groups;
+  }, [prospectos]);
 
   const handleVerTodosClick = () => {
     setCurrentPage(1);
@@ -80,35 +136,64 @@ const Prospectos = () => {
         p.idProspecto === idProspecto ? { ...p, status: newStatus } : p
       )
     );
-   dispatch(
+    dispatch(
       updateStatus({
         idProspecto: idProspecto,
         field: "status",
         value: newStatus,
       })
-    )
-
+    );
   };
 
-  const groupedProspectos = {
-    sininiciar: [],
-    intentodecontacto: [],
-    nuevointentoseg1: [],
-    nuevointentoseg2: [],
-    asesoriaag: [],
-    asesoriaenreag: [],
-    noasesoria: [],
-    nocalificado: [],
-    calificado: [],
-    cotizacion: [],
-    nocontacto: [],
+  const handleOpenOverlay = (event, prospecto) => {
+    setSelectedProspecto(prospecto);
+    setAnchorEl(event.currentTarget); // el botón que disparó
   };
 
-  prospectos.forEach((p) => {
-    if (groupedProspectos[p.status]) {
-      groupedProspectos[p.status].push(p);
-    }
-  });
+  const handleCloseOverlay = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenTaskPopover = (event) => {
+    setAnchorTaskEl(event.currentTarget);
+  };
+
+  const handleOpenCitaPopover = (event) => {
+    setAnchorCitaEl(event.currentTarget);
+  };
+
+  const handleOpenWhatsappPopover = (event) => {
+    setAnchorWhatsappEl(event.currentTarget);
+  };
+
+  const handleCloseTaskForm = () => {
+    setAnchorTaskEl(null);
+  };
+
+  const handleCloseCitaForm = () => {
+    setAnchorCitaEl(null);
+  };
+
+  const handleCloseWhatsappForm = () => {
+    setAnchorWhatsappEl(null);
+  };
+  const handleSaveTask = (tarea) => {
+    console.log("Guardando tarea para prospecto:", selectedProspecto);
+    dispatch(postTarea(tarea));
+    handleCloseTaskForm();
+  };
+
+  const handleSaveCita = (cita) => {
+    console.log("Guardando reunion para prospecto:", selectedProspecto);
+    dispatch(postCita(cita));
+    handleCloseTaskForm();
+  };
+
+  const handleSaveWhatsapp = (cita) => {
+    console.log("Enviando mensaje para prospecto:", selectedProspecto);
+    // dispatch(postCita(cita));
+    handleCloseWhatsappForm();
+  };
 
   const onClickDetail = (prospecto) => {
     dispatch(prospectoActual(prospecto));
@@ -164,6 +249,99 @@ const Prospectos = () => {
     // dispatch(updateProspectoStatus(draggableId, destination.droppableId)); // ← Aquí iría la llamada al backend
   };
 
+  // Get latest activity (cita or tarea) for this prospect
+  const getLatestActivity = (prospecto, citas, tareas) => {
+    const pId = prospecto.idProspecto;
+    const now = new Date();
+
+    const citasForProspect = citas
+      .filter((c) => c?.Prospectos[0]?.idProspecto === pId)
+      .map((c) => ({
+        type: "cita",
+        date: new Date(c.fechaCita),
+        title: c.titulo,
+      }));
+
+    const tareasForProspect = tareas
+      .filter((t) => t?.Prospectos[0]?.idProspecto === pId)
+      .map((t) => ({
+        type: "tarea",
+        date: new Date(t.fechaVencimiento),
+        title: t.asunto,
+      }));
+
+    const combined = [...citasForProspect, ...tareasForProspect].filter(
+      (a) => !isNaN(a.date)
+    );
+
+    if (combined.length === 0) return null;
+
+    // separar pasadas y futuras
+    const past = combined.filter((a) => a.date < now);
+    const future = combined.filter((a) => a.date >= now);
+
+    if (past.length > 0) {
+      // devolver la más antigua (menor fecha)
+      past.sort((a, b) => a.date - b.date);
+      return past[0];
+    } else if (future.length > 0) {
+      // devolver la más cercana (menor diferencia con now)
+      future.sort((a, b) => a.date - b.date);
+      return future[0];
+    }
+
+    return null;
+  };
+
+  const getActivityIconProps = (activity) => {
+    if (!activity)
+      return { IconComp: null, color: "disabled", tooltip: "Sin actividad" };
+
+    const now = new Date();
+    const isPastOrToday = activity.date <= now;
+    const color = isPastOrToday ? "error.main" : "success.main";
+
+    if (activity.type === "cita") {
+      return { IconComp: CalendarTodayIcon, color, tooltip: activity.title };
+    }
+    return { IconComp: TaskIcon, color, tooltip: activity.title };
+  };
+
+  const createAction = (type) => {
+    if (!selectedProspecto) return;
+
+    const basePayload = {
+      idProspecto: selectedProspecto.idProspecto,
+      prospecto: selectedProspecto,
+    };
+
+    switch (type) {
+      case "TAREA":
+        handleCloseOverlay();
+        handleOpenTaskPopover(event); // abre el segundo popover
+        break;
+
+      case "CITA":
+        handleCloseOverlay();
+        handleOpenCitaPopover(event); // abre el segundo popover
+        break;
+
+      case "WHATSAPP":
+        // Si tienes un action específico, úsalo aquí.
+        // Si no, puedes reutilizar postTarea con un tipo especial.
+        handleCloseOverlay();
+        handleOpenWhatsappPopover(event);
+        break;
+
+      default:
+        break;
+    }
+
+    handleCloseOverlay();
+  };
+
+  // 👉 función que renderiza el popover del formulario
+
   const renderColumn = (title, statusKey) => (
     <div
       style={{
@@ -192,98 +370,203 @@ const Prospectos = () => {
               {...provided.droppableProps}
               style={{ minHeight: "60vh" }}
             >
-              {groupedProspectos[statusKey]?.map((prospecto, index) => (
-                <Draggable
-                  key={String(prospecto.idProspecto)}
-                  draggableId={String(prospecto.idProspecto)}
-                  index={index}
-                >
-                  {(provided) => (
-                    <Card
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={{
-                        marginBottom: "1rem",
-                        backgroundColor: "#f9f9f9",
-                        ...provided.draggableProps.style,
-                      }}
-                    >
-                      <CardContent>
-                        <Link
-                          to={"/detail"}
-                          onClick={() => onClickDetail(prospecto)}
-                          className="link"
+              {groupedProspectos[statusKey]?.map((prospecto, index) => {
+                const latestActivity = getLatestActivity(
+                  prospecto,
+                  citas,
+                  tareas
+                );
+                const { IconComp, color, tooltip } = getActivityIconProps(
+                  latestActivity
+                );
+
+                return (
+                  <Draggable
+                    key={String(prospecto.idProspecto)}
+                    draggableId={String(prospecto.idProspecto)}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <Card
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={{
+                          marginBottom: "1rem",
+                          backgroundColor: "#f9f9f9",
+                          position: "relative",
+                          ...provided.draggableProps.style,
+                        }}
+                      >
+                        <CardContent
+                          sx={{ position: "relative", paddingTop: 4 }}
                         >
-                          <Typography variant="subtitle1">
-                            {prospecto.nombres} {prospecto.apellidos}
-                          </Typography>
+                          {/* Íconos esquina superior derecha */}
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              top: 8,
+                              right: 8,
+                              display: "flex",
+                              gap: 1,
+                            }}
+                          >
+                            {IconComp ? (
+                              <Tooltip title={tooltip}>
+                                <IconButton
+                                  size="small"
+                                  aria-label="actividad más reciente"
+                                >
+                                  <IconComp sx={{ color }} fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            ) : (
+                              <Tooltip title="Sin actividad">
+                                <IconButton
+                                  size="small"
+                                  aria-label="sin actividad"
+                                  disabled
+                                >
+                                  <CalendarTodayIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            )}
+                            <Divider orientation="horizontal" flexItem />
+                            <Tooltip title="Crear actividad">
+                              <IconButton
+                                size="small"
+                                aria-label="crear actividad"
+                                onClick={(e) => handleOpenOverlay(e, prospecto)}
+                              >
+                                <AddCircleOutlineIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </Box>
+
+                          {/* Link y datos */}
+                          <Link
+                            to={"/detail"}
+                            onClick={() => onClickDetail(prospecto)}
+                            className="link"
+                          >
+                            <Typography variant="subtitle1">
+                              {prospecto.nombres} {prospecto.apellidos}
+                            </Typography>
+                          </Link>
                           <Typography variant="subtitle2">
                             {prospecto.email}
                           </Typography>
                           <Typography variant="subtitle2">
                             {prospecto.celular}
                           </Typography>
-                        </Link>
-                        <FormControl
-                          fullWidth
-                          size="small"
-                          style={{ marginTop: "0.5rem" }}
-                        >
-                          <InputLabel>Status</InputLabel>
-                          <Select
-                            value={prospecto.status}
-                            label="Status"
-                            onChange={(e) =>
-                              handleStatusChange(
-                                prospecto.idProspecto,
-                                e.target.value
-                              )
-                            }
+
+                          {/* Selector de status */}
+                          <FormControl
+                            fullWidth
+                            size="small"
+                            style={{ marginTop: "0.5rem" }}
                           >
-                            <MenuItem value="sininiciar">🔵 Sin iniciar</MenuItem>
-                            <MenuItem value="intentodecontacto">
-                              📞Intento de contacto
-                            </MenuItem>
-                            <MenuItem value="nuevointentoseg1">
-                              📞🟡Nuevo Intento - Seguimiento 1
-                            </MenuItem>
-                            <MenuItem value="nuevointentoseg2">
-                              📞🟠Nuevo Intento - Seguimiento 2
-                            </MenuItem>
-                            <MenuItem value="nocontacto">
-                              ❌Nunca hubo contacto
-                            </MenuItem>
-                            <MenuItem value="asesoriaag">
-                              🗓️Asesoría agendada
-                            </MenuItem>
-                            <MenuItem value="asesoriaenreag">
-                              🔄Asesoría en reagendamiento
-                            </MenuItem>
-                            <MenuItem value="noasesoria">
-                              ⚠️No se logró primera asesoria
-                            </MenuItem>
-                            <MenuItem value="nocalificado">
-                              🚫No calificado después de asesoría
-                            </MenuItem>
-                            <MenuItem value="calificado">
-                              📄Calificado | En espera de documentos
-                            </MenuItem>
-                            <MenuItem value="cotizacion">
-                              💰Cotización o espera de contrato
-                            </MenuItem>
-                          </Select>
-                        </FormControl>
-                      </CardContent>
-                    </Card>
-                  )}
-                </Draggable>
-              ))}
+                            <InputLabel>Status</InputLabel>
+                            <Select
+                              value={prospecto.status}
+                              label="Status"
+                              onChange={(e) =>
+                                handleStatusChange(
+                                  prospecto.idProspecto,
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <MenuItem value="sininiciar">
+                                🔵 Sin iniciar
+                              </MenuItem>
+                              <MenuItem value="intentodecontacto">
+                                📞Intento de contacto
+                              </MenuItem>
+                              <MenuItem value="nuevointentoseg1">
+                                📞🟡Nuevo Intento - Seguimiento 1
+                              </MenuItem>
+                              <MenuItem value="nuevointentoseg2">
+                                📞🟠Nuevo Intento - Seguimiento 2
+                              </MenuItem>
+                              <MenuItem value="nocontacto">
+                                ❌Nunca hubo contacto
+                              </MenuItem>
+                              <MenuItem value="asesoriaag">
+                                🗓️Asesoría agendada
+                              </MenuItem>
+                              <MenuItem value="asesoriaenreag">
+                                🔄Asesoría en reagendamiento
+                              </MenuItem>
+                              <MenuItem value="noasesoria">
+                                ⚠️No se logró primera asesoria
+                              </MenuItem>
+                              <MenuItem value="nocalificado">
+                                🚫No calificado después de asesoría
+                              </MenuItem>
+                              <MenuItem value="calificado">
+                                📄Calificado | En espera de documentos
+                              </MenuItem>
+                              <MenuItem value="cotizacion">
+                                💰Cotización o espera de contrato
+                              </MenuItem>
+                            </Select>
+                          </FormControl>
+                        </CardContent>
+                      </Card>
+                    )}
+                  </Draggable>
+                );
+              })}
+
               {provided.placeholder}
             </div>
           )}
         </Droppable>
       </Paper>
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleCloseOverlay}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <Box sx={{ p: 2, bgcolor: "white" }}>
+          <h3 style={{ marginTop: 0 }}>Crear actividad</h3>
+          <Stack spacing={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => createAction("TAREA")}
+            >
+              Tarea
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => createAction("CITA")}
+            >
+              Reunión
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => createAction("WHATSAPP")}
+            >
+              Mensaje por Whatsapp
+            </Button>
+          </Stack>
+          <Box textAlign="right" mt={2}>
+            <Button onClick={handleCloseOverlay}>Cerrar</Button>
+          </Box>
+        </Box>
+      </Popover>
     </div>
   );
 
@@ -296,7 +579,9 @@ const Prospectos = () => {
       <div className="registroprospecto">
         <SearchBar onFilter={handleFilter} />
         <Link to="/registroprospecto">
-          <Button>Crear Prospecto</Button>
+          <Button sx={{ flex: 1 }} variant="contained">
+            Crear Prospecto
+          </Button>
         </Link>
         {filterApplied && (
           <Button onClick={handleVerTodosClick}>Ver todos</Button>
@@ -365,9 +650,30 @@ const Prospectos = () => {
                 "calificado"
               )}
               {renderColumn("Cotización o espera de contrato", "cotizacion")}
+              {/* 👉 aquí se renderiza el formulario aislado */}
             </div>
           </DragDropContext>
         )}
+
+        <TaskForm
+          open={Boolean(anchorTaskEl)}
+          onClose={handleCloseTaskForm}
+          onSave={handleSaveTask}
+          selectedProspecto={selectedProspecto}
+        />
+
+        <CitaForm
+          open={Boolean(anchorCitaEl)}
+          onClose={handleCloseCitaForm}
+          onSave={handleSaveCita}
+          selectedProspecto={selectedProspecto}
+        />
+        <WhatsappForm
+          open={Boolean(anchorWhatsappEl)}
+          onClose={handleCloseWhatsappForm}
+          onSave={handleSaveWhatsapp}
+          selectedProspecto={selectedProspecto}
+        />
       </div>
     </div>
   );

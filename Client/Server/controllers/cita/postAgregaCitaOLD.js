@@ -4,15 +4,7 @@ import { sendEmailCita } from "../../utils/emailNotifier.js";
 import { createCitaGoogle } from "../../utils/createCitaGoogle.js";
 
 const { Cita, Prospecto } = models;
-const createCita = async (titulo, descripcion, fechaCita, horaCita, idProspecto, email) => {
-  console.log("Creando cita con los siguientes datos:", {
-    titulo,
-    descripcion,
-    fechaCita,
-    horaCita,
-    idProspecto,
-    email,
-  });
+const createCita = async (titulo, descripcion, fechaCita, horaCita, idCaso, email) => {
   const fechaUTC = moment(fechaCita).utc().toDate();
 
   const newCita = await Cita.create({
@@ -20,7 +12,7 @@ const createCita = async (titulo, descripcion, fechaCita, horaCita, idProspecto,
     descripcion: descripcion,
     fechaCita: fechaUTC,
     horaCita: horaCita,
-    idProspecto: idProspecto,
+    idCaso: idCaso,
   });
 
  console.log("Nueva cita creada en la base de datos:", newCita);

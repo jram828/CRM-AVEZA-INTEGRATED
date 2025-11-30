@@ -3,11 +3,21 @@ import { getAllCita } from '../controllers/cita/getAllCita.js'
 import { createCita } from '../controllers/cita/postAgregaCita.js'
 import { createCitaCalendar } from '../controllers/cita/postAgregaCitaCalendar.js'
 import { obtenerDisponibilidad } from '../controllers/cita/getAvailability.js'
+import { getCitaById } from '../controllers/cita/getCitaById.js'
 
 
 const getCitaHandler = async (req, res)=>{
     try {
         const response = await getAllCita(req)
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(400).json({error:error.message})
+    }
+}
+
+const getCitasByIdHandler = async (req, res)=>{
+    try {
+        const response = await getCitaById(req)
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})
@@ -25,13 +35,13 @@ const getAvailabilityHandler = async (req, res)=>{
 
 const postCreateCita = async (req, res) =>{
 
-    const {EMAIL_NOTIFICACION } = process.env;
+
     
-    const { titulo, descripcion, fechaCita, horaCita, idCaso, email, calendarId, nombres  } = req.body
+    const { titulo, descripcion, fechaCita, horaCita, idProspecto, calendarId } = req.body
+     const email = req.body.calendarId|| "jram828@gmail.com" //process.env.EMAIL_NOTIFICACION;
     console.log("Datos recibidos en el handler de creación de cita:", req.body, email);
-    if(!email){ email = EMAIL_NOTIFICACION }
     try {
-        const response = await createCita( titulo, descripcion, fechaCita, horaCita, idCaso, email, calendarId, nombres )
+        const response = await createCita( titulo, descripcion, fechaCita, horaCita, idProspecto, email)
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})
@@ -52,6 +62,7 @@ const postCreateCitaGoogle = async (req, res) =>{
 
 export  {
     getCitaHandler,
+    getCitasByIdHandler,
     getAvailabilityHandler,
     postCreateCita,
     postCreateCitaGoogle

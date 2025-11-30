@@ -3,8 +3,8 @@ import moment from "moment";
 import { sendEmailCita, sendEmailCitaAveza } from "../../utils/emailNotifier.js";
 import { createCitaGoogle } from "../../utils/createCitaGoogle.js";
 
-const { Cita, Cliente, Abogado, Caso } = models;
-const createCitaCalendar = async (titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos) => {
+const { Cita, Prospecto, Abogado } = models;
+const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos) => {
   const fechaUTC = moment(fechaCita).utc().toDate();
 
   const fechaStr = moment(fechaCita).format("YYYY-MM-DD");
@@ -57,8 +57,12 @@ const createCitaCalendar = async (titulo, fechaCita, horaCita, email, calendarId
   const { evento} = await createCitaGoogle(dataRegistro, calendarId);
   console.log("Evento Google:", evento);
   
-  // Enviar notificaciones por correo electrónico
+    const prospecto = await Prospecto.findByPk(idProspecto);
+  if (!prospecto) throw Error("Prospecto no encontrado");
 
+  await prospecto.addCita(newCita);
+  
+  // Enviar notificaciones por correo electrónico
       sendEmailCita({...dataRegistro, URLReunion: enlaceReunion});
       sendEmailCitaAveza({...dataRegistro, URLReunion: enlaceReunion});
 

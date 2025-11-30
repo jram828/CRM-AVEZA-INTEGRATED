@@ -18,7 +18,7 @@ export default (sequelize) => {
       },
       descripcion: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           len: [1, 200],
         },

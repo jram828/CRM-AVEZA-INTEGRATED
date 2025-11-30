@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { models } from "../../DB.js";
 
-const { Tarea, Prospecto, Abogado } = models;
+const { Cita, Caso, Cliente, Abogado, TipoDeCaso } = models;
 
 function paginarArreglo(arreglo, paginaActual, tamañoPagina) {
   const indiceInicial = parseInt(paginaActual) * parseInt(tamañoPagina);
@@ -9,31 +9,42 @@ function paginarArreglo(arreglo, paginaActual, tamañoPagina) {
   return arreglo.slice(indiceInicial, indiceFinal);
 }
 
-const getAllTarea = async (filters) => {
+const getAllCita = async (filters) => {
   //console.log(filters.query);
   const todos = filters.query.todos || "true";
   //console.log(filters.query.todos.trim().toUpperCase())
   //if (todos==='false') console.log('todos viene en false')
-  let getAllTareaBd = [];
-  // if (todos.toUpperCase() === "FALSE") {
-  //console.log('Estoy en el true del if')
-  getAllTareaBd = await Tarea.findAll({
-    where: {
-      completada: false,
-    },
-    include: [
-      {
-        model: Prospecto,
-        attributes: ["idProspecto", "nombres", "apellidos", "email", "celular"], // 👈 incluye los campos que necesitas
-        through: { attributes: [] }, // si es relación N:M, no necesitas los atributos de la tabla intermedia
+  let getAllCitaBd = [];
+  if (todos.toUpperCase() === "FALSE") {
+    //console.log('Estoy en el true del if')
+    getAllCitaBd = await Cita.findAll({
+      where: {
+        fechaCita: {
+          [Sequelize.Op.gt]: Sequelize.literal("CURRENT_DATE"),
+        },
       },
-      {
-        model: Abogado,
-        attributes: ["cedulaAbogado", "nombres", "apellidos"], // 👈 idem
-        through: { attributes: [] },
-      },
-    ],
-  });
+      attributes: ["idCita", "titulo", "descripcion", "fechaCita", "horaCita"],
+      include: [
+        {
+          model: Caso,
+          attributes: ["idCaso", "fecha", "descripcion"],
+          include: [
+            {
+              model: Cliente,
+              attributes: ["apellidos", "nombres"],
+            },
+            {
+              model: Abogado,
+              attributes: ["apellidos", "nombres"],
+            },
+            {
+              model: TipoDeCaso,
+              attributes: ["descripcion"],
+            },
+          ],
+        },
+      ],
+    });
   // } else {
   //   getAllCitaBd = await Cita.findAll({
   //     attributes: ["idCita", "titulo", "descripcion", "fechaCita", "horaCita"],
@@ -63,21 +74,22 @@ const getAllTarea = async (filters) => {
   // }
 
   //Obtiene los campos a devolver
-  // let datos = getAllCitaBd.map((elemento) => ({
-  //   idCita: elemento.idCita,
-  //   titulo: elemento.titulo,
-  //   descripcion: elemento.descripcion,
-  //   fechaCita: elemento.fechaCita,
-  //   horaCita: elemento.horaCita,
-  //   idCaso: elemento.Caso.idCaso,
-  //   fechaCaso: elemento.Caso.fecha,
-  //   descripcionCaso: elemento.Caso.descripcion,
-  //   nombreCliente: elemento.Caso.Cliente.nombres,
-  //   apellidoCliente: elemento.Caso.Cliente.apellidos,
-  //   nombreabogado: elemento.Caso.Abogado.nombres,
-  //   apellidoAbogado: elemento.Caso.Abogado.apellidos,
-  // }));
-  let datos = getAllTareaBd;
+  let datos = getAllCitaBd.map((elemento) => ({
+    idCita: elemento.idCita,
+    titulo: elemento.titulo,
+    descripcion: elemento.descripcion,
+    fechaCita: elemento.fechaCita,
+    horaCita: elemento.horaCita,
+    idCaso: elemento.Caso.idCaso,
+    fechaCaso: elemento.Caso.fecha,
+    descripcionCaso: elemento.Caso.descripcion,
+    nombreCliente: elemento.Caso.Cliente.nombres,
+    apellidoCliente: elemento.Caso.Cliente.apellidos,
+    nombreabogado: elemento.Caso.Abogado.nombres,
+    apellidoAbogado: elemento.Caso.Abogado.apellidos,
+    tipoCaso: elemento.Caso.TipoDeCaso.descripcion,
+  }));
+
   //console.log(datos)
 
   //Filtra de acuerdo a los parametros recibidos
@@ -91,7 +103,6 @@ const getAllTarea = async (filters) => {
       datos = datos.filter((elemento) => elemento[field] === value);
   });
 
-  console.log("Datos despues de filtrar:", datos);
   //Ordena de acuerdo al parametro de ordenacion recibido
   let arregloOrdenado = [];
 
@@ -157,4 +168,4 @@ const getAllTarea = async (filters) => {
   return { datosPagina: paginaActual, totalPaginas: totalPaginas };
 };
 
-export { getAllTarea };
+export { getAllCita };

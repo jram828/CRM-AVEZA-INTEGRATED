@@ -14,6 +14,7 @@ import {
   IconReceiptDollar,
   IconDevicesQuestion,
   IconCornerDownLeft,
+  IconListCheck,
 } from "@tabler/icons-react";
 import { SidebarCambio, SidebarBody, SidebarLink } from "../ui/index.jsx";
 import { cn } from "../../utils/cn";
@@ -47,12 +48,18 @@ export default function SidebarDemo({ logout }) {
       icon: (
         <IconBriefcase stroke={1} />),
     },
-
+    {
+      label: "Tareas",
+      href: "/tareas",
+      icon: (
+        <IconCalendarWeek stroke={1} className="text-black group-hover/sidebar:text-black" />
+      ),
+    },
     {
       label: "Agenda",
       href: "/agendarcitas",
       icon: (
-        <IconCalendarWeek stroke={1} className="text-black group-hover/sidebar:text-black" />
+        <IconListCheck stroke={1} className="text-black group-hover/sidebar:text-black" />
       ),
     },
 

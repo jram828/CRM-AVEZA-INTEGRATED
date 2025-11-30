@@ -69,6 +69,7 @@ export const CREAR_ACREEDOR = "CREAR_ACREEDOR";
 export const GET_ACREEDORES = "GET_ACREEDORES";
 export const GET_DISPONIBILIDAD = "GET_ DISPONIBILIDAD";
 export const PUT_STATUS = "PUT_STATUS";
+export const PATCH_TAREA = "PATCH_TAREA";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -524,6 +525,18 @@ export const postCita = (payload) => {
     const data = await axios.post(endpoint, payload);
     return dispatch({
       type: POST_CITA,
+      payload: data,
+    });
+  };
+};
+
+export const completarTarea = (idTarea) => {
+  const endpoint = `/tareas/${idTarea}`;
+
+  return async (dispatch) => {
+    const data = await axios.patch(endpoint, { idTarea });
+    return dispatch({
+      type: PATCH_TAREA,
       payload: data,
     });
   };

@@ -75,6 +75,7 @@ import {
   GET_DISPONIBILIDAD,
   PUT_STATUS,
   POST_TAREA,
+  PATCH_TAREA
 } from "./actions";
 
 let initialState = {
@@ -329,6 +330,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         tareas: action.payload.datosPagina,
+      };
+    case PATCH_TAREA:
+      return {
+        ...state,
+        tarea: action.payload,
       };
     case GET_TAREAS_BY_ID:
       return {

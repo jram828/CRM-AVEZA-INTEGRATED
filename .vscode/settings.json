@@ -16,7 +16,8 @@
         "Database Migration",
         "Google Calendar",
         "Styles",
-        "Agenda"
+        "Agenda",
+        "Tareas"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

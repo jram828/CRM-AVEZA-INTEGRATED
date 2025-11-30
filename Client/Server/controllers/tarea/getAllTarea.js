@@ -24,12 +24,12 @@ const getAllTarea = async (filters) => {
     include: [
       {
         model: Prospecto,
-        attributes: ["idProspecto", "nombres", "apellidos", "email", "celular"], // 👈 incluye los campos que necesitas
-        through: { attributes: [] }, // si es relación N:M, no necesitas los atributos de la tabla intermedia
+        attributes: ["idProspecto", "nombres", "apellidos", "email", "celular", "status"], 
+        through: { attributes: [] }, 
       },
       {
         model: Abogado,
-        attributes: ["cedulaAbogado", "nombres", "apellidos"], // 👈 idem
+        attributes: ["cedulaAbogado", "nombres", "apellidos"], 
         through: { attributes: [] },
       },
     ],

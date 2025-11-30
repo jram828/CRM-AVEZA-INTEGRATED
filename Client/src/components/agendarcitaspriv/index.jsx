@@ -2,7 +2,12 @@ import "./agendarcitaspriv.css";
 import Calendario from "../calendar";
 import logo from "../../img/logoAveza.png";
 import { Link, useNavigate } from "react-router-dom";
-import { getCasos, getCasosTodos, setFiltro } from "../../redux/actions";
+import {
+  getCasos,
+  getCasosTodos,
+  setFiltro,
+  setSource,
+} from "../../redux/actions";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postCitaHandlers } from "../../handlers/crearCita";
@@ -49,16 +54,11 @@ function AgendarCitasPriv() {
 
   const casos = useSelector((state) => state.casos);
   const pages = useSelector((state) => state.pages);
+  const filtro = useSelector((state) => state.filtro);
 
   useEffect(() => {
-    // if (filtro === "todos") {
-
-    dispatch(getCasosTodos()).then(() => setIsLoading(false)); // Desactivar el loading después de cargar los casos
-    // } else {
-
-    // }
-  }, []);
-
+    dispatch(setSource("google"));
+  }, [dispatch]);
   // console.log("pages", pages);
 
   const submitHandlerRegistro = async (e) => {
@@ -105,13 +105,13 @@ function AgendarCitasPriv() {
     // );
   };
 
-  if (isLoading || !pages || !pages.datosPagina) {
-    return (
-      <div className="loading-container">
-        <img className="loading-image" src={loading} alt="loading" />
-      </div>
-    );
-  }
+  // if (isLoading || !citas) {
+  //   return (
+  //     <div className="loading-container">
+  //       <img className="loading-image" src={loading} alt="loading" />
+  //     </div>
+  //   );
+  // }
 
   const handleDescripcionChange = (e) => {
     setDescripcion(e.target.value);
@@ -130,105 +130,111 @@ function AgendarCitasPriv() {
       <Grid
         container
         spacing={2}
-        sx={{ mt: 2, flexWrap: "nowrap" }}
-        className="calendario"
+        sx={{
+          mt: 2,
+          height: "80vh", // 👈 altura fija o relativa
+          width: "100%", // 👈 ocupa el ancho del padre
+        }}
       >
-        {/* <Grid item xs={12} md={6}> */}
-        {/* <Box> */}
-        <Calendario />
-        {/* </Box> */}
-        {/* </Grid> */}
+        <Grid item xs={12} md={7}>
+          <Calendario />
+        </Grid>
 
-        {/* <Grid item xs={12} md={6} > */}
-        <Paper sx={{ p: 2 }} elevation={1} className="containerCita">
-          <FormControl sx={{ minWidth: "250px" }}>
-            <InputLabel id="filtro-cita-label">Ver citas de</InputLabel>
-            <Select
-              labelId="filtro-cita-label"
-              id="filtrocita"
-              name="filtrocita"
-              label="Ver citas de"
-              onChange={(e) => handleChangeSelect(e)}
-              defaultValue=""
-            >
-              <MenuItem value="">
-                <em>Ver citas de:</em>
-              </MenuItem>
-              <MenuItem value="todos">Todos</MenuItem>
-              <MenuItem value="usuario">Usuario actual</MenuItem>
-            </Select>
-          </FormControl>
-
-          <Box
-            component="form"
-            onSubmit={submitHandlerRegistro}
-            className="formularioCita"
-            noValidate
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
-              alignItems: "center",
-            }}
+        <Grid item xs={12} md={5}>
+          <Paper
+            sx={{ p: 2, height: "100%", width: "100%" }}
+            elevation={1}
+            className="containerCita"
           >
-            <Typography variant="h6" className="tituloCita">
-              Crear Cita
-            </Typography>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel id="filtro-cita-label">Ver citas de</InputLabel>
+              <Select
+                labelId="filtro-cita-label"
+                id="filtrocita"
+                name="filtrocita"
+                label="Ver citas de"
+                onChange={(e) => handleChangeSelect(e)}
+                defaultValue=""
+              >
+                <MenuItem value="">
+                  <em>Ver citas de:</em>
+                </MenuItem>
+                <MenuItem value="todos">Todos</MenuItem>
+                <MenuItem value="usuario">Usuario actual</MenuItem>
+              </Select>
+            </FormControl>
 
-            <TextField
-              // fullWidth
-              label="Titulo"
-              name="titulo"
-              id="titulo"
-              value={dataRegistro.titulo}
-              onChange={handleChangeRegistro}
-              // className="inputCrearCita"
-              sx={{ minWidth: "250px" }}
-            />
+            <Box
+              component="form"
+              onSubmit={submitHandlerRegistro}
+              className="formularioCita"
+              noValidate
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+                alignItems: "stretch",
+                width: "100%"
+              }}
+            >
+              <Typography variant="h6" className="tituloCita">
+                Crear Cita
+              </Typography>
 
-            <Box>
-              <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DatePicker
-                  label="Fecha"
-                  value={
-                    dataRegistro.fechaCita
-                      ? moment(dataRegistro.fechaCita)
-                      : null
-                  }
-                  onChange={(date) =>
-                    handleChangeRegistro({
-                      target: {
+              <TextField
+                fullWidth
+                label="Titulo"
+                name="titulo"
+                id="titulo"
+                value={dataRegistro.titulo}
+                onChange={handleChangeRegistro}
+                // className="inputCrearCita"
+                // sx={{ minWidth: "250px" }}
+              />
+
+              <Box>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DatePicker
+                    label="Fecha"
+                    value={
+                      dataRegistro.fechaCita
+                        ? moment(dataRegistro.fechaCita)
+                        : null
+                    }
+                    onChange={(date) =>
+                      handleChangeRegistro({
+                        target: {
+                          name: "fechaCita",
+                          value: date?.toDate() ?? null, // Convertir moment a Date
+                        },
+                      })
+                    }
+                    format="DD/MM/YYYY"
+                    slotProps={{
+                      textField: {
                         name: "fechaCita",
-                        value: date?.toDate() ?? null, // Convertir moment a Date
+                        id: "fechaCita",
+                        fullWidth: true,
                       },
-                    })
-                  }
-                  format="DD/MM/YYYY"
-                  slotProps={{
-                    textField: {
-                      name: "fechaCita",
-                      id: "fechaCita",
-                      fullWidth: true,
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </Box>
+                    }}
+                  />
+                </LocalizationProvider>
+              </Box>
 
-            <TextField
-              // fullWidth
-              label="Hora"
-              type="time"
-              name="horaCita"
-              id="horaCita"
-              value={dataRegistro.horaCita}
-              onChange={handleChangeRegistro}
-              InputLabelProps={{ shrink: true }}
-              // className="inputCrearCita"
-              sx={{ minWidth: "250px" }}
-            />
+              <TextField
+                fullWidth
+                label="Hora"
+                type="time"
+                name="horaCita"
+                id="horaCita"
+                value={dataRegistro.horaCita}
+                onChange={handleChangeRegistro}
+                InputLabelProps={{ shrink: true }}
+                // className="inputCrearCita"
+                // sx={{ minWidth: "250px" }}
+              />
 
-            <FormControl>
+              {/* <FormControl>
               <InputLabel id="idCaso-label">Caso</InputLabel>
               <Select
                 labelId="idCaso-label"
@@ -249,37 +255,41 @@ function AgendarCitasPriv() {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
 
-            <TextField
-              label="Detalles"
-              name="descripcion"
-              id="descripcion"
-              multiline
-              rows={6}
-              value={descripcion}
-              onChange={handleDescripcionChange}
-              className="inputCrearCita"
-              sx={{ minWidth: "250px" }}
-            />
+              <TextField
+                fullWidth
+                label="Detalles"
+                name="descripcion"
+                id="descripcion"
+                multiline
+                rows={6}
+                value={descripcion}
+                onChange={handleDescripcionChange}
+                className="inputCrearCita"
+                // sx={{ minWidth: "250px" }}
+              />
 
-            <Box className="botonescrearcita" sx={{ display: "flex", gap: 1 }}>
-              <MuiButton
-                type="submit"
-                variant="contained"
-                color="primary"
-                onClick={submitHandlerRegistro}
+              <Box
+                className="botonescrearcita"
+                sx={{ display: "flex", gap: 1 }}
               >
-                Crear
-              </MuiButton>
+                <MuiButton
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  onClick={submitHandlerRegistro}
+                >
+                  Crear
+                </MuiButton>
 
-              <Link to="/agendarcitas" style={{ textDecoration: "none" }}>
-                <MuiButton variant="outlined">Volver</MuiButton>
-              </Link>
+                <Link to="/agendarcitas" style={{ textDecoration: "none" }}>
+                  <MuiButton variant="outlined">Volver</MuiButton>
+                </Link>
+              </Box>
             </Box>
-          </Box>
-        </Paper>
-        {/* </Grid> */}
+          </Paper>
+        </Grid>
       </Grid>
     </Box>
   );

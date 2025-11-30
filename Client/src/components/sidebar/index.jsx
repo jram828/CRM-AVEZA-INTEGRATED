@@ -52,14 +52,14 @@ export default function SidebarDemo({ logout }) {
       label: "Tareas",
       href: "/tareas",
       icon: (
-        <IconCalendarWeek stroke={1} className="text-black group-hover/sidebar:text-black" />
+        <IconListCheck stroke={1} className="text-black group-hover/sidebar:text-black" />
       ),
     },
     {
       label: "Agenda",
       href: "/agendarcitas",
       icon: (
-        <IconListCheck stroke={1} className="text-black group-hover/sidebar:text-black" />
+        <IconCalendarWeek stroke={1} className="text-black group-hover/sidebar:text-black" />
       ),
     },
 

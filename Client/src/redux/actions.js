@@ -927,7 +927,7 @@ export const buscarAcreedores = (payload) => {
   const endpoint = `/acreedores`;
 
   return async (dispatch) => {
-    const {data} = await axios.get(endpoint, payload);
+    const { data } = await axios.get(endpoint, payload);
 
     return dispatch({
       type: GET_ACREEDORES,
@@ -936,12 +936,13 @@ export const buscarAcreedores = (payload) => {
   };
 };
 
-export const obtenerCitasCalendar = (payload) => {
+export const obtenerCitasCalendar = (calendarId, mes) => {
   const endpoint = `/citas/calendar`;
-
+console.log("Action - obtenerCitasCalendar:", calendarId, mes);
   return async (dispatch) => {
-    const data = await axios.get(endpoint, payload);
-
+    const { data } = await axios.get(endpoint, {
+  params: { calendarId, mes },
+});
     return dispatch({
       type: GET_CITAS_CALENDAR,
       payload: data,

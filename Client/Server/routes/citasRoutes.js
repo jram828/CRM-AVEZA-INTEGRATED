@@ -8,7 +8,7 @@ citasRouter.post("/google", postCreateCitaGoogle);
 
 citasRouter.get("/", getCitaHandler);
 citasRouter.get("/calendar", getCitaGoogleHandler);
-citasRouter.get("/:idPropecto", getCitasByIdHandler);
 citasRouter.get("/disponibilidad", getAvailabilityHandler);
+citasRouter.get("/:idProspecto", getCitasByIdHandler);
 
 export default citasRouter; 

@@ -5,6 +5,16 @@ import { createCitaGoogle } from "../../utils/createCitaGoogle.js";
 
 const { Cita, Prospecto, Abogado } = models;
 const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos) => {
+  console.log("Creando cita en calendario con datos:", {
+    idProspecto,
+    titulo,
+    fechaCita,
+    horaCita,
+    email,
+    calendarId,
+    nombres,
+    apellidos,
+  });
   const fechaUTC = moment(fechaCita).utc().toDate();
 
   const fechaStr = moment(fechaCita).format("YYYY-MM-DD");
@@ -32,14 +42,7 @@ const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, emai
   const descripcion = `Enlace para la reunión: ${enlaceReunion}`;
 
 
-  const newCita = await Cita.create({
-    titulo: titulo,
-    descripcion: descripcion,
-    fechaCita: fechaUTC,
-    horaCita: horaCita,
-  });
 
- console.log("Nueva cita creada en la base de datos:", newCita);
  const dataRegistro = {
     titulo: titulo,
     descripcion: descripcion,
@@ -57,10 +60,19 @@ const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, emai
   const { evento} = await createCitaGoogle(dataRegistro, calendarId);
   console.log("Evento Google:", evento);
   
-    const prospecto = await Prospecto.findByPk(idProspecto);
-  if (!prospecto) throw Error("Prospecto no encontrado");
+    const newCita = await Cita.create({
+    titulo: titulo,
+    descripcion: descripcion,
+    fechaCita: fechaUTC,
+    horaCita: horaCita,
+  });
 
-  await prospecto.addCita(newCita);
+ console.log("Nueva cita creada en la base de datos:", newCita);
+
+  //   const prospecto = await Prospecto.findByPk(idProspecto);
+  // if (!prospecto) throw Error("Prospecto no encontrado");
+
+  // await prospecto.addCita(newCita);
   
   // Enviar notificaciones por correo electrónico
       sendEmailCita({...dataRegistro, URLReunion: enlaceReunion});

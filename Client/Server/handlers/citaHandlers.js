@@ -29,8 +29,10 @@ const getCitaGoogleHandler = async (req, res)=>{
 }
 
 const getCitasByIdHandler = async (req, res)=>{
+
+    const {idProspecto} = req.params;
     try {
-        const response = await getCitaById(req)
+        const response = await getCitaById(idProspecto)
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})
@@ -38,8 +40,10 @@ const getCitasByIdHandler = async (req, res)=>{
 }
 
 const getAvailabilityHandler = async (req, res)=>{
+    const { fecha } = req.query;
+         console.log("Fecha recibida en el handler de disponibilidad:", req.query);
     try {
-        const response = await obtenerDisponibilidad(req)
+        const response = await obtenerDisponibilidad(fecha)
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})
@@ -62,10 +66,10 @@ const postCreateCita = async (req, res) =>{
 }
 
 const postCreateCitaGoogle = async (req, res) =>{
-    const { titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos } = req.body
-    console.log("Datos recibidos en el handler de creación de cita:", req.body);
+    const { idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos } = req.body
+    console.log("Datos recibidos en el handler de creación de cita Google:", req.body);
     try {
-        const response = await createCitaCalendar( titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos )
+        const response = await createCitaCalendar( idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos )
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})

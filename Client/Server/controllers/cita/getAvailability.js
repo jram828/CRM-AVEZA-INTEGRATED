@@ -6,9 +6,8 @@ config();
 
 const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, EMAIL_CALENDAR } = process.env;
 
-export const obtenerDisponibilidad = async (req, res) => {
+export const obtenerDisponibilidad = async (fecha) => {
   try {
-    const { fecha } = req.query;
     console.log("Fecha recibida para disponibilidad:", fecha);
     const zona = "America/Bogota";
 
@@ -74,7 +73,8 @@ export const obtenerDisponibilidad = async (req, res) => {
       actual = siguiente;
     }
 
-    return horasPosibles;
+ return horasPosibles;
+
   } catch (err) {
     console.error("Error al consultar disponibilidad:", err.message);
     return "Error al consultar disponibilidad";

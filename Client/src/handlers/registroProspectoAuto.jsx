@@ -23,7 +23,7 @@ export async function registroProspectoAuto(userDataRegistro) {
   
   const URL = "/prospectos/registroprospectoauto";
   try {
-    await axios.post(URL, {
+   const {data} = await axios.post(URL, {
       email: `${email}`,
       // password: `${password}`,
       nombres: `${nombres}`,
@@ -43,6 +43,8 @@ export async function registroProspectoAuto(userDataRegistro) {
     });
     // window.alert("Se ha registrado el prospecto con éxito.");
    
+    console.log("Response registro prospecto auto:", data);
+    return data;
   } catch (error) {
     // window.alert("No fue posible registrar el prospecto.");
   }

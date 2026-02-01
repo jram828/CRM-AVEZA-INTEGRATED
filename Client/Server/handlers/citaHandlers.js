@@ -54,7 +54,7 @@ const postCreateCita = async (req, res) =>{
 
 
     
-    const { titulo, descripcion, fechaCita, horaCita, idProspecto, calendarId } = req.body
+    const { titulo, descripcion, fechaCita, horaCita, idProspecto } = req.body
      const email = req.body.calendarId|| "jram828@gmail.com" //process.env.EMAIL_NOTIFICACION;
     console.log("Datos recibidos en el handler de creación de cita:", req.body, email);
     try {

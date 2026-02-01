@@ -62,8 +62,8 @@ function Calendario() {
     ?.map((cita) => {
       if (source === "google") {
         // citas desde Google Calendar
-        const startDateTime = dayjs.tz(cita.inicio, DEFAULT_TIMEZONE).toDate();
-        const endDateTime = dayjs.tz(cita.fin, DEFAULT_TIMEZONE).toDate();
+        const startDateTime = dayjs(cita.inicio).toDate();
+        const endDateTime = dayjs(cita.fin).toDate();
 
         return {
           start: startDateTime,
@@ -73,7 +73,7 @@ function Calendario() {
         };
       } else {
         // citas desde tu backend local
-        const fechaCita = dayjs.tz(cita.fechaCita, DEFAULT_TIMEZONE);
+        const fechaCita = dayjs(cita.fechaCit);
         const [hour, minute, second] = cita.horaCita.split(":").map(Number);
 
         if (

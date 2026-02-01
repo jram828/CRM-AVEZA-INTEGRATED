@@ -84,7 +84,7 @@ const AgendarCita = () => {
       dispatch(
         obtenerDisponibilidad({
           fecha: moment(fechaSeleccionada).format("YYYY-MM-DD"),
-        })
+        }),
       );
     }
   }, [fechaSeleccionada, dispatch]);
@@ -103,7 +103,7 @@ const AgendarCita = () => {
     return codigoCiudades
       .map((c) => {
         const departamento = codigoDepartamentos.find(
-          (d) => d.codigo_departamento === c.codigo_departamento
+          (d) => d.codigo_departamento === c.codigo_departamento,
         );
         const nombreDepto =
           departamento?.nombre_departamento || "SIN DEPARTAMENTO";
@@ -127,7 +127,7 @@ const AgendarCita = () => {
   const ciudadFiltrada = useMemo(() => {
     const input = dataRegistro.nombre_ciudad.toUpperCase();
     return ciudadOpciones.filter((c) =>
-      c.etiqueta.toUpperCase().includes(input)
+      c.etiqueta.toUpperCase().includes(input),
     );
   }, [dataRegistro.nombre_ciudad, ciudadOpciones]);
 
@@ -138,16 +138,18 @@ const AgendarCita = () => {
     try {
       // setIsLoading(true); // Activar el loading antes de enviar la solicitud
       console.log("DataRegistro en submitHandlerRegistro:", dataRegistro);
-      await registroProspectoAuto(dataRegistro);
+      const newProspecto = await registroProspectoAuto(dataRegistro);
+      console.log("Nuevo prospecto creado:", newProspecto);
       await postCitaGoogleHandlers({
         ...dataRegistro,
         titulo: `Primera Asesoría ${dataRegistro.nombres} ${dataRegistro.apellidos}`,
         calendarId: "jram828@gmail.com",
         fechaCita: fechaSeleccionada,
         horaCita: horaSeleccionada,
+        idProspecto: newProspecto.idProspecto,
       });
       // Redirigir a la página de confirmación
-      window.location.href = "https://aveza.co/cita_confirmada/";
+      // window.location.href = "https://aveza.co/cita_confirmada/";
 
       // window.alert("Cita creado con éxito");
       // window.location.reload();
@@ -341,7 +343,7 @@ const AgendarCita = () => {
                           >
                             {hora}
                           </Button>
-                        )
+                        ),
                       )}
                     </Box>
                   )}
@@ -419,7 +421,7 @@ const AgendarCita = () => {
                           >
                             {hora}
                           </Button>
-                        )
+                        ),
                       )}
                     </Box>
                   )}

@@ -59,20 +59,35 @@ const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, emai
   // Recuperar las propiedades devueltas por createCitaGoogle
   const { evento} = await createCitaGoogle(dataRegistro, calendarId);
   console.log("Evento Google:", evento);
+     
   
+   // Combinar fecha y hora en la zona correcta
+  const fechaStr2 = typeof fechaCita === "string"
+    ? fechaCita.slice(0, 10)
+    : moment(fechaCita).format("YYYY-MM-DD");
+console.log("fechaStr2:", fechaStr2);
+  const fechaHoraStr = `${fechaStr2} ${horaCita}`;
+  console.log("fechaHoraStr:", fechaHoraStr);
+const startDateTime = moment.utc(fechaHoraStr, "YYYY-MM-DD HH:mm");
+console.log("startDateTime:", startDateTime);
+  if (!startDateTime.isValid()) {
+    throw new Error(`Fecha inválida: ${fechaHoraStr}`);
+  }
+
+
     const newCita = await Cita.create({
     titulo: titulo,
     descripcion: descripcion,
-    fechaCita: fechaUTC,
-    horaCita: horaCita,
+    fechaCita: startDateTime.toDate(), 
+    horaCita: startDateTime.format("HH:mm"),
   });
 
  console.log("Nueva cita creada en la base de datos:", newCita);
 
-  //   const prospecto = await Prospecto.findByPk(idProspecto);
-  // if (!prospecto) throw Error("Prospecto no encontrado");
+    const prospecto = await Prospecto.findByPk(idProspecto);
+  if (!prospecto) throw Error("Prospecto no encontrado");
 
-  // await prospecto.addCita(newCita);
+  await prospecto.addCita(newCita);
   
   // Enviar notificaciones por correo electrónico
       sendEmailCita({...dataRegistro, URLReunion: enlaceReunion});

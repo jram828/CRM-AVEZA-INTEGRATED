@@ -10,6 +10,7 @@ export async function postCitaGoogleHandlers(data) {
     calendarId,
     nombres,
     apellidos,
+    idProspecto,
   } = data;
   console.log("data del post", data);
 
@@ -23,6 +24,7 @@ export async function postCitaGoogleHandlers(data) {
       calendarId,
       nombres,
       apellidos,
+      idProspecto,
     });
 
     // Crear contenedor

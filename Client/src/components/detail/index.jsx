@@ -9,9 +9,13 @@ import {
   deleteAbogado,
   deleteCliente,
   deleteProspecto,
+  getCitas,
+  getTareas,
+  getTareasById,
   modificarDatos,
   modificarDatosAbogado,
   modificarDatosProspecto,
+  setSource,
   updateCotizacionData,
   updateStatus,
 } from "../../redux/actions";
@@ -31,6 +35,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Tabs,
+  Tab,
+  Card,
+  CardContent,
 } from "@mui/material";
 
 // import GooglePicker from "../../utils/googlePicker";
@@ -67,6 +75,9 @@ const Detail = () => {
       ? datos.cedulaProspecto
       : datos.cedulaCliente;
   console.log("Cedula:", Cedula);
+
+  const citas = useSelector((state) => state.citas);
+  const tareas = useSelector((state) => state.tareas);
   const [userDataDetail, setUserDataDetail] = useState({
     idProspecto: "",
     cedula_anterior: "",
@@ -103,7 +114,17 @@ const Detail = () => {
     cotizacionAprobada: "No",
     status: "",
   });
-console.log("User Data Detail:", userDataDetail);
+  console.log("User Data Detail:", userDataDetail);
+
+  const [tabTareas, setTabTareas] = useState(0);
+  const [tabCitas, setTabCitas] = useState(0);
+
+  const tareasPendientes = tareas.filter((t) => !t.completada);
+  const tareasCompletadas = tareas.filter((t) => t.completada);
+
+  const citasPendientes = citas.filter((c) => !c.completada);
+  const citasCompletadas = citas.filter((c) => c.completada);
+
   useEffect(() => {
     if (source === "abogado") {
       setUserDataDetail({
@@ -140,6 +161,8 @@ console.log("User Data Detail:", userDataDetail);
         cedula_anterior: datos.cedulaCliente,
       });
     } else {
+      dispatch(getCitas());
+      dispatch(getTareas());
       setUserDataDetail({
         ...userDataDetail,
         idProspecto: datos.idProspecto,
@@ -179,7 +202,7 @@ console.log("User Data Detail:", userDataDetail);
   const handleDelete = () => {
     if (source === "abogado") {
       const isConfirmed = window.confirm(
-        "¿Estás seguro de que deseas eliminar este registro?"
+        "¿Estás seguro de que deseas eliminar este registro?",
       );
 
       if (isConfirmed) {
@@ -189,7 +212,7 @@ console.log("User Data Detail:", userDataDetail);
       }
     } else if (source === "prospecto") {
       const isConfirmed = window.confirm(
-        "¿Estás seguro de que deseas eliminar este registro?"
+        "¿Estás seguro de que deseas eliminar este registro?",
       );
 
       if (isConfirmed) {
@@ -198,7 +221,7 @@ console.log("User Data Detail:", userDataDetail);
       }
     } else {
       const isConfirmed = window.confirm(
-        "¿Estás seguro de que deseas eliminar este registro?"
+        "¿Estás seguro de que deseas eliminar este registro?",
       );
 
       if (isConfirmed) {
@@ -239,7 +262,7 @@ console.log("User Data Detail:", userDataDetail);
   };
   // console.log("Nuevos Datos cliente:", userDataDetail);
   const handleStatusChange = (e) => {
-    const { name, value} = e.target;
+    const { name, value } = e.target;
     setUserDataDetail({
       ...userDataDetail,
       [name]: value,
@@ -250,7 +273,7 @@ console.log("User Data Detail:", userDataDetail);
         idProspecto: userDataDetail.idProspecto,
         field: name,
         value: value,
-      })
+      }),
     );
   };
   // NOTE: Add these imports at the top of the file:
@@ -344,6 +367,213 @@ console.log("User Data Detail:", userDataDetail);
       )}
 
       <Box component="form" noValidate autoComplete="off">
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2} mb={2}>
+          {/* Columna izquierda: datos generales */}
+          <Stack spacing={2} flex={1}>
+            <TextField
+              label="Nombres"
+              name="nombres"
+              value={userDataDetail.nombres}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Apellidos"
+              name="apellidos"
+              value={userDataDetail.apellidos}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Numero de cédula"
+              name="cedulanew"
+              type="number"
+              value={userDataDetail.cedulanew}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Celular"
+              name="celular"
+              type="number"
+              value={userDataDetail.celular}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Correo"
+              name="email"
+              type="email"
+              value={userDataDetail.email}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Dirección"
+              name="direccion"
+              value={userDataDetail?.direccion?.toUpperCase()}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Ciudad"
+              name="ciudad"
+              value={userDataDetail?.ciudad?.toUpperCase()}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Departamento"
+              name="departamento"
+              value={userDataDetail?.departamento?.toUpperCase()}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            <TextField
+              label="Modo de contacto"
+              name="modoContacto"
+              value={userDataDetail.modoContacto}
+              onChange={handleUpdateDetail}
+              fullWidth
+              inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+            />
+            {datos?.comentarios && (
+              <TextField
+                label="Comentarios"
+                name="comentarios"
+                value={userDataDetail.comentarios}
+                onChange={handleUpdateDetail}
+                fullWidth
+                multiline
+                minRows={3}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              />
+            )}
+
+            {source === "prospecto" && (
+              <FormControl
+                fullWidth
+                size="small"
+                style={{ marginTop: "0.5rem" }}
+              >
+                <InputLabel>Status</InputLabel>
+                <Select
+                  value={userDataDetail.status || ""}
+                  label="Status"
+                  onChange={handleStatusChange}
+                  name="status"
+                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="sininiciar">Sin iniciar</MenuItem>
+                  <MenuItem value="intentodecontacto">
+                    Intento de contacto
+                  </MenuItem>
+                  <MenuItem value="nuevointentoseg1">
+                    Nuevo Intento - Seguimiento 1
+                  </MenuItem>
+                  <MenuItem value="nuevointentoseg2">
+                    Nuevo Intento - Seguimiento 2
+                  </MenuItem>
+                  <MenuItem value="nocontacto">Nunca hubo contacto</MenuItem>
+                  <MenuItem value="asesoriaag">Asesoría agendada</MenuItem>
+                  <MenuItem value="asesoriaenreag">
+                    Asesoría en reagendamiento
+                  </MenuItem>
+                  <MenuItem value="noasesoria">
+                    No se logró primera asesoría
+                  </MenuItem>
+                  <MenuItem value="nocalificado">
+                    No calificado después de asesoría
+                  </MenuItem>
+                  <MenuItem value="calificado">
+                    Calificado | En espera de documentos
+                  </MenuItem>
+                  <MenuItem value="cotizacion">
+                    Cotización o espera de contrato
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            )}
+          </Stack>
+
+          {/* Columna derecha: reemplazo cuando es prospecto */}
+          {source === "prospecto" && (
+            <Stack spacing={2} flex={1}>
+              {/* Sección Tareas */}
+              <Box>
+                <Tabs value={tabTareas} onChange={(e, v) => setTabTareas(v)}>
+                  <Tab label="Pendientes" />
+                  <Tab label="Completadas" />
+                </Tabs>
+                <Box sx={{ maxHeight: 200, overflowY: "auto", mt: 2 }}>
+                  <Stack spacing={1}>
+                    {(tabTareas === 0
+                      ? tareasPendientes
+                      : tareasCompletadas
+                    ).map((tarea, idx) => (
+                      <Card key={idx}>
+                        <CardContent>
+                          <Typography variant="h6">{tarea.asunto}</Typography>
+                          <Typography variant="body2">
+                            Vence: {tarea.fechaVencimiento}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </Stack>
+                </Box>
+              </Box>
+
+              {/* Sección Citas */}
+              <Box>
+                <Tabs value={tabCitas} onChange={(e, v) => setTabCitas(v)}>
+                  <Tab label="Pendientes" />
+                  <Tab label="Completadas" />
+                </Tabs>
+                <Box sx={{ maxHeight: 200, overflowY: "auto", mt: 2 }}>
+                  <Stack spacing={1}>
+                    {(tabCitas === 0 ? citasPendientes : citasCompletadas).map(
+                      (cita, idx) => (
+                        <Card key={idx}>
+                          <CardContent>
+                            <Typography variant="h6">{cita.titulo}</Typography>
+                            <Typography variant="body2">
+                              {cita.descripcion}
+                            </Typography>
+                            <Typography variant="body2">
+                              {cita.fechaCita} {cita.horaCita}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      ),
+                    )}
+                  </Stack>
+                </Box>
+              </Box>
+            </Stack>
+          )}
+        </Stack>
+      </Box>
+
+      {/* <Box component="form" noValidate autoComplete="off">
         <Stack direction={{ xs: "column", md: "row" }} spacing={2} mb={2}>
           <Stack spacing={2} flex={1}>
             <TextField
@@ -580,7 +810,7 @@ console.log("User Data Detail:", userDataDetail);
             </Stack>
           )}
         </Stack>
-      </Box>
+      </Box> */}
     </Paper>
   );
 };

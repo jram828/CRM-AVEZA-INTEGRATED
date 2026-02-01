@@ -70,6 +70,7 @@ export const GET_ACREEDORES = "GET_ACREEDORES";
 export const GET_DISPONIBILIDAD = "GET_ DISPONIBILIDAD";
 export const PUT_STATUS = "PUT_STATUS";
 export const PATCH_TAREA = "PATCH_TAREA";
+export const PATCH_CITA = "PATCH_CITA";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -537,6 +538,18 @@ export const completarTarea = (idTarea) => {
     const data = await axios.patch(endpoint, { idTarea });
     return dispatch({
       type: PATCH_TAREA,
+      payload: data,
+    });
+  };
+};
+
+export const completarCita = (idCita) => {
+  const endpoint = `/citas/${idCita}`;
+
+  return async (dispatch) => {
+    const data = await axios.patch(endpoint, { idCita });
+    return dispatch({
+      type: PATCH_CITA,
       payload: data,
     });
   };

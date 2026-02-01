@@ -19,6 +19,7 @@ const getTareaById = async (idProspecto) => {
   const prospecto = await Prospecto.findOne(consulta);
   if (!prospecto) throw Error("Cliente no Registrado o no existe");
 
+  console.log("Prospecto encontrado tareas:", prospecto);  
   // devolvemos solo las tareas asociadas
   return prospecto.Tareas;
 };

@@ -18,9 +18,9 @@ const getCitaById = async (idProspecto) => {
 
   const prospecto = await Prospecto.findOne(consulta);
   if (!prospecto) throw Error("Cliente no Registrado o no existe");
-
+console.log(prospecto)
   // devolvemos solo las tareas asociadas
-  return prospecto.Citas;
+  return prospecto.Cita;
 };
 
 export { getCitaById };

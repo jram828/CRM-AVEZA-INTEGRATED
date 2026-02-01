@@ -21,8 +21,11 @@ const selectTareaHandler = async (req, res) => {
   }
 };
 const tareasByIdHandler = async (req, res) => {
+
+  const {idProspecto} = req.params;
+
   try {
-    const response = await getTareaById(req);
+    const response = await getTareaById(idProspecto);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });

@@ -4,19 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 // import { Button } from "../Mystyles";
 import "../detail/detail.css";
 import {
+  completarCita,
+  completarTarea,
   copyDeudas,
   copyHonorarios,
   deleteAbogado,
   deleteCliente,
   deleteProspecto,
   getCitas,
+  getCitasById,
   getTareas,
   getTareasById,
   modificarDatos,
   modificarDatosAbogado,
   modificarDatosProspecto,
-  setSource,
-  updateCotizacionData,
+  // setSource,
+  // updateCotizacionData,
   updateStatus,
 } from "../../redux/actions";
 import { registroCliente } from "../../handlers/registroCliente";
@@ -26,9 +29,9 @@ import {
   Typography,
   Button as MUIButton,
   TextField,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
+  // Checkbox,
+  // FormControlLabel,
+  // FormGroup,
   Stack,
   Divider,
   FormControl,
@@ -40,6 +43,9 @@ import {
   Card,
   CardContent,
 } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
@@ -76,8 +82,8 @@ const Detail = () => {
       : datos.cedulaCliente;
   console.log("Cedula:", Cedula);
 
-  const citas = useSelector((state) => state.citas);
-  const tareas = useSelector((state) => state.tareas);
+  const reduxCitas = useSelector((state) => state.citasDetail);
+  const reduxTareas = useSelector((state) => state.tareasDetail);
   const [userDataDetail, setUserDataDetail] = useState({
     idProspecto: "",
     cedula_anterior: "",
@@ -118,12 +124,32 @@ const Detail = () => {
 
   const [tabTareas, setTabTareas] = useState(0);
   const [tabCitas, setTabCitas] = useState(0);
+  const [tareas, setTareas] = useState([]);
+  const [citas, setCitas] = useState([]);
 
   const tareasPendientes = tareas.filter((t) => !t.completada);
   const tareasCompletadas = tareas.filter((t) => t.completada);
 
   const citasPendientes = citas.filter((c) => !c.completada);
   const citasCompletadas = citas.filter((c) => c.completada);
+  useEffect(() => {
+    if (source === "prospecto") {
+      setTareas(reduxTareas);
+    }
+  }, [reduxTareas, source]);
+
+  useEffect(() => {
+    if (source === "prospecto") {
+      setCitas(reduxCitas);
+    }
+  }, [reduxCitas, source]);
+
+  useEffect(() => {
+    if (source === "prospecto") {
+      dispatch(getCitasById(datos.idProspecto));
+      dispatch(getTareasById(datos.idProspecto));
+    }
+  }, [dispatch, source, datos.idProspecto]);
 
   useEffect(() => {
     if (source === "abogado") {
@@ -161,8 +187,6 @@ const Detail = () => {
         cedula_anterior: datos.cedulaCliente,
       });
     } else {
-      dispatch(getCitas());
-      dispatch(getTareas());
       setUserDataDetail({
         ...userDataDetail,
         idProspecto: datos.idProspecto,
@@ -199,6 +223,8 @@ const Detail = () => {
     }
   }, [dispatch, source]);
 
+  console.log("Tareas:", tareas);
+  console.log("Citas:", citas);
   const handleDelete = () => {
     if (source === "abogado") {
       const isConfirmed = window.confirm(
@@ -276,7 +302,20 @@ const Detail = () => {
       }),
     );
   };
-  // NOTE: Add these imports at the top of the file:
+
+  const handleCompletar = (idTarea) => {
+    dispatch(completarTarea(idTarea));
+    setTareas((prev) =>
+      prev.map((t) => (t.idTarea === idTarea ? { ...t, completada: true } : t)),
+    );
+  };
+
+  const handleCompletarCita = (idCita) => {
+    dispatch(completarCita(idCita));
+    setCitas((prev) =>
+      prev.map((c) => (c.idCita === idCita ? { ...c, completada: true } : c)),
+    );
+  };
 
   return (
     <Paper
@@ -519,21 +558,53 @@ const Detail = () => {
             <Stack spacing={2} flex={1}>
               {/* Sección Tareas */}
               <Box>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontWeight: "bold", mb: 1 }}
+                >
+                  Tareas
+                </Typography>
+
                 <Tabs value={tabTareas} onChange={(e, v) => setTabTareas(v)}>
                   <Tab label="Pendientes" />
                   <Tab label="Completadas" />
                 </Tabs>
-                <Box sx={{ maxHeight: 200, overflowY: "auto", mt: 2 }}>
+                <Box sx={{ maxHeight: 160, overflowY: "auto", mt: 1 }}>
                   <Stack spacing={1}>
                     {(tabTareas === 0
                       ? tareasPendientes
                       : tareasCompletadas
                     ).map((tarea, idx) => (
                       <Card key={idx}>
-                        <CardContent>
-                          <Typography variant="h6">{tarea.asunto}</Typography>
+                        <CardContent
+                          sx={{ position: "relative", paddingTop: 1 }}
+                        >
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              top: 2,
+                              right: 2,
+                            }}
+                          >
+                            <Tooltip title="Marcar como completada">
+                              <IconButton
+                                size="small"
+                                aria-label="completar tarea"
+                                onClick={() => handleCompletar(tarea.idTarea)}
+                                disabled={tarea.completada} // 👈 feedback inmediato
+                              >
+                                <CheckCircleIcon
+                                  fontSize="small"
+                                  color={
+                                    tarea.completada ? "disabled" : "success"
+                                  }
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </Box>
+                          <Typography variant="subtitle2">{tarea.asunto}</Typography>
                           <Typography variant="body2">
-                            Vence: {tarea.fechaVencimiento}
+                            Vence: {new Date(tarea.fechaVencimiento).toISOString().slice(0, 10)}
                           </Typography>
                         </CardContent>
                       </Card>
@@ -544,22 +615,56 @@ const Detail = () => {
 
               {/* Sección Citas */}
               <Box>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontWeight: "bold", mb: 1 }}
+                >
+                  Reuniones
+                </Typography>
+
                 <Tabs value={tabCitas} onChange={(e, v) => setTabCitas(v)}>
                   <Tab label="Pendientes" />
                   <Tab label="Completadas" />
                 </Tabs>
-                <Box sx={{ maxHeight: 200, overflowY: "auto", mt: 2 }}>
+                <Box sx={{ maxHeight: 160, overflowY: "auto", mt: 1 }}>
                   <Stack spacing={1}>
                     {(tabCitas === 0 ? citasPendientes : citasCompletadas).map(
                       (cita, idx) => (
                         <Card key={idx}>
-                          <CardContent>
-                            <Typography variant="h6">{cita.titulo}</Typography>
+                          <CardContent
+                            sx={{ position: "relative", paddingTop: 1 }}
+                          >
+                            <Box
+                              sx={{
+                                position: "absolute",
+                                top: 2,
+                                right: 2,
+                              }}
+                            >
+                              <Tooltip title="Marcar como completada">
+                                <IconButton
+                                  size="small"
+                                  aria-label="completar cita"
+                                  onClick={() =>
+                                    handleCompletarCita(cita.idCita)
+                                  }
+                                  disabled={cita.completada}
+                                >
+                                  <CheckCircleIcon
+                                    fontSize="small"
+                                    color={
+                                      cita.completada ? "disabled" : "success"
+                                    }
+                                  />
+                                </IconButton>
+                              </Tooltip>
+                            </Box>
+                            <Typography variant="subtitle2">{cita.titulo}</Typography>
                             <Typography variant="body2">
                               {cita.descripcion}
                             </Typography>
                             <Typography variant="body2">
-                              {cita.fechaCita} {cita.horaCita}
+                              {new Date(cita.fechaCita).toISOString().slice(0, 10)} {cita.horaCita}
                             </Typography>
                           </CardContent>
                         </Card>

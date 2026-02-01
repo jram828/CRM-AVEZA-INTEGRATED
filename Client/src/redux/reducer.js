@@ -75,7 +75,8 @@ import {
   GET_DISPONIBILIDAD,
   PUT_STATUS,
   POST_TAREA,
-  PATCH_TAREA
+  PATCH_TAREA,
+  PATCH_CITA,
 } from "./actions";
 
 let initialState = {
@@ -96,6 +97,8 @@ let initialState = {
   tarea: [],
   citas: [],
   tareas: [],
+  citasDetail: [],
+  tareasDetail: [],
   deudas: [],
   filtro: [],
   consultas: [],
@@ -319,7 +322,7 @@ const rootReducer = (state = initialState, action) => {
     case GET_CITAS_BY_ID:
       return {
         ...state,
-        citas: action.payload,
+        citasDetail: action.payload,
       };
     case POST_TAREA:
       return {
@@ -336,10 +339,15 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         tarea: action.payload,
       };
+    case PATCH_CITA:
+      return {
+        ...state,
+        cita: action.payload,
+      };
     case GET_TAREAS_BY_ID:
       return {
         ...state,
-        tareas: action.payload,
+        tareasDetail: action.payload,
       };
     case GET_CITAS_CALENDAR:
       return {

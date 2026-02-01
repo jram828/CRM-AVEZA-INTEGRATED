@@ -5,6 +5,7 @@ import { createCitaCalendar } from '../controllers/cita/postAgregaCitaCalendar.j
 import { obtenerDisponibilidad } from '../controllers/cita/getAvailability.js'
 import { getCitaById } from '../controllers/cita/getCitaById.js'
 import { getAllCitaGoogle } from '../controllers/cita/getAllCitaGoogle.js'
+import { completarCita } from '../controllers/cita/completarCita.js'
 
 
 const getCitaHandler = async (req, res)=>{
@@ -76,6 +77,16 @@ const postCreateCitaGoogle = async (req, res) =>{
     }
 }
 
+const completarCitaHandler = async (req, res) => {
+  const { idCita } = req.body;
+  try {
+    const response = await completarCita(idCita);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 
 export  {
     getCitaHandler,
@@ -83,5 +94,6 @@ export  {
     getCitasByIdHandler,
     getAvailabilityHandler,
     postCreateCita,
-    postCreateCitaGoogle
+    postCreateCitaGoogle,
+    completarCitaHandler
 }

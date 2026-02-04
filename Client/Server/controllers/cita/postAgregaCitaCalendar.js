@@ -4,7 +4,7 @@ import { sendEmailCita, sendEmailCitaAveza } from "../../utils/emailNotifier.js"
 import { createCitaGoogle } from "../../utils/createCitaGoogle.js";
 
 const { Cita, Prospecto, Abogado } = models;
-const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos) => {
+const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion) => {
   console.log("Creando cita en calendario con datos:", {
     idProspecto,
     titulo,
@@ -14,6 +14,7 @@ const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, emai
     calendarId,
     nombres,
     apellidos,
+    descripcion,
   });
   const fechaUTC = moment(fechaCita).utc().toDate();
 
@@ -39,13 +40,14 @@ const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, emai
   const enlaceReunion = `https://meet.jit.si/${nombreSala}`;
 
   // Construir descripción
-  const descripcion = `Enlace para la reunión: ${enlaceReunion}`;
+  const descripcionGoogle = `Enlace para la reunión: ${enlaceReunion}`;
 
+  // 👇 Concatenar la descripción recibida con la de Google
+  const descripcionFinal = `${descripcion || ""}\n${descripcionGoogle}`;
 
-
- const dataRegistro = {
+   const dataRegistro = {
     titulo: titulo,
-    descripcion: descripcion,
+    descripcion: descripcionFinal,
     fechaCita: fechaUTC,
     horaCita: horaCita,
     invitados: [email],
@@ -77,7 +79,7 @@ console.log("startDateTime:", startDateTime);
 
     const newCita = await Cita.create({
     titulo: titulo,
-    descripcion: descripcion,
+    descripcion: descripcionFinal,
     fechaCita: startDateTime.toDate(), 
     horaCita: startDateTime.format("HH:mm"),
   });

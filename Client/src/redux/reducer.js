@@ -96,6 +96,7 @@ let initialState = {
   cita: [],
   tarea: [],
   citas: [],
+  citasCalendar: [],
   tareas: [],
   citasDetail: [],
   tareasDetail: [],

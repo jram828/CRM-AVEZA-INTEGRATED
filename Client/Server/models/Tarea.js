@@ -16,7 +16,7 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [1, 200],
+          len: [0, 200],
         },
       },
       fechaVencimiento: {
@@ -42,7 +42,7 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
-          len: [1, 60],
+          len: [0, 60],
         },
       },
       repeticiones: {

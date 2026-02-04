@@ -67,10 +67,10 @@ const postCreateCita = async (req, res) =>{
 }
 
 const postCreateCitaGoogle = async (req, res) =>{
-    const { idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos } = req.body
+    const { idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion } = req.body
     console.log("Datos recibidos en el handler de creación de cita Google:", req.body);
     try {
-        const response = await createCitaCalendar( idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos )
+        const response = await createCitaCalendar( idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion )
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})

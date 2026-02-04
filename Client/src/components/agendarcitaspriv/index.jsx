@@ -1,10 +1,11 @@
 import "./agendarcitaspriv.css";
 import Calendario from "../calendar";
 import logo from "../../img/logoAveza.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-  getCasos,
-  getCasosTodos,
+  getCitas,
+  getProspectoAllCasos,
+  obtenerCitasCalendar,
   setFiltro,
   setSource,
 } from "../../redux/actions";
@@ -29,6 +30,8 @@ import {
   MenuItem,
   TextField,
   Button as MuiButton,
+  Autocomplete,
+  createFilterOptions,
 } from "@mui/material";
 import moment from "moment";
 
@@ -40,10 +43,11 @@ function AgendarCitasPriv() {
     fechaCita: "",
     horaCita: "",
     idCaso: "",
+    idProspecto: "",
     userEmail: userData?.email?.includes("@gmail.com") ? userData.email : "",
+    email: "",
+    calendarId: userData?.calendarId || "jram828@gmail.com",
   });
-
-  const [errors, setErrors] = useState({});
 
   const [isLoading, setIsLoading] = useState(true); // Estado para controlar la visualización del loading
   const [descripcion, setDescripcion] = useState("");
@@ -52,12 +56,13 @@ function AgendarCitasPriv() {
 
   const dispatch = useDispatch();
 
-  const casos = useSelector((state) => state.casos);
-  const pages = useSelector((state) => state.pages);
+  const reduxProspectos = useSelector((state) => state.pages);
+  // const pages = useSelector((state) => state.pages);
   const filtro = useSelector((state) => state.filtro);
 
   useEffect(() => {
     dispatch(setSource("google"));
+    dispatch(getProspectoAllCasos());
   }, [dispatch]);
   // console.log("pages", pages);
 
@@ -68,6 +73,8 @@ function AgendarCitasPriv() {
       // Guardar la cita en tu backend
       console.log("DataRegistro en submitHandlerRegistro:", dataRegistro);
       await postCitaHandlers({ ...dataRegistro, descripcion });
+
+        dispatch(obtenerCitasCalendar(userData.email));
       // window.alert("Cita creado con éxito");
       // window.location.reload();
     } catch (error) {
@@ -97,12 +104,6 @@ function AgendarCitasPriv() {
       ...prevData,
       [name]: value,
     }));
-    // setErrors(
-    //   validation({
-    //     ...dataRegistro,
-    //     [name]: value,
-    //   })
-    // );
   };
 
   // if (isLoading || !citas) {
@@ -116,12 +117,11 @@ function AgendarCitasPriv() {
   const handleDescripcionChange = (e) => {
     setDescripcion(e.target.value);
   };
-  //  console.log("casos2", casos);
 
-  // console.log("registro", dataRegistro);
-
-  /* Añadir estos imports al inicio del archivo:
-   */
+  const filter = createFilterOptions({
+    stringify: (option) =>
+      `${option.nombres || ""} ${option.apellidos || ""}`.toLowerCase(),
+  });
 
   return (
     <Box sx={{ p: 2 }} className="containerDiary">
@@ -135,6 +135,7 @@ function AgendarCitasPriv() {
           height: "80vh", // 👈 altura fija o relativa
           width: "100%", // 👈 ocupa el ancho del padre
         }}
+        wrap="nowrap"
       >
         <Grid item xs={12} md={7}>
           <Calendario />
@@ -142,7 +143,7 @@ function AgendarCitasPriv() {
 
         <Grid item xs={12} md={5}>
           <Paper
-            sx={{ p: 2, height: "100%", width: "100%" }}
+            sx={{ p: 2, height: "100%" }}
             elevation={1}
             className="containerCita"
           >
@@ -174,12 +175,38 @@ function AgendarCitasPriv() {
                 flexDirection: "column",
                 gap: 1,
                 alignItems: "stretch",
-                width: "100%"
+                width: "100%",
               }}
             >
               <Typography variant="h6" className="tituloCita">
                 Crear Cita
               </Typography>
+
+              {/* Selector de prospecto */}
+              <Autocomplete
+                options={reduxProspectos || []}
+                getOptionLabel={(option) =>
+                  `${option.nombres || ""} ${option.apellidos || ""}`
+                }
+                filterOptions={filter}
+                onChange={(event, value) => {
+                  setDataRegistro((prev) => ({
+                    ...prev,
+                    idProspecto: value ? value.idProspecto : "",
+                    email: value ? value.email : "",
+                    nombres: value ? value.nombres : "",
+                    apellidos: value ? value.apellidos : "",
+                  }));
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Prospecto"
+                    placeholder="Buscar por nombre o apellido"
+                    fullWidth
+                  />
+                )}
+              />
 
               <TextField
                 fullWidth
@@ -205,7 +232,7 @@ function AgendarCitasPriv() {
                       handleChangeRegistro({
                         target: {
                           name: "fechaCita",
-                          value: date?.toDate() ?? null, // Convertir moment a Date
+                          value: date ? moment(date).utc().toISOString() : null,
                         },
                       })
                     }
@@ -233,30 +260,6 @@ function AgendarCitasPriv() {
                 // className="inputCrearCita"
                 // sx={{ minWidth: "250px" }}
               />
-
-              {/* <FormControl>
-              <InputLabel id="idCaso-label">Caso</InputLabel>
-              <Select
-                labelId="idCaso-label"
-                id="idCaso"
-                name="idCaso"
-                value={dataRegistro.idCaso || ""}
-                label="Caso"
-                onChange={(event) => handleChangeRegistro(event)}
-                // className="inputCrearCita"
-                sx={{ minWidth: "250px" }}
-              >
-                <MenuItem value="">
-                  <em>Seleccionar caso</em>
-                </MenuItem>
-                {pages.datosPagina?.map((caso) => (
-                  <MenuItem key={caso.id} value={caso.id}>
-                    {`${caso.tipoCaso} - ${caso.apellidosAbogado}/${caso.apellidosCliente}`}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
-
               <TextField
                 fullWidth
                 label="Detalles"

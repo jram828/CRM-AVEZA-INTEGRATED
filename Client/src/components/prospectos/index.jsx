@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -133,15 +133,15 @@ const Prospectos = () => {
   const handleStatusChange = (idProspecto, newStatus) => {
     setProspectos((prev) =>
       prev.map((p) =>
-        p.idProspecto === idProspecto ? { ...p, status: newStatus } : p
-      )
+        p.idProspecto === idProspecto ? { ...p, status: newStatus } : p,
+      ),
     );
     dispatch(
       updateStatus({
         idProspecto: idProspecto,
         field: "status",
         value: newStatus,
-      })
+      }),
     );
   };
 
@@ -177,16 +177,21 @@ const Prospectos = () => {
   const handleCloseWhatsappForm = () => {
     setAnchorWhatsappEl(null);
   };
+
   const handleSaveTask = (tarea) => {
-    console.log("Guardando tarea para prospecto:", selectedProspecto);
-    dispatch(postTarea(tarea));
+    dispatch(postTarea(tarea)).then(() => {
+      dispatch(getTareas());
+      dispatch(getCitas());
+    });
     handleCloseTaskForm();
   };
 
   const handleSaveCita = (cita) => {
-    console.log("Guardando reunion para prospecto:", selectedProspecto);
-    dispatch(postCita(cita));
-    handleCloseTaskForm();
+    dispatch(postCita(cita)).then(() => {
+      dispatch(getTareas());
+      dispatch(getCitas());
+    });
+    handleCloseCitaForm();
   };
 
   const handleSaveWhatsapp = (cita) => {
@@ -224,14 +229,14 @@ const Prospectos = () => {
     if (!destination || source.droppableId === destination.droppableId) return;
 
     const movedProspecto = prospectos.find(
-      (p) => String(p.idProspecto) === draggableId
+      (p) => String(p.idProspecto) === draggableId,
     );
     if (!movedProspecto) return;
 
     const updatedProspectos = prospectos?.map((p) =>
       String(p.idProspecto) === draggableId
         ? { ...p, status: destination.droppableId }
-        : p
+        : p,
     );
 
     // Si cambió de columna
@@ -241,7 +246,7 @@ const Prospectos = () => {
           idProspecto: draggableId, // el id de la card
           field: "status",
           value: destination.droppableId, // la nueva columna
-        })
+        }),
       );
     }
     setProspectos(updatedProspectos);
@@ -271,7 +276,7 @@ const Prospectos = () => {
       }));
 
     const combined = [...citasForProspect, ...tareasForProspect].filter(
-      (a) => !isNaN(a.date)
+      (a) => !isNaN(a.date),
     );
 
     if (combined.length === 0) return null;
@@ -280,40 +285,45 @@ const Prospectos = () => {
     const past = combined.filter((a) => a.date < now);
     const future = combined.filter((a) => a.date >= now);
 
-    if (past.length > 0) {
-      // devolver la más antigua (menor fecha)
-      past.sort((a, b) => a.date - b.date);
-      return past[0];
-    } else if (future.length > 0) {
-      // devolver la más cercana (menor diferencia con now)
+    if (future.length > 0) {
+      // devolver la más cercana en el futuro
       future.sort((a, b) => a.date - b.date);
       return future[0];
+    } else if (past.length > 0) {
+      // devolver la más reciente en el pasado
+      past.sort((a, b) => b.date - a.date);
+      return past[0];
     }
-
     return null;
   };
 
-  const getActivityIconProps = (activity) => {
-    if (!activity)
-      return { IconComp: null, color: "disabled", tooltip: "Sin actividad" };
+ // Propiedades del ícono según la fecha
+const getActivityIconProps = (activity) => {
+  if (!activity)
+    return { IconComp: null, color: "disabled", tooltip: "Sin actividad" };
 
-    const now = new Date();
-    const isPastOrToday = activity.date <= now;
-    const color = isPastOrToday ? "error.main" : "success.main";
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0, 10);
+  const activityStr = activity.date.toISOString().slice(0, 10);
 
-    if (activity.type === "cita") {
-      return { IconComp: CalendarTodayIcon, color, tooltip: activity.title };
-    }
-    return { IconComp: TaskIcon, color, tooltip: activity.title };
-  };
+  let color;
+  if (activityStr < todayStr) {
+    color = "error.main"; // rojo si ya pasó
+  } else if (activityStr === todayStr) {
+    color = "warning.main"; // amarillo si es hoy
+  } else {
+    color = "success.main"; // verde si es futura
+  }
+
+  if (activity.type === "cita") {
+    return { IconComp: CalendarTodayIcon, color, tooltip: activity.title };
+  }
+  return { IconComp: TaskIcon, color, tooltip: activity.title };
+};
+
 
   const createAction = (type) => {
     if (!selectedProspecto) return;
-
-    const basePayload = {
-      idProspecto: selectedProspecto.idProspecto,
-      prospecto: selectedProspecto,
-    };
 
     switch (type) {
       case "TAREA":
@@ -374,10 +384,10 @@ const Prospectos = () => {
                 const latestActivity = getLatestActivity(
                   prospecto,
                   citas,
-                  tareas
+                  tareas,
                 );
                 const { IconComp, color, tooltip } = getActivityIconProps(
-                  latestActivity
+                  latestActivity,
                 );
 
                 return (
@@ -473,7 +483,7 @@ const Prospectos = () => {
                               onChange={(e) =>
                                 handleStatusChange(
                                   prospecto.idProspecto,
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                             >
@@ -631,11 +641,11 @@ const Prospectos = () => {
               {renderColumn("Intento de contacto", "intentodecontacto")}
               {renderColumn(
                 "Nuevo Intento - Seguimiento 1",
-                "nuevointentoseg1"
+                "nuevointentoseg1",
               )}
               {renderColumn(
                 "Nuevo Intento - Seguimiento 2",
-                "nuevointentoseg2"
+                "nuevointentoseg2",
               )}
               {renderColumn("Nunca hubo contacto", "nocontacto")}
               {renderColumn("Asesoría agendada", "asesoriaag")}
@@ -643,11 +653,11 @@ const Prospectos = () => {
               {renderColumn("No se logró primera asesoria", "noasesoria")}
               {renderColumn(
                 "No calificado después de asesoría",
-                "nocalificado"
+                "nocalificado",
               )}
               {renderColumn(
                 "Calificado | En espera de documentos",
-                "calificado"
+                "calificado",
               )}
               {renderColumn("Cotización o espera de contrato", "cotizacion")}
               {/* 👉 aquí se renderiza el formulario aislado */}

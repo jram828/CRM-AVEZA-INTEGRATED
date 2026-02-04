@@ -46,6 +46,8 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
@@ -317,6 +319,18 @@ const Detail = () => {
     );
   };
 
+  const getFechaColor = (fechaVencimiento) => {
+    const hoy = new Date();
+    const fecha = new Date(fechaVencimiento);
+
+    const hoyStr = hoy.toISOString().slice(0, 10);
+    const fechaStr = fecha.toISOString().slice(0, 10);
+
+    if (fechaStr < hoyStr) return "red"; // vencida
+    if (fechaStr === hoyStr) return "gold"; // hoy
+    return "green"; // futura
+  };
+
   return (
     <Paper
       elevation={3}
@@ -586,6 +600,12 @@ const Detail = () => {
                               right: 2,
                             }}
                           >
+                            <AssignmentIcon
+                              fontSize="small"
+                              sx={{
+                                color: getFechaColor(tarea.fechaVencimiento),
+                              }}
+                            />
                             <Tooltip title="Marcar como completada">
                               <IconButton
                                 size="small"
@@ -596,15 +616,20 @@ const Detail = () => {
                                 <CheckCircleIcon
                                   fontSize="small"
                                   color={
-                                    tarea.completada ? "disabled" : "success"
+                                    tarea.completada ? "success" : "disabled"
                                   }
                                 />
                               </IconButton>
                             </Tooltip>
                           </Box>
-                          <Typography variant="subtitle2">{tarea.asunto}</Typography>
+                          <Typography variant="subtitle2">
+                            {tarea.asunto}
+                          </Typography>
                           <Typography variant="body2">
-                            Vence: {new Date(tarea.fechaVencimiento).toISOString().slice(0, 10)}
+                            Vence:{" "}
+                            {new Date(tarea.fechaVencimiento)
+                              .toISOString()
+                              .slice(0, 10)}
                           </Typography>
                         </CardContent>
                       </Card>
@@ -641,6 +666,13 @@ const Detail = () => {
                                 right: 2,
                               }}
                             >
+                              <CalendarTodayIcon
+                                fontSize="small"
+                                sx={{
+                                  color: getFechaColor(cita.fechaCita),
+                                }}
+                              />
+
                               <Tooltip title="Marcar como completada">
                                 <IconButton
                                   size="small"
@@ -653,18 +685,23 @@ const Detail = () => {
                                   <CheckCircleIcon
                                     fontSize="small"
                                     color={
-                                      cita.completada ? "disabled" : "success"
+                                      cita.completada ? "success" : "disabled"
                                     }
                                   />
                                 </IconButton>
                               </Tooltip>
                             </Box>
-                            <Typography variant="subtitle2">{cita.titulo}</Typography>
+                            <Typography variant="subtitle2">
+                              {cita.titulo}
+                            </Typography>
                             <Typography variant="body2">
                               {cita.descripcion}
                             </Typography>
                             <Typography variant="body2">
-                              {new Date(cita.fechaCita).toISOString().slice(0, 10)} {cita.horaCita}
+                              {new Date(cita.fechaCita)
+                                .toISOString()
+                                .slice(0, 10)}{" "}
+                              {cita.horaCita}
                             </Typography>
                           </CardContent>
                         </Card>

@@ -10,12 +10,13 @@ export async function postCitaHandlers(data) {
     email,
     calendarId,
     nombres,
+    idProspecto,
   } = data;
   console.log("data del post", data);
 
 
   try {
-    await axios.post('citas', {
+    await axios.post("citas/google", {
       titulo: `${titulo}`,
       descripcion: `${descripcion}`,
       fechaCita: `${fechaCita}`,
@@ -24,6 +25,7 @@ export async function postCitaHandlers(data) {
       email: `${email}`,
       calendarId: `${calendarId}`,
       nombres: `${nombres}`,
+      idProspecto: `${idProspecto}`,
 
     });
     // mostrar un Snackbar de MUI en lugar de window.alert

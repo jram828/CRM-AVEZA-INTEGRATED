@@ -17,7 +17,8 @@
         "Google Calendar",
         "Styles",
         "Agenda",
-        "Tareas"
+        "Tareas",
+        "Notas"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

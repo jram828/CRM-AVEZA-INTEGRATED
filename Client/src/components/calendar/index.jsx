@@ -13,15 +13,15 @@ dayjs.locale("es");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const DEFAULT_TIMEZONE = "America/Bogota";
-dayjs.tz.setDefault(DEFAULT_TIMEZONE);
+// const DEFAULT_TIMEZONE = "America/Bogota";
+// dayjs.tz.setDefault(DEFAULT_TIMEZONE);
 
-function Calendario() {
+const Calendario = () => {
   const datos = JSON.parse(localStorage.getItem("loggedUser"));
 
   const filtroCita = JSON.parse(localStorage.getItem("filtroCita"));
   const source = useSelector((state) => state.source);
-
+  console.log("Source en calendar:", source);
   const messages = {
     allDay: "Todo el día",
     previous: "Anterior",
@@ -39,7 +39,7 @@ function Calendario() {
   const localizer = dayjsLocalizer(dayjs);
   const dispatch = useDispatch();
   const citas = useSelector((state) =>
-    source === "google" ? state.citasCalendar : state.citas
+    source === "google" ? state.citasCalendar : state.citas,
   );
   const filtro = useSelector((state) => state.filtro);
   // const [citasId, setCitasId] = useState([]);
@@ -51,19 +51,21 @@ function Calendario() {
       dispatch(getCitas());
     } else {
       console.log("Obteniendo citas de Google Calendar para:", datos.email);
-      dispatch(obtenerCitasCalendar(datos.email) ); // mes actual
+      dispatch(obtenerCitasCalendar(datos.email));
     }
   }, [dispatch, source, datos.email]);
 
-  console.log("Citas: ", citas);
+  console.log("Citas en calendar: ", citas);
 
   // Adaptar eventos según el origen
   const events = citas
     ?.map((cita) => {
       if (source === "google") {
         // citas desde Google Calendar
-        const startDateTime = dayjs(cita.inicio).toDate();
-        const endDateTime = dayjs(cita.fin).toDate();
+        // const startDateTime = dayjs(cita.inicio).toDate();
+        // const endDateTime = dayjs(cita.fin).toDate();
+        const startDateTime = new Date(cita.inicio); // 👈 convertir a Date
+        const endDateTime = new Date(cita.fin);
 
         return {
           start: startDateTime,
@@ -73,7 +75,7 @@ function Calendario() {
         };
       } else {
         // citas desde tu backend local
-        const fechaCita = dayjs(cita.fechaCit);
+        const fechaCita = dayjs(cita.fechaCita);
         const [hour, minute, second] = cita.horaCita.split(":").map(Number);
 
         if (
@@ -82,7 +84,11 @@ function Calendario() {
           isNaN(minute) ||
           isNaN(second)
         ) {
-          console.error("Fecha o hora inválida:", cita.fechaCita, cita.horaCita);
+          console.error(
+            "Fecha o hora inválida:",
+            cita.fechaCita,
+            cita.horaCita,
+          );
           return null;
         }
 
@@ -98,7 +104,7 @@ function Calendario() {
         return {
           start: startDateTime,
           end: endDateTime,
-          title: cita.titulo,
+          title: cita.resumen,
           description: cita.descripcion || "No hay descripción",
         };
       }
@@ -113,21 +119,25 @@ function Calendario() {
   };
 
   const handleNavigate = (newDate) => {
-  setDate(newDate);
+    setDate(newDate);
 
-  if (source === "google") {
-    const mes = dayjs(newDate).month() + 1; // moment/dayjs usa 0-11
-    console.log("Consultando citas de Google Calendar para mes:", mes);
-    dispatch(obtenerCitasCalendar(datos.email, mes));
-  } else {
-    dispatch(getCitas());
-  }
-};
+    if (source === "google") {
+      const mes = dayjs(newDate).month() + 1; // moment/dayjs usa 0-11
+      console.log("Consultando citas de Google Calendar para mes:", mes);
+      dispatch(obtenerCitasCalendar(datos.email, mes));
+    } else {
+      dispatch(getCitas());
+    }
+  };
+
+  console.log("events", events);
+
+console.log(events.map(e => ({ start: typeof e.start, end: typeof e.end }))) 
 
   return (
     <div
       style={{
-        height: "100%",
+        height: "80vh",
         width: "100%",
       }}
     >
@@ -135,6 +145,9 @@ function Calendario() {
         localizer={localizer}
         events={events}
         messages={messages}
+        startAccessor="start"
+        endAccessor="end"
+        titleAccessor="title"
         tooltipAccessor={(event) => event.description}
         onSelectEvent={handleSelectEvent}
         view={view}
@@ -144,6 +157,6 @@ function Calendario() {
       />
     </div>
   );
-}
+};
 
 export default Calendario;

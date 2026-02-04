@@ -80,6 +80,21 @@ export async function postProspectoAut(userDataRegistro) {
     res.status(400).send("Faltan datos");
   } else {
     try {
+
+       // 👇 Verificar si ya existe prospecto con email, nombres y apellidos
+      const existingProspecto = await Prospecto.findOne({
+        where: {
+          email: email,
+          nombres: nombres,
+          apellidos: apellidos,
+        },
+      });
+
+      if (existingProspecto) {
+        console.log("Prospecto ya existente:", existingProspecto.idProspecto);
+        return existingProspecto;
+      }
+
       // convertir celular a número si no lo es (limpiando caracteres no numéricos)
       const celularParsed = (typeof celular === "number")
         ? celular

@@ -731,20 +731,25 @@ const Detail = () => {
             <Box sx={{ maxHeight: 400, overflowY: "auto", mt: 1 }}>
               <Stack spacing={1}>
                 {notas
-                  ?.sort(
+                  ?.filter(
+                    (nota) =>
+                      nota.Prospectos?.[0]?.idProspecto ===
+                      prospecto.idProspecto,
+                  )
+                  .sort(
                     (a, b) =>
-                      new Date(b.fechaNota).getTime() -
-                      new Date(a.fechaNota).getTime(),
+                      new Date(b.updatedAt).getTime() -
+                      new Date(a.updatedAt).getTime(),
                   )
                   .map((nota, idx) => (
                     <Card key={idx}>
                       <CardContent sx={{ paddingTop: 1 }}>
                         {/* <Typography
-                          variant="subtitle2"
-                          sx={{ fontWeight: "bold" }}
-                        >
-                          {nota.titulo}
-                        </Typography> */}
+          variant="subtitle2"
+          sx={{ fontWeight: "bold" }}
+        >
+          {nota.titulo}
+        </Typography> */}
                         <Typography variant="body2">
                           {nota.descripcion}
                         </Typography>

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { notasByIdHandler,getNotaHandler, postCreateNotaHandler, selectNotaHandler, completarNotaHandler} from "../handlers/NotaHandlers.js";
+import { notasByIdHandler,getNotaHandler, postCreateNotaHandler, selectNotaHandler, completarNotaHandler} from "../handlers/notaHandlers.js";
 
 const notasRouter = Router();
 

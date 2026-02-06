@@ -739,17 +739,17 @@ const Detail = () => {
                   .map((nota, idx) => (
                     <Card key={idx}>
                       <CardContent sx={{ paddingTop: 1 }}>
-                        <Typography
+                        {/* <Typography
                           variant="subtitle2"
                           sx={{ fontWeight: "bold" }}
                         >
                           {nota.titulo}
-                        </Typography>
+                        </Typography> */}
                         <Typography variant="body2">
-                          {nota.contenido}
+                          {nota.descripcion}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {new Date(nota.fechaNota).toISOString().slice(0, 10)}
+                          {new Date(nota.updatedAt).toISOString().slice(0, 10)}
                         </Typography>
                       </CardContent>
                     </Card>

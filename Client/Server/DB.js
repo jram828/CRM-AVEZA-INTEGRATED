@@ -37,7 +37,7 @@ import obligacionAlimentariaModel from "./models/ObligacionAlimentaria.js";
 import motivosModel from "./models/Motivos.js";
 import solicitudModel from "./models/Solicitud.js";
 import honorarioModel from "./models/Honorario.js";
-
+import notaModel from "./models/Nota.js";
 config(); // Cargar variables de entorno desde el archivo .env
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
@@ -100,6 +100,7 @@ const ObligacionAlimentaria = obligacionAlimentariaModel(sequelize);
 const Motivos = motivosModel(sequelize);
 const Solicitud = solicitudModel(sequelize);
 const Honorario = honorarioModel(sequelize);
+const Nota = notaModel(sequelize);
 
 TipoDeCaso.belongsToMany(DocumentoTemplate, {
   through: "TipoDeCasoDocumentoTemplate",
@@ -239,6 +240,12 @@ Tarea.belongsToMany(Abogado, { through: "Abogado_Tarea" });
 
 Abogado.belongsToMany(Cita, { through: "Abogado_Cita" });
 Cita.belongsToMany(Abogado, { through: "Abogado_Cita" });
+
+Prospecto.belongsToMany(Nota, { through: "Prospecto_Nota" });
+Nota.belongsToMany(Prospecto, { through: "Prospecto_Nota" });
+
+Abogado.belongsToMany(Nota, { through: "Abogado_Nota" });
+Nota.belongsToMany(Abogado, { through: "Abogado_Nota" });
 
 const models = {
   ...sequelize.models,

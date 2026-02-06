@@ -71,6 +71,10 @@ export const GET_DISPONIBILIDAD = "GET_ DISPONIBILIDAD";
 export const PUT_STATUS = "PUT_STATUS";
 export const PATCH_TAREA = "PATCH_TAREA";
 export const PATCH_CITA = "PATCH_CITA";
+export const POST_NOTA = "POST_NOTA";
+export const GET_NOTAS = "GET_NOTAS";
+export const GET_NOTAS_BY_ID = "GET_NOTAS_BY_ID";
+export const PATCH_NOTA = "PATCH_NOTA";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -304,6 +308,17 @@ export const getCitasById = (idProspecto) => {
   };
 };
 
+export const getNotasById = (idProspecto) => {
+  const endpoint = `/notas/${idProspecto}`;
+  // console.log("URL", endpoint);
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_NOTAS_BY_ID,
+      payload: data,
+    });
+  };
+};
 export const filterCliente = (filtro) => {
   const endpoint = `/clientes/conocimientolitigios?${filtro}`;
   // console.log("URL", endpoint);
@@ -601,6 +616,30 @@ export const postTarea = (payload) => {
     });
   };
 };
+
+export const getNotas = () => {
+  // const endpoint = `/tareas?porPagina=20`;
+  return async (dispatch) => {
+    const { data } = await axios.get("/notas");
+    return dispatch({
+      type: GET_NOTAS,
+      payload: data,
+    });
+  };
+};
+
+export const postNota = (payload) => {
+  const endpoint = `/notas`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+    return dispatch({
+      type: POST_NOTA,
+      payload: data,
+    });
+  };
+};
+
 export const setFiltro = (filtro) => {
   return {
     type: SET_FILTRO,

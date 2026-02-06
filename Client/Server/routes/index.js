@@ -15,6 +15,7 @@ import insolvenciaRouter from "./insolvenciaRoutes.js";
 import uploadRouter from "./uploadRoutes.js";
 import acreedorRouter from "./acreedorRoutes.js";
 import dbbackupRouter from "./dbbackupRoutes.js";
+import notasRouter from "./notasRoutes.js";
 // import reviewsRouter from "./reviewsRoutes.js";
 // import dashboardRouter from './dashboardRoutes.js'
 
@@ -30,6 +31,7 @@ router.use("/login", loginRouter);
 router.use("/usuarios", usuariosRouter);
 router.use("/citas", citasRouter);
 router.use("/tareas", tareasRouter);
+router.use("/notas", notasRouter);
 router.use("/pagos", paymentsRouter);
 router.use("/insolvencia", insolvenciaRouter);
 router.use("/pagosClientes", pagosClientesRouter);

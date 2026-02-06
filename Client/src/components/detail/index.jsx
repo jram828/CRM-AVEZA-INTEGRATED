@@ -85,6 +85,7 @@ const Detail = () => {
   console.log("Cedula:", Cedula);
 
   const reduxCitas = useSelector((state) => state.citasDetail);
+  const notas = useSelector((state) => state.notasDetail);
   const reduxTareas = useSelector((state) => state.tareasDetail);
   const [userDataDetail, setUserDataDetail] = useState({
     idProspecto: "",
@@ -535,33 +536,43 @@ const Detail = () => {
                   name="status"
                   sx={{ minWidth: "300px", bgcolor: "#fff" }}
                 >
-                  <MenuItem value="sininiciar">Sin iniciar</MenuItem>
-                  <MenuItem value="intentodecontacto">
-                    Intento de contacto
+                  <MenuItem value="sincontacto">
+                    ❌ 1. Registrado sin contacto
                   </MenuItem>
-                  <MenuItem value="nuevointentoseg1">
-                    Nuevo Intento - Seguimiento 1
+                  <MenuItem value="contactoefectivo">
+                    📞 2. Contacto efectivo
                   </MenuItem>
-                  <MenuItem value="nuevointentoseg2">
-                    Nuevo Intento - Seguimiento 2
+                  <MenuItem value="contactonoefectivo">
+                    🟠 2. Contacto NO efectivo
                   </MenuItem>
-                  <MenuItem value="nocontacto">Nunca hubo contacto</MenuItem>
-                  <MenuItem value="asesoriaag">Asesoría agendada</MenuItem>
-                  <MenuItem value="asesoriaenreag">
-                    Asesoría en reagendamiento
+                  <MenuItem value="leadcalificado">
+                    ✅ 3. Lead calificado
                   </MenuItem>
-                  <MenuItem value="noasesoria">
-                    No se logró primera asesoría
+                  <MenuItem value="leadnocalificado">
+                    🔄 3. Lead no calificado - Remarketing
                   </MenuItem>
-                  <MenuItem value="nocalificado">
-                    No calificado después de asesoría
+                  <MenuItem value="nocaldescartado">
+                    🗑️ 4. No calificado - Descartado
                   </MenuItem>
-                  <MenuItem value="calificado">
-                    Calificado | En espera de documentos
+                  <MenuItem value="cotizacionenevaluacion">
+                    💰 5. Cotización en evaluación
                   </MenuItem>
-                  <MenuItem value="cotizacion">
-                    Cotización o espera de contrato
+                  <MenuItem value="cotizacionrechazada">
+                    ⚠️ 5. Cotización rechazada
                   </MenuItem>
+                  <MenuItem value="documentacion">📄 6. Documentación</MenuItem>
+                  <MenuItem value="contratoenevaluacion">
+                    📑 7. Contrato en evaluación
+                  </MenuItem>
+                  <MenuItem value="clienteactivo">
+                    🟢 8. Cliente activo
+                  </MenuItem>
+                  <MenuItem value="remarketing">📢 8. Remarketing</MenuItem>
+                  <MenuItem value="clienteprocesoactivo">
+                    ⚙️ 8. Cliente con Proceso Activo
+                  </MenuItem>
+                  <MenuItem value="fidelizacion">🤝 9. Fidelización</MenuItem>
+                  <MenuItem value="descartado">🚫 10. Descartado</MenuItem>
                 </Select>
               </FormControl>
             )}
@@ -712,6 +723,40 @@ const Detail = () => {
               </Box>
             </Stack>
           )}
+          {/* Sección Notas */}
+          <Box>
+            <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
+              Notas
+            </Typography>
+            <Box sx={{ maxHeight: 400, overflowY: "auto", mt: 1 }}>
+              <Stack spacing={1}>
+                {notas
+                  ?.sort(
+                    (a, b) =>
+                      new Date(b.fechaNota).getTime() -
+                      new Date(a.fechaNota).getTime(),
+                  )
+                  .map((nota, idx) => (
+                    <Card key={idx}>
+                      <CardContent sx={{ paddingTop: 1 }}>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          {nota.titulo}
+                        </Typography>
+                        <Typography variant="body2">
+                          {nota.contenido}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {new Date(nota.fechaNota).toISOString().slice(0, 10)}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  ))}
+              </Stack>
+            </Box>
+          </Box>
         </Stack>
       </Box>
 

@@ -42,6 +42,10 @@ import {
   GET_CITAS_CALENDAR,
   GET_TAREAS,
   GET_TAREAS_BY_ID,
+  POST_NOTA,
+  GET_NOTAS,
+  GET_NOTAS_BY_ID,
+  PATCH_NOTA,
   POST_CONSULTA,
   // LOGIN,
   // LOGIN_FAILED,
@@ -100,6 +104,8 @@ let initialState = {
   tareas: [],
   citasDetail: [],
   tareasDetail: [],
+  notasDetail: [],
+  nota: {},
   deudas: [],
   filtro: [],
   consultas: [],
@@ -339,6 +345,26 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         tarea: action.payload,
+      };
+          case POST_NOTA:
+      return {
+        ...state,
+        nota: action.payload,
+      };
+    case GET_NOTAS:
+      return {
+        ...state,
+        notasDetail: action.payload.datosPagina,
+      };
+    case GET_NOTAS_BY_ID:
+      return {
+        ...state,
+        notasDetail: action.payload,
+      };
+    case PATCH_NOTA:
+      return {
+        ...state,
+        nota: action.payload,
       };
     case PATCH_CITA:
       return {

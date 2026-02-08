@@ -38,6 +38,7 @@ import motivosModel from "./models/Motivos.js";
 import solicitudModel from "./models/Solicitud.js";
 import honorarioModel from "./models/Honorario.js";
 import notaModel from "./models/Nota.js";
+import campaignModel from "./models/Campaign.js";
 config(); // Cargar variables de entorno desde el archivo .env
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
@@ -101,6 +102,7 @@ const Motivos = motivosModel(sequelize);
 const Solicitud = solicitudModel(sequelize);
 const Honorario = honorarioModel(sequelize);
 const Nota = notaModel(sequelize);
+const Campaign = campaignModel(sequelize);
 
 TipoDeCaso.belongsToMany(DocumentoTemplate, {
   through: "TipoDeCasoDocumentoTemplate",
@@ -246,6 +248,12 @@ Nota.belongsToMany(Prospecto, { through: "Prospecto_Nota" });
 
 Abogado.belongsToMany(Nota, { through: "Abogado_Nota" });
 Nota.belongsToMany(Abogado, { through: "Abogado_Nota" });
+
+Prospecto.belongsToMany(Campaign, { through: "Prospecto_Campaign" });
+Campaign.belongsToMany(Prospecto, { through: "Prospecto_Campaign" });
+
+Abogado.belongsToMany(Campaign, { through: "Abogado_Campaign" });
+Campaign.belongsToMany(Abogado, { through: "Abogado_Campaign" });
 
 const models = {
   ...sequelize.models,

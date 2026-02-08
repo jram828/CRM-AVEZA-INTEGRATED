@@ -15,6 +15,7 @@ import {
   IconDevicesQuestion,
   IconCornerDownLeft,
   IconListCheck,
+  IconSpeakerphone,
 } from "@tabler/icons-react";
 import { SidebarCambio, SidebarBody, SidebarLink } from "../ui/index.jsx";
 import { cn } from "../../utils/cn";
@@ -42,6 +43,12 @@ export default function SidebarDemo({ logout }) {
       icon: (
         <IconUsersGroup stroke={1} />),
     },
+      {
+    label: "Campañas", // 👈 nuevo link
+    href: "/campanas",
+    icon: <IconSpeakerphone stroke={1} className="text-blue-600" />,
+  },
+
     {
       label: "Casos",
       href: "/casos",

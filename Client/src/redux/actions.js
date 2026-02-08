@@ -266,7 +266,7 @@ export const getByIdAbogado = (cedulaAbogado) => {
 };
 
 export const getCampaigns = (page) => {
-  const endpoint = `/campaigns?pagina=${page}&porPagina=12`;
+  const endpoint = `/campaigns?pagina=${page}&porPagina=1000`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
     return dispatch({

@@ -6,7 +6,7 @@ const getCampaignById = async (idCampaign) => {
   const consulta = {
     where: {
       idCampaign: parseInt(idCampaign),
-      activo: true,
+      // activo: true,
     },
     include: [
       {

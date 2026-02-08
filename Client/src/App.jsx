@@ -44,6 +44,7 @@ import RegistroProspecto from "./components/registroprospecto/index.jsx";
 import Prospectos from "./components/prospectos/index.jsx";
 import SidebarDemo from "./components/sidebar/index.jsx";
 import Tareas from "./components/tareas/index.jsx";
+import Campaigns from "./components/campaigns/index.jsx";
 
 // URL base
 const URL = import.meta.env.VITE_URL;
@@ -179,6 +180,7 @@ function App() {
                 <Route path="/casos/crearcaso" element={<CrearCaso />} />
                 <Route path="/abogados" element={<Abogados />} />
                 <Route path="/verconsultas" element={<AllConsultas />} />
+                <Route path="/campanas" element={<Campaigns />} />
                 <Route path="/pagos" element={<Payments />} />
                 <Route path="/pagos/status" element={<Status />} />
                 <Route path="/tareas" element={<Tareas />} />

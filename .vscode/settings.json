@@ -18,7 +18,8 @@
         "Styles",
         "Agenda",
         "Tareas",
-        "Notas"
+        "Notas",
+        "CAMPAÑAS"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

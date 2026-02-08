@@ -1,5 +1,6 @@
 import { Router } from "express";
 import abogadosRouter from "./abogadosRoutes.js";
+import campaignsRouter from "./campaignsRoutes.js";
 import clientesRoutes from "./clienteRoutes.js";
 import prospectosRoutes from "./prospectoRoutes.js";
 import consultaRouter from "./consultaRoutes.js";
@@ -22,6 +23,7 @@ import notasRouter from "./notasRoutes.js";
 const router = Router();
 
 router.use("/abogados", abogadosRouter);
+router.use("/campaigns", campaignsRouter);
 router.use("/clientes", clientesRoutes);
 router.use("/prospectos", prospectosRoutes);
 router.use("/consultas", consultaRouter);

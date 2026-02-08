@@ -17,6 +17,8 @@ export const SET_USERTOKEN = "SET_USERTOKEN";
 export const FILTER_ABOGADO = "FILTER_NAME_ABOGADO";
 export const GET_ABOGADOS = "GET_ABOGADOS";
 export const GET_BY_ID_ABOGADO = "GET_BY_ID_ABOGADO";
+export const GET_CAMPAIGNS = "GET_CAMPAIGNS";
+export const GET_BY_ID_CAMPAIGN = "GET_BY_ID_CAMPAIGN";
 export const GET_BY_ID_CLIENTE = "GET_BY_ID_CLIENTE";
 export const GET_BY_ID_PROSPECTO = "GET_BY_ID_PROSPECTO";
 export const FILTER_CLIENTE = "FILTER_NAME_CLIENTE";
@@ -26,6 +28,7 @@ export const ORDER_ABOGADOS = "ORDER_ABOGADOS";
 export const ORDER_CLIENTES = "ORDER_CLIENTES";
 export const ORDER_PROSPECTOS = "ORDER_PROSPECTOS";
 export const DELETE_ABOGADO = "DELETE_ABOGADO";
+export const DELETE_CAMPAIGN = "DELETE_CAMPAIGN";
 export const DELETE_CLIENTE = "DELETE_CLIENTES";
 export const DELETE_PROSPECTO = "DELETE_PROSPECTO";
 export const GET_TIPOSDECASOS = "GET_TIPOSDECASOS";
@@ -51,9 +54,11 @@ export const GET_CONSULTAS_TODOS = "GET_CONSULTAS_TODOS";
 export const GET_PAGOS = "GET_PAGOS";
 export const CLEAN_USER = "CLEAN_USER";
 export const GET_ABOGADOS_TODOS = "GET_ABOGADOS_TODOS";
+export const GET_CAMPAIGNS_TODOS = "GET_CAMPAIGNS_TODOS";
 export const MODIFICAR_DATOS = "MODIFICAR_DATOS";
 export const MODIFICAR_DATOS_PROSPECTO = "MODIFICAR_DATOS_PROSPECTO";
 export const MODIFICAR_DATOS_ABOGADO = "MODIFICAR_DATOS_ABOGADO";
+export const MODIFICAR_DATOS_CAMPAIGN = "MODIFICAR_DATOS_CAMPAIGN";
 export const SET_ABOGADO = "SET_ABOGADO";
 export const GET_CLIENTES_TODOS = "GET_CLIENTES_TODOS";
 export const GET_PROSPECTOS_TODOS = "GET_PROSPECTOS_TODOS";
@@ -260,6 +265,28 @@ export const getByIdAbogado = (cedulaAbogado) => {
   };
 };
 
+export const getCampaigns = (page) => {
+  const endpoint = `/campaigns?pagina=${page}&porPagina=12`;
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_CAMPAIGNS,
+      payload: data,
+    });
+  };
+};
+
+export const getByIdCampaign = (idCampaign) => {
+  const endpoint = `/campaigns/${idCampaign}`;
+  // console.log("URL", endpoint);
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_BY_ID_CAMPAIGN,
+      payload: data,
+    });
+  };
+};
 export const getByIdCliente = (cedulaCliente) => {
   const endpoint = `/clientes/cedulacliente?cedulaCliente=${cedulaCliente}`;
   // console.log("URL", endpoint);
@@ -430,6 +457,18 @@ export const deleteProspecto = (cedulaProspecto) => {
     // console.log("cedula", cedulaAbogado);
     return dispatch({
       type: DELETE_PROSPECTO,
+      payload: data,
+    });
+  };
+};
+
+export const deleteCampaign = (idCampaign) => {
+  const endpoint = `/campaigns/delete`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, { idCampaign });
+    return dispatch({
+      type: DELETE_CAMPAIGN,
       payload: data,
     });
   };
@@ -774,6 +813,19 @@ export const getAbogadosTodos = () => {
   };
 };
 
+export const getCampaignsTodos = () => {
+  const endpoint = `/campaigns?pagina=1&porPagina=1000`;
+
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({
+      type: GET_CAMPAIGNS_TODOS,
+      payload: data,
+    });
+  };
+};
+
+
 export const modificarDatos = (payload) => {
   const endpoint = `/clientes/actualiza`;
 
@@ -811,6 +863,20 @@ export const modificarDatosAbogado = (payload) => {
     window.alert("Se ha actualizado el abogado con éxito.");
     return dispatch({
       type: MODIFICAR_DATOS_ABOGADO,
+      payload: data,
+    });
+  };
+};
+
+export const modificarDatosCampaign = (payload) => {
+  const endpoint = `/campaigns/actualiza`;
+
+  return async (dispatch) => {
+    const data = await axios.put(endpoint, payload);
+    // console.log("URL", endpoint, "PAYLOAD", payload);
+    window.alert("Se ha actualizado la campaña con éxito.");
+    return dispatch({
+      type: MODIFICAR_DATOS_CAMPAIGN,
       payload: data,
     });
   };

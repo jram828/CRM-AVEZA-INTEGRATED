@@ -11,6 +11,8 @@ import {
   SET_USERTOKEN,
   GET_ABOGADOS,
   GET_ABOGADOS_TODOS,
+  GET_CAMPAIGNS,
+  GET_CAMPAIGNS_TODOS,
   GET_CLIENTES,
   GET_CLIENTES_CASOS,
   GET_CLIENTES_TODOS,
@@ -20,6 +22,7 @@ import {
   GET_BY_ID_ABOGADO,
   GET_BY_ID_CLIENTE,
   GET_BY_ID_PROSPECTO,
+  GET_BY_ID_CAMPAIGN,
   FILTER_ABOGADO,
   FILTER_CLIENTE,
   FILTER_PROSPECTO,
@@ -28,6 +31,7 @@ import {
   ORDER_CLIENTES,
   ORDER_PROSPECTOS,
   DELETE_ABOGADO,
+  DELETE_CAMPAIGN,
   DELETE_CLIENTE,
   DELETE_PROSPECTO,
   GET_TIPOSDECASOS,
@@ -60,6 +64,7 @@ import {
   GET_CONSULTAS_TODOS,
   MODIFICAR_DATOS,
   MODIFICAR_DATOS_ABOGADO,
+  MODIFICAR_DATOS_CAMPAIGN,
   GET_PAGOS,
   MODIFICAR_CASO,
   MODIFICAR_CASO_COTIZACION,
@@ -88,9 +93,11 @@ let initialState = {
   isAuthenticated: false,
   user: {},
   abogados: [],
+  campaigns: [],  
   clientes: [],
   prospectos: [],
   abogado: {},
+  campaign: {},
   cliente: {},
   prospecto: {},
   honorarios: {},
@@ -149,6 +156,16 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         pages: action.payload,
       };
+    case GET_CAMPAIGNS:
+      return {
+        ...state,
+        campaigns: action.payload,
+      };
+    case GET_CAMPAIGNS_TODOS:
+      return {
+        ...state,
+        campaigns: action.payload,
+      };
     case GET_CLIENTES:
       return {
         ...state,
@@ -181,10 +198,14 @@ const rootReducer = (state = initialState, action) => {
         pages: action.payload,
       };
     case GET_BY_ID_ABOGADO:
-      //window.localStorage.setItem("abogado", JSON.stringify(action.payload));
       return {
         ...state,
         abogados: action.payload,
+      };
+    case GET_BY_ID_CAMPAIGN:
+      return {
+        ...state,
+        campaign: action.payload,
       };
     case GET_BY_ID_CLIENTE:
       return {
@@ -259,6 +280,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         abogados: action.payload,
+      };
+    case DELETE_CAMPAIGN:
+      return {
+        ...state,
+        campaigns: action.payload,
       };
     case DELETE_CLIENTE:
       return {
@@ -346,7 +372,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         tarea: action.payload,
       };
-          case POST_NOTA:
+    case POST_NOTA:
       return {
         ...state,
         nota: action.payload,
@@ -425,6 +451,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         abogado: action.payload,
+      };
+    case MODIFICAR_DATOS_CAMPAIGN:
+      return {
+        ...state,
+        campaign: action.payload,
       };
     case GET_PAGOS:
       return {

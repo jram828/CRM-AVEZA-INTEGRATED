@@ -18,6 +18,7 @@ export default (sequelize) => {
       direccion: { type: DataTypes.STRING, allowNull: false },
       celular: { type: DataTypes.BIGINT, allowNull: false },
       comentarios: { type: DataTypes.TEXT, allowNull: true },
+      status: { type: DataTypes.STRING, allowNull: true, defaultValue: "cotizacionenevaluacion" },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

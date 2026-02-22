@@ -10,6 +10,7 @@ import {
   postClientesHandler,
   postEliminaClientes,
   postActualizaClientes,
+  postActualizaClienteStatus,
   // getClientByEmailHandler,
 } from "../handlers/clientesHandlers.js";
 
@@ -26,6 +27,7 @@ clientesRouter.post("/relacionardepartamentos", relacionarDepartamentos);
 clientesRouter.post("/crearciudades", crearCiudades);
 
 clientesRouter.put("/actualiza", postActualizaClientes); //Actualizar datos (uno a la vez)
+clientesRouter.put("/status", postActualizaClienteStatus); 
 
 clientesRouter.post("/elimina", postEliminaClientes);
 

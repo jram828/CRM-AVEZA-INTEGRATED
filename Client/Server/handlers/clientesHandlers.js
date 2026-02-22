@@ -10,6 +10,7 @@ import {
 import {
   getClientByEmail,
 } from "../controllers/cliente/getClientByEmail.js";
+import { actualizaClienteStatus } from "../controllers/cliente/postActualizaClienteStatus.js";
 
 const clientesHandler = async (req, res) => {
   //const { name } = req.query;
@@ -168,6 +169,19 @@ const postActualizaClientes = async (req, res) => {
   }
   // res.status(200).send(`creando actividades`);
 };
+
+const postActualizaClienteStatus = async (req, res) => {
+  const { cedulaCliente, field, value } = req.body;
+
+  try {
+    const response = await actualizaClienteStatus(cedulaCliente, field, value);
+    if (response) res.status(200).json(response);
+    else res.status(204).json("No se actualizo el cliente");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 export  {
   clientesHandler,
   clientesCasosHandler,
@@ -176,4 +190,5 @@ export  {
   postEliminaClientes,
   postActualizaClientes,
   getClientByEmailHandler,
+  postActualizaClienteStatus
 };

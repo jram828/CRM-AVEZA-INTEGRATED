@@ -80,6 +80,7 @@ export const POST_NOTA = "POST_NOTA";
 export const GET_NOTAS = "GET_NOTAS";
 export const GET_NOTAS_BY_ID = "GET_NOTAS_BY_ID";
 export const PATCH_NOTA = "PATCH_NOTA";
+export const PUT_CLIENTE_STATUS = "PUT_CLIENTE_STATUS";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -220,7 +221,7 @@ export const setSource = (source) => {
 };
 
 export const getClientes = (page) => {
-  const endpoint = `/clientes/conocimientolitigios?pagina=${page}&porPagina=12`;
+  const endpoint = `/clientes/conocimientolitigios?pagina=${page}&porPagina=10000`;
   return async (dispatch) => {
     const { data } = await axios.get(endpoint);
     return dispatch({
@@ -736,6 +737,17 @@ export const updateStatus = (dataStatus) => {
     const { data } = await axios.put(endpoint, dataStatus);
     return dispatch({
       type: PUT_STATUS,
+      payload: data,
+    });
+  };
+};
+
+export const updateClienteStatus = (dataStatus) => {
+  const endpoint = `/clientes/status`;
+  return async (dispatch) => {
+    const { data } = await axios.put(endpoint, dataStatus);
+    return dispatch({
+      type: PUT_CLIENTE_STATUS,
       payload: data,
     });
   };

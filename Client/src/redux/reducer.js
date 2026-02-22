@@ -82,6 +82,7 @@ import {
   CREAR_ACREEDOR,
   GET_ACREEDORES,
   GET_DISPONIBILIDAD,
+  PUT_CLIENTE_STATUS,
   PUT_STATUS,
   POST_TAREA,
   PATCH_TAREA,
@@ -93,7 +94,7 @@ let initialState = {
   isAuthenticated: false,
   user: {},
   abogados: [],
-  campaigns: [],  
+  campaigns: [],
   clientes: [],
   prospectos: [],
   abogado: {},
@@ -491,6 +492,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         prospecto: action.payload,
+      };
+    case PUT_CLIENTE_STATUS:
+      return {
+        ...state,
+        cliente: action.payload,
       };
     case POST_HONORARIOS:
       return {

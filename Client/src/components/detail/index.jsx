@@ -13,11 +13,13 @@ import {
   deleteProspecto,
   getCitas,
   getCitasById,
+  getNotas,
   getTareas,
   getTareasById,
   modificarDatos,
   modificarDatosAbogado,
   modificarDatosProspecto,
+  postNota,
   // setSource,
   // updateCotizacionData,
   updateStatus,
@@ -42,12 +44,14 @@ import {
   Tab,
   Card,
   CardContent,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AddIcon from "@mui/icons-material/Add";
+import NotaForm from "./notaFormDetail";
 
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
@@ -188,6 +192,7 @@ const Detail = () => {
         comentarios: datos.comentarios,
         cedulanew: datos.cedulaCliente,
         cedula_anterior: datos.cedulaCliente,
+        status: datos.status || "",
       });
     } else {
       setUserDataDetail({
@@ -222,6 +227,7 @@ const Detail = () => {
         contactado: datos.contactado || "No",
         tieneCotizacion: datos.tieneCotizacion || "No",
         cotizacionAprobada: datos.cotizacionAprobada || "No",
+        status: datos.status || "",
       });
     }
   }, [dispatch, source]);
@@ -330,6 +336,18 @@ const Detail = () => {
     if (fechaStr < hoyStr) return "red"; // vencida
     if (fechaStr === hoyStr) return "gold"; // hoy
     return "green"; // futura
+  };
+
+  const [openNotaForm, setOpenNotaForm] = useState(false);
+
+  const handleOpenNotaForm = () => setOpenNotaForm(true);
+  const handleCloseNotaForm = () => setOpenNotaForm(false);
+
+  const handleSaveNota = (nota) => {
+    dispatch(postNota(nota)).then(() => {
+      dispatch(getNotas());
+    });
+    handleCloseNotaForm();
   };
 
   return (
@@ -530,7 +548,7 @@ const Detail = () => {
               >
                 <InputLabel>Status</InputLabel>
                 <Select
-                  value={userDataDetail.status || ""}
+                  value={userDataDetail.status}
                   label="Status"
                   onChange={handleStatusChange}
                   name="status"
@@ -554,6 +572,24 @@ const Detail = () => {
                   <MenuItem value="nocaldescartado">
                     🗑️ 4. No calificado - Descartado
                   </MenuItem>
+                </Select>
+              </FormControl>
+            )}
+
+             {source === "cliente" && (
+              <FormControl
+                fullWidth
+                size="small"
+                style={{ marginTop: "0.5rem" }}
+              >
+                <InputLabel>Status</InputLabel>
+                <Select
+                  value={userDataDetail.status}
+                  label="Status"
+                  onChange={handleStatusChange}
+                  name="status"
+                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                >
                   <MenuItem value="cotizacionenevaluacion">
                     💰 5. Cotización en evaluación
                   </MenuItem>
@@ -579,7 +615,7 @@ const Detail = () => {
           </Stack>
 
           {/* Columna derecha: reemplazo cuando es prospecto */}
-          {source === "prospecto" && (
+          {(source === "prospecto" || source === "cliente") && (
             <Stack spacing={2} flex={1}>
               {/* Sección Tareas */}
               <Box>
@@ -724,10 +760,26 @@ const Detail = () => {
             </Stack>
           )}
           {/* Sección Notas */}
+          {(source === "prospecto" || source === "cliente") && (
           <Box>
-            <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
-              Notas
-            </Typography>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "bold", mb: 1 }}
+              >
+                Notas
+              </Typography>
+              <Tooltip title="Crear nota">
+                <IconButton size="small" onClick={handleOpenNotaForm}>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+
             <Box sx={{ maxHeight: 400, overflowY: "auto", mt: 1 }}>
               <Stack spacing={1}>
                 {notas
@@ -744,12 +796,6 @@ const Detail = () => {
                   .map((nota, idx) => (
                     <Card key={idx}>
                       <CardContent sx={{ paddingTop: 1 }}>
-                        {/* <Typography
-          variant="subtitle2"
-          sx={{ fontWeight: "bold" }}
-        >
-          {nota.titulo}
-        </Typography> */}
                         <Typography variant="body2">
                           {nota.descripcion}
                         </Typography>
@@ -761,11 +807,26 @@ const Detail = () => {
                   ))}
               </Stack>
             </Box>
+
+            {/* Formulario de creación de nota */}
+            <NotaForm
+              open={openNotaForm}
+              onClose={handleCloseNotaForm}
+              onSave={handleSaveNota}
+              selectedProspecto={prospecto}
+            />
           </Box>
+          )}
         </Stack>
       </Box>
+    </Paper>
+  );
+};
 
-      {/* <Box component="form" noValidate autoComplete="off">
+export default Detail;
+
+//? Esta es la presentación de la información adicional que se lee desde el correo
+/*{ <Box component="form" noValidate autoComplete="off">
         <Stack direction={{ xs: "column", md: "row" }} spacing={2} mb={2}>
           <Stack spacing={2} flex={1}>
             <TextField
@@ -1002,9 +1063,4 @@ const Detail = () => {
             </Stack>
           )}
         </Stack>
-      </Box> */}
-    </Paper>
-  );
-};
-
-export default Detail;
+      </Box> }*/

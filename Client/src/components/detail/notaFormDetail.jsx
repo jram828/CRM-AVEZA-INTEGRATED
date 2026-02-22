@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Popover, Box, Stack, TextField, Button } from "@mui/material";
 import { useState } from "react";
 
-const NotaForm = ({ open, onClose, onSave, selectedProspecto }) => {
+const NotaFormDetail = ({ open, onClose, onSave, selectedProspecto }) => {
   const [dataNota, setDataNota] = useState({
     descripcion: "",
   });
@@ -56,7 +56,7 @@ const NotaForm = ({ open, onClose, onSave, selectedProspecto }) => {
   );
 };
 
-NotaForm.propTypes = {
+NotaFormDetail.propTypes = {
   anchorEl: PropTypes.object,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -64,4 +64,4 @@ NotaForm.propTypes = {
   selectedProspecto: PropTypes.object,
 };
 
-export default NotaForm;
+export default NotaFormDetail;

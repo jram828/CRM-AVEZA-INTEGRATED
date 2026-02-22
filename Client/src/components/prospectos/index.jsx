@@ -599,7 +599,7 @@ const Prospectos = () => {
                 "5. Cotización en evaluación",
                 "cotizacionenevaluacion",
               )}
-              {renderColumn("5. Cotización rechazada", "cotizacionrechazada")}
+              {/* {renderColumn("5. Cotización rechazada", "cotizacionrechazada")}
               {renderColumn("6. Documentación", "documentacion")}
               {renderColumn(
                 "7. Contrato en evaluación",
@@ -612,7 +612,7 @@ const Prospectos = () => {
                 "clienteprocesoactivo",
               )}
               {renderColumn("9. Fidelización", "fidelizacion")}
-              {renderColumn("10. Descartado", "descartado")}
+              {renderColumn("10. Descartado", "descartado")} */}
             </div>
           </DragDropContext>
         )}

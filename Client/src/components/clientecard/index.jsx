@@ -20,9 +20,9 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-const ProspectoCard = React.memo(
+const ClienteCard = React.memo(
   ({
-    prospecto,
+    cliente,
     notaReciente,
     IconComp,
     color,
@@ -76,7 +76,7 @@ const ProspectoCard = React.memo(
             <Tooltip title="Crear actividad">
               <IconButton
                 size="small"
-                onClick={(e) => handleOpenOverlay(e, prospecto)}
+                onClick={(e) => handleOpenOverlay(e, cliente)}
               >
                 <AddCircleOutlineIcon fontSize="small" />
               </IconButton>
@@ -85,39 +85,40 @@ const ProspectoCard = React.memo(
 
           <Link
             to="/detail"
-            onClick={() => onClickDetail(prospecto)}
+            onClick={() => onClickDetail(cliente)}
             className="link"
           >
             <Typography variant="subtitle1">
-              {prospecto.nombres} {prospecto.apellidos}
+              {cliente.nombres} {cliente.apellidos}
             </Typography>
           </Link>
 
           <FormControl fullWidth size="small" sx={{ mt: 1 }}>
             <InputLabel>Status</InputLabel>
             <Select
-              value={prospecto.status}
+              value={cliente.status}
               label="Status"
               onChange={(e) =>
-                handleStatusChange(prospecto.idProspecto, e.target.value)
+                handleStatusChange(cliente.idCliente, e.target.value)
               }
             >
-              <MenuItem value="sincontacto">
-                ❌ 1. Registrado sin contacto
+              <MenuItem value="cotizacionenevaluacion">
+                💰 5. Cotización en evaluación
               </MenuItem>
-              <MenuItem value="contactoefectivo">
-                📞 2. Contacto efectivo
+              <MenuItem value="cotizacionrechazada">
+                ⚠️ 5. Cotización rechazada
               </MenuItem>
-              <MenuItem value="contactonoefectivo">
-                🟠 2. Contacto NO efectivo
+              <MenuItem value="documentacion">📄 6. Documentación</MenuItem>
+              <MenuItem value="contratoenevaluacion">
+                📑 7. Contrato en evaluación
               </MenuItem>
-              <MenuItem value="leadcalificado">✅ 3. Lead calificado</MenuItem>
-              <MenuItem value="leadnocalificado">
-                🔄 3. Lead no calificado - Remarketing
+              <MenuItem value="clienteactivo">🟢 8. Cliente activo</MenuItem>
+              <MenuItem value="remarketing">📢 8. Remarketing</MenuItem>
+              <MenuItem value="clienteprocesoactivo">
+                ⚙️ 8. Cliente con Proceso Activo
               </MenuItem>
-              <MenuItem value="nocaldescartado">
-                🗑️ 4. No calificado - Descartado
-              </MenuItem>
+              <MenuItem value="fidelizacion">🤝 9. Fidelización</MenuItem>
+              <MenuItem value="descartado">🚫 10. Descartado</MenuItem>
             </Select>
           </FormControl>
         </CardContent>
@@ -126,14 +127,14 @@ const ProspectoCard = React.memo(
   },
 );
 
-ProspectoCard.displayName = "ProspectoCard";
+ClienteCard.displayName = "ClienteCard";
 
-ProspectoCard.propTypes = {
-  prospecto: PropTypes.shape({
+ClienteCard.propTypes = {
+  cliente: PropTypes.shape({
     nombres: PropTypes.string.isRequired,
     apellidos: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    idProspecto: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    idCliente: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
   }).isRequired,
   notaReciente: PropTypes.shape({
@@ -147,4 +148,4 @@ ProspectoCard.propTypes = {
   handleOpenOverlay: PropTypes.func.isRequired,
 };
 
-export default ProspectoCard;
+export default ClienteCard;

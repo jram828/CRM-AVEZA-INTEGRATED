@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { models } from "../../DB.js";
 
-const { Nota, Prospecto, Abogado } = models;
+const { Nota, Prospecto, Abogado, Cliente } = models;
 
 function paginarArreglo(arreglo, paginaActual, tamañoPagina) {
   const indiceInicial = parseInt(paginaActual) * parseInt(tamañoPagina);
@@ -22,6 +22,11 @@ const getAllNota = async (filters) => {
       {
         model: Prospecto,
         attributes: ["idProspecto", "nombres", "apellidos", "email", "celular", "status"], 
+        through: { attributes: [] }, 
+      },
+            {
+        model: Cliente,
+        attributes: ["cedulaCliente", "nombres", "apellidos", "email", "celular", "status"], 
         through: { attributes: [] }, 
       },
       {

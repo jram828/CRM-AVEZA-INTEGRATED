@@ -32,7 +32,7 @@ const NotaForm = ({ open, onClose, onSave, selectedCliente }) => {
       }}
     >
       <Box sx={{ p: 2, bgcolor: "white", minWidth: 300 }}>
-        <h3 style={{ marginTop: 0, marginBottom: 2 }}>Nueva Tarea</h3>
+        <h3 style={{ marginTop: 0, marginBottom: 2 }}>Nueva Nota</h3>
         <Stack spacing={2}>
           <TextField
             label="Descripción"

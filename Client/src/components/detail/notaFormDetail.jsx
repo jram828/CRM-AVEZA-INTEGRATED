@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Popover, Box, Stack, TextField, Button } from "@mui/material";
 import { useState } from "react";
 
-const NotaFormDetail = ({ open, onClose, onSave, selectedProspecto }) => {
+const NotaFormDetail = ({ open, onClose, onSave, selected, source }) => {
   const [dataNota, setDataNota] = useState({
     descripcion: "",
   });
@@ -12,11 +12,17 @@ const NotaFormDetail = ({ open, onClose, onSave, selectedProspecto }) => {
   };
 
   const handleSave = () => {
-    if (!selectedProspecto) return;
-    onSave({ ...dataNota, idProspecto: selectedProspecto.idProspecto });
+ if (source === "prospecto"){
+    if (!selected) return;
+    onSave({ ...dataNota, idProspecto: selected.idProspecto, source: "prospecto" });
     onClose();
-  };
 
+  } else if (source === "cliente") {
+    if (!selected) return;
+    onSave({ ...dataNota, cedulaCliente: selected.cedulaCliente, source: "cliente" });
+    onClose();
+  }
+};
   return (
     <Popover
       open={open}
@@ -32,7 +38,7 @@ const NotaFormDetail = ({ open, onClose, onSave, selectedProspecto }) => {
       }}
     >
       <Box sx={{ p: 2, bgcolor: "white", minWidth: 300 }}>
-        <h3 style={{ marginTop: 0, marginBottom: 2 }}>Nueva Tarea</h3>
+        <h3 style={{ marginTop: 0, marginBottom: 2 }}>Nueva Nota</h3>
         <Stack spacing={2}>
           <TextField
             label="Descripción"
@@ -61,7 +67,8 @@ NotaFormDetail.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  selectedProspecto: PropTypes.object,
+  selected: PropTypes.object,
+  source: PropTypes.string,
 };
 
 export default NotaFormDetail;

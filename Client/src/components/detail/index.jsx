@@ -817,7 +817,8 @@ const Detail = () => {
                 open={openNotaForm}
                 onClose={handleCloseNotaForm}
                 onSave={handleSaveNota}
-                selectedProspecto={prospecto}
+                selected={source === "prospecto" ? prospecto : cliente}
+                source={source}
               />
             </Box>
           )}

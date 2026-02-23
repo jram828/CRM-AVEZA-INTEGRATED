@@ -1,29 +1,42 @@
-.contenedorlitigios{
-  background-color: #E1EAEE;
+.contenedorlitigios {
+  background-color: #e1eaee;
   opacity: 0.85;
   border-radius: 10px;
   padding: 10px;
   height: 90vh;
-  width: 80vw;
+  width: 90vw;
   margin-left: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.encabezado{
+.encabezado {
   width: 300px;
 }
 
-.registrocliente{
+.registrocliente {
   display: flex;
   flex-direction: row;
   width: 80vw;
 }
 
-   .divclientes{
-    display: grid;
-    justify-content: flex-start;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: minmax(20px, auto);
-   }
+.divclientes {
+  display: grid;
+  justify-content: flex-start;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(20px, auto);
+}
+
+.divclientes2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  flex-wrap: nowrap; /* Evita que las columnas se apilen verticalmente */
+  overflow-x: auto; /* Permite scroll horizontal si hay muchas columnas*/
+  width: 100%;
+  overflow-y: hidden;
+}

@@ -3,8 +3,8 @@ import moment from "moment";
 import { sendEmailCita, sendEmailCitaAveza } from "../../utils/emailNotifier.js";
 import { createCitaGoogle } from "../../utils/createCitaGoogle.js";
 
-const { Cita, Prospecto, Abogado } = models;
-const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion) => {
+const { Cita, Prospecto, Cliente, Abogado } = models;
+const createCitaCalendar = async (idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion,  source) => {
   console.log("Creando cita en calendario con datos:", {
     idProspecto,
     titulo,
@@ -86,11 +86,17 @@ console.log("startDateTime:", startDateTime);
 
  console.log("Nueva cita creada en la base de datos:", newCita);
 
+ if (source === "prospecto") {  
     const prospecto = await Prospecto.findByPk(idProspecto);
   if (!prospecto) throw Error("Prospecto no encontrado");
 
   await prospecto.addCita(newCita);
-  
+ } else if (source === "cliente") {
+  const cliente = await Cliente.findByPk(idProspecto);
+  if (!cliente) throw Error("Cliente no encontrado");
+
+  await cliente.addCita(newCita);
+ }
   // Enviar notificaciones por correo electrónico
       sendEmailCita({...dataRegistro, URLReunion: enlaceReunion});
       sendEmailCitaAveza({...dataRegistro, URLReunion: enlaceReunion});

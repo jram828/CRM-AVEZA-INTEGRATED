@@ -1,6 +1,6 @@
 import { models } from "../../DB.js";
 
-const { Prospecto, Tarea } = models;
+const { Prospecto, Tarea, Cliente } = models;
 
 const getTareaById = async (idProspecto) => {
   const consulta = {

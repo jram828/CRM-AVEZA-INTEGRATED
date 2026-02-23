@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { models } from "../../DB.js";
 
-const { Cita, Prospecto, Abogado } = models;
+const { Cita, Prospecto, Abogado, Cliente } = models;
 
 function paginarArreglo(arreglo, paginaActual, tamañoPagina) {
   const indiceInicial = parseInt(paginaActual) * parseInt(tamañoPagina);
@@ -26,6 +26,11 @@ getAllCitaBd = await Cita.findAll({
     {
       model: Prospecto,
       attributes: ["idProspecto", "nombres", "apellidos", "email", "celular"], // 👈 incluye los campos que necesitas
+      through: { attributes: [] }, // si es relación N:M, no necesitas los atributos de la tabla intermedia
+    },
+        {
+      model: Cliente,
+      attributes: ["cedulaCliente", "nombres", "apellidos", "email", "celular"], // 👈 incluye los campos que necesitas
       through: { attributes: [] }, // si es relación N:M, no necesitas los atributos de la tabla intermedia
     },
     {

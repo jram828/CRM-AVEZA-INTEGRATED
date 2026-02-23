@@ -21,8 +21,7 @@ const selectTareaHandler = async (req, res) => {
   }
 };
 const tareasByIdHandler = async (req, res) => {
-
-  const {idProspecto} = req.params;
+  const { idProspecto } = req.params;
 
   try {
     const response = await getTareaById(idProspecto);
@@ -52,12 +51,17 @@ const postCreateTareaHandler = async (req, res) => {
     repetir,
     frecuencia,
     repeticiones,
+    source,
+    cedulaCliente,
   } = req.body;
+
+const idFinal = idProspecto || cedulaCliente;
+
   console.log("Datos recibidos en el handler de creación de tarea:", req.body);
   const email = req.body.email || process.env.EMAIL_NOTIFICACION;
   try {
     const response = await createTarea(
-      idProspecto,
+      idFinal,
       asunto,
       fechaVencimiento,
       recordatorio,
@@ -65,7 +69,8 @@ const postCreateTareaHandler = async (req, res) => {
       repetir,
       frecuencia,
       repeticiones,
-      email
+      email,
+      source,
     );
     res.status(200).json(response);
   } catch (error) {

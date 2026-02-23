@@ -42,11 +42,12 @@ const completarNotaHandler = async (req, res) => {
 };
 
 const postCreateNotaHandler = async (req, res) => {
-  const { idProspecto, descripcion } = req.body;
+  const { idProspecto, descripcion, source, cedulaCliente } = req.body;
   console.log("Datos recibidos en el handler de creación de nota:", req.body);
 
+  const idFinal = idProspecto || cedulaCliente;
   try {
-    const response = await createNota(idProspecto, descripcion);
+    const response = await createNota(idFinal, descripcion, source);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });

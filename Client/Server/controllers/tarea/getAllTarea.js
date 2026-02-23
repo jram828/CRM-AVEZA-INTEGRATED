@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { models } from "../../DB.js";
 
-const { Tarea, Prospecto, Abogado } = models;
+const { Tarea, Prospecto, Abogado, Cliente } = models;
 
 function paginarArreglo(arreglo, paginaActual, tamañoPagina) {
   const indiceInicial = parseInt(paginaActual) * parseInt(tamañoPagina);
@@ -25,6 +25,11 @@ const getAllTarea = async (filters) => {
       {
         model: Prospecto,
         attributes: ["idProspecto", "nombres", "apellidos", "email", "celular", "status"], 
+        through: { attributes: [] }, 
+      },
+      {
+        model: Cliente,
+        attributes: ["cedulaCliente", "nombres", "apellidos", "email", "celular", "status"], 
         through: { attributes: [] }, 
       },
       {
@@ -144,7 +149,7 @@ const getAllTarea = async (filters) => {
 
   //Devuelve desde la pagina solicitada y la cantidad de elementos solicitados
 
-  let elementos = filters.query.porPagina || 30; // los elementos por pag por default
+  let elementos = filters.query.porPagina || 10000; // los elementos por pag por default
   let offset = filters.query.pagina || 1; // manda pag 1 por default
   //if (filters.query.porPagina) elementos = filters.query.porPagina;
   //if (filters.query.pagina) offset = (filters.query.pagina - 1) * parseInt(elementos);

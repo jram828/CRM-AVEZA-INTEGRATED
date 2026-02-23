@@ -155,7 +155,7 @@ const getAllCita = async (filters) => {
 
   //Devuelve desde la pagina solicitada y la cantidad de elementos solicitados
 
-  let elementos = filters.query.porPagina || 30; // los elementos por pag por default
+  let elementos = filters.query.porPagina || 10000; // los elementos por pag por default
   let offset = filters.query.pagina || 1; // manda pag 1 por default
   //if (filters.query.porPagina) elementos = filters.query.porPagina;
   //if (filters.query.pagina) offset = (filters.query.pagina - 1) * parseInt(elementos);

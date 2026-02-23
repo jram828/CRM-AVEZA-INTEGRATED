@@ -55,11 +55,11 @@ const postCreateCita = async (req, res) =>{
 
 
     
-    const { titulo, descripcion, fechaCita, horaCita, idProspecto } = req.body
+    const { titulo, descripcion, fechaCita, horaCita, idProspecto, source } = req.body
      const email = req.body.calendarId|| "jram828@gmail.com" //process.env.EMAIL_NOTIFICACION;
     console.log("Datos recibidos en el handler de creación de cita:", req.body, email);
     try {
-        const response = await createCita( titulo, descripcion, fechaCita, horaCita, idProspecto, email)
+        const response = await createCita( titulo, descripcion, fechaCita, horaCita, idProspecto, email, source)
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})
@@ -67,10 +67,12 @@ const postCreateCita = async (req, res) =>{
 }
 
 const postCreateCitaGoogle = async (req, res) =>{
-    const { idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion } = req.body
+    const { idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion, source, cedulaCliente } = req.body
     console.log("Datos recibidos en el handler de creación de cita Google:", req.body);
+
+    const idFinal = idProspecto || cedulaCliente;
     try {
-        const response = await createCitaCalendar( idProspecto, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion )
+        const response = await createCitaCalendar( idFinal, titulo, fechaCita, horaCita, email, calendarId, nombres, apellidos, descripcion, source)
         res.status(200).json(response)
     } catch (error) {
         res.status(400).json({error:error.message})

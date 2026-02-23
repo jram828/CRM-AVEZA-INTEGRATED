@@ -595,10 +595,6 @@ const Prospectos = () => {
                 "leadnocalificado",
               )}
               {renderColumn("4. No calificado - Descartado", "nocaldescartado")}
-              {renderColumn(
-                "5. Cotización en evaluación",
-                "cotizacionenevaluacion",
-              )}
               {/* {renderColumn("5. Cotización rechazada", "cotizacionrechazada")}
               {renderColumn("6. Documentación", "documentacion")}
               {renderColumn(

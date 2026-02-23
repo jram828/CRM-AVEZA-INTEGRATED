@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const TaskForm = ({ open, onClose, onSave, selectedProspecto }) => {
+const TaskForm = ({ open, onClose, onSave, selectedCliente }) => {
   const [dataTarea, setDataTarea] = useState({
     asunto: "",
     fechaVencimiento: "",
@@ -29,8 +29,8 @@ const TaskForm = ({ open, onClose, onSave, selectedProspecto }) => {
   };
 
   const handleSave = () => {
-    if (!selectedProspecto) return;
-    onSave({ ...dataTarea, idProspecto: selectedProspecto.idProspecto });
+    if (!selectedCliente) return;
+    onSave({ ...dataTarea, cedulaCliente: selectedCliente.cedulaCliente, source: "cliente" });
     onClose();
   };
 
@@ -128,7 +128,7 @@ TaskForm.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  selectedProspecto: PropTypes.object,
+  selectedCliente: PropTypes.object,
 };
 
 export default TaskForm;

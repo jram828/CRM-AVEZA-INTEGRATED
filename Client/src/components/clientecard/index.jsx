@@ -99,7 +99,7 @@ const ClienteCard = React.memo(
               value={cliente.status}
               label="Status"
               onChange={(e) =>
-                handleStatusChange(cliente.idCliente, e.target.value)
+                handleStatusChange(cliente.cedulaCliente, e.target.value)
               }
             >
               <MenuItem value="cotizacionenevaluacion">
@@ -134,7 +134,7 @@ ClienteCard.propTypes = {
     nombres: PropTypes.string.isRequired,
     apellidos: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    idCliente: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    cedulaCliente: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
   }).isRequired,
   notaReciente: PropTypes.shape({

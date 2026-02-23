@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const CitaForm = ({open, onClose, onSave, selectedProspecto }) => {
+const CitaForm = ({open, onClose, onSave, selectedCliente }) => {
   const [dataCita, setDataCita] = useState({
     titulo: "",
     fechaCita: "",
@@ -20,8 +20,8 @@ const CitaForm = ({open, onClose, onSave, selectedProspecto }) => {
   };
 
   const handleSave = () => {
-    if (!selectedProspecto) return;
-    onSave({ ...dataCita, idProspecto: selectedProspecto.idProspecto });
+    if (!selectedCliente) return;
+    onSave({ ...dataCita, cedulaCliente: selectedCliente.cedulaCliente, source: "cliente" });
     onClose();
   };
 
@@ -93,7 +93,7 @@ CitaForm.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  selectedProspecto: PropTypes.object,
+  selectedCliente: PropTypes.object,
 };
 
 export default CitaForm;

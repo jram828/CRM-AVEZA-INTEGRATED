@@ -19,7 +19,8 @@
         "Agenda",
         "Tareas",
         "Notas",
-        "CAMPAÑAS"
+        "CAMPAÑAS",
+        "Clientes"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }

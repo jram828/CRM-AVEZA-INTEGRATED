@@ -131,7 +131,7 @@ const Clientes = () => {
       ),
     );
     dispatch(
-      updateStatus({
+      updateClienteStatus({
         cedulaCliente: cedulaCliente,
         field: "status",
         value: newStatus,
@@ -257,7 +257,7 @@ const Clientes = () => {
     );
 
     dispatch(
-      updateStatus({
+      updateClienteStatus({
         cedulaCliente: draggableId,
         field: "status",
         value: destination.droppableId,

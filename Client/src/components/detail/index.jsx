@@ -576,7 +576,7 @@ const Detail = () => {
               </FormControl>
             )}
 
-             {source === "cliente" && (
+            {source === "cliente" && (
               <FormControl
                 fullWidth
                 size="small"
@@ -761,61 +761,65 @@ const Detail = () => {
           )}
           {/* Sección Notas */}
           {(source === "prospecto" || source === "cliente") && (
-          <Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Typography
-                variant="subtitle1"
-                sx={{ fontWeight: "bold", mb: 1 }}
+            <Box>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
               >
-                Notas
-              </Typography>
-              <Tooltip title="Crear nota">
-                <IconButton size="small" onClick={handleOpenNotaForm}>
-                  <AddIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontWeight: "bold", mb: 1 }}
+                >
+                  Notas
+                </Typography>
+                <Tooltip title="Crear nota">
+                  <IconButton size="small" onClick={handleOpenNotaForm}>
+                    <AddIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
 
-            <Box sx={{ maxHeight: 400, overflowY: "auto", mt: 1 }}>
-              <Stack spacing={1}>
-                {notas
-                  ?.filter(
-                    (nota) =>
-                      nota.Prospectos?.[0]?.idProspecto ===
-                      prospecto.idProspecto,
-                  )
-                  .sort(
-                    (a, b) =>
-                      new Date(b.updatedAt).getTime() -
-                      new Date(a.updatedAt).getTime(),
-                  )
-                  .map((nota, idx) => (
-                    <Card key={idx}>
-                      <CardContent sx={{ paddingTop: 1 }}>
-                        <Typography variant="body2">
-                          {nota.descripcion}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {new Date(nota.updatedAt).toISOString().slice(0, 10)}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  ))}
-              </Stack>
-            </Box>
+              <Box sx={{ maxHeight: 400, overflowY: "auto", mt: 1 }}>
+                <Stack spacing={1}>
+                  {notas
+                    ?.filter((nota) =>
+                      source === "prospecto"
+                        ? nota.Prospectos?.[0]?.idProspecto ===
+                          prospecto.idProspecto
+                        : nota.Clientes?.[0]?.cedulaCliente ===
+                          cliente.cedulaCliente,
+                    )
+                    .sort(
+                      (a, b) =>
+                        new Date(b.updatedAt).getTime() -
+                        new Date(a.updatedAt).getTime(),
+                    )
+                    .map((nota, idx) => (
+                      <Card key={idx}>
+                        <CardContent sx={{ paddingTop: 1 }}>
+                          <Typography variant="body2">
+                            {nota.descripcion}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {new Date(nota.updatedAt)
+                              .toISOString()
+                              .slice(0, 10)}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </Stack>
+              </Box>
 
-            {/* Formulario de creación de nota */}
-            <NotaForm
-              open={openNotaForm}
-              onClose={handleCloseNotaForm}
-              onSave={handleSaveNota}
-              selectedProspecto={prospecto}
-            />
-          </Box>
+              {/* Formulario de creación de nota */}
+              <NotaForm
+                open={openNotaForm}
+                onClose={handleCloseNotaForm}
+                onSave={handleSaveNota}
+                selectedProspecto={prospecto}
+              />
+            </Box>
           )}
         </Stack>
       </Box>

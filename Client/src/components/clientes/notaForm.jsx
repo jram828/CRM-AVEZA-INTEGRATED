@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Popover, Box, Stack, TextField, Button } from "@mui/material";
 import { useState } from "react";
 
-const NotaForm = ({ open, onClose, onSave, selectedProspecto }) => {
+const NotaForm = ({ open, onClose, onSave, selectedCliente }) => {
   const [dataNota, setDataNota] = useState({
     descripcion: "",
   });
@@ -12,8 +12,8 @@ const NotaForm = ({ open, onClose, onSave, selectedProspecto }) => {
   };
 
   const handleSave = () => {
-    if (!selectedProspecto) return;
-    onSave({ ...dataNota, idProspecto: selectedProspecto.idProspecto });
+    if (!selectedCliente) return;
+    onSave({ ...dataNota, cedulaCliente: selectedCliente.cedulaCliente, source: "cliente" });
     onClose();
   };
 
@@ -61,7 +61,7 @@ NotaForm.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  selectedProspecto: PropTypes.object,
+  selectedCliente: PropTypes.object,
 };
 
 export default NotaForm;

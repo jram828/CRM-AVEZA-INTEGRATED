@@ -255,6 +255,15 @@ Campaign.belongsToMany(Prospecto, { through: "Prospecto_Campaign" });
 Abogado.belongsToMany(Campaign, { through: "Abogado_Campaign" });
 Campaign.belongsToMany(Abogado, { through: "Abogado_Campaign" });
 
+Cliente.belongsToMany(Tarea, { through: "Cliente_Tarea" });
+Tarea.belongsToMany(Cliente, { through: "Cliente_Tarea" });
+
+Cliente.belongsToMany(Cita, { through: "Cliente_Cita" });
+Cita.belongsToMany(Cliente, { through: "Cliente_Cita" });
+
+Cliente.belongsToMany(Nota, { through: "Cliente_Nota" });
+Nota.belongsToMany(Cliente, { through: "Cliente_Nota" });
+
 const models = {
   ...sequelize.models,
   conn: sequelize,

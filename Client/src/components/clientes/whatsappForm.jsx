@@ -6,7 +6,7 @@ const WhatsappForm = ({
   open,
   onClose,
   handleSaveWhatsapp,
-  selectedProspecto,
+  selectedCliente,
 }) => {
   const [dataMensaje, setDataMensaje] = useState({
     asunto: "",
@@ -17,10 +17,10 @@ const WhatsappForm = ({
   };
 
   const handleSend = () => {
-    if (!selectedProspecto?.celular || !dataMensaje.asunto) return;
+    if (!selectedCliente?.celular || !dataMensaje.asunto) return;
 
     // Normalizar número (solo dígitos)
-    let numero = selectedProspecto.celular.replace(/\D/g, "");
+    let numero = selectedCliente.celular.replace(/\D/g, "");
 
     // Validar prefijo internacional (Colombia = 57)
     if (!numero.startsWith("57")) {
@@ -38,7 +38,7 @@ const WhatsappForm = ({
     // Guardar usando dispatch y cerrar popover
     handleSaveWhatsapp({
       ...dataMensaje,
-      idProspecto: selectedProspecto.idProspecto,
+      cedulaCliente: selectedCliente.cedulaCliente,
     });
   };
 
@@ -90,7 +90,7 @@ WhatsappForm.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   handleSaveWhatsapp: PropTypes.func.isRequired,
-  selectedProspecto: PropTypes.object,
+  selectedCliente: PropTypes.object,
 };
 
 export default WhatsappForm;

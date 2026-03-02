@@ -12,6 +12,7 @@ import {
   postTarea,
   prospectoActual,
   setSource,
+  updateCalificacion,
   updateStatus,
   // updateProspectoStatus // ← Descomenta si tienes esta acción para backend
 } from "../../redux/actions";
@@ -30,6 +31,7 @@ import CitaForm from "./citaForm";
 import WhatsappForm from "./whatsappForm";
 import NotaForm from "./notaForm";
 import ProspectoCard from "../prospectocard";
+import * as XLSX from "xlsx";
 
 const Prospectos = () => {
   const dispatch = useDispatch();
@@ -86,22 +88,30 @@ const Prospectos = () => {
 
   const groupedProspectos = useMemo(() => {
     const groups = {
-      sincontacto: [],
-      contactoefectivo: [],
-      contactonoefectivo: [],
-      leadcalificado: [],
-      leadnocalificado: [],
-      nocaldescartado: [],
-      cotizacionenevaluacion: [],
-      contratoenevaluacion: [],
-      cotizacionrechazada: [],
-      documentacion: [],
-      clienteactivo: [],
-      remarketing: [],
-      clienteprocesoactivo: [],
-      fidelizacion: [],
-      descartado: [],
+  lead: [],
+  agendado: [],
+  asesorado: [],
+  cotizado: [],
+  esperadocumentos: [],
+  remarketing: [],
+  descartado: [],
     };
+
+          // sincontacto: [],
+      // contactoefectivo: [],
+      // contactonoefectivo: [],
+      // leadcalificado: [],
+      // leadnocalificado: [],
+      // nocaldescartado: [],
+      // cotizacionenevaluacion: [],
+      // contratoenevaluacion: [],
+      // cotizacionrechazada: [],
+      // documentacion: [],
+      // clienteactivo: [],
+      // remarketing: [],
+      // clienteprocesoactivo: [],
+      // fidelizacion: [],
+      // descartado: [],
 
     prospectos.forEach((p) => {
       const key = p.status;
@@ -141,6 +151,21 @@ const Prospectos = () => {
         idProspecto: idProspecto,
         field: "status",
         value: newStatus,
+      }),
+    );
+  };
+
+    const handleCalificacionChange = (idProspecto, newCalificacion) => {
+    setProspectos((prev) =>
+      prev.map((p) =>
+        p.idProspecto === idProspecto ? { ...p, calificacion: newCalificacion } : p,
+      ),
+    );
+    dispatch(
+      updateCalificacion({
+        idProspecto: idProspecto,
+        field: "calificacion",
+        value: newCalificacion,
       }),
     );
   };
@@ -399,7 +424,52 @@ const Prospectos = () => {
     handleCloseOverlay();
   };
 
-  // 👉 función que renderiza el popover del formulario
+  const exportarExcel = () => {
+    // Seleccionar solo las propiedades requeridas y en el orden correcto
+    const datos = reduxProspectos.map((prospecto) => ({
+      Cedula: prospecto.cedulaProspecto,
+      Apellidos: prospecto.apellidos,
+      Nombres: prospecto.nombres,
+      Celular: prospecto.celular,
+      Direccion: prospecto.direccion,
+      Email: prospecto.email,
+      Status: prospecto.status,
+    }));
+
+    const headers = [
+      "Cedula",
+      "Apellidos",
+      "Nombres",
+      "Celular",
+      "Direccion",
+      "Email",
+      "Status",
+    ];
+
+    // Crear hoja de cálculo
+    const hoja = XLSX.utils.json_to_sheet(datos, {
+      header: headers,
+    });
+
+    hoja["!cols"] = headers.map((header) => {
+      const maxLength = Math.max(
+        header.length,
+        ...datos.map((row) =>
+          row[header] ? row[header].toString().length : 0,
+        ),
+      );
+      return { wch: maxLength + 1 };
+    });
+    // Crear libro y añadir la hoja
+    const libro = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hoja, "Prospectos");
+
+    // Generar fecha en formato YYYY-MM-DD
+    const fecha = new Date().toISOString().split("T")[0];
+
+    // Descargar archivo
+    XLSX.writeFile(libro, `prospectos_${fecha}.xlsx`);
+  };
 
   const renderColumn = (title, statusKey) => (
     <div
@@ -463,6 +533,7 @@ const Prospectos = () => {
                           tooltip={tooltip}
                           onClickDetail={onClickDetail}
                           handleStatusChange={handleStatusChange}
+                          handleCalificacionChange={handleCalificacionChange}
                           handleOpenOverlay={handleOpenOverlay}
                         />
                       </div>
@@ -535,17 +606,48 @@ const Prospectos = () => {
         <h1 className="titulo">Prospectos</h1>
       </div>
       <br />
-      <div className="registroprospecto">
-        <SearchBar onFilter={handleFilter} />
-        <Link to="/registroprospecto">
-          <Button sx={{ flex: 1 }} variant="contained">
-            Crear Prospecto
+      <Box
+        className="registroprospecto"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={2}
+      >
+        {/* Lado izquierdo - SearchBar */}
+        <Box flex="1 1 300px" minWidth={0}>
+          <SearchBar onFilter={handleFilter} />
+        </Box>
+
+        {/* Lado derecho - Botones */}
+        <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+          <Link to="/registroprospecto" style={{ textDecoration: "none" }}>
+            <Button variant="contained" color="primary" size="small">
+              Crear Prospecto
+            </Button>
+          </Link>
+
+          <Button
+            onClick={exportarExcel}
+            variant="contained"
+            color="primary"
+            size="small"
+          >
+            Exportar
           </Button>
-        </Link>
-        {filterApplied && (
-          <Button onClick={handleVerTodosClick}>Ver todos</Button>
-        )}
-      </div>
+
+          {filterApplied && (
+            <Button
+              onClick={handleVerTodosClick}
+              variant="outlined"
+              size="small"
+              color="primary"
+            >
+              Ver todos
+            </Button>
+          )}
+        </Box>
+      </Box>
 
       {!searchPerformed && (
         <div className="paginationprospectos">
@@ -586,15 +688,19 @@ const Prospectos = () => {
                 flexWrap: "nowrap",
               }}
             >
-              {renderColumn("1. Registrado sin contacto", "sincontacto")}
-              {renderColumn("2. Contacto efectivo", "contactoefectivo")}
-              {renderColumn("2. Contacto NO efectivo", "contactonoefectivo")}
-              {renderColumn("3. Lead calificado", "leadcalificado")}
+              {renderColumn("1. Lead", "lead")}
+              {renderColumn("2. Agendado", "agendado")}
+              {renderColumn("3. Asesorado", "asesorado")}
+              {renderColumn("4. Cotizado", "cotizado")}
               {renderColumn(
-                "3. Lead no calificado - Remarketing",
-                "leadnocalificado",
+                "5. Espera de documentos/Información",
+                "esperadocumentos",
               )}
-              {renderColumn("4. No calificado - Descartado", "nocaldescartado")}
+              {renderColumn("6. Remarketing", "remarketing")}
+                            {renderColumn(
+                "7. Descartado",
+                "descartado",
+              )}
               {/* {renderColumn("5. Cotización rechazada", "cotizacionrechazada")}
               {renderColumn("6. Documentación", "documentacion")}
               {renderColumn(

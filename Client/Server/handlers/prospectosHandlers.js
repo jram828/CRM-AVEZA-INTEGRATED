@@ -10,6 +10,7 @@ import { actualizaDatosCotizacion } from "../controllers/prospecto/postActualiza
 import { corregirAcentos } from "../controllers/prospecto/corregirAcentos.js";
 import { postProspectoAut } from "../controllers/prospecto/postProspectoAut.js";
 import { actualizaStatus } from "../controllers/prospecto/postActualizaStatus.js";
+import { actualizaCalificacion } from "../controllers/prospecto/postActualizaCalificacion.js";
 
 const prospectosHandler = async (req, res) => {
   //const { name } = req.query;
@@ -157,6 +158,9 @@ const postActualizaProspectos = async (req, res) => {
     cedula_anterior,
     nombres_anterior,
     apellidos_anterior,
+    tieneProcesos,
+    numeroEntidades,
+    tiempoMora,
   } = req.body;
 
   const cedula = cedulanew;
@@ -176,8 +180,12 @@ const postActualizaProspectos = async (req, res) => {
       comentarios,
       cedula_anterior,
       nombres_anterior,
-      apellidos_anterior
+      apellidos_anterior,
+      tieneProcesos,
+      numeroEntidades,
+      tiempoMora,
     );
+
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el Prospecto");
   } catch (error) {
@@ -209,6 +217,18 @@ const postActualizaStatus = async (req, res) => {
   }
 };
 
+const postActualizaCalificacion = async (req, res) => {
+  const { idProspecto, field, value } = req.body;
+
+  try {
+    const response = await actualizaCalificacion(idProspecto, field, value);
+    if (response) res.status(200).json(response);
+    else res.status(204).json("No se actualizo el Prospecto");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const corregirAcentosProspectos = async (req, res) => {
   
   try {
@@ -232,4 +252,5 @@ export {
   getProspectoByEmailHandler,
   corregirAcentosProspectos,
   postActualizaStatus,
+  postActualizaCalificacion,
 };

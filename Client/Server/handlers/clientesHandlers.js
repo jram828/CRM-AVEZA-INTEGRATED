@@ -11,6 +11,7 @@ import {
   getClientByEmail,
 } from "../controllers/cliente/getClientByEmail.js";
 import { actualizaClienteStatus } from "../controllers/cliente/postActualizaClienteStatus.js";
+import { actualizaClienteCalificacion } from "../controllers/cliente/postActualizaClienteCalificacion.js";
 
 const clientesHandler = async (req, res) => {
   //const { name } = req.query;
@@ -182,6 +183,18 @@ const postActualizaClienteStatus = async (req, res) => {
   }
 };
 
+const postActualizaClienteCalificacion = async (req, res) => {
+  const { cedulaCliente, field, value } = req.body;
+
+  try {
+    const response = await actualizaClienteCalificacion(cedulaCliente, field, value);
+    if (response) res.status(200).json(response);
+    else res.status(204).json("No se actualizo el cliente");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 export  {
   clientesHandler,
   clientesCasosHandler,
@@ -190,5 +203,6 @@ export  {
   postEliminaClientes,
   postActualizaClientes,
   getClientByEmailHandler,
-  postActualizaClienteStatus
+  postActualizaClienteStatus,
+  postActualizaClienteCalificacion
 };

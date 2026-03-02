@@ -264,6 +264,12 @@ Cita.belongsToMany(Cliente, { through: "Cliente_Cita" });
 Cliente.belongsToMany(Nota, { through: "Cliente_Nota" });
 Nota.belongsToMany(Cliente, { through: "Cliente_Nota" });
 
+Prospecto.belongsToMany(Abogado, { through: "Prospecto_Abogado" });
+Abogado.belongsToMany(Prospecto, { through: "Prospecto_Abogado" });
+
+Cliente.belongsToMany(Abogado, { through: "Cliente_Abogado" });
+Abogado.belongsToMany(Cliente, { through: "Cliente_Abogado" });
+
 const models = {
   ...sequelize.models,
   conn: sequelize,

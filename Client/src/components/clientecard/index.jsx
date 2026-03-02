@@ -102,12 +102,6 @@ const ClienteCard = React.memo(
                 handleStatusChange(cliente.cedulaCliente, e.target.value)
               }
             >
-              <MenuItem value="cotizacionenevaluacion">
-                💰 5. Cotización en evaluación
-              </MenuItem>
-              <MenuItem value="cotizacionrechazada">
-                ⚠️ 5. Cotización rechazada
-              </MenuItem>
               <MenuItem value="documentacion">📄 6. Documentación</MenuItem>
               <MenuItem value="contratoenevaluacion">
                 📑 7. Contrato en evaluación

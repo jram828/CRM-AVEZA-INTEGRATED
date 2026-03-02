@@ -5,13 +5,13 @@ export default (sequelize) => {
   const Prospecto = sequelize.define(
     "Prospecto",
     {
-      idProspecto:{
-      type: DataTypes.UUID,
-      defaultValue: uuidv4,
-      primaryKey: true,
-      allowNull: false,
-      unique: true,
-    },
+      idProspecto: {
+        type: DataTypes.UUID,
+        defaultValue: uuidv4,
+        primaryKey: true,
+        allowNull: false,
+        unique: true,
+      },
       cedulaProspecto: {
         type: DataTypes.BIGINT,
         allowNull: true,
@@ -34,18 +34,50 @@ export default (sequelize) => {
       tieneBienes: { type: DataTypes.STRING, allowNull: true },
       bienes: { type: DataTypes.STRING, allowNull: true },
       totalBienes: { type: DataTypes.STRING, allowNull: true },
+      numeroEntidades: { type: DataTypes.INTEGER, allowNull: true },
+      tiempoMora: { type: DataTypes.STRING, allowNull: true },
       totalDeudas: { type: DataTypes.STRING, allowNull: true },
       modoContacto: { type: DataTypes.STRING, allowNull: true },
-      contactado: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
-      tieneCotizacion: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
-      cotizacionAprobada: { type: DataTypes.STRING, allowNull: true, defaultValue: "No" },
-      status: { type: DataTypes.STRING, allowNull: true, defaultValue: "sincontacto" },
+      contactado: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "No",
+      },
+      tieneCotizacion: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "No",
+      },
+      tieneProcesos: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "No",
+      },
+      cotizacionAprobada: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "No",
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "lead",
+      },
+      calificacion: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "sincontacto",
+      },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
     },
-    { timestamps: true, createdAt: "fechaCreacion", updatedAt: "fechaActualizacion" }
+    {
+      timestamps: true,
+      createdAt: "fechaCreacion",
+      updatedAt: "fechaActualizacion",
+    },
   );
   return Prospecto;
 };

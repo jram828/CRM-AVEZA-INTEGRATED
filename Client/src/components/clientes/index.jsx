@@ -13,7 +13,6 @@ import {
   clienteActual,
   setSource,
   updateClienteStatus,
-
 } from "../../redux/actions";
 import { Button2, Button3 } from "../Mystyles";
 import SearchBar from "../searchBarClientes";
@@ -30,6 +29,7 @@ import CitaForm from "./citaForm";
 import WhatsappForm from "./whatsappForm";
 import NotaForm from "./notaForm";
 import ClienteCard from "../clientecard";
+import * as XLSX from "xlsx";
 
 const Clientes = () => {
   const dispatch = useDispatch();
@@ -393,7 +393,52 @@ const Clientes = () => {
     handleCloseOverlay();
   };
 
-  // 👉 función que renderiza el popover del formulario
+  const exportarExcel = () => {
+    // Seleccionar solo las propiedades requeridas y en el orden correcto
+    const datos = reduxClientes.map((cliente) => ({
+      Cedula: cliente.cedulaCliente,
+      Apellidos: cliente.apellidos,
+      Nombres: cliente.nombres,
+      Celular: cliente.celular,
+      Direccion: cliente.direccion,
+      Email: cliente.email,
+      Status: cliente?.status || "",
+    }));
+
+    const headers = [
+      "Cedula",
+      "Apellidos",
+      "Nombres",
+      "Celular",
+      "Direccion",
+      "Email",
+      "Status",
+    ];
+
+    // Crear hoja de cálculo
+    const hoja = XLSX.utils.json_to_sheet(datos, {
+      header: headers,
+    });
+
+    hoja["!cols"] = headers.map((header) => {
+      const maxLength = Math.max(
+        header.length,
+        ...datos.map((row) =>
+          row[header] ? row[header].toString().length : 0,
+        ),
+      );
+      return { wch: maxLength + 1 };
+    });
+    // Crear libro y añadir la hoja
+    const libro = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hoja, "Clientes");
+
+    // Generar fecha en formato YYYY-MM-DD
+    const fecha = new Date().toISOString().split("T")[0];
+
+    // Descargar archivo
+    XLSX.writeFile(libro, `clientes_${fecha}.xlsx`);
+  };
 
   const renderColumn = (title, statusKey) => (
     <div
@@ -529,17 +574,49 @@ const Clientes = () => {
         <h1 className="titulo">Clientes</h1>
       </div>
       <br />
-      <div className="registrocliente">
-        <SearchBar onFilter={handleFilter} />
-        <Link to="/registrocliente">
-          <Button sx={{ flex: 1 }} variant="contained">
-            Crear Cliente
+
+      <Box
+        className="registrocliente"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+        gap={2}
+      >
+        {/* Lado izquierdo - SearchBar */}
+        <Box flex="1 1 300px" minWidth={0}>
+          <SearchBar onFilter={handleFilter} />
+        </Box>
+
+        {/* Lado derecho - Botones */}
+        <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
+          <Link to="/registrocliente" style={{ textDecoration: "none" }}>
+            <Button variant="contained" color="primary" size="small">
+              Crear Cliente
+            </Button>
+          </Link>
+
+          <Button
+            onClick={exportarExcel}
+            variant="contained"
+            color="primary"
+            size="small"
+          >
+            Exportar
           </Button>
-        </Link>
-        {filterApplied && (
-          <Button onClick={handleVerTodosClick}>Ver todos</Button>
-        )}
-      </div>
+
+          {filterApplied && (
+            <Button
+              onClick={handleVerTodosClick}
+              variant="outlined"
+              size="small"
+              color="primary"
+            >
+              Ver todos
+            </Button>
+          )}
+        </Box>
+      </Box>
 
       {!searchPerformed && (
         <div className="paginationclientes">

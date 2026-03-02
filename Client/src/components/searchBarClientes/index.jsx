@@ -96,6 +96,7 @@ const SearchBar = ({ onFilter }) => {
         type="submit"
         className="buscar"
         sx={{ whiteSpace: "nowrap", minWidth: "auto" }}
+        size="small"
       >
         Buscar
       </Button>

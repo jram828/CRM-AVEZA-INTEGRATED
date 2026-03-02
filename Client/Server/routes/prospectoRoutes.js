@@ -14,6 +14,7 @@ import {
   corregirAcentosProspectos,
   postProspectosAutoHandler,
   postActualizaStatus,
+  postActualizaCalificacion,
   // getClientByEmailHandler,
 } from "../handlers/prospectosHandlers.js";
 
@@ -34,6 +35,7 @@ prospectosRouter.post("/acentos", corregirAcentosProspectos);
 prospectosRouter.put("/actualiza", postActualizaProspectos); //Actualizar datos (uno a la vez)
 prospectosRouter.put("/cotizacion", postActualizaDatosCotizacion); 
 prospectosRouter.put("/status", postActualizaStatus); 
+prospectosRouter.put("/calificacion", postActualizaCalificacion); 
 
 prospectosRouter.post("/elimina", postEliminaProspectos);
 

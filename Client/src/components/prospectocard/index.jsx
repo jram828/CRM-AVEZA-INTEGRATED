@@ -29,6 +29,7 @@ const ProspectoCard = React.memo(
     tooltip,
     onClickDetail,
     handleStatusChange,
+    handleCalificacionChange,
     handleOpenOverlay,
   }) => {
     return (
@@ -92,14 +93,13 @@ const ProspectoCard = React.memo(
               {prospecto.nombres} {prospecto.apellidos}
             </Typography>
           </Link>
-
           <FormControl fullWidth size="small" sx={{ mt: 1 }}>
-            <InputLabel>Status</InputLabel>
+            <InputLabel>Calificación</InputLabel>
             <Select
-              value={prospecto.status}
-              label="Status"
+              value={prospecto.calificacion}
+              label="Calificacion"
               onChange={(e) =>
-                handleStatusChange(prospecto.idProspecto, e.target.value)
+                handleCalificacionChange(prospecto.idProspecto, e.target.value)
               }
             >
               <MenuItem value="sincontacto">
@@ -118,6 +118,35 @@ const ProspectoCard = React.memo(
               <MenuItem value="nocaldescartado">
                 🗑️ 4. No calificado - Descartado
               </MenuItem>
+              <MenuItem value="cotizacionenevaluacion">
+                💰 5. Cotización en evaluación
+              </MenuItem>
+              <MenuItem value="cotizacionrechazada">
+                ⚠️ 5. Cotización rechazada
+              </MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth size="small" sx={{ mt: 1 }}>
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={prospecto.status}
+              label="Status"
+              onChange={(e) =>
+                handleStatusChange(prospecto.idProspecto, e.target.value)
+              }
+            >
+              <MenuItem value="lead">👤 1. Lead</MenuItem>
+              <MenuItem value="agendado">📅 2. Agendado</MenuItem>
+              <MenuItem value="asesorado">📞 3. Asesorado</MenuItem>
+              <MenuItem value="cotizado">✅ 4. Cotizado</MenuItem>
+              <MenuItem value="esperadocumentos">
+                📄 5. Espera de documentos/Información
+              </MenuItem>
+              <MenuItem value="remarketing">🔄 6. Remarketing</MenuItem>
+              <MenuItem value="descartado">
+                🗑️ 7. Descartado
+              </MenuItem>
             </Select>
           </FormControl>
         </CardContent>
@@ -133,6 +162,7 @@ ProspectoCard.propTypes = {
     nombres: PropTypes.string.isRequired,
     apellidos: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
+    calificacion: PropTypes.string,
     idProspecto: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
   }).isRequired,
@@ -144,6 +174,7 @@ ProspectoCard.propTypes = {
   tooltip: PropTypes.string,
   onClickDetail: PropTypes.func.isRequired,
   handleStatusChange: PropTypes.func.isRequired,
+  handleCalificacionChange: PropTypes.func.isRequired,
   handleOpenOverlay: PropTypes.func.isRequired,
 };
 

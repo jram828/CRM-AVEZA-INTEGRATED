@@ -84,7 +84,7 @@ const SearchBar = ({ onFilter }) => {
         color="primary"
         onClick={handleSearch}
         className="buscar"
-        size="medium"
+        size="small"
       >
         Buscar
       </Button>

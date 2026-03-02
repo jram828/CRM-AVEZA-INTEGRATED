@@ -14,52 +14,60 @@ const actualizaProspecto = async (
   ciudad,
   ciudad_anterior,
   comentarios,
+  cedula_anterior,
   nombres_anterior,
-  apellidos_anterior  
-  
+  apellidos_anterior,
+  tieneProcesos,
+  numeroEntidades,
+  tiempoMora,
   // password,
 ) => {
   const cedulaProspecto = cedula;
-  console.log('Cedula Prospecto controller:', cedulaProspecto)
+  console.log("Cedula Prospecto controller:", cedulaProspecto);
   // console.log("Cedula anterior controller:", cedula_anterior);
-    const ciudadfilter = codigoCiudades.filter(
-      (Ciudad) => Ciudad.nombre_ciudad === ciudad.toUpperCase()
-    );
-    console.log("Ciudad filter:", ciudadfilter);
+  const ciudadfilter = codigoCiudades.filter(
+    (Ciudad) => Ciudad.nombre_ciudad === ciudad.toUpperCase(),
+  );
+  console.log("Ciudad filter:", ciudadfilter);
 
-    const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
-    console.log("Codigo ciudad:", codigo_ciudad);
+  const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
+  console.log("Codigo ciudad:", codigo_ciudad);
+
 
   // console.log("ciudad:", ciudadfilter);
-  
+
   const prospectoActualizar = await Prospecto.findByPk(idProspecto);
 
-  ciudad_anterior? prospectoActualizar.removeCiudad(ciudad_anterior):null;
+  ciudad_anterior ? prospectoActualizar.removeCiudad(ciudad_anterior) : null;
 
   const [updateCount, updateClient] = await Prospecto.update(
-    { cedulaProspecto: cedulaProspecto,
+    {
+      cedulaProspecto: cedulaProspecto,
       nombres: nombres,
       apellidos: apellidos,
       email: email,
       celular: celular,
       direccion: direccion,
-      comentarios: comentarios
+      comentarios: comentarios,
+      tieneProcesos: tieneProcesos,
+      numeroEntidades: numeroEntidades,
+      tiempoMora: tiempoMora,
       // password: password,
     },
     {
       where: {
         idProspecto: idProspecto,
       },
-    }
+    },
   );
-  
-      const consulta = {
-        where: {
-          idProspecto: idProspecto,
-          activo: true,
-        },
-        include: [
-          {
+
+  const consulta = {
+    where: {
+      idProspecto: idProspecto,
+      activo: true,
+    },
+    include: [
+      {
         model: Ciudad,
         attributes: ["nombre_ciudad", "codigo_ciudad"],
         through: { attributes: [] },
@@ -69,28 +77,35 @@ const actualizaProspecto = async (
             attributes: ["nombre_departamento"],
             through: { attributes: [] },
             include: [
-          {
-            model: Pais,
-            attributes: ["nombre_pais"],
-            through: { attributes: [] },
-          },
+              {
+                model: Pais,
+                attributes: ["nombre_pais"],
+                through: { attributes: [] },
+              },
             ],
           },
         ],
-          },
-          {
+      },
+      {
         model: Acreedor,
-        attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad"],
-        through: { attributes: [] },
-          },
+        attributes: [
+          "idAcreedor",
+          "NIT",
+          "nombre",
+          "email",
+          "telefono",
+          "direccion",
+          "ciudad",
         ],
-      };
+        through: { attributes: [] },
+      },
+    ],
+  };
 
-      const nuevoProspecto = await Prospecto.findOne(consulta);
+  const nuevoProspecto = await Prospecto.findOne(consulta);
   nuevoProspecto.addCiudad(codigo_ciudad);
 
   if (updateCount > 0) {
-
     return nuevoProspecto;
   } else {
     return "";

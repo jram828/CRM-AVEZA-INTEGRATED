@@ -20,6 +20,7 @@ import {
   modificarDatosAbogado,
   modificarDatosProspecto,
   postNota,
+  updateCalificacion,
   // setSource,
   // updateCotizacionData,
   updateStatus,
@@ -126,6 +127,9 @@ const Detail = () => {
     tieneCotizacion: "No",
     cotizacionAprobada: "No",
     status: "",
+    tiempoMora: "",
+    numeroEntidades: "",
+    calificacion: "",
   });
   console.log("User Data Detail:", userDataDetail);
 
@@ -228,6 +232,10 @@ const Detail = () => {
         tieneCotizacion: datos.tieneCotizacion || "No",
         cotizacionAprobada: datos.cotizacionAprobada || "No",
         status: datos.status || "",
+        calificacion: datos.calificacion || "",
+        tiempoMora: datos.tiempoMora || "",
+        numeroEntidades: datos.numeroEntidades || "",
+        tieneProcesos: datos.tieneProcesos || "",
       });
     }
   }, [dispatch, source]);
@@ -312,6 +320,22 @@ const Detail = () => {
     );
   };
 
+  const handleCalificacionChange = (e) => {
+    const { name, value } = e.target;
+    setUserDataDetail({
+      ...userDataDetail,
+      [name]: value,
+    });
+
+    dispatch(
+      updateCalificacion({
+        idProspecto: userDataDetail.idProspecto,
+        field: name,
+        value: value,
+      }),
+    );
+  };
+
   const handleCompletar = (idTarea) => {
     dispatch(completarTarea(idTarea));
     setTareas((prev) =>
@@ -379,7 +403,7 @@ const Detail = () => {
             Actualizar
           </MUIButton>
 
-          {datos?.tarjetaProf ? (
+          {userDataDetail?.tarjetaProf ? (
             <Stack direction="row" spacing={1}>
               <MUIButton
                 variant="outlined"
@@ -432,9 +456,9 @@ const Detail = () => {
         </Stack>
       </Stack>
 
-      {datos.nombres && (
+      {userDataDetail.nombres && (
         <Typography variant="h6" sx={{ textTransform: "uppercase", mb: 1 }}>
-          {datos.nombres} {datos.apellidos}
+          {userDataDetail.nombres} {userDataDetail.apellidos}
         </Typography>
       )}
 
@@ -526,7 +550,7 @@ const Detail = () => {
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
               sx={{ minWidth: "300px", bgcolor: "#fff" }}
             />
-            {datos?.comentarios && (
+            {userDataDetail?.comentarios && (
               <TextField
                 label="Comentarios"
                 name="comentarios"
@@ -541,39 +565,70 @@ const Detail = () => {
             )}
 
             {source === "prospecto" && (
-              <FormControl
-                fullWidth
-                size="small"
-                style={{ marginTop: "0.5rem" }}
-              >
-                <InputLabel>Status</InputLabel>
-                <Select
-                  value={userDataDetail.status}
-                  label="Status"
-                  onChange={handleStatusChange}
-                  name="status"
-                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
-                >
-                  <MenuItem value="sincontacto">
-                    ❌ 1. Registrado sin contacto
-                  </MenuItem>
-                  <MenuItem value="contactoefectivo">
-                    📞 2. Contacto efectivo
-                  </MenuItem>
-                  <MenuItem value="contactonoefectivo">
-                    🟠 2. Contacto NO efectivo
-                  </MenuItem>
-                  <MenuItem value="leadcalificado">
-                    ✅ 3. Lead calificado
-                  </MenuItem>
-                  <MenuItem value="leadnocalificado">
-                    🔄 3. Lead no calificado - Remarketing
-                  </MenuItem>
-                  <MenuItem value="nocaldescartado">
-                    🗑️ 4. No calificado - Descartado
-                  </MenuItem>
-                </Select>
-              </FormControl>
+              <Stack spacing={2}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>Calificación</InputLabel>
+                  <Select
+                    value={userDataDetail.calificacion}
+                    label="Calificacion"
+                    onChange={(e) =>
+                      handleCalificacionChange(
+                        userDataDetail.idProspecto,
+                        e.target.value,
+                      )
+                    }
+                  >
+                    <MenuItem value="sincontacto">
+                      ❌ 1. Registrado sin contacto
+                    </MenuItem>
+                    <MenuItem value="contactoefectivo">
+                      📞 2. Contacto efectivo
+                    </MenuItem>
+                    <MenuItem value="contactonoefectivo">
+                      🟠 2. Contacto NO efectivo
+                    </MenuItem>
+                    <MenuItem value="leadcalificado">
+                      ✅ 3. Lead calificado
+                    </MenuItem>
+                    <MenuItem value="leadnocalificado">
+                      🔄 3. Lead no calificado - Remarketing
+                    </MenuItem>
+                    <MenuItem value="nocaldescartado">
+                      🗑️ 4. No calificado - Descartado
+                    </MenuItem>
+                    <MenuItem value="cotizacionenevaluacion">
+                      💰 5. Cotización en evaluación
+                    </MenuItem>
+                    <MenuItem value="cotizacionrechazada">
+                      ⚠️ 5. Cotización rechazada
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+
+                <FormControl fullWidth size="small">
+                  <InputLabel>Status</InputLabel>
+                  <Select
+                    value={userDataDetail.status}
+                    label="Status"
+                    onChange={(e) =>
+                      handleStatusChange(
+                        userDataDetail.idProspecto,
+                        e.target.value,
+                      )
+                    }
+                  >
+                    <MenuItem value="lead">👤 1. Lead</MenuItem>
+                    <MenuItem value="agendado">📅 2. Agendado</MenuItem>
+                    <MenuItem value="asesorado">📞 3. Asesorado</MenuItem>
+                    <MenuItem value="cotizado">✅ 4. Cotizado</MenuItem>
+                    <MenuItem value="esperadocumentos">
+                      📄 5. Espera de documentos/Información
+                    </MenuItem>
+                    <MenuItem value="remarketing">🔄 6. Remarketing</MenuItem>
+                    <MenuItem value="descartado">🗑️ 7. Descartado</MenuItem>
+                  </Select>
+                </FormControl>
+              </Stack>
             )}
 
             {source === "cliente" && (
@@ -613,6 +668,57 @@ const Detail = () => {
               </FormControl>
             )}
           </Stack>
+
+          {source === "prospecto" && (
+            <Stack spacing={2} flex={1}>
+              <TextField
+                label="Total deudas"
+                name="totalDeudas"
+                value={userDataDetail.totalDeudas}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              />
+              <TextField
+                  label="Tiempo en mora"
+                  name="tiempoMora"
+                  value={userDataDetail.tiempoMora}
+                  onChange={handleUpdateDetail}
+                  fullWidth
+                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                />
+              <TextField
+                label="Numero de entidades"
+                name="numeroEntidades"
+                value={userDataDetail.numeroEntidades}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              />
+
+              <TextField
+                label="Activos"
+                name="totalBienes"
+                value={userDataDetail.totalBienes}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              />
+                            <TextField
+                label="Procesos activos"
+                name="tieneProcesos"
+                value={userDataDetail.tieneProcesos}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              />
+            </Stack>
+          )}
 
           {/* Columna derecha: reemplazo cuando es prospecto */}
           {(source === "prospecto" || source === "cliente") && (
@@ -833,92 +939,7 @@ export default Detail;
 //? Esta es la presentación de la información adicional que se lee desde el correo
 /*{ <Box component="form" noValidate autoComplete="off">
         <Stack direction={{ xs: "column", md: "row" }} spacing={2} mb={2}>
-          <Stack spacing={2} flex={1}>
-            <TextField
-              label="Nombres"
-              name="nombres"
-              value={userDataDetail.nombres}
-              onChange={handleUpdateDetail}
-              fullWidth
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
-            <TextField
-              label="Apellidos"
-              name="apellidos"
-              value={userDataDetail.apellidos}
-              onChange={handleUpdateDetail}
-              fullWidth
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
-            <TextField
-              label="Numero de cédula"
-              name="cedulanew"
-              type="number"
-              value={userDataDetail.cedulanew}
-              onChange={handleUpdateDetail}
-              fullWidth
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
-            <TextField
-              label="Celular"
-              name="celular"
-              type="number"
-              value={userDataDetail.celular}
-              onChange={handleUpdateDetail}
-              fullWidth
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
-            <TextField
-              label="Correo"
-              name="email"
-              type="email"
-              value={userDataDetail.email}
-              onChange={handleUpdateDetail}
-              fullWidth
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
-            <TextField
-              label="Dirección"
-              name="direccion"
-              value={userDataDetail?.direccion?.toUpperCase()}
-              onChange={handleUpdateDetail}
-              fullWidth
-              small
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
-            <TextField
-              label="Ciudad"
-              name="ciudad"
-              value={userDataDetail?.ciudad?.toUpperCase()}
-              onChange={handleUpdateDetail}
-              fullWidth
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
-            <TextField
-              label="Departamento"
-              name="departamento"
-              value={userDataDetail?.departamento?.toUpperCase()}
-              onChange={handleUpdateDetail}
-              fullWidth
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
-            <TextField
-              label="Modo de contacto"
-              name="modoContacto"
-              value={userDataDetail.modoContacto}
-              onChange={handleUpdateDetail}
-              fullWidth
-              inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
-            />
+          
             {datos?.comentarios && (
               <TextField
                 label="Comentarios"

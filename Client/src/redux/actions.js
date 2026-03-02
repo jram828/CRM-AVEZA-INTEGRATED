@@ -74,12 +74,14 @@ export const CREAR_ACREEDOR = "CREAR_ACREEDOR";
 export const GET_ACREEDORES = "GET_ACREEDORES";
 export const GET_DISPONIBILIDAD = "GET_ DISPONIBILIDAD";
 export const PUT_STATUS = "PUT_STATUS";
+export const PUT_CALIFICACION = "PUT_CALIFICACION";
 export const PATCH_TAREA = "PATCH_TAREA";
 export const PATCH_CITA = "PATCH_CITA";
 export const POST_NOTA = "POST_NOTA";
 export const GET_NOTAS = "GET_NOTAS";
 export const GET_NOTAS_BY_ID = "GET_NOTAS_BY_ID";
 export const PATCH_NOTA = "PATCH_NOTA";
+export const PUT_CLIENTE_CALIFICACION = "PUT_CLIENTE_CALIFICACION";
 export const PUT_CLIENTE_STATUS = "PUT_CLIENTE_STATUS";
 
 export const clienteActual = (cliente) => {
@@ -742,12 +744,34 @@ export const updateStatus = (dataStatus) => {
   };
 };
 
+export const updateCalificacion = (dataStatus) => {
+  const endpoint = `/prospectos/calificacion`;
+  return async (dispatch) => {
+    const { data } = await axios.put(endpoint, dataStatus);
+    return dispatch({
+      type: PUT_CALIFICACION,
+      payload: data,
+    });
+  };
+};
+
 export const updateClienteStatus = (dataStatus) => {
   const endpoint = `/clientes/status`;
   return async (dispatch) => {
     const { data } = await axios.put(endpoint, dataStatus);
     return dispatch({
       type: PUT_CLIENTE_STATUS,
+      payload: data,
+    });
+  };
+};
+
+export const updateClienteCalificacion = (dataCalificacion) => {
+  const endpoint = `/clientes/calificacion`;
+  return async (dispatch) => {
+    const { data } = await axios.put(endpoint, dataCalificacion);
+    return dispatch({
+      type: PUT_CLIENTE_CALIFICACION,
       payload: data,
     });
   };

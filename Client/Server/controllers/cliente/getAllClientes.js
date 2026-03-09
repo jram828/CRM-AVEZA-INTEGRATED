@@ -1,7 +1,7 @@
 import { models } from "../../DB.js";
 import { Sequelize } from "sequelize";
 
-const { Cliente, Ciudad, Departamento, Pais} = models;
+const { Cliente, Ciudad, Departamento, Pais, Deuda2, Honorario } = models;
 const getAllCliente = async (filters) => {
   let allClient = [];
 
@@ -30,6 +30,34 @@ const getAllCliente = async (filters) => {
               ],
             },
           ],
+        },
+        {
+          model: Honorario,
+          attributes: [
+            "valorHonorarios",
+            "valorRadicar",
+            "inicial",
+            "cuotasHonorarios",
+            "honorariosLiquidacion",
+            "totalDeudas",
+          ],
+          through: { attributes: [] },
+        },
+        {
+          model: Deuda2,
+          attributes: [
+            "tipoDeuda",
+            "tipoGarantia",
+            "acreedor",
+            "derechoVoto",
+            "documentoSoporte",
+            "capital",
+            "intereses",
+            "cuantiaTotal",
+            "clasificacion",
+            "diasMora",
+          ],
+          through: { attributes: [] },
         },
       ],
     };
@@ -103,6 +131,34 @@ const getAllCliente = async (filters) => {
               ],
             },
           ],
+        },
+        {
+          model: Honorario,
+          attributes: [
+            "valorHonorarios",
+            "valorRadicar",
+            "inicial",
+            "cuotasHonorarios",
+            "honorariosLiquidacion",
+            "totalDeudas",
+          ],
+          through: { attributes: [] },
+        },
+        {
+          model: Deuda2,
+          attributes: [
+            "tipoDeuda",
+            "tipoGarantia",
+            "acreedor",
+            "derechoVoto",
+            "documentoSoporte",
+            "capital",
+            "intereses",
+            "cuantiaTotal",
+            "clasificacion",
+            "diasMora",
+          ],
+          through: { attributes: [] },
         },
       ],
       order,

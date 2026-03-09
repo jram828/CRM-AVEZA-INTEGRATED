@@ -47,6 +47,7 @@ import {
   CardContent,
   IconButton,
   Tooltip,
+  Grid,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -130,6 +131,9 @@ const Detail = () => {
     tiempoMora: "",
     numeroEntidades: "",
     calificacion: "",
+    siguientePaso: "",
+    ingresos: "",
+    fase: "",
   });
   console.log("User Data Detail:", userDataDetail);
 
@@ -197,6 +201,9 @@ const Detail = () => {
         cedulanew: datos.cedulaCliente,
         cedula_anterior: datos.cedulaCliente,
         status: datos.status || "",
+        deudas: datos.Deuda2s || [],
+        honorarios: datos.Honorarios || [],
+        fase: datos.fase || "",
       });
     } else {
       setUserDataDetail({
@@ -236,6 +243,9 @@ const Detail = () => {
         tiempoMora: datos.tiempoMora || "",
         numeroEntidades: datos.numeroEntidades || "",
         tieneProcesos: datos.tieneProcesos || "",
+        deudas: datos.Deuda2s || [],
+        honorarios: datos.Honorarios || [],
+        ingresos: datos.ingresos || "",
       });
     }
   }, [dispatch, source]);
@@ -276,9 +286,35 @@ const Detail = () => {
 
   const handleUpdateDetail = (e) => {
     e.preventDefault();
+    const { name, value } = e.target;
+
+    // Caso: propiedades anidadas en deudas
+    if (name.startsWith("deudas[")) {
+      // Extraer índice y propiedad con regex
+      const match = name.match(/deudas\[(\d+)\]\.(\w+)/);
+      if (match) {
+        const index = parseInt(match[1], 10);
+        const field = match[2];
+
+        // Crear copia del array de deudas
+        const updatedDeudas = [...userDataDetail.deudas];
+        updatedDeudas[index] = {
+          ...updatedDeudas[index],
+          [field]: value,
+        };
+
+        setUserDataDetail({
+          ...userDataDetail,
+          deudas: updatedDeudas,
+        });
+        return;
+      }
+    }
+
+    // Caso general: propiedades simples
     setUserDataDetail({
       ...userDataDetail,
-      [e.target.name]: e.target.value, // Sintaxis ES6 para actualizar la key correspondiente
+      [name]: value,
     });
   };
 
@@ -473,8 +509,10 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
+
+            
             <TextField
               label="Apellidos"
               name="apellidos"
@@ -482,7 +520,7 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <TextField
               label="Numero de cédula"
@@ -492,7 +530,7 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <TextField
               label="Celular"
@@ -502,7 +540,7 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <TextField
               label="Correo"
@@ -512,7 +550,7 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <TextField
               label="Dirección"
@@ -521,7 +559,7 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <TextField
               label="Ciudad"
@@ -530,7 +568,7 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <TextField
               label="Departamento"
@@ -539,7 +577,7 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <TextField
               label="Modo de contacto"
@@ -548,7 +586,7 @@ const Detail = () => {
               onChange={handleUpdateDetail}
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-              sx={{ minWidth: "300px", bgcolor: "#fff" }}
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             {userDataDetail?.comentarios && (
               <TextField
@@ -560,7 +598,7 @@ const Detail = () => {
                 multiline
                 minRows={3}
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
             )}
 
@@ -569,14 +607,10 @@ const Detail = () => {
                 <FormControl fullWidth size="small">
                   <InputLabel>Calificación</InputLabel>
                   <Select
+                    name="calificacion"
                     value={userDataDetail.calificacion}
                     label="Calificacion"
-                    onChange={(e) =>
-                      handleCalificacionChange(
-                        userDataDetail.idProspecto,
-                        e.target.value,
-                      )
-                    }
+                    onChange={handleCalificacionChange}
                   >
                     <MenuItem value="sincontacto">
                       ❌ 1. Registrado sin contacto
@@ -608,14 +642,10 @@ const Detail = () => {
                 <FormControl fullWidth size="small">
                   <InputLabel>Status</InputLabel>
                   <Select
+                    name="status"
                     value={userDataDetail.status}
                     label="Status"
-                    onChange={(e) =>
-                      handleStatusChange(
-                        userDataDetail.idProspecto,
-                        e.target.value,
-                      )
-                    }
+                    onChange={handleStatusChange}
                   >
                     <MenuItem value="lead">👤 1. Lead</MenuItem>
                     <MenuItem value="agendado">📅 2. Agendado</MenuItem>
@@ -643,7 +673,7 @@ const Detail = () => {
                   label="Status"
                   onChange={handleStatusChange}
                   name="status"
-                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
                 >
                   <MenuItem value="cotizacionenevaluacion">
                     💰 5. Cotización en evaluación
@@ -677,26 +707,26 @@ const Detail = () => {
                 value={userDataDetail.totalDeudas}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
-                  label="Tiempo en mora"
-                  name="tiempoMora"
-                  value={userDataDetail.tiempoMora}
-                  onChange={handleUpdateDetail}
-                  fullWidth
-                  inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                  sx={{ minWidth: "300px", bgcolor: "#fff" }}
-                />
+                label="Tiempo en mora"
+                name="tiempoMora"
+                value={userDataDetail.tiempoMora}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
               <TextField
                 label="Numero de entidades"
                 name="numeroEntidades"
                 value={userDataDetail.numeroEntidades}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
 
               <TextField
@@ -705,18 +735,161 @@ const Detail = () => {
                 value={userDataDetail.totalBienes}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
-                            <TextField
+              <TextField
                 label="Procesos activos"
                 name="tieneProcesos"
                 value={userDataDetail.tieneProcesos}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
+            </Stack>
+          )}
+          {source === "cliente" && (
+            <Stack spacing={2} flex={1}>
+              <TextField
+                label="Ingresos actuales"
+                name="ingresos"
+                value={userDataDetail.ingresos}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+              <FormControl
+                fullWidth
+                size="small"
+              >
+                <InputLabel>Siguiente paso</InputLabel>
+                <Select
+                  value={userDataDetail.siguientePaso}
+                  label="Siguiente paso"
+                  onChange={handleStatusChange}
+                  name="siguientePaso"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="necesitaanalisis">
+                    💰 1. Necesita análisis
+                  </MenuItem>
+                  <MenuItem value="propuestavalor">
+                    ⚠️ 2. Propuesta de valor
+                  </MenuItem>
+                  <MenuItem value="identificarresponsables">
+                    📄 3. Identificar responsables
+                  </MenuItem>
+                  <MenuItem value="cotizacion">
+                    📑 4. Cotización de propuesta / precio
+                  </MenuItem>
+                  <MenuItem value="negociacion">
+                    🔄 5. Negociación / revisión
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                label="Valor total endeudamiento"
+                name="totalDeudas"
+                value={userDataDetail.totalDeudas}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+              <TextField
+                label="Activos"
+                name="totalBienes"
+                value={userDataDetail.totalBienes}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+
+              <FormControl
+                fullWidth
+                size="small"
+              >
+                <InputLabel>Fase</InputLabel>
+                <Select
+                  value={userDataDetail.fase}
+                  label="Fase"
+                  onChange={handleStatusChange}
+                  name="fase"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="necesitaanalisis">
+                    💰 1. Necesita análisis
+                  </MenuItem>
+                  <MenuItem value="propuestavalor">
+                    ⚠️ 2. Propuesta de valor
+                  </MenuItem>
+                  <MenuItem value="identificarresponsables">
+                    📄 3. Identificar responsables
+                  </MenuItem>
+                  <MenuItem value="cotizacion">
+                    📑 4. Cotización de propuesta / precio
+                  </MenuItem>
+                  <MenuItem value="negociacion">
+                    🔄 5. Negociación / revisión
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <TextField
+                label="Valor honorarios"
+                name="valorHonorarios"
+                value={userDataDetail.valorHonorarios}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+              <TextField
+                label="Cuotas"
+                name="cuotasHonorarios"
+                value={userDataDetail.cuotasHonorarios}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+              <TextField
+                label="Valor primer pago"
+                name="inicial"
+                value={userDataDetail.inicial}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+              {/* Relación de deudas */}
+              {userDataDetail.deudas?.map((deuda, index) => (
+                <Box
+                  key={index}
+                  display="flex"
+                  gap={2}
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <TextField
+                    label="Acreedor"
+                    name={`deudas[${index}].acreedor`}
+                    value={deuda.acreedor}
+                    onChange={handleUpdateDetail}
+                    sx={{ width: "50%" }} // mismo ancho
+                    inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                  />
+                  <TextField
+                    label="Capital"
+                    name={`deudas[${index}].capital`}
+                    value={deuda.capital}
+                    onChange={handleUpdateDetail}
+                    sx={{ width: "50%" }} // mismo ancho
+                    inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                  />
+                </Box>
+              ))}
             </Stack>
           )}
 
@@ -949,8 +1122,8 @@ export default Detail;
                 fullWidth
                 multiline
                 minRows={3}
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
             )}
 
@@ -967,7 +1140,7 @@ export default Detail;
                     label="Status"
                     onChange={handleStatusChange}
                     name="status"
-                    sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                    sx={{ minWidth: "160px", bgcolor: "#fff" }}
                  
                   >
                     <MenuItem value="sininiciar">Sin iniciar</MenuItem>
@@ -1011,8 +1184,8 @@ export default Detail;
                 value={userDataDetail.impuestoLaboral}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
                 label="Vehículo o cooperativas"
@@ -1020,8 +1193,8 @@ export default Detail;
                 value={userDataDetail.vehiculoCooperativas}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
                 label="Crédito hipotecario"
@@ -1029,8 +1202,8 @@ export default Detail;
                 value={userDataDetail.hipotecario}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
                 label="Crédito proveedores"
@@ -1038,8 +1211,8 @@ export default Detail;
                 value={userDataDetail.proveedores}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
                 label="Crédito con Bancos o personas"
@@ -1047,8 +1220,8 @@ export default Detail;
                 value={userDataDetail.bancoPersonas}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
                 label="Tiene bienes?"
@@ -1056,8 +1229,8 @@ export default Detail;
                 value={userDataDetail.tieneBienes}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
                 label="Bienes"
@@ -1065,8 +1238,8 @@ export default Detail;
                 value={userDataDetail.bienes}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
                 label="Total bienes"
@@ -1074,8 +1247,8 @@ export default Detail;
                 value={userDataDetail.totalBienes}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
               <TextField
                 label="Total deudas"
@@ -1083,8 +1256,8 @@ export default Detail;
                 value={userDataDetail.totalDeudas}
                 onChange={handleUpdateDetail}
                 fullWidth
-                inputProps={{ style: { paddingtop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "300px", bgcolor: "#fff" }}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
             </Stack>
           )}

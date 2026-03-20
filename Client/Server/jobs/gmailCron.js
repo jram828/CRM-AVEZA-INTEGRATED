@@ -6,7 +6,7 @@ console.log('📦 gmailCron.js cargado correctamente');
 
 buscarCorreos();
 // Ejecutar cada 12 minutos
-cron.schedule('*/12 * * * *', () => {
+cron.schedule('*/1 * * * *', () => {
   console.log('⏰ Ejecutando tarea automática de lectura de correos');
   // keepAlivePing();
   buscarCorreos();

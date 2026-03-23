@@ -8,6 +8,7 @@ const createCotizacion = async (
       ingresos,
       gastos,
       posibleCuota,
+      totalBienes,
       totalBienes_letras,
       totalDeudas_letras,
       valorRadicar_letras,
@@ -18,6 +19,7 @@ console.log("Datos recibidos para crear cotización:", {
   ingresos,
   gastos,  posibleCuota,
   totalDeudas_letras,
+  totalBienes,
   totalBienes_letras,
   valorRadicar_letras,
   cedulaProspecto})
@@ -101,12 +103,20 @@ console.log("Datos recibidos para crear cotización:", {
       "deleteDeudas está en false: se mantienen las deudas y honorarios existentes",
     );
   }
+  var tBienes;
+
+  if (typeof totalBienes=== "number") {
+    tBienes = totalBienes;
+  } else {
+    tBienes = BigInt(totalBienes);
+  }
 
   var newCotizacion = await Cotizacion.create({
     ingresos: ingresos,
     gastos: gastos,
     posibleCuota: posibleCuota,
     totalDeudas_letras: totalDeudas_letras,
+    totalBienes: tBienes,
     totalBienes_letras: totalBienes_letras,
     valorRadicar_letras: valorRadicar_letras,
   });

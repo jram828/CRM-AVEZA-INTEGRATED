@@ -27,7 +27,7 @@ const createDeudas = async (deudas, cedulaProspecto, deleteDeudas=true) => {
     if (deleteDeudas) {
       console.log("deleteDeudas:", deleteDeudas, "-> eliminando asociaciones/deudas para idProspecto:", idProspecto);
       try {
-        // Si la instancia Prospecto tiene los helpers de asociación generados por Sequelize, úsalos.
+        
         if (estaProspecto && typeof estaProspecto.getDeuda2s === "function") {
           // Obtener deudas asociadas
           const associated = await estaProspecto.getDeuda2s();

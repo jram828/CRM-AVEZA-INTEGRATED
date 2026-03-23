@@ -57,8 +57,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AddIcon from "@mui/icons-material/Add";
 import NotaForm from "./notaFormDetail";
-import { generarDocumentos } from "../../handlers/generarDocumentosOLD";
-import { numeroALetras } from "../convertiraletras";
+import { generarDocumentos } from "../../handlers/generarDocumentos";
 
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
@@ -206,13 +205,15 @@ const Detail = () => {
         cedulanew: datos.cedulaCliente,
         cedula_anterior: datos.cedulaCliente,
         status: datos.status || "",
+        bienes: datos.Biens || [],
         deudas: datos.Deuda2s || [],
         honorarios: datos.Honorarios || [],
         fase: datos.fase || "",
         ingresos: datos.Cotizacions[0].ingresos || "",
         gastos: datos.Cotizacions[0].gastos || "",
         posibleCuota: datos.Cotizacions[0].posibleCuota || "",
-        totalDeudas_letras: datos.Cotizacions[0].totalDeudas_letras || "", 
+        totalBienes: datos.Cotizacions[0].totalBienes || "",
+        totalDeudas_letras: datos.Cotizacions[0].totalDeudas_letras || "",
         totalBienes_letras: datos.Cotizacions[0].totalBienes_letras || "",
         valorRadicar_letras: datos.Cotizacions[0].valorRadicar_letras || "",
       });
@@ -242,8 +243,6 @@ const Detail = () => {
         bancoPersonas: datos.bancoPersonas || "",
         familiares: datos.familiares || "",
         tieneBienes: datos.tieneBienes || "",
-        bienes: datos.bienes || "",
-        totalBienes: datos.totalBienes || "",
         totalDeudas: datos.totalDeudas || "",
         modoContacto: datos.modoContacto || "",
         contactado: datos.contactado || "No",
@@ -254,9 +253,17 @@ const Detail = () => {
         tiempoMora: datos.tiempoMora || "",
         numeroEntidades: datos.numeroEntidades || "",
         tieneProcesos: datos.tieneProcesos || "",
+        bienes: datos.Biens || [],
         deudas: datos.Deuda2s || [],
         honorarios: datos.Honorarios || [],
-        ingresos: datos.ingresos || "",
+        fase: datos.fase || "",
+        ingresos: datos.Cotizacions[0].ingresos || "",
+        gastos: datos.Cotizacions[0].gastos || "",
+        posibleCuota: datos.Cotizacions[0].posibleCuota || "",
+        totalBienes: datos.Cotizacions[0].totalBienes || "",
+        totalDeudas_letras: datos.Cotizacions[0].totalDeudas_letras || "",
+        totalBienes_letras: datos.Cotizacions[0].totalBienes_letras || "",
+        valorRadicar_letras: datos.Cotizacions[0].valorRadicar_letras || "",
       });
     }
   }, [dispatch, source]);
@@ -356,7 +363,9 @@ const Detail = () => {
 
       navigate("/clientes");
     } else {
-      window.alert("Antes de convertir el Prospecto en Cliente debe actualizar el Número de Cédula");
+      window.alert(
+        "Antes de convertir el Prospecto en Cliente debe actualizar el Número de Cédula",
+      );
     }
   };
   // console.log("Nuevos Datos cliente:", userDataDetail);
@@ -430,9 +439,7 @@ const Detail = () => {
     handleCloseNotaForm();
   };
 
-
-
-    const handlerGenerarDocumentos = () => {
+  const handlerGenerarDocumentos = () => {
     // generarDocumentos(
     //   casoDetail,
     //   userDataDetail.totalDeudas_letras,
@@ -838,7 +845,7 @@ const Detail = () => {
               <TextField
                 label="Valor total endeudamiento"
                 name="totalDeudas"
-                value={userDataDetail.totalDeudas}
+                value={userDataDetail.honorarios[0]?.totalDeudas}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -883,7 +890,7 @@ const Detail = () => {
               <TextField
                 label="Valor honorarios"
                 name="valorHonorarios"
-                value={userDataDetail.valorHonorarios}
+                value={userDataDetail.honorarios[0]?.valorHonorarios}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -892,7 +899,7 @@ const Detail = () => {
               <TextField
                 label="Cuotas"
                 name="cuotasHonorarios"
-                value={userDataDetail.cuotasHonorarios}
+                value={userDataDetail.honorarios[0]?.cuotasHonorarios}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -901,13 +908,23 @@ const Detail = () => {
               <TextField
                 label="Valor primer pago"
                 name="inicial"
-                value={userDataDetail.inicial}
+                value={userDataDetail.honorarios[0]?.inicial}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
                 sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
-              {/* Relación de deudas */}
+            </Stack>
+          )}
+          {/* NUEVA COLUMNA: Relación de deudas */}
+          {source === "cliente" && (
+            <Stack spacing={2} flex={1}>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "bold", mb: 1 }}
+              >
+                Relación de Deudas
+              </Typography>
               {userDataDetail.deudas?.map((deuda, index) => (
                 <Box
                   key={index}
@@ -920,7 +937,7 @@ const Detail = () => {
                     name={`deudas[${index}].acreedor`}
                     value={deuda.acreedor}
                     onChange={handleUpdateDetail}
-                    sx={{ width: "50%" }} // mismo ancho
+                    sx={{ width: "50%" }}
                     inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
                   />
                   <TextField
@@ -928,7 +945,7 @@ const Detail = () => {
                     name={`deudas[${index}].capital`}
                     value={deuda.capital}
                     onChange={handleUpdateDetail}
-                    sx={{ width: "50%" }} // mismo ancho
+                    sx={{ width: "50%" }}
                     inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
                   />
                 </Box>

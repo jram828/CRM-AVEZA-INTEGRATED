@@ -682,6 +682,7 @@ const Cotizacion = () => {
         gastos: gasto.gastosmensuales,
         posibleCuota: posibleCuota,
         totalDeudas_letras: totalDeudas_letras,
+        totalBienes: resultadosCotizacion.totalBienes,
         totalBienes_letras: totalBienes_letras,
         valorRadicar_letras: valorRadicar_letras,
         totalDeudas: resultadosCotizacion.totalDeudas,

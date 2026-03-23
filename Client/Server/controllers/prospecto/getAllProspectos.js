@@ -1,37 +1,76 @@
 import { models } from "../../DB.js";
 import { Sequelize } from "sequelize";
 
-const { Prospecto, Ciudad, Departamento, Pais, Acreedor} = models;
+const {
+  Prospecto,
+  Ciudad,
+  Departamento,
+  Pais,
+  Acreedor,
+  Bien,
+  Cotizacion,
+  PropuestaPago,
+  Deuda2,
+  Honorario,
+} = models;
 const getAllProspecto = async (filters) => {
   let allProspecto = [];
 
   if (filters.cedulaProspecto) {
     const consulta = {
       where: {
-      cedulaProspecto: parseInt(filters.cedulaProspecto),
-      activo: true,
+        cedulaProspecto: parseInt(filters.cedulaProspecto),
+        activo: true,
       },
       include: [
-      {
-        model: Ciudad,
-        attributes: ["nombre_ciudad", "codigo_ciudad"],
-        include: [
         {
-          model: Departamento,
-          attributes: ["nombre_departamento"],
+          model: Ciudad,
+          attributes: ["nombre_ciudad", "codigo_ciudad"],
           include: [
-          {
-            model: Pais,
-            attributes: ["nombre_pais"],
-          },
+            {
+              model: Departamento,
+              attributes: ["nombre_departamento"],
+              include: [
+                {
+                  model: Pais,
+                  attributes: ["nombre_pais"],
+                },
+              ],
+            },
           ],
         },
-        ],
-      },
-      {
-        model: Acreedor,
-        attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad"], // ajusta los atributos según tu modelo
-      },
+        {
+          model: Acreedor,
+          attributes: [
+            "idAcreedor",
+            "NIT",
+            "nombre",
+            "email",
+            "telefono",
+            "direccion",
+            "ciudad",
+          ], // ajusta los atributos según tu modelo
+        },
+        {
+          model: Bien,
+          through: { attributes: [] },
+        },
+        {
+          model: Deuda2,
+          through: { attributes: [] },
+        },
+        {
+          model: Cotizacion,
+          through: { attributes: [] },
+        },
+        {
+          model: PropuestaPago,
+          through: { attributes: [] },
+        },
+        {
+          model: Honorario,
+          through: { attributes: [] },
+        },
       ],
     };
 
@@ -90,21 +129,49 @@ const getAllProspecto = async (filters) => {
           model: Ciudad,
           attributes: ["nombre_ciudad", "codigo_ciudad"],
           include: [
-        {
-          model: Departamento,
-          attributes: ["nombre_departamento"],
-          include: [
             {
-          model: Pais,
-          attributes: ["nombre_pais"],
+              model: Departamento,
+              attributes: ["nombre_departamento"],
+              include: [
+                {
+                  model: Pais,
+                  attributes: ["nombre_pais"],
+                },
+              ],
             },
-          ],
-        },
           ],
         },
         {
           model: Acreedor,
-          attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad"],
+          attributes: [
+            "idAcreedor",
+            "NIT",
+            "nombre",
+            "email",
+            "telefono",
+            "direccion",
+            "ciudad",
+          ],
+        },
+        {
+          model: Bien,
+          through: { attributes: [] },
+        },
+        {
+          model: Deuda2,
+          through: { attributes: [] },
+        },
+        {
+          model: Cotizacion,
+          through: { attributes: [] },
+        },
+        {
+          model: PropuestaPago,
+          through: { attributes: [] },
+        },
+        {
+          model: Honorario,
+          through: { attributes: [] },
         },
       ],
       order,

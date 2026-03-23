@@ -1,6 +1,16 @@
 import {models} from '../../DB.js'
 
- const { Cliente, Ciudad, Departamento, Pais, Deuda2, Honorario } = models;
+ const {
+   Cliente,
+   Ciudad,
+   Departamento,
+   Pais,
+   Deuda2,
+   Honorario,
+   Bien,
+   Cotizacion,
+   PropuestaPago,
+ } = models;
 const getClienteById = async (cedulaCliente)=>{
 
     const consulta = {
@@ -11,7 +21,7 @@ const getClienteById = async (cedulaCliente)=>{
       include: [
         {
           model: Ciudad,
-          attributes: ["nombre_ciudad","codigo_ciudad"],
+          attributes: ["nombre_ciudad", "codigo_ciudad"],
           through: { attributes: [] },
           include: [
             {
@@ -30,14 +40,44 @@ const getClienteById = async (cedulaCliente)=>{
         },
         {
           model: Honorario,
-          attributes: ["valorHonorarios", "valorRadicar", "inicial", "cuotasHonorarios", "honorariosLiquidacion", "totalDeudas"],
-          through: { attributes: [] },  
+          attributes: [
+            "valorHonorarios",
+            "valorRadicar",
+            "inicial",
+            "cuotasHonorarios",
+            "honorariosLiquidacion",
+            "totalDeudas",
+          ],
+          through: { attributes: [] },
         },
         {
-          model:Deuda2,
-          attributes: ["tipoDeuda", "tipoGarantia", "acreedor", "derechoVoto", "documentoSoporte", "capital", "intereses", "cuantiaTotal", "clasificacion", "diasMora"],
+          model: Deuda2,
+          attributes: [
+            "tipoDeuda",
+            "tipoGarantia",
+            "acreedor",
+            "derechoVoto",
+            "documentoSoporte",
+            "capital",
+            "intereses",
+            "cuantiaTotal",
+            "clasificacion",
+            "diasMora",
+          ],
           through: { attributes: [] },
-        }
+        },
+        {
+          model: Bien,
+
+        },
+        {
+          model: Cotizacion,
+
+        },
+        {
+          model: PropuestaPago,
+
+        },
       ],
     };
     

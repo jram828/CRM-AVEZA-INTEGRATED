@@ -1,7 +1,7 @@
 import { models } from "../../DB.js";
 import { Sequelize } from "sequelize";
 
-const { Cliente, Ciudad, Departamento, Pais, Deuda2, Honorario } = models;
+const { Cliente, Ciudad, Departamento, Pais, Deuda2, Honorario, Bien, Cotizacion, PropuestaPago } = models;
 const getAllCliente = async (filters) => {
   let allClient = [];
 
@@ -57,6 +57,18 @@ const getAllCliente = async (filters) => {
             "clasificacion",
             "diasMora",
           ],
+          through: { attributes: [] },
+        },
+        {
+          model: Bien,
+          through: { attributes: [] },
+        },
+        {
+          model: Cotizacion,
+          through: { attributes: [] },
+        },
+        {
+          model: PropuestaPago,
           through: { attributes: [] },
         },
       ],
@@ -158,6 +170,18 @@ const getAllCliente = async (filters) => {
             "clasificacion",
             "diasMora",
           ],
+          through: { attributes: [] },
+        },
+        {
+          model: Bien,
+          through: { attributes: [] },
+        },
+        {
+          model: Cotizacion,
+          through: { attributes: [] },
+        },
+        {
+          model: PropuestaPago,
           through: { attributes: [] },
         },
       ],

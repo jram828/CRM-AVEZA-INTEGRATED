@@ -1,38 +1,66 @@
 import {models} from '../../DB.js'
 
- const { Prospecto, Ciudad, Departamento, Pais, Acreedor} = models;
+ const { Prospecto, Ciudad, Departamento, Pais, Acreedor, Bien, Deuda2,Cotizacion, PropuestaPago, Honorario} = models;
 const getProspectoById = async (cedulaProspecto)=>{
  console.log("Cédula Prospecto en getProspectoById:", cedulaProspecto);
     const consulta = {
       where: {
-      cedulaProspecto: BigInt(cedulaProspecto),
-      activo: true,
+        cedulaProspecto: BigInt(cedulaProspecto),
+        activo: true,
       },
       include: [
-      {
-        model: Ciudad,
-        attributes: ["nombre_ciudad", "codigo_ciudad"],
-        through: { attributes: [] },
-        include: [
         {
-          model: Departamento,
-          attributes: ["nombre_departamento"],
+          model: Ciudad,
+          attributes: ["nombre_ciudad", "codigo_ciudad"],
           through: { attributes: [] },
           include: [
-          {
-            model: Pais,
-            attributes: ["nombre_pais"],
-            through: { attributes: [] },
-          },
+            {
+              model: Departamento,
+              attributes: ["nombre_departamento"],
+              through: { attributes: [] },
+              include: [
+                {
+                  model: Pais,
+                  attributes: ["nombre_pais"],
+                  through: { attributes: [] },
+                },
+              ],
+            },
           ],
         },
-        ],
-      },
-      {
-        model: Acreedor,
-        attributes: ["idAcreedor", "NIT", "nombre", "email", "telefono", "direccion", "ciudad" ], // ajusta los atributos según tu modelo
-        through: { attributes: [] },
-      },
+        {
+          model: Acreedor,
+          attributes: [
+            "idAcreedor",
+            "NIT",
+            "nombre",
+            "email",
+            "telefono",
+            "direccion",
+            "ciudad",
+          ], // ajusta los atributos según tu modelo
+          through: { attributes: [] },
+        },
+        {
+          model: Bien,
+          through: { attributes: [] },
+        },
+        {
+          model: Deuda2,
+          through: { attributes: [] },
+        },
+        {
+          model: Cotizacion,
+          through: { attributes: [] },
+        },
+        {
+          model: PropuestaPago,
+          through: { attributes: [] },
+        },
+        {
+          model: Honorario,
+          through: { attributes: [] },
+        },
       ],
     };
     

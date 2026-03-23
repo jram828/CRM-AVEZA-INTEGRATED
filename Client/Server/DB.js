@@ -39,6 +39,7 @@ import solicitudModel from "./models/Solicitud.js";
 import honorarioModel from "./models/Honorario.js";
 import notaModel from "./models/Nota.js";
 import campaignModel from "./models/Campaign.js";
+
 config(); // Cargar variables de entorno desde el archivo .env
 
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_DEPLOY } = process.env;
@@ -224,6 +225,24 @@ Honorario.belongsToMany(Prospecto, { through: "Prospecto_Honorario" });
 
 Cliente.belongsToMany(Honorario, { through: "Cliente_Honorario" });
 Honorario.belongsToMany(Cliente, { through: "Cliente_Honorario" });
+
+Prospecto.belongsToMany(PropuestaPago, { through: "Prospecto_PropuestaPago" });
+PropuestaPago.belongsToMany(Prospecto, { through: "Prospecto_PropuestaPago" });
+
+Cliente.belongsToMany(PropuestaPago, { through: "Cliente_PropuestaPago" });
+PropuestaPago.belongsToMany(Cliente, { through: "Cliente_PropuestaPago" });
+
+Prospecto.belongsToMany(Bien, { through: "Prospecto_Bien" });
+Bien.belongsToMany(Prospecto, { through: "Prospecto_Bien" });
+
+Cliente.belongsToMany(Bien, { through: "Cliente_Bien" });
+Bien.belongsToMany(Cliente, { through: "Cliente_Bien" });
+
+Prospecto.belongsToMany(Cotizacion, { through: "Prospecto_Cotizacion" });
+Cotizacion.belongsToMany(Prospecto, { through: "Prospecto_Cotizacion" });
+
+Cliente.belongsToMany(Cotizacion, { through: "Cliente_Cotizacion" });
+Cotizacion.belongsToMany(Cliente, { through: "Cliente_Cotizacion" });
 
 Cliente.belongsToMany(Acreedor, { through: "Cliente_Acreedor" });
 Acreedor.belongsToMany(Cliente, { through: "Cliente_Acreedor" });

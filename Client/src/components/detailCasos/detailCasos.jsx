@@ -22,7 +22,7 @@ import {
 
 import { getCasoById } from "../../handlers/detailCaso";
 import { numeroALetras } from "../convertiraletras";
-import { generarDocumentos } from "../../handlers/generarDocumentos";
+import { generarDocumentos } from "../../handlers/generarDocumentosOLD";
 import { formatNumero } from "../../utils/formatNumero";
 
 function DetailCasos() {

@@ -83,6 +83,12 @@ export const GET_NOTAS_BY_ID = "GET_NOTAS_BY_ID";
 export const PATCH_NOTA = "PATCH_NOTA";
 export const PUT_CLIENTE_CALIFICACION = "PUT_CLIENTE_CALIFICACION";
 export const PUT_CLIENTE_STATUS = "PUT_CLIENTE_STATUS";
+export const POST_PROPUESTAS = "POST_PROPUESTAS";
+export const POST_BIENES = "POST_BIENES";
+export const COPIAR_BIENES = "COPIAR_BIENES";
+export const COPIAR_PROPUESTAS = "COPIAR_PROPUESTAS";
+export const POST_COTIZACION = "POST_COTIZACION";
+export const COPIAR_COTIZACION = "COPIAR_COTIZACION";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -778,11 +784,44 @@ export const updateClienteCalificacion = (dataCalificacion) => {
 };
 
 export const postHonorarios = (honorariosData) => {
-  const endpoint = `/casos/honorarios`;
+  const endpoint = `/prospectos/honorarios`;
   return async (dispatch) => {
     const { data } = await axios.post(endpoint, honorariosData);
     return dispatch({
       type: POST_HONORARIOS,
+      payload: data,
+    });
+  };
+};
+
+export const postBienes = (bienesData) => {
+  const endpoint = `/prospectos/bienes`;
+  return async (dispatch) => {
+    const { data } = await axios.post(endpoint, bienesData);
+    return dispatch({
+      type: POST_BIENES,
+      payload: data,
+    });
+  };
+};
+
+export const postPropuestas = (propuestasData) => {
+  const endpoint = `/prospectos/propuestas`;
+  return async (dispatch) => {
+    const { data } = await axios.post(endpoint, propuestasData);
+    return dispatch({
+      type: POST_PROPUESTAS,
+      payload: data,
+    });
+  };
+};
+
+export const postCotizacion = (cotizacionData) => {
+  const endpoint = `/prospectos/cotizacion`;
+  return async (dispatch) => {
+    const { data } = await axios.post(endpoint, cotizacionData);
+    return dispatch({
+      type: POST_COTIZACION,
       payload: data,
     });
   };
@@ -947,7 +986,7 @@ export const modificarCasoCotizacion = (payload) => {
 };
 
 export const crearDeudas = (payload) => {
-  const endpoint = `/casos/creardeudas`;
+  const endpoint = `/prospectos/creardeudas`;
 
   return async (dispatch) => {
     const data = await axios.post(endpoint, payload);
@@ -960,7 +999,7 @@ export const crearDeudas = (payload) => {
 };
 
 export const copyDeudas = (payload) => {
-  const endpoint = `/casos/copiardeudas`;
+  const endpoint = `/prospectos/copiardeudas`;
 
   return async (dispatch) => {
     const data = await axios.post(endpoint, payload);
@@ -973,13 +1012,52 @@ export const copyDeudas = (payload) => {
 };
 
 export const copyHonorarios = (payload) => {
-  const endpoint = `/casos/copiarhonorarios`;
+  const endpoint = `/prospectos/copiarhonorarios`;
 
   return async (dispatch) => {
     const data = await axios.post(endpoint, payload);
 
     return dispatch({
       type: COPIAR_HONORARIOS,
+      payload: data,
+    });
+  };
+};
+
+export const copyCotizacion= (payload) => {
+  const endpoint = `/prospectos/copiarcotizacion`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+
+    return dispatch({
+      type: COPIAR_COTIZACION,
+      payload: data,
+    });
+  };
+};
+
+export const copyBienes= (payload) => {
+  const endpoint = `/prospectos/copiarbienes`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+
+    return dispatch({
+      type: COPIAR_BIENES,
+      payload: data,
+    });
+  };
+};
+
+export const copyPropuestas = (payload) => {
+  const endpoint = `/prospectos/copiarpropuestas`;
+
+  return async (dispatch) => {
+    const data = await axios.post(endpoint, payload);
+
+    return dispatch({
+      type: COPIAR_PROPUESTAS,
       payload: data,
     });
   };

@@ -82,7 +82,7 @@ const createClienteBd = async (
       // newCliente.addTipoDeCaso(tipo_de_caso);
       // newCliente.addTipoUsuario(tipo_usuario);
 
-      if (newCliente) sendEmailCliente(newCliente);
+      // if (newCliente) sendEmailCliente(newCliente);
       console.log(newCliente);
       return {
         ...newCliente.toJSON(),

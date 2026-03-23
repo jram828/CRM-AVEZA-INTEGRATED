@@ -6,8 +6,11 @@ import "../detail/detail.css";
 import {
   completarCita,
   completarTarea,
+  copyBienes,
+  copyCotizacion,
   copyDeudas,
   copyHonorarios,
+  copyPropuestas,
   deleteAbogado,
   deleteCliente,
   deleteProspecto,
@@ -54,6 +57,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AddIcon from "@mui/icons-material/Add";
 import NotaForm from "./notaFormDetail";
+import { generarDocumentos } from "../../handlers/generarDocumentosOLD";
+import { numeroALetras } from "../convertiraletras";
 
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
@@ -204,6 +209,12 @@ const Detail = () => {
         deudas: datos.Deuda2s || [],
         honorarios: datos.Honorarios || [],
         fase: datos.fase || "",
+        ingresos: datos.Cotizacions[0].ingresos || "",
+        gastos: datos.Cotizacions[0].gastos || "",
+        posibleCuota: datos.Cotizacions[0].posibleCuota || "",
+        totalDeudas_letras: datos.Cotizacions[0].totalDeudas_letras || "", 
+        totalBienes_letras: datos.Cotizacions[0].totalBienes_letras || "",
+        valorRadicar_letras: datos.Cotizacions[0].valorRadicar_letras || "",
       });
     } else {
       setUserDataDetail({
@@ -334,10 +345,19 @@ const Detail = () => {
 
   const submitHandlerRegistro = (e) => {
     e.preventDefault();
-    registroCliente(userDataDetail);
-    dispatch(copyDeudas({ cedulaProspecto: userDataDetail.cedulanew }));
-    dispatch(copyHonorarios({ cedulaProspecto: userDataDetail.cedulanew }));
-    navigate("/clientes");
+
+    if (userDataDetail.cedulanew !== "") {
+      registroCliente(userDataDetail);
+      dispatch(copyDeudas({ cedulaProspecto: userDataDetail.cedulanew }));
+      dispatch(copyHonorarios({ cedulaProspecto: userDataDetail.cedulanew }));
+      dispatch(copyBienes({ cedulaProspecto: userDataDetail.cedulanew }));
+      dispatch(copyPropuestas({ cedulaProspecto: userDataDetail.cedulanew }));
+      dispatch(copyCotizacion({ cedulaProspecto: userDataDetail.cedulanew }));
+
+      navigate("/clientes");
+    } else {
+      window.alert("Antes de convertir el Prospecto en Cliente debe actualizar el Número de Cédula");
+    }
   };
   // console.log("Nuevos Datos cliente:", userDataDetail);
   const handleStatusChange = (e) => {
@@ -410,6 +430,21 @@ const Detail = () => {
     handleCloseNotaForm();
   };
 
+
+
+    const handlerGenerarDocumentos = () => {
+    // generarDocumentos(
+    //   casoDetail,
+    //   userDataDetail.totalDeudas_letras,
+    //   honorarios_letras,
+    //   userDataDetail.valorRadicar_letras,
+    //   honorariosLiquidacion_letras,
+    //   userDataDetail.totalBienes_letras,
+    //   userDataDetail.ingresos,
+    //   userDataDetail.gastos,
+    // );
+  };
+
   return (
     <Paper
       elevation={3}
@@ -477,6 +512,21 @@ const Detail = () => {
             </Stack>
           ) : (
             <Stack direction="row" spacing={1}>
+              <label htmlFor="doc">
+                <MUIButton variant="outlined" component="span" sx={{ mr: 1 }}>
+                  Seleccionar archivo
+                </MUIButton>
+              </label>
+              <input id="doc" type="file" style={{ display: "none" }} />
+
+              <MUIButton
+                variant="contained"
+                onClick={handlerGenerarDocumentos}
+                color="primary"
+                sx={{ mr: 1 }}
+              >
+                Generar documentos
+              </MUIButton>
               <MUIButton
                 variant="outlined"
                 color="primary"
@@ -512,7 +562,6 @@ const Detail = () => {
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
 
-            
             <TextField
               label="Apellidos"
               name="apellidos"
@@ -523,7 +572,7 @@ const Detail = () => {
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <TextField
-              label="Numero de cédula"
+              label="Número de cédula"
               name="cedulanew"
               type="number"
               value={userDataDetail.cedulanew}
@@ -760,10 +809,7 @@ const Detail = () => {
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
                 sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
-              <FormControl
-                fullWidth
-                size="small"
-              >
+              <FormControl fullWidth size="small">
                 <InputLabel>Siguiente paso</InputLabel>
                 <Select
                   value={userDataDetail.siguientePaso}
@@ -808,10 +854,7 @@ const Detail = () => {
                 sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
 
-              <FormControl
-                fullWidth
-                size="small"
-              >
+              <FormControl fullWidth size="small">
                 <InputLabel>Fase</InputLabel>
                 <Select
                   value={userDataDetail.fase}

@@ -20,10 +20,36 @@ const actualizaProspecto = async (
   tieneProcesos,
   numeroEntidades,
   tiempoMora,
+  totalBienes,
+  totalDeudas,
+  modoContacto,
   // password,
 ) => {
   const cedulaProspecto = cedula;
   console.log("Cedula Prospecto controller:", cedulaProspecto);
+
+  console.log(
+    "Datos para actualizar handler:",
+    idProspecto,
+    cedula,
+    nombres,
+    apellidos,
+    email,
+    celular,
+    direccion,
+    ciudad,
+    ciudad_anterior,
+    comentarios,
+    cedula_anterior,
+    nombres_anterior,
+    apellidos_anterior,
+    tieneProcesos,
+    numeroEntidades,
+    tiempoMora,
+    totalBienes,
+    totalDeudas,
+    modoContacto,
+  );
   // console.log("Cedula anterior controller:", cedula_anterior);
   const ciudadfilter = codigoCiudades.filter(
     (Ciudad) => Ciudad.nombre_ciudad === ciudad.toUpperCase(),
@@ -32,7 +58,6 @@ const actualizaProspecto = async (
 
   const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
   console.log("Codigo ciudad:", codigo_ciudad);
-
 
   // console.log("ciudad:", ciudadfilter);
 
@@ -52,6 +77,9 @@ const actualizaProspecto = async (
       tieneProcesos: tieneProcesos,
       numeroEntidades: numeroEntidades,
       tiempoMora: tiempoMora,
+      totalBienes: totalBienes,
+      totalDeudas: totalDeudas,
+      modoContacto: modoContacto,
       // password: password,
     },
     {

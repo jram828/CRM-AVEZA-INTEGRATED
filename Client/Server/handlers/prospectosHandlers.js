@@ -11,6 +11,16 @@ import { corregirAcentos } from "../controllers/prospecto/corregirAcentos.js";
 import { postProspectoAut } from "../controllers/prospecto/postProspectoAut.js";
 import { actualizaStatus } from "../controllers/prospecto/postActualizaStatus.js";
 import { actualizaCalificacion } from "../controllers/prospecto/postActualizaCalificacion.js";
+import { copyDeudas } from "../controllers/prospecto/copyDeudas.js";
+import { createDeudas } from "../controllers/prospecto/createDeudas.js";
+import { guardaHonorarios } from "../controllers/prospecto/postHonorarios.js";
+import { copiarHonorarios } from "../controllers/prospecto/copiarHonorarios.js";
+import { copyBienes } from "../controllers/prospecto/copyBienes.js";
+import { createBienes } from "../controllers/prospecto/createBienes.js";
+import { copyPropuestas } from "../controllers/prospecto/copyPropuestas.js";
+import { createPropuestas } from "../controllers/prospecto/createPropuestas.js";
+import { copyCotizacion } from "../controllers/prospecto/copyCotizacion.js";
+import { createCotizacion } from "../controllers/prospecto/createCotizacion.js";
 
 const prospectosHandler = async (req, res) => {
   //const { name } = req.query;
@@ -107,7 +117,7 @@ const postProspectosHandler = async (req, res) => {
       honorarios,
       cuotas,
       comentarios,
-      valor_pretensiones
+      valor_pretensiones,
     );
     console.log("Response crear prospecto", response);
     if (response) res.status(200).json(response);
@@ -161,12 +171,16 @@ const postActualizaProspectos = async (req, res) => {
     tieneProcesos,
     numeroEntidades,
     tiempoMora,
+    totalBienes,
+    totalDeudas,
+    modoContacto,
   } = req.body;
 
   const cedula = cedulanew;
 
   try {
     console.log("Cedula anterior handler:", cedula_anterior);
+    console.log("Datos para actualizar handler:", req.body);
     const response = await actualizaProspecto(
       idProspecto,
       cedula,
@@ -184,6 +198,9 @@ const postActualizaProspectos = async (req, res) => {
       tieneProcesos,
       numeroEntidades,
       tiempoMora,
+      totalBienes,
+      totalDeudas,
+      modoContacto,
     );
 
     if (response) res.status(200).json(response);
@@ -230,11 +247,176 @@ const postActualizaCalificacion = async (req, res) => {
 };
 
 const corregirAcentosProspectos = async (req, res) => {
-  
   try {
     const response = await corregirAcentos();
     if (response) res.status(200).json(response);
     else res.status(204).json("No se corrigieron los Prospectos");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const createDeudasHandler = async (req, res) => {
+  const { deudas, cedulaProspecto, deleteDeudas } = req.body;
+  console.log("body handler crear deudas:", req.body);
+
+  try {
+    const response = await createDeudas(deudas, cedulaProspecto, deleteDeudas);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const copyDeudasHandler = async (req, res) => {
+  const { cedulaProspecto } = req.body;
+  console.log("body handler crear deudas:", req.body);
+
+  try {
+    const response = await copyDeudas(cedulaProspecto);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const copyHonorariosHandler = async (req, res) => {
+  const { cedulaProspecto } = req.body;
+  console.log("body handler crear honorarios:", req.body);
+
+  try {
+    const response = await copiarHonorarios(cedulaProspecto);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const postHonorariosHandler = async (req, res) => {
+  const {
+    cedulaProspecto,
+    honorarios,
+    deleteDeudas,
+    honorarios_letras,
+    honorariosLiquidacion_letras,
+    saldoHonorarios,
+    saldoHonorariosUnificado,
+    totalDeudas,
+    // planpagos,
+    // planpagosUnificado,
+  } = req.body;
+
+  const { inicial, cuotasHonorarios, valorHonorarios, honorariosLiquidacion, valorRadicar } =
+    honorarios;
+  console.log("body handler honorarios:", req.body);
+
+  try {
+    const response = await guardaHonorarios(
+      cedulaProspecto,
+      inicial,
+      cuotasHonorarios,
+      valorHonorarios,
+      honorariosLiquidacion,
+      deleteDeudas,
+      honorarios_letras,
+      honorariosLiquidacion_letras,
+      saldoHonorarios,
+      saldoHonorariosUnificado,
+      totalDeudas,
+      valorRadicar,
+      // planpagos,
+      // planpagosUnificado
+    );
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const postBienesHandler = async (req, res) => {
+  const { bienes, cedulaProspecto } = req.body;
+  console.log("body handler crear bienes:", req.body);
+
+  try {
+    const response = await createBienes(bienes, cedulaProspecto);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const copyBienesHandler = async (req, res) => {
+  const { cedulaProspecto } = req.body;
+  console.log("body handler copiar bienes:", req.body);
+
+  try {
+    const response = await copyBienes(cedulaProspecto);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const postCotizacionHandler = async (req, res) => {
+  const {
+    bienes,
+    cedulaProspecto,
+    ingresos,
+    gastos,
+    posibleCuota,
+    totalBienes_letras,
+    totalDeudas_letras,
+    valorRadicar_letras,
+  } = req.body;
+  console.log("body handler crear cotizacion:", req.body);
+
+  try {
+    const response = await createCotizacion(
+      cedulaProspecto,
+      ingresos,
+      gastos,
+      posibleCuota.mensual,
+      totalBienes_letras,
+      totalDeudas_letras,
+      valorRadicar_letras,
+    );
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const copyCotizacionHandler = async (req, res) => {
+  const { cedulaProspecto } = req.body;
+  console.log("body handler copiar cotizacion:", req.body);
+
+  try {
+    const response = await copyCotizacion(cedulaProspecto);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const postPropuestasHandler = async (req, res) => {
+  const { propuestas, cedulaProspecto } = req.body;
+  console.log("body handler crear propuestas:", req.body);
+
+  try {
+    const response = await createPropuestas(propuestas, cedulaProspecto);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const copyPropuestasHandler = async (req, res) => {
+  const { cedulaProspecto } = req.body;
+  console.log("body handler copiar propuestas:", req.body);
+
+  try {
+    const response = await copyPropuestas(cedulaProspecto);
+    res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -253,4 +435,14 @@ export {
   corregirAcentosProspectos,
   postActualizaStatus,
   postActualizaCalificacion,
+  createDeudasHandler,
+  copyDeudasHandler,
+  copyHonorariosHandler,
+  postHonorariosHandler,
+  postPropuestasHandler,
+  copyPropuestasHandler,
+  postBienesHandler,
+  copyBienesHandler,
+  postCotizacionHandler,
+  copyCotizacionHandler,
 };

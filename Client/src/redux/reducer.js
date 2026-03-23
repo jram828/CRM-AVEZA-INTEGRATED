@@ -76,6 +76,8 @@ import {
   GET_SOLICITUD_BY_CEDULA,
   CREAR_DEUDAS,
   COPIAR_DEUDAS,
+  POST_COTIZACION,
+  COPIAR_COTIZACION,
   PUT_DATOS_COTIZACION,
   POST_HONORARIOS,
   COPIAR_HONORARIOS,
@@ -89,6 +91,10 @@ import {
   POST_TAREA,
   PATCH_TAREA,
   PATCH_CITA,
+  POST_PROPUESTAS,
+  POST_BIENES,
+  COPIAR_BIENES,
+  COPIAR_PROPUESTAS,
 } from "./actions";
 
 let initialState = {
@@ -519,6 +525,36 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         honorarios: action.payload,
+      };
+    case POST_COTIZACION:
+      return {
+        ...state,
+        cotizacion: action.payload,
+      };
+    case COPIAR_COTIZACION:
+      return {
+        ...state,
+        cotizacion: action.payload,
+      };
+    case POST_BIENES:
+      return {
+        ...state,
+        bienes: action.payload,
+      };
+    case COPIAR_BIENES:
+      return {
+        ...state,
+        bienes: action.payload,
+      };
+    case POST_PROPUESTAS:
+      return {
+        ...state,
+        propuestas: action.payload,
+      };
+    case COPIAR_PROPUESTAS:
+      return {
+        ...state,
+        propuestas: action.payload,
       };
     case CREAR_ACREEDOR:
       return {

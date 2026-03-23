@@ -12,7 +12,10 @@ import {
   crearDeudas,
   crearSolicitud,
   modificarCasoCotizacion,
+  postBienes,
+  postCotizacion,
   postHonorarios,
+  postPropuestas,
 } from "../../redux/actions.js";
 import { formatNumero } from "../../utils/formatNumero.js";
 import { Link } from "react-router-dom";
@@ -258,7 +261,7 @@ const Cotizacion = () => {
   const [showIngresosModal, setShowIngresosModal] = useState(false);
   const [deleteDeudas, setDeleteDeudas] = useState(false);
   const [resultadosCotizacion, setResultadosCotizacion] = useState(
-    initResultadosCotizacion
+    initResultadosCotizacion,
   );
   const [honorarios, setHonorarios] = useState(initHonorarios);
   const [formData, setFormData] = useState(
@@ -266,7 +269,7 @@ const Cotizacion = () => {
       Object.keys(resultadosCotizacion.totalesPorTipo).reduce((acc, tipo) => {
         acc[tipo] = { tasa: "", cuotas: "", valorCuota: "" };
         return acc;
-      }, {})
+      }, {}),
   );
   // console.log("Bienes general:", bienes);
   // console.log("FormData:", formData);
@@ -316,7 +319,7 @@ const Cotizacion = () => {
       // Cálculo del total general (usar 0 si parseFloat falla)
       let totalDeudas = deudas.reduce(
         (acc, deuda) => acc + (parseFloat(deuda.capital) || 0),
-        0
+        0,
       );
       // console.log("Total de deudas:", totalDeudas);
 
@@ -362,7 +365,7 @@ const Cotizacion = () => {
       // Suma de porcentajes
       const sumaDerechoVoto = resultados.reduce(
         (acc, deuda) => acc + (deuda.derechoVoto || 0),
-        0
+        0,
       );
 
       // console.log("Suma derecho de voto:", sumaDerechoVoto);
@@ -399,7 +402,7 @@ const Cotizacion = () => {
       // Cálculo del total (usar 0 si parseFloat falla)
       let totalBienes = bienes.reduce(
         (acc, bien) => acc + (parseFloat(bien.valor) || 0),
-        0
+        0,
       );
       // console.log("Total de bienes:", totalBienes);
       // Actualizar el estado con los resultados
@@ -521,7 +524,7 @@ const Cotizacion = () => {
             Number(hon.cuotasHonorarios),
             Number(hon.inicial),
             !!hon.cuota6,
-            !!hon.cuota12
+            !!hon.cuota12,
           );
           setPlanPagos(nuevoPlan);
         } else {
@@ -538,7 +541,7 @@ const Cotizacion = () => {
             Number(hon.cuotasHonorariosUnificado),
             Number(hon.inicial),
             !!hon.cuota6,
-            !!hon.cuota12
+            !!hon.cuota12,
           );
           setPlanPagosUnificado(nuevoPlanUnificado);
         } else {
@@ -590,15 +593,15 @@ const Cotizacion = () => {
   };
 
   const totalDeudas_letras = numeroALetras(
-    Number(resultadosCotizacion.totalDeudas)
+    Number(resultadosCotizacion.totalDeudas),
   );
   const totalBienes_letras = numeroALetras(
-    Number(resultadosCotizacion.totalBienes)
+    Number(resultadosCotizacion.totalBienes),
   );
   const honorarios_letras = numeroALetras(Number(honorarios.valorHonorarios));
   const valorRadicar_letras = numeroALetras(Number(honorarios.valorRadicar));
   const honorariosLiquidacion_letras = numeroALetras(
-    Number(honorarios.honorariosLiquidacion)
+    Number(honorarios.honorariosLiquidacion),
   );
   const saldoHonorarios = honorarios.valorHonorarios - honorarios.inicial;
   const saldoHonorariosUnificado =
@@ -623,7 +626,7 @@ const Cotizacion = () => {
         "Se eliminaron posiciones vacías de deudas. Antes:",
         deudas.length,
         "Ahora:",
-        deudasFiltradas.length
+        deudasFiltradas.length,
       );
       setDeudas(deudasFiltradas);
     }
@@ -646,7 +649,7 @@ const Cotizacion = () => {
       saldoHonorarios,
       saldoHonorariosUnificado,
       planpagos,
-      planpagosUnificado
+      planpagosUnificado,
     );
 
     // dispatch(modificarCasoCotizacion(datoscotizacion));
@@ -656,19 +659,73 @@ const Cotizacion = () => {
         deudas: deudasFiltradas,
         cedulaProspecto: prospecto.cedulaProspecto,
         deleteDeudas: deleteDeudas,
-      })
+      }),
     );
     dispatch(
       postHonorarios({
         honorarios: honorarios,
+        honorarios_letras: honorarios_letras,
         cedulaProspecto: prospecto.cedulaProspecto,
-        totalDeudas: resultadosCotizacion.totalDeudas,
-        totalBienes: resultadosCotizacion.totalBienes,
         deleteDeudas: deleteDeudas,
-      })
+        honorariosLiquidacion_letras: honorariosLiquidacion_letras,
+        saldoHonorarios: saldoHonorarios,
+        saldoHonorariosUnificado: saldoHonorariosUnificado,
+        totalDeudas: resultadosCotizacion.totalDeudas,
+        // planpagos: planpagos,
+        // planpagosUnificado: planpagosUnificado,
+      }),
     );
-    // console.log("Datos cotizacion:", datoscotizacion);
-    // dispatch(crearCotizacion(datoscotizacion));
+
+    dispatch(
+      postCotizacion({
+        ingresos: ingreso.Valor,
+        gastos: gasto.gastosmensuales,
+        posibleCuota: posibleCuota,
+        totalDeudas_letras: totalDeudas_letras,
+        totalBienes_letras: totalBienes_letras,
+        valorRadicar_letras: valorRadicar_letras,
+        totalDeudas: resultadosCotizacion.totalDeudas,
+        cedulaProspecto: prospecto.cedulaProspecto,
+        deleteDeudas: deleteDeudas,
+      }),
+    );
+
+    dispatch(
+      postBienes({
+        bienes: bienes.filter(
+          (b) => b.tipoBien?.trim() !== "" && b.valor != null && b.valor !== "",
+        ),
+        cedulaProspecto: prospecto.cedulaProspecto,
+        deleteDeudas: deleteDeudas,
+      }),
+    );
+
+    const newPropuestas = Object.keys(resultadosCotizacion)
+      .filter(
+        (clase) =>
+          resultadosCotizacion[clase].cuotas &&
+          resultadosCotizacion[clase].valorCuota,
+      ) // Filtra las clases con valores válidos
+      .map((clase, index) => ({
+        // Usa index como contador
+        contador: index + 1, // Contador que inicia desde 1
+        Clasificacion: clase,
+        subtotal: formatNumero(resultadosCotizacion.totalesPorTipo[clase]) || 0, // Obtiene el subtotal, si existe
+        numeroCuotas: parseInt(resultadosCotizacion[clase].cuotas, 10), // Número de cuotas
+        valorCuota: Math.round(
+          parseFloat(resultadosCotizacion[clase].valorCuota),
+        ),
+        // Redondea el valor de la cuota
+        tasaIntereses: parseFloat(resultadosCotizacion[clase].tasa) || 0, // Tasa de intereses
+      }));
+
+    dispatch(
+      postPropuestas({
+        propuestas: newPropuestas,
+        cedulaProspecto: prospecto.cedulaProspecto,
+        deleteDeudas: deleteDeudas,
+      }),
+    );
   };
 
   const handleAcreedorChange = (index, event) => {
@@ -685,7 +742,7 @@ const Cotizacion = () => {
     // });
 
     const foundAcreedor = listaacreedores?.filter((acreedor) =>
-      acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase())
+      acreedor.nombre.toLowerCase().includes(event.target.value.toLowerCase()),
     );
     console.log("Acreedores encontrados:", foundAcreedor);
     setAcreedorFilt(foundAcreedor);
@@ -885,8 +942,8 @@ const Cotizacion = () => {
                         label="Subtotal clase"
                         value={formatNumero(
                           Number.parseFloat(
-                            resultadosCotizacion.totalesPorTipo[tipoKey]
-                          )
+                            resultadosCotizacion.totalesPorTipo[tipoKey],
+                          ),
                         )}
                         InputProps={{ readOnly: true }}
                       />
@@ -942,14 +999,14 @@ const Cotizacion = () => {
                         label="Valor cuota"
                         value={formatNumero(
                           Math.round(
-                            resultadosCotizacion[tipoKey].valorCuota || 0
-                          )
+                            resultadosCotizacion[tipoKey].valorCuota || 0,
+                          ),
                         )}
                         InputProps={{ readOnly: true }}
                       />
                     </Grid>
                   </Grid>
-                )
+                ),
               )}
 
             <Box
@@ -973,13 +1030,13 @@ const Cotizacion = () => {
               <Typography>
                 Valor cuotas:{" "}
                 {formatNumero(
-                  Math.round(resultadosCotizacion.sumaValorCuota || 0)
+                  Math.round(resultadosCotizacion.sumaValorCuota || 0),
                 )}
               </Typography>
               <Typography>
                 Total pagado:{" "}
                 {formatNumero(
-                  Math.round(resultadosCotizacion.totalPagado || 0)
+                  Math.round(resultadosCotizacion.totalPagado || 0),
                 )}
               </Typography>
             </Box>
@@ -1066,7 +1123,7 @@ const Cotizacion = () => {
                         ).filter((acreedor) =>
                           acreedor.nombre
                             .toLowerCase()
-                            .includes(String(value || "").toLowerCase())
+                            .includes(String(value || "").toLowerCase()),
                         );
                         setAcreedorFilt(foundAcreedor);
                       }}
@@ -1194,349 +1251,349 @@ const Cotizacion = () => {
       </Grid>
 
       {/* DIALOG: Bienes */}
-        <Dialog
-          open={showBienesModal}
-          onClose={closeBienesModal}
-          fullWidth
-          maxWidth="md"
-        >
-          <DialogTitle>
-            Bienes
-            <IconButton
-          aria-label="close"
-          onClick={closeBienesModal}
-          sx={{ position: "absolute", right: 8, top: 8 }}
-            >
-          <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-          <DialogContent dividers>
-            <Grid container spacing={2}>
-          {bienes.map((bienItem, idx) => (
-            <Grid item xs={12} sm={6} key={`bien-mui-${idx}`}>
-              <TextField
-            fullWidth
-            size="small"
-            label="Tipo de bien"
-            name="tipoBien"
-            value={bienItem.tipoBien}
-            onChange={(e) => handleBienChange(idx, e)}
-              />
-              <Box mt={1}>
-            <TextField
-              fullWidth
-              size="small"
-              label="Valor comercial"
-              name="valor"
-              value={bienItem.valor}
-              onChange={(e) => handleBienChange(idx, e)}
-              onKeyDown={(e) => handleKeyPress(e, idx)}
-            />
-              </Box>
-            </Grid>
-          ))}
-            </Grid>
-
-            <Box
-          mt={2}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-            >
-          <Typography>
-            Total Bienes: {formatNumero(resultadosCotizacion.totalBienes)}
-          </Typography>
-          <Box>
-            <FormControl component="fieldset" sx={{ mr: 2 }}>
-              <InputLabel shrink>Sujeto a registro?</InputLabel>
-              <Box mt={1} display="flex" gap={1}>
-            <MUIButton
-              size="small"
-              variant={
-          resultadosCotizacion.sujetoRegistro === "si"
-              ? "contained"
-              : "outlined"
-              }
-              onClick={() =>
-          handleSujetoChange({
-              target: { value: "si" },
-              preventDefault: () => {},
-          })
-              }
-            >
-              Sí
-            </MUIButton>
-            <MUIButton
-              size="small"
-              variant={
-          resultadosCotizacion.sujetoRegistro === "no"
-              ? "contained"
-              : "outlined"
-              }
-              onClick={() =>
-          handleSujetoChange({
-              target: { value: "no" },
-              preventDefault: () => {},
-          })
-              }
-            >
-              No
-            </MUIButton>
-              </Box>
-            </FormControl>
-
-            <MUIButton
-              sx={{ ml: 1 }}
-              onClick={handleAddBien}
-              variant="outlined"
-            >
-              Agregar bien
-            </MUIButton>
-          </Box>
-            </Box>
-          </DialogContent>
-        </Dialog>
-        <Dialog
-          open={showHonorariosModal}
-          onClose={closeHonorariosModal}
-          fullWidth
-          maxWidth="md"
-        >
-          <DialogTitle>
-            Honorarios
-            <IconButton
-          aria-label="close"
-          onClick={closeHonorariosModal}
-          sx={{ position: "absolute", right: 8, top: 8 }}
-            >
-          <CloseIcon />
-            </IconButton>
-          </DialogTitle>
-
-          <DialogContent dividers>
-            <Grid container spacing={2} sx={{ flexDirection: "column" }}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Valor"
-              width="180px"
-              size="small"
-              type="text"
-              name="valorHonorarios"
-              value={
-          editingField === "valorHonorarios"
-            ? honorarios.valorHonorarios ?? ""
-            : honorarios.valorHonorarios !== "" &&
-              !isNaN(Number(honorarios.valorHonorarios))
-            ? formatNumero(Number(honorarios.valorHonorarios))
-            : honorarios.valorHonorarios ?? ""
-              }
-              onChange={handleHonorarioChange}
-              onFocus={() => setEditingField("valorHonorarios")}
-              onBlur={() => setEditingField(null)}
-              onKeyDown={handleKeyPress}
-            />
+      <Dialog
+        open={showBienesModal}
+        onClose={closeBienesModal}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>
+          Bienes
+          <IconButton
+            aria-label="close"
+            onClick={closeBienesModal}
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Grid container spacing={2}>
+            {bienes.map((bienItem, idx) => (
+              <Grid item xs={12} sm={6} key={`bien-mui-${idx}`}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Tipo de bien"
+                  name="tipoBien"
+                  value={bienItem.tipoBien}
+                  onChange={(e) => handleBienChange(idx, e)}
+                />
+                <Box mt={1}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    label="Valor comercial"
+                    name="valor"
+                    value={bienItem.valor}
+                    onChange={(e) => handleBienChange(idx, e)}
+                    onKeyDown={(e) => handleKeyPress(e, idx)}
+                  />
+                </Box>
+              </Grid>
+            ))}
           </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Cuota inicial"
-              width="180px"
-              size="small"
-              type="text"
-              name="inicial"
-              value={
-          editingField === "inicial"
-            ? honorarios.inicial ?? ""
-            : honorarios.inicial !== "" &&
-              !isNaN(Number(honorarios.inicial))
-            ? formatNumero(Number(honorarios.inicial))
-            : honorarios.inicial ?? ""
-              }
-              onChange={handleHonorarioChange}
-              onFocus={() => setEditingField("inicial")}
-              onBlur={() => setEditingField(null)}
-              onKeyDown={handleKeyPress}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Numero de cuotas"
-              width="180px"
-              size="small"
-              type="number"
-              name="cuotasHonorarios"
-              value={honorarios.cuotasHonorarios}
-              onChange={handleHonorarioChange}
-              onKeyDown={handleKeyPress}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Valor para radicar"
-              width="180px"
-              size="small"
-              type="text"
-              name="valorRadicar"
-              value={
-          editingField === "valorRadicar"
-            ? honorarios.valorRadicar ?? ""
-            : honorarios.valorRadicar !== "" &&
-              !isNaN(Number(honorarios.valorRadicar))
-            ? formatNumero(Number(honorarios.valorRadicar))
-            : honorarios.valorRadicar ?? ""
-              }
-              onChange={handleHonorarioChange}
-              onFocus={() => setEditingField("valorRadicar")}
-              onBlur={() => setEditingField(null)}
-              onKeyDown={handleKeyPress}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Mensualidad liquidación"
-              width="180px"
-              size="small"
-              type="text"
-              name="honorariosLiquidacion"
-              value={
-          editingField === "honorariosLiquidacion"
-            ? honorarios.honorariosLiquidacion ?? ""
-            : honorarios.honorariosLiquidacion !== "" &&
-              !isNaN(Number(honorarios.honorariosLiquidacion))
-            ? formatNumero(Number(honorarios.honorariosLiquidacion))
-            : honorarios.honorariosLiquidacion ?? ""
-              }
-              onChange={handleHonorarioChange}
-              onFocus={() => setEditingField("honorariosLiquidacion")}
-              onBlur={() => setEditingField(null)}
-              onKeyDown={handleKeyPress}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Valor unificado"
-              width="180px"
-              size="small"
-              type="text"
-              name="valorHonorariosUnificado"
-              value={
-          editingField === "valorHonorariosUnificado"
-            ? honorarios.valorHonorariosUnificado ?? ""
-            : honorarios.valorHonorariosUnificado !== "" &&
-              !isNaN(Number(honorarios.valorHonorariosUnificado))
-            ? formatNumero(Number(honorarios.valorHonorariosUnificado))
-            : ""
-              }
-              onChange={handleHonorarioChange}
-              onFocus={() => setEditingField("valorHonorariosUnificado")}
-              onBlur={() => setEditingField(null)}
-              onKeyDown={handleKeyPress}
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label="Numero de cuotas - Unificado"
-              width="180px"
-              size="small"
-              type="number"
-              name="cuotasHonorariosUnificado"
-              value={honorarios.cuotasHonorariosUnificado}
-              onChange={handleHonorarioChange}
-              onKeyDown={handleKeyPress}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControlLabel
-              control={
-            <input
-              type="checkbox"
-              name="cuota6"
-              checked={!!honorarios.cuota6}
-              onChange={handleHonorarioChange}
-              aria-label="cuota6-checkbox"
-            />
-              }
-              label="Cuota extra Junio"
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-            <FormControlLabel
-              control={
-            <input
-              type="checkbox"
-              name="cuota12"
-              checked={!!honorarios.cuota12}
-              onChange={handleHonorarioChange}
-              aria-label="cuota12-checkbox"
-            />
-              }
-              label="Cuota extra Diciembre"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="subtitle2">Plan de pagos</Typography>
-            {planpagos && planpagos.length > 0 && (
-              <Table size="small" sx={{ mt: 1 }}>
-            <TableHead>
-              <TableRow>
-          <TableCell>Periodo</TableCell>
-          <TableCell>Cuota fija</TableCell>
-          <TableCell>Saldo</TableCell>
-          <TableCell>Fecha de pago</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {planpagos.map((p, i) => (
-          <TableRow key={`p-${i}`}>
-              <TableCell>{p.numeroCuota}</TableCell>
-              <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
-              <TableCell>{formatNumero(p.saldo)}</TableCell>
-              <TableCell>{p.fechapago}</TableCell>
-          </TableRow>
-              ))}
-            </TableBody>
-              </Table>
-            )}
-
-            {planpagosUnificado && planpagosUnificado.length > 0 && (
-              <>
-            <Typography sx={{ mt: 2 }} variant="subtitle2">
-              Plan Unificado
+          <Box
+            mt={2}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography>
+              Total Bienes: {formatNumero(resultadosCotizacion.totalBienes)}
             </Typography>
-            <Table size="small" sx={{ mt: 1 }}>
-              <TableHead>
-          <TableRow>
-              <TableCell>Periodo</TableCell>
-              <TableCell>Cuota fija</TableCell>
-              <TableCell>Saldo</TableCell>
-              <TableCell>Fecha de pago</TableCell>
-          </TableRow>
-              </TableHead>
-              <TableBody>
-          {planpagosUnificado.map((p, i) => (
-              <TableRow key={`pu-${i}`}>
-          <TableCell>{p.numeroCuota}</TableCell>
-          <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
-          <TableCell>{formatNumero(p.saldo)}</TableCell>
-          <TableCell>{p.fechapago}</TableCell>
-              </TableRow>
-          ))}
-              </TableBody>
-            </Table>
-              </>
-            )}
-          </Grid>
-            </Grid>
-          </DialogContent>
-        </Dialog>
+            <Box>
+              <FormControl component="fieldset" sx={{ mr: 2 }}>
+                <InputLabel shrink>Sujeto a registro?</InputLabel>
+                <Box mt={1} display="flex" gap={1}>
+                  <MUIButton
+                    size="small"
+                    variant={
+                      resultadosCotizacion.sujetoRegistro === "si"
+                        ? "contained"
+                        : "outlined"
+                    }
+                    onClick={() =>
+                      handleSujetoChange({
+                        target: { value: "si" },
+                        preventDefault: () => {},
+                      })
+                    }
+                  >
+                    Sí
+                  </MUIButton>
+                  <MUIButton
+                    size="small"
+                    variant={
+                      resultadosCotizacion.sujetoRegistro === "no"
+                        ? "contained"
+                        : "outlined"
+                    }
+                    onClick={() =>
+                      handleSujetoChange({
+                        target: { value: "no" },
+                        preventDefault: () => {},
+                      })
+                    }
+                  >
+                    No
+                  </MUIButton>
+                </Box>
+              </FormControl>
 
-        {/* DIALOG: Ingresos / Gastos / Cuota */}
+              <MUIButton
+                sx={{ ml: 1 }}
+                onClick={handleAddBien}
+                variant="outlined"
+              >
+                Agregar bien
+              </MUIButton>
+            </Box>
+          </Box>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={showHonorariosModal}
+        onClose={closeHonorariosModal}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>
+          Honorarios
+          <IconButton
+            aria-label="close"
+            onClick={closeHonorariosModal}
+            sx={{ position: "absolute", right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent dividers>
+          <Grid container spacing={2} sx={{ flexDirection: "column" }}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Valor"
+                width="180px"
+                size="small"
+                type="text"
+                name="valorHonorarios"
+                value={
+                  editingField === "valorHonorarios"
+                    ? honorarios.valorHonorarios ?? ""
+                    : honorarios.valorHonorarios !== "" &&
+                      !isNaN(Number(honorarios.valorHonorarios))
+                    ? formatNumero(Number(honorarios.valorHonorarios))
+                    : honorarios.valorHonorarios ?? ""
+                }
+                onChange={handleHonorarioChange}
+                onFocus={() => setEditingField("valorHonorarios")}
+                onBlur={() => setEditingField(null)}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Cuota inicial"
+                width="180px"
+                size="small"
+                type="text"
+                name="inicial"
+                value={
+                  editingField === "inicial"
+                    ? honorarios.inicial ?? ""
+                    : honorarios.inicial !== "" &&
+                      !isNaN(Number(honorarios.inicial))
+                    ? formatNumero(Number(honorarios.inicial))
+                    : honorarios.inicial ?? ""
+                }
+                onChange={handleHonorarioChange}
+                onFocus={() => setEditingField("inicial")}
+                onBlur={() => setEditingField(null)}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Numero de cuotas"
+                width="180px"
+                size="small"
+                type="number"
+                name="cuotasHonorarios"
+                value={honorarios.cuotasHonorarios}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Valor para radicar"
+                width="180px"
+                size="small"
+                type="text"
+                name="valorRadicar"
+                value={
+                  editingField === "valorRadicar"
+                    ? honorarios.valorRadicar ?? ""
+                    : honorarios.valorRadicar !== "" &&
+                      !isNaN(Number(honorarios.valorRadicar))
+                    ? formatNumero(Number(honorarios.valorRadicar))
+                    : honorarios.valorRadicar ?? ""
+                }
+                onChange={handleHonorarioChange}
+                onFocus={() => setEditingField("valorRadicar")}
+                onBlur={() => setEditingField(null)}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Mensualidad liquidación"
+                width="180px"
+                size="small"
+                type="text"
+                name="honorariosLiquidacion"
+                value={
+                  editingField === "honorariosLiquidacion"
+                    ? honorarios.honorariosLiquidacion ?? ""
+                    : honorarios.honorariosLiquidacion !== "" &&
+                      !isNaN(Number(honorarios.honorariosLiquidacion))
+                    ? formatNumero(Number(honorarios.honorariosLiquidacion))
+                    : honorarios.honorariosLiquidacion ?? ""
+                }
+                onChange={handleHonorarioChange}
+                onFocus={() => setEditingField("honorariosLiquidacion")}
+                onBlur={() => setEditingField(null)}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Valor unificado"
+                width="180px"
+                size="small"
+                type="text"
+                name="valorHonorariosUnificado"
+                value={
+                  editingField === "valorHonorariosUnificado"
+                    ? honorarios.valorHonorariosUnificado ?? ""
+                    : honorarios.valorHonorariosUnificado !== "" &&
+                      !isNaN(Number(honorarios.valorHonorariosUnificado))
+                    ? formatNumero(Number(honorarios.valorHonorariosUnificado))
+                    : ""
+                }
+                onChange={handleHonorarioChange}
+                onFocus={() => setEditingField("valorHonorariosUnificado")}
+                onBlur={() => setEditingField(null)}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Numero de cuotas - Unificado"
+                width="180px"
+                size="small"
+                type="number"
+                name="cuotasHonorariosUnificado"
+                value={honorarios.cuotasHonorariosUnificado}
+                onChange={handleHonorarioChange}
+                onKeyDown={handleKeyPress}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <input
+                    type="checkbox"
+                    name="cuota6"
+                    checked={!!honorarios.cuota6}
+                    onChange={handleHonorarioChange}
+                    aria-label="cuota6-checkbox"
+                  />
+                }
+                label="Cuota extra Junio"
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel
+                control={
+                  <input
+                    type="checkbox"
+                    name="cuota12"
+                    checked={!!honorarios.cuota12}
+                    onChange={handleHonorarioChange}
+                    aria-label="cuota12-checkbox"
+                  />
+                }
+                label="Cuota extra Diciembre"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2">Plan de pagos</Typography>
+              {planpagos && planpagos.length > 0 && (
+                <Table size="small" sx={{ mt: 1 }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Periodo</TableCell>
+                      <TableCell>Cuota fija</TableCell>
+                      <TableCell>Saldo</TableCell>
+                      <TableCell>Fecha de pago</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {planpagos.map((p, i) => (
+                      <TableRow key={`p-${i}`}>
+                        <TableCell>{p.numeroCuota}</TableCell>
+                        <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
+                        <TableCell>{formatNumero(p.saldo)}</TableCell>
+                        <TableCell>{p.fechapago}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+
+              {planpagosUnificado && planpagosUnificado.length > 0 && (
+                <>
+                  <Typography sx={{ mt: 2 }} variant="subtitle2">
+                    Plan Unificado
+                  </Typography>
+                  <Table size="small" sx={{ mt: 1 }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Periodo</TableCell>
+                        <TableCell>Cuota fija</TableCell>
+                        <TableCell>Saldo</TableCell>
+                        <TableCell>Fecha de pago</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {planpagosUnificado.map((p, i) => (
+                        <TableRow key={`pu-${i}`}>
+                          <TableCell>{p.numeroCuota}</TableCell>
+                          <TableCell>{formatNumero(p.cuotaMensual)}</TableCell>
+                          <TableCell>{formatNumero(p.saldo)}</TableCell>
+                          <TableCell>{p.fechapago}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </>
+              )}
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+
+      {/* DIALOG: Ingresos / Gastos / Cuota */}
       <Dialog
         open={showIngresosModal}
         onClose={closeIngresosModal}

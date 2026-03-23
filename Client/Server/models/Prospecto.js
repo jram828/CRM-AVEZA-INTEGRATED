@@ -33,10 +33,26 @@ export default (sequelize) => {
       familiares: { type: DataTypes.STRING, allowNull: true },
       tieneBienes: { type: DataTypes.STRING, allowNull: true },
       bienes: { type: DataTypes.STRING, allowNull: true },
-      totalBienes: { type: DataTypes.STRING, allowNull: true },
-      numeroEntidades: { type: DataTypes.INTEGER, allowNull: true },
-      tiempoMora: { type: DataTypes.STRING, allowNull: true },
-      totalDeudas: { type: DataTypes.STRING, allowNull: true },
+      totalBienes: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "No se ha registrado",
+      },
+      numeroEntidades: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0,
+      },
+      tiempoMora: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "Más de 90 días",
+      },
+      totalDeudas: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "No se ha registrado",
+      },
       modoContacto: { type: DataTypes.STRING, allowNull: true },
       contactado: {
         type: DataTypes.STRING,

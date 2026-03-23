@@ -5,7 +5,7 @@ import { generarPlanPagosHonorarios } from "../utils/planPagosHonorarios";
 import { fechaLetras } from "../utils/fechaLetras";
 
 export const generarDocumentos = (
-  cliente,
+  caso,
   valor_pretensiones_letras,
   honorarios_letras,
   valorRadicar_letras,
@@ -20,7 +20,7 @@ export const generarDocumentos = (
 
   const planpagos = generarPlanPagosHonorarios(caso.honorarios, caso.cuotas, caso.porcentajeInicial);
   // console.log("Plan de pagos:", planpagos);
-  const deudasmod = cliente.Deuda2s.map((deuda) => ({
+  const deudasmod = caso.Cliente.Deuda2s.map((deuda) => ({
     ...deuda,
     capital: Number(deuda.capital).toLocaleString(),
   }));
@@ -45,13 +45,13 @@ export const generarDocumentos = (
 
     // !Reemplazar campos en una plantilla (Documentos legales)
     doc.render({
-      nombre: cliente.nombres.toUpperCase(),
-      apellido: cliente.apellidos.toUpperCase(),
-      cedula: Number(cliente.cedulaCliente).toLocaleString(),
-      celular: cliente.celular,
-      correo: cliente.email,
-      ciudad: cliente.Ciudads[0].nombre_ciudad,
-      direccion: cliente.direccion,
+      nombre: caso.Cliente.nombres.toUpperCase(),
+      apellido: caso.Cliente.apellidos.toUpperCase(),
+      cedula: Number(caso.ClienteCedulaCliente).toLocaleString(),
+      celular: caso.Cliente.celular,
+      correo: caso.Cliente.email,
+      ciudad: caso.Cliente.Ciudads[0].nombre_ciudad,
+      direccion: caso.Cliente.direccion,
       fecha: fecha,
       pretensiones: Number(caso.valor_pretensiones).toLocaleString(),
       pretensiones_letras: valor_pretensiones_letras.toUpperCase(),
@@ -74,6 +74,6 @@ export const generarDocumentos = (
       compression: "DEFLATE",
     });
     // Output the document using Data-URI
-    saveAs(blob, `Documentos ${cliente.nombres} ${cliente.apellidos}.docx`);
+    saveAs(blob, `Documentos ${caso.Cliente.nombres} ${caso.Cliente.apellidos}.docx`);
   };
 };

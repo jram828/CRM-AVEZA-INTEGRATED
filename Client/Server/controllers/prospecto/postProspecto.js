@@ -19,6 +19,8 @@ const postProspecto = async (req, res) => {
     cuotas,
     comentarios,
     valor_pretensiones,
+    numeroEntidades,
+    tiempoMora,
   } = req.body;
  console.log("Nombre ciudad recibido:", nombre_ciudad);
   const ciudadfilter = codigoCiudades.filter(

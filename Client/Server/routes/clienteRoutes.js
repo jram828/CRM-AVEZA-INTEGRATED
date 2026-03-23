@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { relacionarPaises} from "../controllers/relacionarPaises.js";
+import { relacionarPaises } from "../controllers/relacionarPaises.js";
 import { relacionarDepartamentos } from "../controllers/relacionarDepartamentos.js";
 import { crearCiudades } from "../controllers/crearCiudades.js";
 import {
@@ -28,8 +28,8 @@ clientesRouter.post("/relacionardepartamentos", relacionarDepartamentos);
 clientesRouter.post("/crearciudades", crearCiudades);
 
 clientesRouter.put("/actualiza", postActualizaClientes); //Actualizar datos (uno a la vez)
-clientesRouter.put("/status", postActualizaClienteStatus); 
-clientesRouter.put("/calificacion", postActualizaClienteCalificacion); 
+clientesRouter.put("/status", postActualizaClienteStatus);
+clientesRouter.put("/calificacion", postActualizaClienteCalificacion);
 
 clientesRouter.post("/elimina", postEliminaClientes);
 

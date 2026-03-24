@@ -255,7 +255,7 @@ const Detail = () => {
         bancoPersonas: datos.bancoPersonas || "",
         familiares: datos.familiares || "",
         tieneBienes: datos.tieneBienes || "",
-        totalDeudas: datos?.Cotizacions[0].totalDeudas || "",
+        totalDeudas: datos?.Cotizacions[0]?.totalDeudas || "",
         modoContacto: datos.modoContacto || "",
         contactado: datos.contactado || "No",
         tieneCotizacion: datos.tieneCotizacion || "No",
@@ -269,13 +269,13 @@ const Detail = () => {
         deudas: datos.Deuda2s || [],
         honorarios: datos?.Honorarios || [],
         fase: datos.fase || "",
-        ingresos: datos?.Cotizacions[0].ingresos || "",
-        gastos: datos?.Cotizacions[0].gastos || "",
-        posibleCuota: datos?.Cotizacions[0].posibleCuota || "",
-        totalBienes: datos?.Cotizacions[0].totalBienes || "",
-        totalDeudas_letras: datos?.Cotizacions[0].totalDeudas_letras || "",
-        totalBienes_letras: datos?.Cotizacions[0].totalBienes_letras || "",
-        valorRadicar_letras: datos?.Cotizacions[0].valorRadicar_letras || "",
+        ingresos: datos?.Cotizacions[0]?.ingresos || "",
+        gastos: datos?.Cotizacions[0]?.gastos || "",
+        posibleCuota: datos?.Cotizacions[0]?.posibleCuota || "",
+        totalBienes: datos?.Cotizacions[0]?.totalBienes || "",
+        totalDeudas_letras: datos?.Cotizacions[0]?.totalDeudas_letras || "",
+        totalBienes_letras: datos?.Cotizacions[0]?.totalBienes_letras || "",
+        valorRadicar_letras: datos?.Cotizacions[0]?.valorRadicar_letras || "",
       });
     }
   }, [dispatch, source]);
@@ -413,7 +413,7 @@ const Detail = () => {
     );
   };
 
-    const handleFaseChange = (e) => {
+  const handleFaseChange = (e) => {
     const { name, value } = e.target;
     setUserDataDetail({
       ...userDataDetail,

@@ -88,30 +88,27 @@ const Prospectos = () => {
 
   const groupedProspectos = useMemo(() => {
     const groups = {
-  lead: [],
-  agendado: [],
-  asesorado: [],
-  cotizado: [],
-  esperadocumentos: [],
-  remarketing: [],
-  descartado: [],
+      lead: [],
+      agendado: [],
+      asesorado: [],
+      cotizado: [],
+      esperadocumentos: [],
+      remarketing: [],
+      descartado: [],
+      contactado: [],
+      contactonoefectivo: [],
+      leadcalificado: [],
+      leadnocalificado: [],
+      nocalificado: [],
+      noseconecto: [],
+      reagendado: [],
+      cotizacionenevaluacion: [],
+      cotizacionrechazada: [],
+      contratoenviado: [],
+      clienteactivo: [],
     };
 
-          // sincontacto: [],
-      // contactoefectivo: [],
-      // contactonoefectivo: [],
-      // leadcalificado: [],
-      // leadnocalificado: [],
-      // nocaldescartado: [],
-      // cotizacionenevaluacion: [],
-      // contratoenevaluacion: [],
-      // cotizacionrechazada: [],
-      // documentacion: [],
-      // clienteactivo: [],
-      // remarketing: [],
-      // clienteprocesoactivo: [],
-      // fidelizacion: [],
-      // descartado: [],
+    
 
     prospectos.forEach((p) => {
       const key = p.status;
@@ -155,10 +152,12 @@ const Prospectos = () => {
     );
   };
 
-    const handleCalificacionChange = (idProspecto, newCalificacion) => {
+  const handleCalificacionChange = (idProspecto, newCalificacion) => {
     setProspectos((prev) =>
       prev.map((p) =>
-        p.idProspecto === idProspecto ? { ...p, calificacion: newCalificacion } : p,
+        p.idProspecto === idProspecto
+          ? { ...p, calificacion: newCalificacion }
+          : p,
       ),
     );
     dispatch(
@@ -689,32 +688,34 @@ const Prospectos = () => {
               }}
             >
               {renderColumn("1. Lead", "lead")}
-              {renderColumn("2. Agendado", "agendado")}
-              {renderColumn("3. Asesorado", "asesorado")}
-              {renderColumn("4. Cotizado", "cotizado")}
+              {renderColumn("2. Contactado", "contactado")}
               {renderColumn(
-                "5. Espera de documentos/Información",
+                "3. Contacto NO efectivo - Remarketing",
+                "contactonoefectivo",
+              )}
+              {renderColumn("4. Lead Calificado", "leadcalificado")}
+              {renderColumn(
+                "5. Lead No Calificado - Remarketing",
+                "leadnocalificado",
+              )}
+              {renderColumn("6. No Calificado - Descartado", "nocalificado")}
+              {renderColumn("7. Agendado", "agendado")}
+              {renderColumn("8. No se conectó - Remarketing", "noseconecto")}
+              {renderColumn("9. Reagendado", "reagendado")}
+              {renderColumn("10. Asesorado", "asesorado")}
+              {renderColumn("11. Cotizado", "cotizado")}
+              {renderColumn(
+                "12. Cotización en evaluación",
+                "cotizacionenevaluacion",
+              )}
+              {renderColumn("13. Cotización rechazada", "cotizacionrechazada")}
+              {renderColumn(
+                "14. Espera de documentos/Información",
                 "esperadocumentos",
               )}
-              {renderColumn("6. Remarketing", "remarketing")}
-                            {renderColumn(
-                "7. Descartado",
-                "descartado",
-              )}
-              {/* {renderColumn("5. Cotización rechazada", "cotizacionrechazada")}
-              {renderColumn("6. Documentación", "documentacion")}
-              {renderColumn(
-                "7. Contrato en evaluación",
-                "contratoenevaluacion",
-              )}
-              {renderColumn("8. Cliente activo", "clienteactivo")}
-              {renderColumn("8. Remarketing", "remarketing")}
-              {renderColumn(
-                "8. Cliente con Proceso Activo",
-                "clienteprocesoactivo",
-              )}
-              {renderColumn("9. Fidelización", "fidelizacion")}
-              {renderColumn("10. Descartado", "descartado")} */}
+              {renderColumn("15. Contrato enviado", "contratoenviado")}
+              {renderColumn("16. Cliente activo", "clienteactivo")}
+              {renderColumn("17. Fidelización - Remarketing", "remarketing")}
             </div>
           </DragDropContext>
         )}

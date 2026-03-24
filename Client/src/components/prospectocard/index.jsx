@@ -136,16 +136,40 @@ const ProspectoCard = React.memo(
                 handleStatusChange(prospecto.idProspecto, e.target.value)
               }
             >
-              <MenuItem value="lead">👤 1. Lead</MenuItem>
-              <MenuItem value="agendado">📅 2. Agendado</MenuItem>
-              <MenuItem value="asesorado">📞 3. Asesorado</MenuItem>
-              <MenuItem value="cotizado">✅ 4. Cotizado</MenuItem>
-              <MenuItem value="esperadocumentos">
-                📄 5. Espera de documentos/Información
+              <MenuItem value="lead">📝 1. Lead</MenuItem>
+              <MenuItem value="contactado">📞 2. Contactado</MenuItem>
+              <MenuItem value="contactonoefectivo">
+                🔄 3. Contacto NO efectivo - Remarketing
               </MenuItem>
-              <MenuItem value="remarketing">🔄 6. Remarketing</MenuItem>
-              <MenuItem value="descartado">
-                🗑️ 7. Descartado
+              <MenuItem value="leadcalificado">⭐ 4. Lead Calificado</MenuItem>
+              <MenuItem value="leadnocalificado">
+                🔄 5. Lead No Calificado - Remarketing
+              </MenuItem>
+              <MenuItem value="nocalificado">
+                ❌ 6. No Calificado - Descartado
+              </MenuItem>
+              <MenuItem value="agendado">📅 7. Agendado</MenuItem>
+              <MenuItem value="noseconecto">
+                🔄 8. No se conectó - Remarketing
+              </MenuItem>
+              <MenuItem value="reagendado">🔁 9. Reagendado</MenuItem>
+              <MenuItem value="asesorado">💬 10. Asesorado</MenuItem>
+              <MenuItem value="cotizado">💰 11. Cotizado</MenuItem>
+              <MenuItem value="cotizacionenevaluacion">
+                🔍 12. Cotización en evaluación
+              </MenuItem>
+              <MenuItem value="cotizacionrechazada">
+                🚫 13. Cotización rechazada
+              </MenuItem>
+              <MenuItem value="esperadocumentos">
+                ⏳ 14. Espera de documentos/Información
+              </MenuItem>
+              <MenuItem value="contratoenviado">
+                ✉️ 15. Contrato enviado
+              </MenuItem>
+              <MenuItem value="clienteactivo">🟢 16. Cliente activo</MenuItem>
+              <MenuItem value="remarketing">
+                🤝 17. Fidelización - Remarketing
               </MenuItem>
             </Select>
           </FormControl>

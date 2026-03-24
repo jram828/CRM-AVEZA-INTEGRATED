@@ -1,5 +1,5 @@
 export const codigoCiudades = [
-{codigo_ciudad: 5001, nombre_ciudad: 'MEDELLIN', codigo_departamento: 5},
+{codigo_ciudad: 5001, nombre_ciudad: 'MEDELLÍN', codigo_departamento: 5},
 {codigo_ciudad: 5002, nombre_ciudad: 'ABEJORRAL', codigo_departamento: 5},
 {codigo_ciudad: 5004, nombre_ciudad: 'ABRIAQUI', codigo_departamento: 5},
 {codigo_ciudad: 5021, nombre_ciudad: 'ALEJANDRIA', codigo_departamento: 5},
@@ -147,7 +147,7 @@ export const codigoCiudades = [
 {codigo_ciudad: 8770, nombre_ciudad: 'SUAN', codigo_departamento: 8},
 {codigo_ciudad: 8832, nombre_ciudad: 'TUBARA', codigo_departamento: 8},
 {codigo_ciudad: 8849, nombre_ciudad: 'USIACURI', codigo_departamento: 8},
-{codigo_ciudad: 11001, nombre_ciudad: 'BOGOTA', codigo_departamento: 11},
+{codigo_ciudad: 11001, nombre_ciudad: 'BOGOTÁ', codigo_departamento: 11},
 {codigo_ciudad: 13001, nombre_ciudad: 'CARTAGENA DE INDIAS', codigo_departamento: 13},
 {codigo_ciudad: 13006, nombre_ciudad: 'ACHI', codigo_departamento: 13},
 {codigo_ciudad: 13030, nombre_ciudad: 'ALTOS DEL ROSARIO', codigo_departamento: 13},

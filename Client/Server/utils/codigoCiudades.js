@@ -1,5 +1,5 @@
 export const codigoCiudades = [
-  { codigo_ciudad: 5001, nombre_ciudad: "MEDELLIN", codigo_departamento: 5 },
+  { codigo_ciudad: 5001, nombre_ciudad: "MEDELLÍN", codigo_departamento: 5 },
   { codigo_ciudad: 5088, nombre_ciudad: "BELLO", codigo_departamento: 5 },
   { codigo_ciudad: 5266, nombre_ciudad: "ENVIGADO", codigo_departamento: 5 },
   { codigo_ciudad: 5380, nombre_ciudad: "LA ESTRELLA", codigo_departamento: 5 },
@@ -10,7 +10,7 @@ export const codigoCiudades = [
   },
   {
     codigo_ciudad: 11001,
-    nombre_ciudad: "BOGOTA",
+    nombre_ciudad: "BOGOTÁ",
     codigo_departamento: 11,
   },
   {

@@ -2,27 +2,30 @@ import { models } from "../../DB.js";
 
 const { Cotizacion, Prospecto } = models;
 
-
 const createCotizacion = async (
-      cedulaProspecto,
-      ingresos,
-      gastos,
-      posibleCuota,
-      totalBienes,
-      totalBienes_letras,
-      totalDeudas_letras,
-      valorRadicar_letras,
-      deleteDeudas=true,
-) => {
-  console.log("cedulaProspecto controller:", cedulaProspecto);
-console.log("Datos recibidos para crear cotización:", {
+  cedulaProspecto,
   ingresos,
-  gastos,  posibleCuota,
-  totalDeudas_letras,
+  gastos,
+  posibleCuota,
   totalBienes,
   totalBienes_letras,
+  totalDeudas,
+  totalDeudas_letras,
   valorRadicar_letras,
-  cedulaProspecto})
+  deleteDeudas = true,
+) => {
+  console.log("cedulaProspecto controller:", cedulaProspecto);
+  console.log("Datos recibidos para crear cotización:", {
+    ingresos,
+    gastos,
+    posibleCuota,
+    totalDeudas_letras,
+    totalBienes,
+    totalBienes_letras,
+    totalDeudas,
+    valorRadicar_letras,
+    cedulaProspecto,
+  });
 
   const estaProspecto = await Prospecto.findOne({
     where: {
@@ -105,16 +108,25 @@ console.log("Datos recibidos para crear cotización:", {
   }
   var tBienes;
 
-  if (typeof totalBienes=== "number") {
+  if (typeof totalBienes === "number") {
     tBienes = totalBienes;
   } else {
     tBienes = BigInt(totalBienes);
   }
 
+    var tDeudas;
+
+    if (typeof totalDeudas === "number") {
+      tDeudas = totalDeudas;
+    } else {
+      tDeudas = BigInt(totalDeudas);
+    }
+
   var newCotizacion = await Cotizacion.create({
     ingresos: ingresos,
     gastos: gastos,
     posibleCuota: posibleCuota,
+    totalDeudas: tDeudas,
     totalDeudas_letras: totalDeudas_letras,
     totalBienes: tBienes,
     totalBienes_letras: totalBienes_letras,

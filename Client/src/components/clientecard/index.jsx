@@ -29,6 +29,7 @@ const ClienteCard = React.memo(
     tooltip,
     onClickDetail,
     handleStatusChange,
+    handleFaseChange,
     handleOpenOverlay,
   }) => {
     return (
@@ -102,6 +103,12 @@ const ClienteCard = React.memo(
                 handleStatusChange(cliente.cedulaCliente, e.target.value)
               }
             >
+              <MenuItem value="cotizacionenevaluacion">
+                💰 5. Cotización en evaluación
+              </MenuItem>
+              <MenuItem value="cotizacionrechazada">
+                ⚠️ 5. Cotización rechazada
+              </MenuItem>
               <MenuItem value="documentacion">📄 6. Documentación</MenuItem>
               <MenuItem value="contratoenevaluacion">
                 📑 7. Contrato en evaluación
@@ -113,6 +120,32 @@ const ClienteCard = React.memo(
               </MenuItem>
               <MenuItem value="fidelizacion">🤝 9. Fidelización</MenuItem>
               <MenuItem value="descartado">🚫 10. Descartado</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth size="small" sx={{ mt: 1 }}>
+            <InputLabel>Fase</InputLabel>
+            <Select
+              value={cliente.fase}
+              label="Fase"
+              onChange={(e) =>
+                handleFaseChange(cliente.cedulaCliente, e.target.value)
+              }
+            >
+              <MenuItem value="necesitaanalisis">
+                💰 1. Necesita análisis
+              </MenuItem>
+              <MenuItem value="propuestavalor">
+                ⚠️ 2. Propuesta de valor
+              </MenuItem>
+              <MenuItem value="identificarresponsables">
+                📄 3. Identificar responsables
+              </MenuItem>
+              <MenuItem value="cotizacion">
+                📑 4. Cotización de propuesta / precio
+              </MenuItem>
+              <MenuItem value="negociacion">
+                🔄 5. Negociación / revisión
+              </MenuItem>
             </Select>
           </FormControl>
         </CardContent>
@@ -128,6 +161,7 @@ ClienteCard.propTypes = {
     nombres: PropTypes.string.isRequired,
     apellidos: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
+    fase: PropTypes.string.isRequired,
     cedulaCliente: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
   }).isRequired,
@@ -139,6 +173,7 @@ ClienteCard.propTypes = {
   tooltip: PropTypes.string,
   onClickDetail: PropTypes.func.isRequired,
   handleStatusChange: PropTypes.func.isRequired,
+  handleFaseChange: PropTypes.func.isRequired,
   handleOpenOverlay: PropTypes.func.isRequired,
 };
 

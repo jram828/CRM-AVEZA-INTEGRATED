@@ -11,16 +11,15 @@ const createClienteBd = async (
   celular,
   direccion,
   nombre_ciudad,
+  modoContacto,
   tipo_usuario,
   tipo_de_caso,
   forma_de_pago,
   honorarios,
   cuotas,
   comentarios,
-  valor_pretensiones
+  valor_pretensiones,
 ) => {
-
-  
   console.log("Body:", {
     email,
     nombres,
@@ -29,6 +28,7 @@ const createClienteBd = async (
     celular,
     direccion,
     nombre_ciudad,
+    modoContacto,
     tipo_usuario,
     tipo_de_caso,
     forma_de_pago,
@@ -65,20 +65,21 @@ const createClienteBd = async (
         cuotas: cuotas,
         comentarios: comentarios,
         valor_pretensiones: valor_pretensiones,
+        modoContacto: modoContacto,
       });
-      if(nombre_ciudad){
+      if (nombre_ciudad) {
         const ciudadfilter = codigoCiudades.filter(
-          (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
+          (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase(),
         );
         console.log("Ciudad filter:", ciudadfilter);
-      
+
         const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
         console.log("Codigo ciudad:", codigo_ciudad);
-      
+
         console.log("ciudad:", ciudadfilter);
         newCliente.addCiudad(codigo_ciudad);
       }
-      
+
       // newCliente.addTipoDeCaso(tipo_de_caso);
       // newCliente.addTipoUsuario(tipo_usuario);
 
@@ -90,7 +91,7 @@ const createClienteBd = async (
     } catch (error) {
       console.log(error);
       // res.status(500).send(error.message);
-      return error.message
+      return error.message;
     }
   }
 };

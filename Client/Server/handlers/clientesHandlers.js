@@ -12,7 +12,7 @@ import {
 } from "../controllers/cliente/getClientByEmail.js";
 import { actualizaClienteStatus } from "../controllers/cliente/postActualizaClienteStatus.js";
 import { actualizaClienteCalificacion } from "../controllers/cliente/postActualizaClienteCalificacion.js";
-
+import { actualizaClienteFase } from "../controllers/cliente/postActualizaClienteFase.js";
 const clientesHandler = async (req, res) => {
   //const { name } = req.query;
   console.log(req.query);
@@ -91,7 +91,8 @@ const postClientesHandler = async (req, res) => {
       honorarios,
       cuotas,
       comentarios,
-      valor_pretensiones
+      valor_pretensiones,
+      modoContacto,
   } = req.body;
 
   try {
@@ -103,6 +104,7 @@ const postClientesHandler = async (req, res) => {
       celular,
       direccion,
       nombre_ciudad,
+      modoContacto,
       tipo_usuario,
       tipo_de_caso,
       forma_de_pago,
@@ -145,12 +147,14 @@ const postActualizaClientes = async (req, res) => {
     ciudad_anterior,
     comentarios,
     cedula_anterior,
+    modoContacto,
   } = req.body;
   
   const cedula = cedulanew;
 
   try {
     console.log('Cedula anterior handler:',cedula_anterior)
+    console.log('Modo contacto handler:',modoContacto)
     const response = await actualizaCliente(
       cedula,
       nombres,
@@ -161,7 +165,8 @@ const postActualizaClientes = async (req, res) => {
       ciudad,
       ciudad_anterior,
       comentarios,
-      cedula_anterior
+      cedula_anterior,
+      modoContacto
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el cliente");
@@ -176,6 +181,18 @@ const postActualizaClienteStatus = async (req, res) => {
 
   try {
     const response = await actualizaClienteStatus(cedulaCliente, field, value);
+    if (response) res.status(200).json(response);
+    else res.status(204).json("No se actualizo el cliente");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const postActualizaClienteFase = async (req, res) => {
+  const { cedulaCliente, field, value } = req.body;
+
+  try {
+    const response = await actualizaClienteFase(cedulaCliente, field, value);
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el cliente");
   } catch (error) {
@@ -204,5 +221,6 @@ export  {
   postActualizaClientes,
   getClientByEmailHandler,
   postActualizaClienteStatus,
+  postActualizaClienteFase,
   postActualizaClienteCalificacion
 };

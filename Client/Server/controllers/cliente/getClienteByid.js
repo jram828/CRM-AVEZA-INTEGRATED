@@ -47,6 +47,8 @@ const getClienteById = async (cedulaCliente)=>{
             "cuotasHonorarios",
             "honorariosLiquidacion",
             "totalDeudas",
+            "honorarios_letras",
+            "honorariosLiquidacion_letras",
           ],
           through: { attributes: [] },
         },

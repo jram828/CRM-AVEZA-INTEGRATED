@@ -12,6 +12,7 @@ export default (sequelize) => {
     gastos: { type: DataTypes.BIGINT, allowNull: true },
     posibleCuota: { type: DataTypes.BIGINT, allowNull: true },
     totalBienes: { type: DataTypes.BIGINT, allowNull: true },
+    totalDeudas: { type: DataTypes.BIGINT, allowNull: true },
     totalDeudas_letras: { type: DataTypes.STRING, allowNull: true },
     totalBienes_letras: { type: DataTypes.STRING, allowNull: true },
     valorRadicar_letras: { type: DataTypes.STRING, allowNull: true },

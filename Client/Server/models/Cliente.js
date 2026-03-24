@@ -18,14 +18,23 @@ export default (sequelize) => {
       direccion: { type: DataTypes.STRING, allowNull: false },
       celular: { type: DataTypes.BIGINT, allowNull: false },
       comentarios: { type: DataTypes.TEXT, allowNull: true },
-      status: { type: DataTypes.STRING, allowNull: true, defaultValue: "cotizacionenevaluacion" },
-      fase: { type: DataTypes.STRING, allowNull: true, defaultValue: "necesitaanalisis" },
+      modoContacto: { type: DataTypes.STRING, allowNull: true },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "cotizacionenevaluacion",
+      },
+      fase: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "necesitaanalisis",
+      },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
     },
-    { timestamps: false}
+    { timestamps: false },
   );
   return Cliente;
 };

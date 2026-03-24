@@ -366,6 +366,7 @@ const postCotizacionHandler = async (req, res) => {
     posibleCuota,
     totalBienes,
     totalBienes_letras,
+    totalDeudas,
     totalDeudas_letras,
     valorRadicar_letras,
   } = req.body;
@@ -379,6 +380,7 @@ const postCotizacionHandler = async (req, res) => {
       posibleCuota.mensual,
       totalBienes,
       totalBienes_letras,
+      totalDeudas,
       totalDeudas_letras,
       valorRadicar_letras,
     );

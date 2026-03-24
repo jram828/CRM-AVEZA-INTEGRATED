@@ -13,6 +13,7 @@ import {
   clienteActual,
   setSource,
   updateClienteStatus,
+  updateClienteFase,
 } from "../../redux/actions";
 import { Button2, Button3 } from "../Mystyles";
 import SearchBar from "../searchBarClientes";
@@ -86,19 +87,24 @@ const Clientes = () => {
 
   const groupedClientes = useMemo(() => {
     const groups = {
-      cotizacionenevaluacion: [],
-      contratoenevaluacion: [],
-      cotizacionrechazada: [],
-      documentacion: [],
-      clienteactivo: [],
-      remarketing: [],
-      clienteprocesoactivo: [],
-      fidelizacion: [],
-      descartado: [],
+      // cotizacionenevaluacion: [],
+      // contratoenevaluacion: [],
+      // cotizacionrechazada: [],
+      // documentacion: [],
+      // clienteactivo: [],
+      // remarketing: [],
+      // clienteprocesoactivo: [],
+      // fidelizacion: [],
+      // descartado: [],
+      necesitaanalisis: [],
+      propuestavalor: [],
+      identificarresponsables: [],
+      cotizacion: [],
+      negociacion: [],
     };
 
     clientes.forEach((p) => {
-      const key = p.status;
+      const key = p.fase;
       if (groups[key]) {
         groups[key].push(p);
       }
@@ -135,6 +141,21 @@ const Clientes = () => {
         cedulaCliente: cedulaCliente,
         field: "status",
         value: newStatus,
+      }),
+    );
+  };
+
+  const handleFaseChange = (cedulaCliente, newFase) => {
+    setClientes((prev) =>
+      prev.map((p) =>
+        p.cedulaCliente === cedulaCliente ? { ...p, fase: newFase } : p,
+      ),
+    );
+    dispatch(
+      updateClienteFase({
+        cedulaCliente: cedulaCliente,
+        field: "fase",
+        value: newFase,
       }),
     );
   };
@@ -246,20 +267,20 @@ const Clientes = () => {
     );
     if (!movedCliente) return;
 
-    if (movedCliente.status === destination.droppableId) return; // ✅ evita updates innecesarios
+    if (movedCliente.fase === destination.droppableId) return; // ✅ evita updates innecesarios
 
     setClientes((prev) =>
       prev.map((p) =>
         String(p.cedulaCliente) === draggableId
-          ? { ...p, status: destination.droppableId }
+          ? { ...p, fase: destination.droppableId }
           : p,
       ),
     );
 
     dispatch(
-      updateClienteStatus({
+      updateClienteFase({
         cedulaCliente: draggableId,
-        field: "status",
+        field: "fase",
         value: destination.droppableId,
       }),
     );
@@ -403,6 +424,7 @@ const Clientes = () => {
       Direccion: cliente.direccion,
       Email: cliente.email,
       Status: cliente?.status || "",
+      Fase: cliente?.fase || "",
     }));
 
     const headers = [
@@ -413,6 +435,7 @@ const Clientes = () => {
       "Direccion",
       "Email",
       "Status",
+      "Fase",
     ];
 
     // Crear hoja de cálculo
@@ -440,7 +463,7 @@ const Clientes = () => {
     XLSX.writeFile(libro, `clientes_${fecha}.xlsx`);
   };
 
-  const renderColumn = (title, statusKey) => (
+  const renderColumn = (title, faseKey) => (
     <div
       style={{
         minWidth: "300px",
@@ -461,14 +484,14 @@ const Clientes = () => {
         <Typography variant="h6" align="center" gutterBottom>
           {title}
         </Typography>
-        <Droppable droppableId={statusKey}>
+        <Droppable droppableId={faseKey}>
           {(provided) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
               style={{ minHeight: "60vh" }}
             >
-              {groupedClientes[statusKey]?.map((cliente, index) => {
+              {groupedClientes[faseKey]?.map((cliente, index) => {
                 const latestActivity =
                   actividadPorCliente[cliente.cedulaCliente] ?? null;
 
@@ -502,6 +525,7 @@ const Clientes = () => {
                           tooltip={tooltip}
                           onClickDetail={onClickDetail}
                           handleStatusChange={handleStatusChange}
+                          handleFaseChange={handleFaseChange}
                           handleOpenOverlay={handleOpenOverlay}
                         />
                       </div>
@@ -657,24 +681,17 @@ const Clientes = () => {
                 flexWrap: "nowrap",
               }}
             >
+              {renderColumn("1. Necesita análisis", "necesitaanalisis")}
+              {renderColumn("2. Propuesta de valor", "propuestavalor")}
               {renderColumn(
-                "5. Cotización en evaluación",
-                "cotizacionenevaluacion",
+                "3. Identificar responsables",
+                "identificarresponsables",
               )}
-              {renderColumn("5. Cotización rechazada", "cotizacionrechazada")}
-              {renderColumn("6. Documentación", "documentacion")}
               {renderColumn(
-                "7. Contrato en evaluación",
-                "contratoenevaluacion",
+                "4. Cotización de propuesta / precio",
+                "cotizacion",
               )}
-              {renderColumn("8. Cliente activo", "clienteactivo")}
-              {renderColumn("8. Remarketing", "remarketing")}
-              {renderColumn(
-                "8. Cliente con Proceso Activo",
-                "clienteprocesoactivo",
-              )}
-              {renderColumn("9. Fidelización", "fidelizacion")}
-              {renderColumn("10. Descartado", "descartado")}
+              {renderColumn("5. Negociación / revisión", "negociacion")}
             </div>
           </DragDropContext>
         )}

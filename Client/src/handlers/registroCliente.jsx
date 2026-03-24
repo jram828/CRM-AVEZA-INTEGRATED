@@ -18,6 +18,7 @@ export function registroCliente(userDataRegistro) {
     cuotas,
     comentarios,
     valor_pretensiones,
+    modoContacto,
   } = userDataRegistro;
   
   console.log("User data registro:", userDataRegistro);
@@ -40,8 +41,9 @@ export function registroCliente(userDataRegistro) {
       cuotas: `${cuotas}`,
       comentarios: `${comentarios}`,
       valor_pretensiones: `${valor_pretensiones}`,
+      modoContacto: `${modoContacto}`,
     });
-    window.alert("Se ha registrado el cliente con éxito.");
+    // window.alert("Se ha registrado el cliente con éxito.");
    
   } catch (error) {
     window.alert("No fue posible registrar el cliente.");

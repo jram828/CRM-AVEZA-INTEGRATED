@@ -4,23 +4,17 @@ import { saveAs } from "file-saver";
 import { generarPlanPagosHonorarios } from "../utils/planPagosHonorarios";
 import { fechaLetras } from "../utils/fechaLetras";
 
-export const generarDocumentos = (
-  cliente,
-  valor_pretensiones_letras,
-  honorarios_letras,
-  valorRadicar_letras,
-  honorariosLiquidacion_letras,
-) => {
+export const generarDocumentos = (cliente) => {
 
   const fecha = fechaLetras(new Date());
 
-  // console.log("caso generar documentos", caso);
+  console.log("Cliente generar documentos", cliente);
   const docs = document.getElementById("doc");
 
 
-  const planpagos = generarPlanPagosHonorarios(caso.honorarios, caso.cuotas, caso.porcentajeInicial);
+  const planpagos = generarPlanPagosHonorarios(cliente?.honorarios[0].valorHonorarios, cliente?.honorarios[0].cuotasHonorarios, cliente?.honorarios[0].inicial);
   // console.log("Plan de pagos:", planpagos);
-  const deudasmod = cliente.Deuda2s.map((deuda) => ({
+  const deudasmod = cliente.deudas.map((deuda) => ({
     ...deuda,
     capital: Number(deuda.capital).toLocaleString(),
   }));
@@ -47,20 +41,20 @@ export const generarDocumentos = (
     doc.render({
       nombre: cliente.nombres.toUpperCase(),
       apellido: cliente.apellidos.toUpperCase(),
-      cedula: Number(cliente.cedulaCliente).toLocaleString(),
+      cedula: Number(cliente.cedulanew).toLocaleString(),
       celular: cliente.celular,
       correo: cliente.email,
-      ciudad: cliente.Ciudads[0].nombre_ciudad,
+      ciudad: cliente.ciudad,
       direccion: cliente.direccion,
       fecha: fecha,
-      pretensiones: Number(caso.valor_pretensiones).toLocaleString(),
-      pretensiones_letras: valor_pretensiones_letras.toUpperCase(),
-      honorarios: Number(caso.honorarios).toLocaleString(),
-      honorarios_letras: honorarios_letras.toUpperCase(),
-      valorRadicar: Number(caso.valorRadicar).toLocaleString(),
-      valorRadicar_letras: valorRadicar_letras.toUpperCase(),
-      honorariosLiquidacion: Number(caso.honorariosLiquidacion).toLocaleString(),
-      honorariosLiquidacion_letras: honorariosLiquidacion_letras.toUpperCase(),
+      pretensiones: Number(cliente.totalDeudas).toLocaleString(),
+      pretensiones_letras: cliente.totalDeudas_letras.toUpperCase(),
+      honorarios: Number(cliente.honorarios[0].valorHonorarios).toLocaleString(),
+      honorarios_letras: cliente.honorarios[0].honorarios_letras.toUpperCase(),
+      valorRadicar: Number(cliente.honorarios[0].valorRadicar).toLocaleString(),
+      valorRadicar_letras: cliente.valorRadicar_letras.toUpperCase(),
+      honorariosLiquidacion: Number(cliente.honorarios[0].honorariosLiquidacion).toLocaleString(),
+      honorariosLiquidacion_letras: cliente.honorarios[0].honorariosLiquidacion_letras.toUpperCase(),
       planpagos: planpagos,
       deudas: deudasmod,
     });

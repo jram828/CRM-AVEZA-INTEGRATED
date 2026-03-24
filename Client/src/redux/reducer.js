@@ -86,6 +86,7 @@ import {
   GET_DISPONIBILIDAD,
   PUT_CLIENTE_STATUS,
   PUT_CLIENTE_CALIFICACION,
+  PUT_CLIENTE_FASE,
   PUT_STATUS,
   PUT_CALIFICACION,
   POST_TAREA,
@@ -507,6 +508,11 @@ const rootReducer = (state = initialState, action) => {
         prospecto: action.payload,
       };
     case PUT_CLIENTE_STATUS:
+      return {
+        ...state,
+        cliente: action.payload,
+      };
+    case PUT_CLIENTE_FASE:
       return {
         ...state,
         cliente: action.payload,

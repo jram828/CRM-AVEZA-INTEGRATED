@@ -89,6 +89,7 @@ export const COPIAR_BIENES = "COPIAR_BIENES";
 export const COPIAR_PROPUESTAS = "COPIAR_PROPUESTAS";
 export const POST_COTIZACION = "POST_COTIZACION";
 export const COPIAR_COTIZACION = "COPIAR_COTIZACION";
+export const PUT_CLIENTE_FASE = "PUT_CLIENTE_FASE";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -767,6 +768,17 @@ export const updateClienteStatus = (dataStatus) => {
     const { data } = await axios.put(endpoint, dataStatus);
     return dispatch({
       type: PUT_CLIENTE_STATUS,
+      payload: data,
+    });
+  };
+};
+
+export const updateClienteFase = (dataFase) => {
+  const endpoint = `/clientes/fase`;
+  return async (dispatch) => {
+    const { data } = await axios.put(endpoint, dataFase);
+    return dispatch({
+      type: PUT_CLIENTE_FASE,
       payload: data,
     });
   };

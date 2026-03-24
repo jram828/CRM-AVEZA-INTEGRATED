@@ -24,6 +24,8 @@ import {
   modificarDatosProspecto,
   postNota,
   updateCalificacion,
+  updateClienteFase,
+  updateClienteStatus,
   // setSource,
   // updateCotizacionData,
   updateStatus,
@@ -112,7 +114,7 @@ const Detail = () => {
     bancoPersonas: "",
     familiares: "",
     tieneBienes: "",
-    bienes: "",
+    bienes: [],
     totalBienes: "",
     totalDeudas: "",
     modoContacto: "",
@@ -138,6 +140,7 @@ const Detail = () => {
     siguientePaso: "",
     ingresos: "",
     fase: "",
+    honorarios: [],
   });
   console.log("User Data Detail:", userDataDetail);
 
@@ -171,6 +174,13 @@ const Detail = () => {
   }, [dispatch, source, datos.idProspecto]);
 
   useEffect(() => {
+    const datos =
+      source === "abogado"
+        ? abogado
+        : source === "prospecto"
+        ? prospecto
+        : cliente;
+    console.log("Datos cliente:", datos);
     if (source === "abogado") {
       setUserDataDetail({
         ...userDataDetail,
@@ -204,18 +214,20 @@ const Detail = () => {
         comentarios: datos.comentarios,
         cedulanew: datos.cedulaCliente,
         cedula_anterior: datos.cedulaCliente,
+        modoContacto: datos.modoContacto || "",
         status: datos.status || "",
         bienes: datos.Biens || [],
         deudas: datos.Deuda2s || [],
-        honorarios: datos.Honorarios || [],
+        honorarios: datos?.Honorarios || [],
         fase: datos.fase || "",
-        ingresos: datos.Cotizacions[0].ingresos || "",
-        gastos: datos.Cotizacions[0].gastos || "",
-        posibleCuota: datos.Cotizacions[0].posibleCuota || "",
-        totalBienes: datos.Cotizacions[0].totalBienes || "",
-        totalDeudas_letras: datos.Cotizacions[0].totalDeudas_letras || "",
-        totalBienes_letras: datos.Cotizacions[0].totalBienes_letras || "",
-        valorRadicar_letras: datos.Cotizacions[0].valorRadicar_letras || "",
+        ingresos: datos?.Cotizacions[0].ingresos || "",
+        gastos: datos?.Cotizacions[0].gastos || "",
+        posibleCuota: datos?.Cotizacions[0].posibleCuota || "",
+        totalBienes: datos?.Cotizacions[0].totalBienes || "",
+        totalDeudas: datos?.Cotizacions[0].totalDeudas || "",
+        totalDeudas_letras: datos?.Cotizacions[0].totalDeudas_letras || "",
+        totalBienes_letras: datos?.Cotizacions[0].totalBienes_letras || "",
+        valorRadicar_letras: datos?.Cotizacions[0].valorRadicar_letras || "",
       });
     } else {
       setUserDataDetail({
@@ -243,7 +255,7 @@ const Detail = () => {
         bancoPersonas: datos.bancoPersonas || "",
         familiares: datos.familiares || "",
         tieneBienes: datos.tieneBienes || "",
-        totalDeudas: datos.totalDeudas || "",
+        totalDeudas: datos?.Cotizacions[0].totalDeudas || "",
         modoContacto: datos.modoContacto || "",
         contactado: datos.contactado || "No",
         tieneCotizacion: datos.tieneCotizacion || "No",
@@ -255,15 +267,15 @@ const Detail = () => {
         tieneProcesos: datos.tieneProcesos || "",
         bienes: datos.Biens || [],
         deudas: datos.Deuda2s || [],
-        honorarios: datos.Honorarios || [],
+        honorarios: datos?.Honorarios || [],
         fase: datos.fase || "",
-        ingresos: datos.Cotizacions[0].ingresos || "",
-        gastos: datos.Cotizacions[0].gastos || "",
-        posibleCuota: datos.Cotizacions[0].posibleCuota || "",
-        totalBienes: datos.Cotizacions[0].totalBienes || "",
-        totalDeudas_letras: datos.Cotizacions[0].totalDeudas_letras || "",
-        totalBienes_letras: datos.Cotizacions[0].totalBienes_letras || "",
-        valorRadicar_letras: datos.Cotizacions[0].valorRadicar_letras || "",
+        ingresos: datos?.Cotizacions[0].ingresos || "",
+        gastos: datos?.Cotizacions[0].gastos || "",
+        posibleCuota: datos?.Cotizacions[0].posibleCuota || "",
+        totalBienes: datos?.Cotizacions[0].totalBienes || "",
+        totalDeudas_letras: datos?.Cotizacions[0].totalDeudas_letras || "",
+        totalBienes_letras: datos?.Cotizacions[0].totalBienes_letras || "",
+        valorRadicar_letras: datos?.Cotizacions[0].valorRadicar_letras || "",
       });
     }
   }, [dispatch, source]);
@@ -360,7 +372,7 @@ const Detail = () => {
       dispatch(copyBienes({ cedulaProspecto: userDataDetail.cedulanew }));
       dispatch(copyPropuestas({ cedulaProspecto: userDataDetail.cedulanew }));
       dispatch(copyCotizacion({ cedulaProspecto: userDataDetail.cedulanew }));
-
+      window.alert("Se ha registrado el cliente con éxito.");
       navigate("/clientes");
     } else {
       window.alert(
@@ -377,8 +389,8 @@ const Detail = () => {
     });
 
     dispatch(
-      updateStatus({
-        idProspecto: userDataDetail.idProspecto,
+      updateClienteStatus({
+        cedulaCliente: userDataDetail.cedulanew,
         field: name,
         value: value,
       }),
@@ -394,7 +406,23 @@ const Detail = () => {
 
     dispatch(
       updateCalificacion({
-        idProspecto: userDataDetail.idProspecto,
+        cedulaCliente: userDataDetail.cedulanew,
+        field: name,
+        value: value,
+      }),
+    );
+  };
+
+    const handleFaseChange = (e) => {
+    const { name, value } = e.target;
+    setUserDataDetail({
+      ...userDataDetail,
+      [name]: value,
+    });
+
+    dispatch(
+      updateClienteFase({
+        cedulaCliente: userDataDetail.cedulanew,
         field: name,
         value: value,
       }),
@@ -440,16 +468,7 @@ const Detail = () => {
   };
 
   const handlerGenerarDocumentos = () => {
-    // generarDocumentos(
-    //   casoDetail,
-    //   userDataDetail.totalDeudas_letras,
-    //   honorarios_letras,
-    //   userDataDetail.valorRadicar_letras,
-    //   honorariosLiquidacion_letras,
-    //   userDataDetail.totalBienes_letras,
-    //   userDataDetail.ingresos,
-    //   userDataDetail.gastos,
-    // );
+    generarDocumentos(userDataDetail);
   };
 
   return (
@@ -644,20 +663,6 @@ const Detail = () => {
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
-            {userDataDetail?.comentarios && (
-              <TextField
-                label="Comentarios"
-                name="comentarios"
-                value={userDataDetail.comentarios}
-                onChange={handleUpdateDetail}
-                fullWidth
-                multiline
-                minRows={3}
-                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "160px", bgcolor: "#fff" }}
-              />
-            )}
-
             {source === "prospecto" && (
               <Stack spacing={2}>
                 <FormControl fullWidth size="small">
@@ -753,6 +758,20 @@ const Detail = () => {
                 </Select>
               </FormControl>
             )}
+
+            {userDataDetail?.comentarios && (
+              <TextField
+                label="Comentarios"
+                name="comentarios"
+                value={userDataDetail.comentarios}
+                onChange={handleUpdateDetail}
+                fullWidth
+                multiline
+                minRows={5}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+            )}
           </Stack>
 
           {source === "prospecto" && (
@@ -810,7 +829,7 @@ const Detail = () => {
               <TextField
                 label="Ingresos actuales"
                 name="ingresos"
-                value={userDataDetail.ingresos}
+                value={userDataDetail?.ingresos}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -819,9 +838,9 @@ const Detail = () => {
               <FormControl fullWidth size="small">
                 <InputLabel>Siguiente paso</InputLabel>
                 <Select
-                  value={userDataDetail.siguientePaso}
+                  value={userDataDetail?.siguientePaso}
                   label="Siguiente paso"
-                  onChange={handleStatusChange}
+                  onChange={handleFaseChange}
                   name="siguientePaso"
                   sx={{ minWidth: "160px", bgcolor: "#fff" }}
                 >
@@ -845,7 +864,7 @@ const Detail = () => {
               <TextField
                 label="Valor total endeudamiento"
                 name="totalDeudas"
-                value={userDataDetail.honorarios[0]?.totalDeudas}
+                value={userDataDetail?.totalDeudas}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -854,7 +873,7 @@ const Detail = () => {
               <TextField
                 label="Activos"
                 name="totalBienes"
-                value={userDataDetail.totalBienes}
+                value={userDataDetail?.totalBienes}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -864,9 +883,9 @@ const Detail = () => {
               <FormControl fullWidth size="small">
                 <InputLabel>Fase</InputLabel>
                 <Select
-                  value={userDataDetail.fase}
+                  value={userDataDetail?.fase}
                   label="Fase"
-                  onChange={handleStatusChange}
+                  onChange={handleFaseChange}
                   name="fase"
                   sx={{ minWidth: "160px", bgcolor: "#fff" }}
                 >
@@ -890,7 +909,7 @@ const Detail = () => {
               <TextField
                 label="Valor honorarios"
                 name="valorHonorarios"
-                value={userDataDetail.honorarios[0]?.valorHonorarios}
+                value={userDataDetail?.honorarios[0]?.valorHonorarios}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -899,7 +918,7 @@ const Detail = () => {
               <TextField
                 label="Cuotas"
                 name="cuotasHonorarios"
-                value={userDataDetail.honorarios[0]?.cuotasHonorarios}
+                value={userDataDetail?.honorarios[0]?.cuotasHonorarios}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -908,7 +927,7 @@ const Detail = () => {
               <TextField
                 label="Valor primer pago"
                 name="inicial"
-                value={userDataDetail.honorarios[0]?.inicial}
+                value={userDataDetail?.honorarios[0]?.inicial}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
@@ -925,7 +944,7 @@ const Detail = () => {
               >
                 Relación de Deudas
               </Typography>
-              {userDataDetail.deudas?.map((deuda, index) => (
+              {userDataDetail?.deudas?.map((deuda, index) => (
                 <Box
                   key={index}
                   display="flex"
@@ -944,6 +963,37 @@ const Detail = () => {
                     label="Capital"
                     name={`deudas[${index}].capital`}
                     value={deuda.capital}
+                    onChange={handleUpdateDetail}
+                    sx={{ width: "50%" }}
+                    inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                  />
+                </Box>
+              ))}
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "bold", mb: 1 }}
+              >
+                Relación de Bienes
+              </Typography>
+              {userDataDetail?.bienes?.map((bien, index) => (
+                <Box
+                  key={index}
+                  display="flex"
+                  gap={2}
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <TextField
+                    label="Bien"
+                    name={`bienes[${index}].bien`}
+                    value={bien.tipoBien}
+                    onChange={handleUpdateDetail}
+                    sx={{ width: "50%" }}
+                    inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                  />
+                  <TextField
+                    label="Valor"
+                    name={`bienes[${index}].valor`}
+                    value={bien.valor}
                     onChange={handleUpdateDetail}
                     sx={{ width: "50%" }}
                     inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}

@@ -1,19 +1,9 @@
 import { models } from "../../DB.js";
 import { codigoCiudades } from "../../utils/codigoCiudades.js";
 
-const {
-  Cliente,
-  Ciudad,
-  Pais,
-  Departamento,
-  Honorario,
-  Deuda2,
-  Bien,
-  Cotizacion,
-  PropuestaPago,
-} = models;
+const { Cliente, Ciudad, Pais, Departamento, Honorario, Deuda2, Bien, Cotizacion, PropuestaPago } = models;
 
-const actualizaClienteStatus = async (cedulaCliente, field, value) => {
+const actualizaClienteFase = async (cedulaCliente, field, value) => {
   const clienteActualizar = await Cliente.findByPk(cedulaCliente);
 
   const [updateCount, updateClient] = await Cliente.update(
@@ -105,4 +95,4 @@ const actualizaClienteStatus = async (cedulaCliente, field, value) => {
     return "";
   }
 };
-export { actualizaClienteStatus };
+export { actualizaClienteFase };

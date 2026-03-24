@@ -90,7 +90,7 @@ const Nav = ({ logout }) => {
         </Link>
       )}
       
-      <Link to="/casos">
+      {/* <Link to="/casos">
         <Button>
           {" "}
           <svg
@@ -107,12 +107,6 @@ const Nav = ({ logout }) => {
           {"   "}
           Casos
         </Button>
-      </Link>
-      {/* <Link to="cotizacion/">
-        <Button>Cotizacion</Button>
-      </Link> */}
-      {/* <Link to="financiamiento/">
-        <Button>Financiamiento</Button>
       </Link> */}
 
       <Link to="/agendarcitas">
@@ -133,7 +127,7 @@ const Nav = ({ logout }) => {
           Agenda
         </Button>
       </Link>
-      {(user.administrador === true || user.cedulaCliente) && (
+      {/* {(user.administrador === true || user.cedulaCliente) && (
         <Link to="/pagos">
           <Button>
             <svg
@@ -152,7 +146,7 @@ const Nav = ({ logout }) => {
             Pagos
           </Button>
         </Link>
-      )}
+      )} */}
       {user.administrador === true && (
         <Link to="/verconsultas">
           <Button>

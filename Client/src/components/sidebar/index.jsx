@@ -49,12 +49,12 @@ export default function SidebarDemo({ logout }) {
     icon: <IconSpeakerphone stroke={1} className="text-blue-600" />,
   },
 
-    {
-      label: "Casos",
-      href: "/casos",
-      icon: (
-        <IconBriefcase stroke={1} />),
-    },
+    // {
+    //   label: "Casos",
+    //   href: "/casos",
+    //   icon: (
+    //     <IconBriefcase stroke={1} />),
+    // },
     {
       label: "Tareas",
       href: "/tareas",
@@ -70,13 +70,13 @@ export default function SidebarDemo({ logout }) {
       ),
     },
 
-    {
-      label: "Pagos",
-      href: "/pagos",
-      icon: (
-        <IconReceiptDollar stroke={1} />
-      ),
-    },
+    // {
+    //   label: "Pagos",
+    //   href: "/pagos",
+    //   icon: (
+    //     <IconReceiptDollar stroke={1} />
+    //   ),
+    // },
 
     {
       label: "Consultas",

@@ -1,7 +1,7 @@
 import { models } from "../../DB.js";
 import { codigoCiudades } from "../../utils/codigoCiudades.js";
 
-const { Cliente, Ciudad, Pais, Departamento } = models;
+const { Cliente, Ciudad, Pais, Departamento, Honorario, Deuda2, Bien, Cotizacion, PropuestaPago } = models;
 
 const actualizaCliente = async (
   cedula,
@@ -13,9 +13,12 @@ const actualizaCliente = async (
   ciudad,
   ciudad_anterior,
   comentarios,
-  cedula_anterior
+  cedula_anterior,
+  modoContacto
   // password,
 ) => {
+
+  console.log('Modo contacto en controller:',modoContacto)
   const cedulaCliente = cedula;
   // console.log('Cedula cliente controller:', cedulaCliente)
   // console.log("Cedula anterior controller:", cedula_anterior);
@@ -40,7 +43,8 @@ const actualizaCliente = async (
       email: email,
       celular: celular,
       direccion: direccion,
-      comentarios: comentarios
+      comentarios: comentarios,
+      modoContacto: modoContacto,
       // password: password,
     },
     {
@@ -74,6 +78,46 @@ const actualizaCliente = async (
                 ],
               },
             ],
+          },
+          {
+            model: Honorario,
+            attributes: [
+              "valorHonorarios",
+              "valorRadicar",
+              "inicial",
+              "cuotasHonorarios",
+              "honorariosLiquidacion",
+              "totalDeudas",
+            ],
+            through: { attributes: [] },
+          },
+          {
+            model: Deuda2,
+            attributes: [
+              "tipoDeuda",
+              "tipoGarantia",
+              "acreedor",
+              "derechoVoto",
+              "documentoSoporte",
+              "capital",
+              "intereses",
+              "cuantiaTotal",
+              "clasificacion",
+              "diasMora",
+            ],
+            through: { attributes: [] },
+          },
+          {
+            model: Bien,
+            through: { attributes: [] },
+          },
+          {
+            model: Cotizacion,
+            through: { attributes: [] },
+          },
+          {
+            model: PropuestaPago,
+            through: { attributes: [] },
           },
         ],
       };

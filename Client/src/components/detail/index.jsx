@@ -387,7 +387,7 @@ const Detail = () => {
       ...userDataDetail,
       [name]: value,
     });
-
+if (source === "cliente") {
     dispatch(
       updateClienteStatus({
         cedulaCliente: userDataDetail.cedulanew,
@@ -395,8 +395,15 @@ const Detail = () => {
         value: value,
       }),
     );
-  };
-
+  } else if (source === "prospecto") {
+    dispatch(
+      updateStatus({
+        idProspecto: idProspecto,
+        field: "status",
+        value: newStatus,
+      }),
+    );
+  }
   const handleCalificacionChange = (e) => {
     const { name, value } = e.target;
     setUserDataDetail({

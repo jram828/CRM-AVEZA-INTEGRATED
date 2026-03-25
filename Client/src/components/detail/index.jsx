@@ -255,7 +255,8 @@ const Detail = () => {
         bancoPersonas: datos.bancoPersonas || "",
         familiares: datos.familiares || "",
         tieneBienes: datos.tieneBienes || "",
-        totalDeudas: datos?.Cotizacions[0]?.totalDeudas || datos.totalDeudas || "",
+        totalDeudas:
+          datos?.Cotizacions[0]?.totalDeudas || datos.totalDeudas || "",
         modoContacto: datos.modoContacto || "",
         contactado: datos.contactado || "No",
         tieneCotizacion: datos.tieneCotizacion || "No",
@@ -272,7 +273,8 @@ const Detail = () => {
         ingresos: datos?.Cotizacions[0]?.ingresos || "",
         gastos: datos?.Cotizacions[0]?.gastos || "",
         posibleCuota: datos?.Cotizacions[0]?.posibleCuota || "",
-        totalBienes: datos?.Cotizacions[0]?.totalBienes || datos.totalBienes || "",
+        totalBienes:
+          datos?.Cotizacions[0]?.totalBienes || datos.totalBienes || "",
         totalDeudas_letras: datos?.Cotizacions[0]?.totalDeudas_letras || "",
         totalBienes_letras: datos?.Cotizacions[0]?.totalBienes_letras || "",
         valorRadicar_letras: datos?.Cotizacions[0]?.valorRadicar_letras || "",
@@ -387,24 +389,24 @@ const Detail = () => {
       ...userDataDetail,
       [name]: value,
     });
-if (source === "cliente") {
-    dispatch(
-      updateClienteStatus({
-        cedulaCliente: userDataDetail.cedulanew,
-        field: name,
-        value: value,
-      }),
-    );
-  } else if (source === "prospecto") {
-    dispatch(
-      updateStatus({
-        idProspecto: userDataDetail.idProspecto,
-        field: name,
-        value: value,
-      }),
-    );
-  }
-};
+    if (source === "cliente") {
+      dispatch(
+        updateClienteStatus({
+          cedulaCliente: userDataDetail.cedulanew,
+          field: name,
+          value: value,
+        }),
+      );
+    } else if (source === "prospecto") {
+      dispatch(
+        updateStatus({
+          idProspecto: userDataDetail.idProspecto,
+          field: name,
+          value: value,
+        }),
+      );
+    }
+  };
   const handleCalificacionChange = (e) => {
     const { name, value } = e.target;
     setUserDataDetail({

@@ -398,12 +398,13 @@ if (source === "cliente") {
   } else if (source === "prospecto") {
     dispatch(
       updateStatus({
-        idProspecto: idProspecto,
-        field: "status",
-        value: newStatus,
+        idProspecto: userDataDetail.idProspecto,
+        field: name,
+        value: value,
       }),
     );
   }
+};
   const handleCalificacionChange = (e) => {
     const { name, value } = e.target;
     setUserDataDetail({

@@ -143,7 +143,7 @@ const AgendarCita = () => {
       await postCitaGoogleHandlers({
         ...dataRegistro,
         titulo: `Primera Asesoría ${dataRegistro.nombres} ${dataRegistro.apellidos}`,
-        calendarId: "jram828@gmail.com",
+        calendarId: "aveza.asesoria@gmail.com",
         fechaCita: fechaSeleccionada,
         horaCita: horaSeleccionada,
         idProspecto: newProspecto.idProspecto,

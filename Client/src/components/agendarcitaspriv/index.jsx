@@ -46,7 +46,7 @@ function AgendarCitasPriv() {
     idProspecto: "",
     userEmail: userData?.email?.includes("@gmail.com") ? userData.email : "",
     email: "",
-    calendarId: userData?.calendarId || "jram828@gmail.com",
+    calendarId: userData?.calendarId || "aveza.asesoria@gmail.com",
   });
 
   const [isLoading, setIsLoading] = useState(true); // Estado para controlar la visualización del loading

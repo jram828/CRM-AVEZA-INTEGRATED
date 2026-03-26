@@ -22,7 +22,9 @@ import {
   modificarDatos,
   modificarDatosAbogado,
   modificarDatosProspecto,
+  postCita,
   postNota,
+  postTarea,
   updateCalificacion,
   updateClienteFase,
   updateClienteStatus,
@@ -59,6 +61,9 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AddIcon from "@mui/icons-material/Add";
 import NotaForm from "./notaFormDetail";
+import CitaForm from "./citaFormDetail";
+import TaskForm from "./taskFormDetail";
+
 import { generarDocumentos } from "../../handlers/generarDocumentos";
 
 // import GooglePicker from "../../utils/googlePicker";
@@ -95,6 +100,11 @@ const Detail = () => {
       ? datos.cedulaProspecto
       : datos.cedulaCliente;
   console.log("Cedula:", Cedula);
+
+  const [tabTareas, setTabTareas] = useState(0);
+  const [tabCitas, setTabCitas] = useState(0);
+  const [tareas, setTareas] = useState([]);
+  const [citas, setCitas] = useState([]);
 
   const reduxCitas = useSelector((state) => state.citasDetail);
   const notas = useSelector((state) => state.notasDetail);
@@ -144,16 +154,19 @@ const Detail = () => {
   });
   console.log("User Data Detail:", userDataDetail);
 
-  const [tabTareas, setTabTareas] = useState(0);
-  const [tabCitas, setTabCitas] = useState(0);
-  const [tareas, setTareas] = useState([]);
-  const [citas, setCitas] = useState([]);
-
   const tareasPendientes = tareas.filter((t) => !t.completada);
   const tareasCompletadas = tareas.filter((t) => t.completada);
 
   const citasPendientes = citas.filter((c) => !c.completada);
   const citasCompletadas = citas.filter((c) => c.completada);
+
+  useEffect(() => {
+    if (source === "prospecto") {
+      dispatch(getCitasById(datos.idProspecto));
+      dispatch(getTareasById(datos.idProspecto));
+    }
+  }, [dispatch, source, datos.idProspecto]);
+
   useEffect(() => {
     if (source === "prospecto") {
       setTareas(reduxTareas);
@@ -165,13 +178,6 @@ const Detail = () => {
       setCitas(reduxCitas);
     }
   }, [reduxCitas, source]);
-
-  useEffect(() => {
-    if (source === "prospecto") {
-      dispatch(getCitasById(datos.idProspecto));
-      dispatch(getTareasById(datos.idProspecto));
-    }
-  }, [dispatch, source, datos.idProspecto]);
 
   useEffect(() => {
     const datos =
@@ -457,24 +463,53 @@ const Detail = () => {
     const hoy = new Date();
     const fecha = new Date(fechaVencimiento);
 
-    const hoyStr = hoy.toISOString().slice(0, 10);
-    const fechaStr = fecha.toISOString().slice(0, 10);
+    if (isNaN(fecha.getTime())) return "gray"; // fecha inválida
 
-    if (fechaStr < hoyStr) return "red"; // vencida
-    if (fechaStr === hoyStr) return "gold"; // hoy
+    if (fecha < hoy) return "red"; // vencida
+    if (
+      fecha.getFullYear() === hoy.getFullYear() &&
+      fecha.getMonth() === hoy.getMonth() &&
+      fecha.getDate() === hoy.getDate()
+    ) {
+      return "gold"; // hoy
+    }
     return "green"; // futura
   };
 
   const [openNotaForm, setOpenNotaForm] = useState(false);
+  const [openCitaForm, setOpenCitaForm] = useState(false);
+  const [openTareaForm, setOpenTareaForm] = useState(false);
 
   const handleOpenNotaForm = () => setOpenNotaForm(true);
   const handleCloseNotaForm = () => setOpenNotaForm(false);
+
+  const handleOpenCitaForm = () => setOpenCitaForm(true);
+  const handleCloseCitaForm = () => setOpenCitaForm(false);
+
+  const handleOpenTareaForm = () => setOpenTareaForm(true);
+  const handleCloseTareaForm = () => setOpenTareaForm(false);
 
   const handleSaveNota = (nota) => {
     dispatch(postNota(nota)).then(() => {
       dispatch(getNotas());
     });
     handleCloseNotaForm();
+  };
+
+  const handleSaveCita = (cita) => {
+    dispatch(postCita(cita)).then((action) => {
+      dispatch(getCitas());
+      setCitas((prev) => [...prev, action.payload.data]);
+    });
+    handleCloseCitaForm();
+  };
+
+  const handleSaveTarea = (tarea) => {
+    dispatch(postTarea(tarea)).then((action) => {
+      dispatch(getTareas());
+      setTareas((prev) => [...prev, action.payload.data]);
+    });
+    handleCloseTareaForm();
   };
 
   const handlerGenerarDocumentos = () => {
@@ -723,7 +758,10 @@ const Detail = () => {
                     <MenuItem value="asesorado">📞 3. Asesorado</MenuItem>
                     <MenuItem value="cotizado">✅ 4. Cotizado</MenuItem>
                     <MenuItem value="esperadocumentos">
-                      📄 5. Espera de documentos/Información
+                      📄 5. Espera de documentos
+                    </MenuItem>
+                    <MenuItem value="contratoenviado">
+                      📤 5. Contrato enviado
                     </MenuItem>
                     <MenuItem value="remarketing">🔄 6. Remarketing</MenuItem>
                     <MenuItem value="descartado">🗑️ 7. Descartado</MenuItem>
@@ -1018,12 +1056,23 @@ const Detail = () => {
             <Stack spacing={2} flex={1}>
               {/* Sección Tareas */}
               <Box>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontWeight: "bold", mb: 1 }}
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
                 >
-                  Tareas
-                </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ fontWeight: "bold", mb: 1 }}
+                  >
+                    Tareas
+                  </Typography>
+                  <Tooltip title="Crear tarea">
+                    <IconButton size="small" onClick={handleOpenTareaForm}>
+                      <AddIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
 
                 <Tabs value={tabTareas} onChange={(e, v) => setTabTareas(v)}>
                   <Tab label="Pendientes" />
@@ -1073,25 +1122,46 @@ const Detail = () => {
                           </Typography>
                           <Typography variant="body2">
                             Vence:{" "}
-                            {new Date(tarea.fechaVencimiento)
-                              .toISOString()
-                              .slice(0, 10)}
+                            {tarea.fechaVencimiento
+                              ? new Date(tarea.fechaVencimiento)
+                                  .toISOString()
+                                  .slice(0, 10)
+                              : " "}
                           </Typography>
                         </CardContent>
                       </Card>
                     ))}
                   </Stack>
                 </Box>
+                {/* Formulario de creación de tareas */}
+                <TaskForm
+                  open={openTareaForm}
+                  onClose={handleCloseTareaForm}
+                  onSave={handleSaveTarea}
+                  selected={source === "prospecto" ? prospecto : cliente}
+                  source={source}
+                />
               </Box>
 
               {/* Sección Citas */}
               <Box>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontWeight: "bold", mb: 1 }}
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
                 >
-                  Reuniones
-                </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ fontWeight: "bold", mb: 1 }}
+                  >
+                    Reuniones
+                  </Typography>
+                  <Tooltip title="Crear reunión">
+                    <IconButton size="small" onClick={handleOpenCitaForm}>
+                      <AddIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
 
                 <Tabs value={tabCitas} onChange={(e, v) => setTabCitas(v)}>
                   <Tab label="Pendientes" />
@@ -1144,9 +1214,11 @@ const Detail = () => {
                               {cita.descripcion}
                             </Typography>
                             <Typography variant="body2">
-                              {new Date(cita.fechaCita)
-                                .toISOString()
-                                .slice(0, 10)}{" "}
+                              {cita.fechaCita
+                                ? new Date(cita.fechaCita)
+                                    .toISOString()
+                                    .split("T")[0]
+                                : "Sin fecha"}{" "}
                               {cita.horaCita}
                             </Typography>
                           </CardContent>
@@ -1155,6 +1227,14 @@ const Detail = () => {
                     )}
                   </Stack>
                 </Box>
+                {/* Formulario de creación de citas */}
+                <CitaForm
+                  open={openCitaForm}
+                  onClose={handleCloseCitaForm}
+                  onSave={handleSaveCita}
+                  selected={source === "prospecto" ? prospecto : cliente}
+                  source={source}
+                />
               </Box>
             </Stack>
           )}
@@ -1201,9 +1281,11 @@ const Detail = () => {
                             {nota.descripcion}
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {new Date(nota.updatedAt)
-                              .toISOString()
-                              .slice(0, 10)}
+                            {nota.updatedAt
+                              ? new Date(nota.updatedAt)
+                                  .toISOString()
+                                  .slice(0, 10)
+                              : "Sin fecha"}
                           </Typography>
                         </CardContent>
                       </Card>

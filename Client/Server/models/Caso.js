@@ -31,9 +31,6 @@ export default (sequelize) => {
       descripcion: {
         type: DataTypes.TEXT,
         allowNull: true,
-        validate: {
-          len: [1, 3000],
-        },
       },
       valor_pretensiones: { type: DataTypes.BIGINT, allowNull: true },
       aceptacion_cotizacion: {

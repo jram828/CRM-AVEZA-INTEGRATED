@@ -13,9 +13,6 @@ export default (sequelize) => {
       descripcion: {
         type: DataTypes.TEXT,
         allowNull: false,
-        validate: {
-          len: [1, 10000],
-        },
       },
     },
     { timestamps: false }

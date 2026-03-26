@@ -95,20 +95,8 @@ const Prospectos = () => {
       esperadocumentos: [],
       remarketing: [],
       descartado: [],
-      contactado: [],
-      contactonoefectivo: [],
-      leadcalificado: [],
-      leadnocalificado: [],
-      nocalificado: [],
-      noseconecto: [],
-      reagendado: [],
-      cotizacionenevaluacion: [],
-      cotizacionrechazada: [],
       contratoenviado: [],
-      clienteactivo: [],
     };
-
-    
 
     prospectos.forEach((p) => {
       const key = p.status;
@@ -688,34 +676,13 @@ const Prospectos = () => {
               }}
             >
               {renderColumn("1. Lead", "lead")}
-              {renderColumn("2. Contactado", "contactado")}
-              {renderColumn(
-                "3. Contacto NO efectivo - Remarketing",
-                "contactonoefectivo",
-              )}
-              {renderColumn("4. Lead Calificado", "leadcalificado")}
-              {renderColumn(
-                "5. Lead No Calificado - Remarketing",
-                "leadnocalificado",
-              )}
-              {renderColumn("6. No Calificado - Descartado", "nocalificado")}
-              {renderColumn("7. Agendado", "agendado")}
-              {renderColumn("8. No se conectó - Remarketing", "noseconecto")}
-              {renderColumn("9. Reagendado", "reagendado")}
-              {renderColumn("10. Asesorado", "asesorado")}
-              {renderColumn("11. Cotizado", "cotizado")}
-              {renderColumn(
-                "12. Cotización en evaluación",
-                "cotizacionenevaluacion",
-              )}
-              {renderColumn("13. Cotización rechazada", "cotizacionrechazada")}
-              {renderColumn(
-                "14. Espera de documentos/Información",
-                "esperadocumentos",
-              )}
-              {renderColumn("15. Contrato enviado", "contratoenviado")}
-              {renderColumn("16. Cliente activo", "clienteactivo")}
-              {renderColumn("17. Fidelización - Remarketing", "remarketing")}
+              {renderColumn("2. Agendado", "agendado")}
+              {renderColumn("3. Asesorado", "asesorado")}
+              {renderColumn("4. Cotizado", "cotizado")}
+              {renderColumn("5. Espera de documentos", "esperadocumentos")}
+              {renderColumn("6. Contrato enviado", "contratoenviado")}
+              {renderColumn("7. Remarketing", "remarketing")}
+              {renderColumn("8. Descartado", "descartado")}
             </div>
           </DragDropContext>
         )}

@@ -12,9 +12,6 @@ export default (sequelize) => {
     descripcion: {
       type: DataTypes.TEXT,
       allowNull: false,
-      validate: {
-        len: [1, 100],
-      },
     },
     urlTemplate: {
       type: DataTypes.STRING,

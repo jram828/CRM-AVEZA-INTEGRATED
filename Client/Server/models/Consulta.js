@@ -35,9 +35,6 @@ export default (sequelize) => {
       consulta: {
         type: DataTypes.TEXT,
         allowNull: false,
-        validate: {
-          len: [1, 2000],
-        },
       },
       activo: {
         type: DataTypes.BOOLEAN,

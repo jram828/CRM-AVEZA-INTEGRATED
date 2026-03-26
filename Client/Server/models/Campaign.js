@@ -22,9 +22,6 @@ export default (sequelize) => {
       descripcion: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          len: [0, 200],
-        },
       },
     },
     { timestamps: true },

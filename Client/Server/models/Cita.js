@@ -19,9 +19,6 @@ export default (sequelize) => {
       descripcion: {
         type: DataTypes.STRING,
         allowNull: true,
-        validate: {
-          len: [1, 200],
-        },
       },
       fechaCita: {
         type: DataTypes.DATE,

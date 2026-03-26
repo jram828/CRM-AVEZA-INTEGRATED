@@ -74,7 +74,7 @@ function AgendarCitasPriv() {
       console.log("DataRegistro en submitHandlerRegistro:", dataRegistro);
       await postCitaHandlers({ ...dataRegistro, descripcion });
 
-        dispatch(obtenerCitasCalendar(userData.email));
+        dispatch(obtenerCitasCalendar(dataRegistro.calendarId));
       // window.alert("Cita creado con éxito");
       // window.location.reload();
     } catch (error) {

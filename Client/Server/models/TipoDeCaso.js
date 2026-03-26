@@ -12,9 +12,6 @@ export default (sequelize) => {
       descripcion: {
         type: DataTypes.TEXT,
         allowNull: false,
-        validate: {
-          len: [1, 50],
-        },
       },
       activo: {
         type: DataTypes.BOOLEAN,

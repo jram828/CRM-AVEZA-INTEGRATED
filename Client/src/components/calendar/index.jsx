@@ -51,7 +51,7 @@ const Calendario = () => {
       dispatch(getCitas());
     } else {
       console.log("Obteniendo citas de Google Calendar para:", datos.email);
-      dispatch(obtenerCitasCalendar(datos.email));
+      dispatch(obtenerCitasCalendar("aveza.asesoria@gmail.com"));
     }
   }, [dispatch, source, datos.email]);
 
@@ -124,7 +124,7 @@ const Calendario = () => {
     if (source === "google") {
       const mes = dayjs(newDate).month() + 1; // moment/dayjs usa 0-11
       console.log("Consultando citas de Google Calendar para mes:", mes);
-      dispatch(obtenerCitasCalendar(datos.email, mes));
+      dispatch(obtenerCitasCalendar("aveza.asesoria@gmail.com", mes));
     } else {
       dispatch(getCitas());
     }

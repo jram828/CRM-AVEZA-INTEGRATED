@@ -84,6 +84,11 @@ export default (sequelize) => {
         allowNull: true,
         defaultValue: "sincontacto",
       },
+      responsable: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "mercadeo",
+      },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

@@ -53,8 +53,13 @@ const createCita = async (
     await cliente.addCita(newCita);
   }
 
-  await createCitaGoogle(dataRegistro, email);
+  const { evento } = await createCitaGoogle(dataRegistro, email, newCita.idCita);
 
+  console.log("Evento Google:", evento);
+  newCita.idCitaGoogle = evento.id;
+  await newCita.save();
+
+  console.log("Cita actualizada con ID de Google Calendar:", newCita);
   // Enviar notificaciones por correo electrónico
   // const { cedulaCliente, cedulaAbogado } = await Caso.findByPk(idCaso);
 

@@ -29,6 +29,11 @@ export default (sequelize) => {
         allowNull: true,
         defaultValue: "necesitaanalisis",
       },
+      responsable: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "mercadeo",
+      },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

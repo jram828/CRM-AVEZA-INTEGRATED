@@ -8,6 +8,7 @@ const SearchBar = ({ onFilter }) => {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [cedula, setCedula] = useState("");
+  const [celular, setCelular] = useState("");
   const dispatch = useDispatch();
 
   const handleInputChange = (e, setValue) => {
@@ -19,13 +20,14 @@ const SearchBar = ({ onFilter }) => {
     if (nombre) queryParts.push(`nombres=${formatInputValue(nombre)}`);
     if (apellido) queryParts.push(`apellidos=${formatInputValue(apellido)}`);
     if (cedula) queryParts.push(`cedulaProspecto=${cedula}`);
+    if (celular) queryParts.push(`celular=${celular}`);
     const queryString = queryParts.join("&");
 
     if (queryString) {
       onFilter(queryString);
       dispatch(filterProspecto(queryString));
     } else {
-      console.log("Por favor ingrese al menos un valor de búsqueda");
+      alert("Por favor ingrese al menos un valor de búsqueda");
     }
   };
 
@@ -78,6 +80,17 @@ const SearchBar = ({ onFilter }) => {
         variant="outlined"
         className="inputfiltrocliente"
         InputProps={{ "aria-label": "cedula" }}
+      />
+            <TextField
+        label="Número de Teléfono"
+        placeholder="Número de Teléfono"
+        value={celular}
+        onKeyDown={handleKeyDown}
+        onChange={(e) => handleInputChange(e, setCelular)}
+        size="small"
+        variant="outlined"
+        className="inputfiltrocliente"
+        InputProps={{ "aria-label": "celular" }}
       />
       <Button
         variant="contained"

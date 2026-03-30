@@ -14,6 +14,7 @@ import {
   deleteAbogado,
   deleteCliente,
   deleteProspecto,
+  eliminarCita,
   getCitas,
   getCitasById,
   getNotas,
@@ -60,6 +61,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import NotaForm from "./notaFormDetail";
 import CitaForm from "./citaFormDetail";
 import TaskForm from "./taskFormDetail";
@@ -105,7 +107,7 @@ const Detail = () => {
   const [tabCitas, setTabCitas] = useState(0);
   const [tareas, setTareas] = useState([]);
   const [citas, setCitas] = useState([]);
-
+  const calendarId = "aveza.asesoria@gmail.com";
   const reduxCitas = useSelector((state) => state.citasDetail);
   const notas = useSelector((state) => state.notasDetail);
   const reduxTareas = useSelector((state) => state.tareasDetail);
@@ -145,20 +147,21 @@ const Detail = () => {
     cotizacionAprobada: "No",
     status: "",
     tiempoMora: "",
-    numeroEntidades: "",
+    numeroEntidades: 0,
     calificacion: "",
     siguientePaso: "",
     ingresos: "",
     fase: "",
     honorarios: [],
+    responsable: "",
   });
   console.log("User Data Detail:", userDataDetail);
 
-  const tareasPendientes = tareas.filter((t) => !t.completada);
-  const tareasCompletadas = tareas.filter((t) => t.completada);
+  const tareasPendientes = tareas.filter((t) => !t?.completada);
+  const tareasCompletadas = tareas.filter((t) => t?.completada);
 
-  const citasPendientes = citas.filter((c) => !c.completada);
-  const citasCompletadas = citas.filter((c) => c.completada);
+  const citasPendientes = citas.filter((c) => !c?.completada);
+  const citasCompletadas = citas.filter((c) => c?.completada);
 
   useEffect(() => {
     if (source === "prospecto") {
@@ -234,6 +237,7 @@ const Detail = () => {
         totalDeudas_letras: datos?.Cotizacions[0].totalDeudas_letras || "",
         totalBienes_letras: datos?.Cotizacions[0].totalBienes_letras || "",
         valorRadicar_letras: datos?.Cotizacions[0].valorRadicar_letras || "",
+        responsable: datos.responsable || "",
       });
     } else {
       setUserDataDetail({
@@ -284,6 +288,7 @@ const Detail = () => {
         totalDeudas_letras: datos?.Cotizacions[0]?.totalDeudas_letras || "",
         totalBienes_letras: datos?.Cotizacions[0]?.totalBienes_letras || "",
         valorRadicar_letras: datos?.Cotizacions[0]?.valorRadicar_letras || "",
+        responsable: datos.responsable || "",
       });
     }
   }, [dispatch, source]);
@@ -514,6 +519,16 @@ const Detail = () => {
 
   const handlerGenerarDocumentos = () => {
     generarDocumentos(userDataDetail);
+  };
+
+  const handleDeleteCita = (idCitaGoogle, idCita, calendarId, source) => {
+    dispatch(eliminarCita(idCitaGoogle, idCita, calendarId, source)).then(
+      () => {
+        setCitas(
+          (prev) => prev.filter((cita) => cita.idCita !== idCita), // 👈 elimina la cita del estado local
+        );
+      },
+    );
   };
 
   return (
@@ -824,6 +839,31 @@ const Detail = () => {
 
           {source === "prospecto" && (
             <Stack spacing={2} flex={1}>
+              <FormControl
+                fullWidth
+                size="small"
+                style={{ marginTop: "0.5rem" }}
+              >
+                <InputLabel>Responsable</InputLabel>
+                <Select
+                  value={userDataDetail.responsable}
+                  label="Responsable"
+                  onChange={handleStatusChange}
+                  name="responsable"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="mercadeo">Mercadeo</MenuItem>
+                  <MenuItem value="julianavellaneda">
+                    Julián Avellaneda
+                  </MenuItem>
+                  <MenuItem value="esperanzazambrano">
+                    Luz Esperanza Zambrano
+                  </MenuItem>
+                  <MenuItem value="yazminarias">
+                    Yazmín Angélica Arias O.
+                  </MenuItem>
+                </Select>
+              </FormControl>
               <TextField
                 label="Total deudas"
                 name="totalDeudas"
@@ -1172,44 +1212,67 @@ const Detail = () => {
                     {(tabCitas === 0 ? citasPendientes : citasCompletadas).map(
                       (cita, idx) => (
                         <Card key={idx}>
-                          <CardContent
-                            sx={{ position: "relative", paddingTop: 1 }}
-                          >
+                          <CardContent sx={{ paddingTop: 1 }}>
+                            {/* Cabecera con título e iconos */}
                             <Box
                               sx={{
-                                position: "absolute",
-                                top: 2,
-                                right: 2,
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                mb: 1, // margen inferior para separar del resto
                               }}
                             >
-                              <CalendarTodayIcon
-                                fontSize="small"
-                                sx={{
-                                  color: getFechaColor(cita.fechaCita),
-                                }}
-                              />
+                              <Typography variant="subtitle2">
+                                {cita.titulo}
+                              </Typography>
 
-                              <Tooltip title="Marcar como completada">
-                                <IconButton
-                                  size="small"
-                                  aria-label="completar cita"
-                                  onClick={() =>
-                                    handleCompletarCita(cita.idCita)
-                                  }
-                                  disabled={cita.completada}
-                                >
-                                  <CheckCircleIcon
-                                    fontSize="small"
-                                    color={
-                                      cita.completada ? "success" : "disabled"
+                              <Box sx={{ display: "flex", gap: 1 }}>
+                                <CalendarTodayIcon
+                                  fontSize="small"
+                                  sx={{ color: getFechaColor(cita.fechaCita) }}
+                                />
+
+                                <Tooltip title="Marcar como completada">
+                                  <IconButton
+                                    size="small"
+                                    aria-label="completar cita"
+                                    onClick={() =>
+                                      handleCompletarCita(cita.idCita)
                                     }
-                                  />
-                                </IconButton>
-                              </Tooltip>
+                                    disabled={cita.completada}
+                                  >
+                                    <CheckCircleIcon
+                                      fontSize="small"
+                                      color={
+                                        cita.completada ? "success" : "disabled"
+                                      }
+                                    />
+                                  </IconButton>
+                                </Tooltip>
+
+                                <Tooltip title="Eliminar cita">
+                                  <IconButton
+                                    size="small"
+                                    aria-label="eliminar cita"
+                                    onClick={() =>
+                                      handleDeleteCita(
+                                        cita.idCitaGoogle,
+                                        cita.idCita,
+                                        calendarId,
+                                        source,
+                                      )
+                                    }
+                                  >
+                                    <DeleteIcon
+                                      fontSize="small"
+                                      color="error"
+                                    />
+                                  </IconButton>
+                                </Tooltip>
+                              </Box>
                             </Box>
-                            <Typography variant="subtitle2">
-                              {cita.titulo}
-                            </Typography>
+
+                            {/* Contenido debajo */}
                             <Typography variant="body2">
                               {cita.descripcion}
                             </Typography>

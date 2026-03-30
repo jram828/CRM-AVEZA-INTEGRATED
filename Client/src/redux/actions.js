@@ -1,4 +1,5 @@
 import axios from "axios";
+import { calendar } from "googleapis/build/src/apis/calendar";
 // import { URL } from "../App";
 
 export const GET_CLIENTE_BY_CEDULA = "GET_CLIENTE_BY_CEDULA";
@@ -90,6 +91,7 @@ export const COPIAR_PROPUESTAS = "COPIAR_PROPUESTAS";
 export const POST_COTIZACION = "POST_COTIZACION";
 export const COPIAR_COTIZACION = "COPIAR_COTIZACION";
 export const PUT_CLIENTE_FASE = "PUT_CLIENTE_FASE";
+export const DELETE_CITAS_CALENDAR = "DELETE_CITAS_CALENDAR";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -1189,6 +1191,20 @@ console.log("Action - obtenerCitasCalendar:", calendarId, mes);
 });
     return dispatch({
       type: GET_CITAS_CALENDAR,
+      payload: data,
+    });
+  };
+};
+
+export const eliminarCita = (idCitaGoogle, idCita, calendarId, source) => {
+  const endpoint = `/citas/eliminar`;
+  console.log("Action - eliminarCita:", idCitaGoogle, idCita, calendarId, source);
+  return async (dispatch) => {
+    const { data } = await axios.delete(endpoint, {
+      params: { idCitaGoogle, idCita, calendarId, source },
+    });
+    return dispatch({
+      type: DELETE_CITAS_CALENDAR,
       payload: data,
     });
   };

@@ -77,6 +77,67 @@ const getAllProspecto = async (filters) => {
     const prospecto = await Prospecto.findOne(consulta);
     if (!prospecto) throw Error("Prospecto no Registrado o no existe");
     allProspecto = [prospecto];
+  } else if (filters.celular) {
+    const consulta = {
+      where: {
+        celular: filters.celular,
+        activo: true,
+      },
+      include: [
+        {
+          model: Ciudad,
+          attributes: ["nombre_ciudad", "codigo_ciudad"],
+          include: [
+            {
+              model: Departamento,
+              attributes: ["nombre_departamento"],
+              include: [
+                {
+                  model: Pais,
+                  attributes: ["nombre_pais"],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: Acreedor,
+          attributes: [
+            "idAcreedor",
+            "NIT",
+            "nombre",
+            "email",
+            "telefono",
+            "direccion",
+            "ciudad",
+          ],
+        },
+        {
+          model: Bien,
+          through: { attributes: [] },
+        },
+        {
+          model: Deuda2,
+          through: { attributes: [] },
+        },
+        {
+          model: Cotizacion,
+          through: { attributes: [] },
+        },
+        {
+          model: PropuestaPago,
+          through: { attributes: [] },
+        },
+        {
+          model: Honorario,
+          through: { attributes: [] },
+        },
+      ],
+    };
+
+    const prospecto = await Prospecto.findOne(consulta);
+    if (!prospecto) throw Error("Prospecto no Registrado o no existe");
+    allProspecto = [prospecto];
   } else {
     const pagina = [];
     const newFilters = {};

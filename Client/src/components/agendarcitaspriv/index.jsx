@@ -286,9 +286,9 @@ function AgendarCitasPriv() {
                   Crear
                 </MuiButton>
 
-                <Link to="/agendarcitas" style={{ textDecoration: "none" }}>
+                {/* <Link to="/agendarcitas" style={{ textDecoration: "none" }}>
                   <MuiButton variant="outlined">Volver</MuiButton>
-                </Link>
+                </Link> */}
               </Box>
             </Box>
           </Paper>

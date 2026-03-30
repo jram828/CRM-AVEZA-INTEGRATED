@@ -53,6 +53,7 @@ export const getAllCitaGoogle = async (calendarId, mes) => {
       inicio: event.start?.dateTime || event.start?.date,
       fin: event.end?.dateTime || event.end?.date,
       asistentes: event.attendees || [],
+      extendedProperties: event.extendedProperties || {},
     }));
 
     return citas;

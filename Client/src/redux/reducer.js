@@ -96,6 +96,7 @@ import {
   POST_BIENES,
   COPIAR_BIENES,
   COPIAR_PROPUESTAS,
+  DELETE_CITAS_CALENDAR,  
 } from "./actions";
 
 let initialState = {
@@ -311,6 +312,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         consulta: action.payload,
+      };
+    case DELETE_CITAS_CALENDAR:
+      return {
+        ...state,
+        citasCalendar: action.payload,
       };
     case GET_TIPOSDECASOS:
       return {

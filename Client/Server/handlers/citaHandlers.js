@@ -6,6 +6,7 @@ import { obtenerDisponibilidad } from "../controllers/cita/getAvailability.js";
 import { getCitaById } from "../controllers/cita/getCitaById.js";
 import { getAllCitaGoogle } from "../controllers/cita/getAllCitaGoogle.js";
 import { completarCita } from "../controllers/cita/completarCita.js";
+import { eliminarCitaCalendar } from "../controllers/cita/eliminarCitaCalendar.js";
 
 const getCitaHandler = async (req, res) => {
   try {
@@ -123,6 +124,47 @@ const completarCitaHandler = async (req, res) => {
   }
 };
 
+const actualizarCitaHandler = async (req, res) => {
+  const { idCita, fechaCita, horaCita, descripcion, titulo } = req.body;
+  try {
+    const response = await actualizarCita(idCita, fechaCita, horaCita, descripcion, titulo);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const eliminarCitaCalendarHandler = async (req, res) => {
+  const { idCitaGoogle, idCita, calendarId, source } = req.query;
+  console.log("Datos recibidos para eliminar cita de calendario:", {
+    idCitaGoogle,
+    idCita,
+    calendarId,
+    source,
+
+  });
+  try {
+    const response = await eliminarCitaCalendar(
+      idCitaGoogle,
+      idCita,
+      calendarId,
+      source
+    );
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const eliminarCitaHandler = async (req, res) => {
+  const { idCitaGoogle, idCita, calendarId, source } = req.params;
+  try {
+    const response = await eliminarCita(idCitaGoogle, idCita, calendarId, source);
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 export {
   getCitaHandler,
   getCitaGoogleHandler,
@@ -131,4 +173,7 @@ export {
   postCreateCita,
   postCreateCitaGoogle,
   completarCitaHandler,
+  actualizarCitaHandler,
+  eliminarCitaCalendarHandler,
+  eliminarCitaHandler,
 };

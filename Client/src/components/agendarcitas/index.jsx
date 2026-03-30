@@ -67,7 +67,7 @@ const AgendarCita = () => {
   const dispatch = useDispatch();
 
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
-
+ console.log("Horas disponibles en primera asesría:", horasDisponibles);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 

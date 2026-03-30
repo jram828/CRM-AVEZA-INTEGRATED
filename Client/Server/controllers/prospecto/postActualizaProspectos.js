@@ -65,6 +65,14 @@ const actualizaProspecto = async (
 
   ciudad_anterior ? prospectoActualizar.removeCiudad(ciudad_anterior) : null;
 
+  let numeroEntidadesNormalizado = 0;
+  if (numeroEntidades && numeroEntidades.trim() !== "") {
+    numeroEntidadesNormalizado = parseInt(numeroEntidades, 10);
+    if (isNaN(numeroEntidadesNormalizado)) {
+      numeroEntidadesNormalizado = 0;
+    }
+  }
+
   const [updateCount, updateClient] = await Prospecto.update(
     {
       cedulaProspecto: cedulaProspecto,
@@ -75,7 +83,7 @@ const actualizaProspecto = async (
       direccion: direccion,
       comentarios: comentarios,
       tieneProcesos: tieneProcesos,
-      numeroEntidades: numeroEntidades,
+      numeroEntidades: numeroEntidadesNormalizado,
       tiempoMora: tiempoMora,
       totalBienes: totalBienes,
       totalDeudas: totalDeudas,

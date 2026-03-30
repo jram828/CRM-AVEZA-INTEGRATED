@@ -29,6 +29,7 @@ const ClienteCard = React.memo(
     tooltip,
     onClickDetail,
     handleStatusChange,
+    handleResponsableChange,
     handleFaseChange,
     handleOpenOverlay,
   }) => {
@@ -148,6 +149,25 @@ const ClienteCard = React.memo(
               </MenuItem>
             </Select>
           </FormControl>
+          <FormControl fullWidth size="small" style={{ marginTop: "0.5rem" }}>
+            <InputLabel>Responsable</InputLabel>
+            <Select
+              value={cliente.responsable}
+              label="Responsable"
+              onChange={(e) =>
+                handleResponsableChange(cliente.cedulaCliente, e.target.value)
+              }
+              name="responsable"
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
+            >
+              <MenuItem value="mercadeo">Mercadeo</MenuItem>
+              <MenuItem value="julianavellaneda">Julián Avellaneda</MenuItem>
+              <MenuItem value="esperanzazambrano">
+                Luz Esperanza Zambrano
+              </MenuItem>
+              <MenuItem value="yazminarias">Yazmín Angélica Arias O.</MenuItem>
+            </Select>
+          </FormControl>
         </CardContent>
       </Card>
     );
@@ -164,6 +184,7 @@ ClienteCard.propTypes = {
     fase: PropTypes.string.isRequired,
     cedulaCliente: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
+    responsable: PropTypes.string.isRequired,
   }).isRequired,
   notaReciente: PropTypes.shape({
     descripcion: PropTypes.string.isRequired,
@@ -173,6 +194,7 @@ ClienteCard.propTypes = {
   tooltip: PropTypes.string,
   onClickDetail: PropTypes.func.isRequired,
   handleStatusChange: PropTypes.func.isRequired,
+  handleResponsableChange: PropTypes.func.isRequired,
   handleFaseChange: PropTypes.func.isRequired,
   handleOpenOverlay: PropTypes.func.isRequired,
 };

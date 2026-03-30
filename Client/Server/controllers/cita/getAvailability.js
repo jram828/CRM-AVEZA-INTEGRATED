@@ -11,8 +11,8 @@ export const obtenerDisponibilidad = async (fecha) => {
     console.log("Fecha recibida para disponibilidad:", fecha);
     const zona = "America/Bogota";
 
-    const startOfDay = moment.tz(`${fecha} 00:00`, zona).format();
-    const endOfDay = moment.tz(`${fecha} 23:59`, zona).format();
+    const startOfDay = moment.tz(`${fecha} 08:00`, zona).format();
+    const endOfDay = moment.tz(`${fecha} 18:30`, zona).format();
 
     const jwtClient = new google.auth.JWT(
       GOOGLE_CLIENT_EMAIL,

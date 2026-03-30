@@ -6,17 +6,22 @@ config();
 
 const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
 
-export const createCitaGoogle = async (dataRegistro, calendarId) => {
+export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
   try {
     const { fechaCita, horaCita, titulo, descripcion } = dataRegistro;
 
     // Convertir fechaCita a string YYYY-MM-DD si viene como Date
-    const fechaStr = typeof fechaCita === "string"
-      ? fechaCita.slice(0, 10)
-      : moment(fechaCita).format("YYYY-MM-DD");
+    const fechaStr =
+      typeof fechaCita === "string"
+        ? fechaCita.slice(0, 10)
+        : moment(fechaCita).format("YYYY-MM-DD");
 
     const fechaHoraStr = `${fechaStr} ${horaCita}`;
-    const startDateTime = moment.tz(fechaHoraStr, "YYYY-MM-DD HH:mm", "America/Bogota");
+    const startDateTime = moment.tz(
+      fechaHoraStr,
+      "YYYY-MM-DD HH:mm",
+      "America/Bogota",
+    );
 
     if (!startDateTime.isValid()) {
       throw new Error(`Fecha inválida: ${fechaHoraStr}`);
@@ -34,25 +39,30 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
       end: {
         dateTime: endDateTime.format(),
         timeZone: "America/Bogota",
-      }
+      },
+      extendedProperties: {
+        private: {
+          idCita: idCita.toString(), // Asegúrate de que sea string
+        },
+      },
     };
 
     const jwtClient = new google.auth.JWT(
       GOOGLE_CLIENT_EMAIL,
       null,
       GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-      ["https://www.googleapis.com/auth/calendar"]
+      ["https://www.googleapis.com/auth/calendar"],
     );
 
     const calendar = google.calendar({ version: "v3", auth: jwtClient });
 
     const response = await calendar.events.insert({
       calendarId,
-      resource: event
+      resource: event,
     });
 
     return {
-      evento: response.data
+      evento: response.data,
     };
   } catch (err) {
     console.error("Error al crear evento en Google Calendar:", err.message);
@@ -119,4 +129,3 @@ export const createCitaGoogle = async (dataRegistro, calendarId) => {
 //     throw err;
 //   }
 // };
-

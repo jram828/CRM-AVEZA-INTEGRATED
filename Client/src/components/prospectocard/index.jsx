@@ -29,6 +29,7 @@ const ProspectoCard = React.memo(
     tooltip,
     onClickDetail,
     handleStatusChange,
+    handleResponsableChange,
     handleCalificacionChange,
     handleOpenOverlay,
   }) => {
@@ -93,7 +94,26 @@ const ProspectoCard = React.memo(
               {prospecto.nombres} {prospecto.apellidos}
             </Typography>
           </Link>
-          <FormControl fullWidth size="small" sx={{ mt: 1 }}>
+          <FormControl fullWidth size="small" style={{ marginTop: "0.5rem" }}>
+            <InputLabel>Responsable</InputLabel>
+            <Select
+              value={prospecto.responsable}
+              label="Responsable"
+              onChange={(e) =>
+                handleResponsableChange(prospecto.idProspecto, e.target.value)
+              }
+              name="responsable"
+              sx={{ minWidth: "160px", bgcolor: "#fff" }}
+            >
+              <MenuItem value="mercadeo">Mercadeo</MenuItem>
+              <MenuItem value="julianavellaneda">Julián Avellaneda</MenuItem>
+              <MenuItem value="esperanzazambrano">
+                Luz Esperanza Zambrano
+              </MenuItem>
+              <MenuItem value="yazminarias">Yazmín Angélica Arias O.</MenuItem>
+            </Select>
+          </FormControl>
+          {/* <FormControl fullWidth size="small" sx={{ mt: 1 }}>
             <InputLabel>Calificación</InputLabel>
             <Select
               value={prospecto.calificacion}
@@ -125,7 +145,7 @@ const ProspectoCard = React.memo(
                 ⚠️ 5. Cotización rechazada
               </MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           <FormControl fullWidth size="small" sx={{ mt: 1 }}>
             <InputLabel>Status</InputLabel>
@@ -164,6 +184,7 @@ ProspectoCard.propTypes = {
     apellidos: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
     calificacion: PropTypes.string,
+    responsable: PropTypes.string,
     idProspecto: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
   }).isRequired,
@@ -175,6 +196,7 @@ ProspectoCard.propTypes = {
   tooltip: PropTypes.string,
   onClickDetail: PropTypes.func.isRequired,
   handleStatusChange: PropTypes.func.isRequired,
+  handleResponsableChange: PropTypes.func.isRequired,
   handleCalificacionChange: PropTypes.func.isRequired,
   handleOpenOverlay: PropTypes.func.isRequired,
 };

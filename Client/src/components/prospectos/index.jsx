@@ -140,6 +140,22 @@ const Prospectos = () => {
     );
   };
 
+  const handleResponsableChange = (idProspecto, newResponsable) => {
+    setProspectos((prev) =>
+      prev.map((p) =>
+        p.idProspecto === idProspecto ? { ...p, responsable: newResponsable } : p,
+      ),
+    );
+    dispatch(
+      updateStatus({
+        idProspecto: idProspecto,
+        field: "responsable",
+        value: newResponsable,
+      }),
+    );
+  };
+
+
   const handleCalificacionChange = (idProspecto, newCalificacion) => {
     setProspectos((prev) =>
       prev.map((p) =>
@@ -217,6 +233,7 @@ const Prospectos = () => {
       dispatch(getTareas());
       dispatch(getCitas());
     });
+    
     handleCloseCitaForm();
   };
 
@@ -520,6 +537,7 @@ const Prospectos = () => {
                           tooltip={tooltip}
                           onClickDetail={onClickDetail}
                           handleStatusChange={handleStatusChange}
+                          handleResponsableChange={handleResponsableChange}
                           handleCalificacionChange={handleCalificacionChange}
                           handleOpenOverlay={handleOpenOverlay}
                         />

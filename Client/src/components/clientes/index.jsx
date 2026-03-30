@@ -145,6 +145,21 @@ const Clientes = () => {
     );
   };
 
+    const handleResponsableChange = (cedulaCliente, newResponsable) => {
+    setClientes((prev) =>
+      prev.map((p) =>
+        p.cedulaCliente === cedulaCliente ? { ...p, responsable: newResponsable } : p,
+      ),
+    );
+    dispatch(
+      updateClienteStatus({
+        cedulaCliente: cedulaCliente,
+        field: "responsable",
+        value: newResponsable,
+      }),
+    );
+  };
+
   const handleFaseChange = (cedulaCliente, newFase) => {
     setClientes((prev) =>
       prev.map((p) =>
@@ -525,6 +540,7 @@ const Clientes = () => {
                           tooltip={tooltip}
                           onClickDetail={onClickDetail}
                           handleStatusChange={handleStatusChange}
+                          handleResponsableChange={handleResponsableChange}
                           handleFaseChange={handleFaseChange}
                           handleOpenOverlay={handleOpenOverlay}
                         />

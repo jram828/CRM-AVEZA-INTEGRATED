@@ -5,23 +5,30 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "dayjs/locale/es";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import React, { useEffect, useState } from "react";
-import { getCitas, obtenerCitasCalendar, setSource } from "../../redux/actions";
+import { useEffect, useState } from "react";
+import {
+  eliminarCita,
+  getCitas,
+  obtenerCitasCalendar,
+} from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 dayjs.locale("es");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-// const DEFAULT_TIMEZONE = "America/Bogota";
-// dayjs.tz.setDefault(DEFAULT_TIMEZONE);
-
 const Calendario = () => {
   const datos = JSON.parse(localStorage.getItem("loggedUser"));
-
-  const filtroCita = JSON.parse(localStorage.getItem("filtroCita"));
   const source = useSelector((state) => state.source);
-  console.log("Source en calendar:", source);
   const messages = {
     allDay: "Todo el día",
     previous: "Anterior",
@@ -41,40 +48,36 @@ const Calendario = () => {
   const citas = useSelector((state) =>
     source === "google" ? state.citasCalendar : state.citas,
   );
-  const filtro = useSelector((state) => state.filtro);
-  // const [citasId, setCitasId] = useState([]);
   const [view, setView] = useState("month");
   const [date, setDate] = useState(new Date());
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const calendarId = "aveza.asesoria@gmail.com";
 
   useEffect(() => {
     if (source !== "google") {
       dispatch(getCitas());
     } else {
-      console.log("Obteniendo citas de Google Calendar para:", datos.email);
-      dispatch(obtenerCitasCalendar("aveza.asesoria@gmail.com"));
+      dispatch(obtenerCitasCalendar(calendarId));
     }
   }, [dispatch, source, datos.email]);
-
-  console.log("Citas en calendar: ", citas);
-
-  // Adaptar eventos según el origen
+  console.log("Citas en calendario:", citas);
   const events = citas
     ?.map((cita) => {
       if (source === "google") {
-        // citas desde Google Calendar
-        // const startDateTime = dayjs(cita.inicio).toDate();
-        // const endDateTime = dayjs(cita.fin).toDate();
-        const startDateTime = new Date(cita.inicio); // 👈 convertir a Date
+        const startDateTime = new Date(cita.inicio);
         const endDateTime = new Date(cita.fin);
 
         return {
+          idCitaGoogle: cita.id,
           start: startDateTime,
           end: endDateTime,
           title: cita.resumen,
           description: cita.descripcion || "No hay descripción",
+          idCita: cita.extendedProperties?.private?.idCita,
         };
       } else {
-        // citas desde tu backend local
         const fechaCita = dayjs(cita.fechaCita);
         const [hour, minute, second] = cita.horaCita.split(":").map(Number);
 
@@ -102,6 +105,7 @@ const Calendario = () => {
         const endDateTime = dayjs(startDateTime).add(30, "minute").toDate();
 
         return {
+          idCita: cita.idCita,
           start: startDateTime,
           end: endDateTime,
           title: cita.resumen,
@@ -111,36 +115,47 @@ const Calendario = () => {
     })
     .filter((event) => event !== null);
 
-  // console.log("events", events);
-
-  const handleSelectEvent = (event) => {
-    setView("day");
-    setDate(event.start);
-  };
-
   const handleNavigate = (newDate) => {
     setDate(newDate);
-
     if (source === "google") {
-      const mes = dayjs(newDate).month() + 1; // moment/dayjs usa 0-11
-      console.log("Consultando citas de Google Calendar para mes:", mes);
-      dispatch(obtenerCitasCalendar("aveza.asesoria@gmail.com", mes));
+      const mes = dayjs(newDate).month() + 1;
+      dispatch(obtenerCitasCalendar(calendarId, mes));
     } else {
       dispatch(getCitas());
     }
   };
 
-  console.log("events", events);
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+    setEditTitle(event.title);
+    setEditDescription(event.description);
+  };
 
-console.log(events.map(e => ({ start: typeof e.start, end: typeof e.end }))) 
+const handleDeleteEvent = (event) => {
+  console.log("Eliminar evento:", event);
+  if (source === "google") {
+    dispatch(eliminarCita(event.idCitaGoogle, event.idCita, calendarId))
+      .then(() => dispatch(obtenerCitasCalendar(calendarId))); // refrescar citas
+  } else {
+    dispatch(eliminarCita(event.idCita))
+      .then(() => dispatch(getCitas())); // refrescar citas
+  }
+  setSelectedEvent(null);
+};
+
+
+  const handleEditEvent = () => {
+    // Aquí despacharías la acción de edición con los nuevos valores
+    console.log("Guardar cambios:", {
+      ...selectedEvent,
+      title: editTitle,
+      description: editDescription,
+    });
+    setSelectedEvent(null);
+  };
 
   return (
-    <div
-      style={{
-        height: "80vh",
-        width: "100%",
-      }}
-    >
+    <div style={{ height: "80vh", width: "100%" }}>
       <Calendar
         localizer={localizer}
         events={events}
@@ -155,6 +170,55 @@ console.log(events.map(e => ({ start: typeof e.start, end: typeof e.end })))
         onNavigate={handleNavigate}
         onView={setView}
       />
+
+      {selectedEvent && (
+        <Dialog open={true} onClose={() => setSelectedEvent(null)} fullWidth>
+          <DialogTitle>Detalle de la cita</DialogTitle>
+          <DialogContent>
+            <TextField
+              label="Título"
+              fullWidth
+              margin="dense"
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+            />
+            <TextField
+              label="Descripción"
+              fullWidth
+              margin="dense"
+              multiline
+              rows={3}
+              value={editDescription}
+              onChange={(e) => setEditDescription(e.target.value)}
+            />
+            <Typography variant="body2" sx={{ mt: 2 }}>
+              <strong>Inicio:</strong> {selectedEvent.start.toString()}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Fin:</strong> {selectedEvent.end.toString()}
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleEditEvent}
+              variant="contained"
+              color="primary"
+            >
+              Guardar cambios
+            </Button>
+            <Button
+              onClick={() => handleDeleteEvent(selectedEvent)}
+              variant="outlined"
+              color="error"
+            >
+              Eliminar
+            </Button>
+            <Button onClick={() => setSelectedEvent(null)} variant="text">
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 };

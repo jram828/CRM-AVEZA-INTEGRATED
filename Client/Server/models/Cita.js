@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 
 export default (sequelize) => {
-  const Cita=sequelize.define(
+  const Cita = sequelize.define(
     "Cita",
     {
       idCita: {
@@ -19,6 +19,11 @@ export default (sequelize) => {
       descripcion: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "",
+      },
+      idCitaGoogle: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
       fechaCita: {
         type: DataTypes.DATE,
@@ -32,7 +37,7 @@ export default (sequelize) => {
         defaultValue: false,
       },
     },
-    { timestamps: false }
+    { timestamps: false },
   );
   return Cita;
 };

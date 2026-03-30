@@ -42,7 +42,8 @@ const Form = ({ login, clickHandlerRecordatorio, clickHandlerCrear }) => {
       if (access === true) {
         dispatch(setAuth(access));
         if (data.usuario.administrador || data.usuario.cedulaAbogado) {
-          navigate("/clientes");
+          // navigate("/clientes");
+          navigate("/prospectos");
         } else if (data.usuario.cedulaCliente) {
           navigate("/casos");
         } else {

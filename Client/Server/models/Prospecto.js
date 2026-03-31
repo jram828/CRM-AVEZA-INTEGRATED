@@ -89,6 +89,11 @@ export default (sequelize) => {
         allowNull: true,
         defaultValue: "mercadeo",
       },
+      fuente: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "noseleccionado",
+      },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

@@ -154,6 +154,7 @@ const Detail = () => {
     fase: "",
     honorarios: [],
     responsable: "",
+    fuente: "",
   });
   console.log("User Data Detail:", userDataDetail);
 
@@ -238,6 +239,7 @@ const Detail = () => {
         totalBienes_letras: datos?.Cotizacions[0].totalBienes_letras || "",
         valorRadicar_letras: datos?.Cotizacions[0].valorRadicar_letras || "",
         responsable: datos.responsable || "",
+        fuente: datos.fuente || "",
       });
     } else {
       setUserDataDetail({
@@ -289,6 +291,7 @@ const Detail = () => {
         totalBienes_letras: datos?.Cotizacions[0]?.totalBienes_letras || "",
         valorRadicar_letras: datos?.Cotizacions[0]?.valorRadicar_letras || "",
         responsable: datos.responsable || "",
+        fuente: datos.fuente || "",
       });
     }
   }, [dispatch, source]);
@@ -864,6 +867,38 @@ const Detail = () => {
                   </MenuItem>
                 </Select>
               </FormControl>
+
+              <FormControl
+                fullWidth
+                size="small"
+                style={{ marginTop: "0.5rem" }}
+              >
+                <InputLabel>Fuente</InputLabel>
+                <Select
+                  value={userDataDetail.fuente}
+                  label="Fuente"
+                  onChange={handleUpdateDetail}
+                  name="fuente"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="noseleccionado">No seleccionado</MenuItem>
+                  <MenuItem value="cpweb">CPWEB</MenuItem>
+                  <MenuItem value="waps">WAPS</MenuItem>
+                  <MenuItem value="cfbook">CFBOOK</MenuItem>
+                  <MenuItem value="reservaonline">Reserva online</MenuItem>
+                  <MenuItem value="crreferenciado">CRREFERENCIADO</MenuItem>
+                  <MenuItem value="crladfi">CRLADFI</MenuItem>
+                  <MenuItem value="crar">CRAR</MenuItem>
+                  <MenuItem value="clienteexistente">
+                    CLIENTE EXISTENTE
+                  </MenuItem>
+                  <MenuItem value="crflm">CRFLM</MenuItem>
+                  <MenuItem value="crlpp">CRLPP</MenuItem>
+                  <MenuItem value="crpazpacifico">CRPAZPACIFICO</MenuItem>
+                  <MenuItem value="cremates">CREMATES</MenuItem>
+                  <MenuItem value="tayc">TAYC</MenuItem>
+                </Select>
+              </FormControl>
               <TextField
                 label="Total deudas"
                 name="totalDeudas"
@@ -914,6 +949,62 @@ const Detail = () => {
           )}
           {source === "cliente" && (
             <Stack spacing={2} flex={1}>
+              <FormControl
+                fullWidth
+                size="small"
+                style={{ marginTop: "0.5rem" }}
+              >
+                <InputLabel>Responsable</InputLabel>
+                <Select
+                  value={userDataDetail.responsable}
+                  label="Responsable"
+                  onChange={handleStatusChange}
+                  name="responsable"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="mercadeo">Mercadeo</MenuItem>
+                  <MenuItem value="julianavellaneda">
+                    Julián Avellaneda
+                  </MenuItem>
+                  <MenuItem value="esperanzazambrano">
+                    Luz Esperanza Zambrano
+                  </MenuItem>
+                  <MenuItem value="yazminarias">
+                    Yazmín Angélica Arias O.
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl
+                fullWidth
+                size="small"
+                style={{ marginTop: "0.5rem" }}
+              >
+                <InputLabel>Fuente</InputLabel>
+                <Select
+                  value={userDataDetail.fuente}
+                  label="Fuente"
+                  onChange={handleUpdateDetail}
+                  name="fuente"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="noseleccionado">No seleccionado</MenuItem>
+                  <MenuItem value="cpweb">CPWEB</MenuItem>
+                  <MenuItem value="waps">WAPS</MenuItem>
+                  <MenuItem value="cfbook">CFBOOK</MenuItem>
+                  <MenuItem value="reservaonline">Reserva online</MenuItem>
+                  <MenuItem value="crreferenciado">CRREFERENCIADO</MenuItem>
+                  <MenuItem value="crladfi">CRLADFI</MenuItem>
+                  <MenuItem value="crar">CRAR</MenuItem>
+                  <MenuItem value="clienteexistente">
+                    CLIENTE EXISTENTE
+                  </MenuItem>
+                  <MenuItem value="crflm">CRFLM</MenuItem>
+                  <MenuItem value="crlpp">CRLPP</MenuItem>
+                  <MenuItem value="crpazpacifico">CRPAZPACIFICO</MenuItem>
+                  <MenuItem value="cremates">CREMATES</MenuItem>
+                  <MenuItem value="tayc">TAYC</MenuItem>
+                </Select>
+              </FormControl>
               <TextField
                 label="Ingresos actuales"
                 name="ingresos"

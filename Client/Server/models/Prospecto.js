@@ -33,6 +33,8 @@ export default (sequelize) => {
       familiares: { type: DataTypes.STRING, allowNull: true },
       tieneBienes: { type: DataTypes.STRING, allowNull: true },
       bienes: { type: DataTypes.STRING, allowNull: true },
+      servicio: { type: DataTypes.STRING, allowNull: true },
+      genero: { type: DataTypes.STRING, allowNull: true },
       totalBienes: {
         type: DataTypes.STRING,
         allowNull: true,

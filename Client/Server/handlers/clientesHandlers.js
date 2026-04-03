@@ -148,6 +148,9 @@ const postActualizaClientes = async (req, res) => {
     comentarios,
     cedula_anterior,
     modoContacto,
+    fuente,
+    servicio,
+    genero,
   } = req.body;
   
   const cedula = cedulanew;
@@ -166,7 +169,10 @@ const postActualizaClientes = async (req, res) => {
       ciudad_anterior,
       comentarios,
       cedula_anterior,
-      modoContacto
+      modoContacto,
+      fuente,
+      servicio,
+      genero,
     );
     if (response) res.status(200).json(response);
     else res.status(204).json("No se actualizo el cliente");

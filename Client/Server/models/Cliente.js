@@ -19,6 +19,12 @@ export default (sequelize) => {
       celular: { type: DataTypes.BIGINT, allowNull: false },
       comentarios: { type: DataTypes.TEXT, allowNull: true },
       modoContacto: { type: DataTypes.STRING, allowNull: true },
+      servicio: { type: DataTypes.STRING, allowNull: true },
+      genero: { type: DataTypes.STRING, allowNull: true },
+      totalDeudas: { type: DataTypes.STRING, allowNull: true },
+      tiempoMora: { type: DataTypes.STRING, allowNull: true },
+      numeroEntidades: { type: DataTypes.INTEGER, allowNull: true },
+      totalBienes: { type: DataTypes.STRING, allowNull: true },
       status: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -39,12 +45,21 @@ export default (sequelize) => {
         allowNull: true,
         defaultValue: "noseleccionado",
       },
+      tieneProcesos: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "No",
+      },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
     },
-    { timestamps: false },
+    {
+      timestamps: true,
+      createdAt: "fechaCreacion",
+      updatedAt: "fechaActualizacion",
+    },
   );
   return Cliente;
 };

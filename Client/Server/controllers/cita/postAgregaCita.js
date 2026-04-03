@@ -10,6 +10,8 @@ const createCita = async (
   fechaCita,
   horaCita,
   idProspecto,
+  nombres,
+  apellidos,
   email,
   source,
 ) => {
@@ -19,26 +21,70 @@ const createCita = async (
     fechaCita,
     horaCita,
     idProspecto,
+    nombres,
+    apellidos,
     email,
     source,
   });
+
   const fechaUTC = moment(fechaCita).utc().toDate();
+
+  const fechaStr = moment(fechaCita).format("YYYY-MM-DD");
+  // Generar enlace de reunión Jitsi
+
+  // Formatear nombre base
+  const fullName = `${nombres || ""}-${apellidos || ""}`;
+  // quitar acentos/diacríticos, reemplazar caracteres no alfanuméricos por guiones,
+  // colapsar guiones repetidos y recortar guiones al inicio/fin
+  const nombreBase = fullName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/(^-+|-+$)/g, "")
+    .toLowerCase();
+
+  // Generar nombre único para la sala
+  const nombreSala = `${nombreBase}-${fechaStr}`;
+
+  // Construir enlace Jitsi
+  const enlaceReunion = `https://meet.jit.si/${nombreSala}`;
+
+  // Construir descripción
+  const descripcionGoogle = `Enlace para la reunión: ${enlaceReunion}`;
+
+  // 👇 Concatenar la descripción recibida con la de Google
+  const descripcionFinal = `${descripcion || ""}\n${descripcionGoogle}`;
 
   const newCita = await Cita.create({
     titulo: titulo,
-    descripcion: descripcion,
+    descripcion: descripcionFinal,
     fechaCita: fechaUTC,
     horaCita: horaCita,
     idProspecto: idProspecto,
   });
 
   console.log("Nueva cita creada en la base de datos:", newCita);
-  const dataRegistro = {
-    titulo: titulo,
-    descripcion: descripcion,
-    fechaCita: fechaUTC,
-    horaCita: horaCita,
-  };
+
+  let dataRegistro;
+
+  if (source === "prospecto") {
+    dataRegistro = {
+      titulo: titulo,
+      descripcion: descripcionFinal,
+      fechaCita: fechaUTC,
+      horaCita: horaCita,
+      idProspecto: idProspecto,
+    };
+  } else if (source === "cliente") {
+    dataRegistro = {
+      titulo: titulo,
+      descripcion: descripcionFinal,
+      fechaCita: fechaUTC,
+      horaCita: horaCita,
+      cedulaCliente: idProspecto,
+    };
+  }
 
   console.log("Data para Google Calendar:", dataRegistro, email);
   // Crear la cita en Google Calendar
@@ -53,7 +99,11 @@ const createCita = async (
     await cliente.addCita(newCita);
   }
 
-  const { evento } = await createCitaGoogle(dataRegistro, email, newCita.idCita);
+  const { evento } = await createCitaGoogle(
+    dataRegistro,
+    email,
+    newCita.idCita,
+  );
 
   console.log("Evento Google:", evento);
   newCita.idCitaGoogle = evento.id;

@@ -29,7 +29,9 @@ export default (sequelize) => {
         defaultValue: true,
       },
     },
-    { timestamps: false }
+    {
+      timestamps: false,
+    },
   );
   return Usuario;
 };

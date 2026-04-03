@@ -100,6 +100,16 @@ const postProspectosHandler = async (req, res) => {
     cuotas,
     comentarios,
     valor_pretensiones,
+    tieneProcesos,
+    responsable,
+    fuente,
+    genero,
+    totalBienes,
+    tiempoMora,
+    numeroEntidades,
+    servicio,
+    status,
+    totalDeudas,
   } = req.body;
 
   try {
@@ -118,6 +128,16 @@ const postProspectosHandler = async (req, res) => {
       cuotas,
       comentarios,
       valor_pretensiones,
+      tieneProcesos,
+      responsable,
+      fuente,
+      genero,
+      totalBienes,
+      tiempoMora,
+      numeroEntidades,
+      servicio,
+      status,
+      totalDeudas,
     );
     console.log("Response crear prospecto", response);
     if (response) res.status(200).json(response);
@@ -174,8 +194,13 @@ const postActualizaProspectos = async (req, res) => {
     totalBienes,
     totalDeudas,
     modoContacto,
+    ciudadEnviar,
+    fuente,
+    servicio,
+    genero,
   } = req.body;
 
+  const ciudadNew = ciudadEnviar || ciudad;
   const cedula = cedulanew;
 
   try {
@@ -189,7 +214,7 @@ const postActualizaProspectos = async (req, res) => {
       email,
       celular,
       direccion,
-      ciudad,
+      ciudadNew,
       ciudad_anterior,
       comentarios,
       cedula_anterior,
@@ -201,6 +226,9 @@ const postActualizaProspectos = async (req, res) => {
       totalBienes,
       totalDeudas,
       modoContacto,
+      fuente,
+      servicio,
+      genero,
     );
 
     if (response) res.status(200).json(response);
@@ -306,8 +334,13 @@ const postHonorariosHandler = async (req, res) => {
     // planpagosUnificado,
   } = req.body;
 
-  const { inicial, cuotasHonorarios, valorHonorarios, honorariosLiquidacion, valorRadicar } =
-    honorarios;
+  const {
+    inicial,
+    cuotasHonorarios,
+    valorHonorarios,
+    honorariosLiquidacion,
+    valorRadicar,
+  } = honorarios;
   console.log("body handler honorarios:", req.body);
 
   try {

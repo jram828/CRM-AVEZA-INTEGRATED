@@ -10,13 +10,14 @@ export async function postCitaHandlers(data) {
     email,
     calendarId,
     nombres,
+    apellidos,
     idProspecto,
   } = data;
   console.log("data del post", data);
 
 
   try {
-    await axios.post("citas/google", {
+    await axios.post("citas", {
       titulo: `${titulo}`,
       descripcion: `${descripcion}`,
       fechaCita: `${fechaCita}`,
@@ -25,6 +26,7 @@ export async function postCitaHandlers(data) {
       email: `${email}`,
       calendarId: `${calendarId}`,
       nombres: `${nombres}`,
+      apellidos: `${apellidos}`,
       idProspecto: `${idProspecto}`,
 
     });

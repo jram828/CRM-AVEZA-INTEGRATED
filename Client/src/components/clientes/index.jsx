@@ -145,10 +145,12 @@ const Clientes = () => {
     );
   };
 
-    const handleResponsableChange = (cedulaCliente, newResponsable) => {
+  const handleResponsableChange = (cedulaCliente, newResponsable) => {
     setClientes((prev) =>
       prev.map((p) =>
-        p.cedulaCliente === cedulaCliente ? { ...p, responsable: newResponsable } : p,
+        p.cedulaCliente === cedulaCliente
+          ? { ...p, responsable: newResponsable }
+          : p,
       ),
     );
     dispatch(
@@ -432,25 +434,51 @@ const Clientes = () => {
   const exportarExcel = () => {
     // Seleccionar solo las propiedades requeridas y en el orden correcto
     const datos = reduxClientes.map((cliente) => ({
+      "Fecha Creación": cliente.fechaCreacion
+        ? new Date(cliente.fechaCreacion).toLocaleDateString()
+        : "",
+      Estado: cliente.status,
       Cedula: cliente.cedulaCliente,
       Apellidos: cliente.apellidos,
       Nombres: cliente.nombres,
       Celular: cliente.celular,
       Direccion: cliente.direccion,
+      Ciudad: cliente.Ciudads?.[0]?.nombre_ciudad || "",
       Email: cliente.email,
-      Status: cliente?.status || "",
+      Servicio: cliente.servicio || "",
       Fase: cliente?.fase || "",
+      Pasivo: cliente?.totalDeudas || 0,
+      Mora: cliente?.tiempoMora || 0,
+      Entidades: cliente?.numeroEntidades || 0,
+      Activos: cliente?.totalBienes || 0,
+      Procesos: cliente?.tieneProcesos || "No se ha registrado",
+      Responsable: cliente?.responsable || "",
+      Fuente: cliente?.fuente || "",
+      Genero: cliente?.genero || "",
+      Descripción: cliente.comentarios || "",
     }));
 
     const headers = [
+      "Fecha Creación",
+      "Estado",
       "Cedula",
       "Apellidos",
       "Nombres",
       "Celular",
       "Direccion",
+      "Ciudad",
       "Email",
-      "Status",
+      "Servicio",
       "Fase",
+      "Pasivo",
+      "Mora",
+      "Entidades",
+      "Activos",
+      "Procesos",
+      "Responsable",
+      "Fuente",
+      "Genero",
+      "Descripción",
     ];
 
     // Crear hoja de cálculo
@@ -467,6 +495,8 @@ const Clientes = () => {
       );
       return { wch: maxLength + 1 };
     });
+
+
     // Crear libro y añadir la hoja
     const libro = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(libro, hoja, "Clientes");

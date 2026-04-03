@@ -6,6 +6,7 @@ import {
   getCitas,
   getProspectoAllCasos,
   obtenerCitasCalendar,
+  obtenerDisponibilidad,
   setFiltro,
   setSource,
 } from "../../redux/actions";
@@ -56,6 +57,7 @@ function AgendarCitasPriv() {
 
   const dispatch = useDispatch();
 
+  const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   const reduxProspectos = useSelector((state) => state.pages);
   // const pages = useSelector((state) => state.pages);
   const filtro = useSelector((state) => state.filtro);
@@ -66,6 +68,30 @@ function AgendarCitasPriv() {
   }, [dispatch]);
   // console.log("pages", pages);
 
+  useEffect(() => {
+    if (dataRegistro.fechaCita !== "") {
+      dispatch(obtenerDisponibilidad({ fecha: dataRegistro.fechaCita }));
+    }
+  }, [dataRegistro.fechaCita, dispatch]);
+
+  console.log("Horas disponibles en Agendar Cita:", horasDisponibles);
+
+  // Hora mínima si la fecha seleccionada es hoy
+  const now = new Date();
+  const currentTime = now.toTimeString().slice(0, 5); // formato HH:MM
+  const hoy = now.toISOString().split("T")[0];
+
+  let horasFiltradas = horasDisponibles;
+
+  // Solo filtrar si dataRegistro no está vacío y ES la fecha actual
+  if (dataRegistro.fechaCita && dataRegistro.fechaCita === hoy) {
+    horasFiltradas = horasDisponibles.filter((hora) => {
+      const horaMoment = moment(hora, "HH:mm");
+      const currentMoment = moment(currentTime, "HH:mm");
+      return horaMoment.isAfter(currentMoment);
+    });
+  }
+
   const submitHandlerRegistro = async (e) => {
     e.preventDefault();
     try {
@@ -74,7 +100,7 @@ function AgendarCitasPriv() {
       console.log("DataRegistro en submitHandlerRegistro:", dataRegistro);
       await postCitaHandlers({ ...dataRegistro, descripcion });
 
-        dispatch(obtenerCitasCalendar(dataRegistro.calendarId));
+      dispatch(obtenerCitasCalendar(dataRegistro.calendarId));
       // window.alert("Cita creado con éxito");
       // window.location.reload();
     } catch (error) {
@@ -96,15 +122,26 @@ function AgendarCitasPriv() {
     dispatch(setFiltro(filtroCita));
   };
 
-  const handleChangeRegistro = (e) => {
-    const { name, value } = e.target
-      ? e.target
-      : { name: "fechaCita", value: e };
+const handleChangeRegistro = (arg1, arg2) => {
+  if (typeof arg1 === "string") {
+    // llamado como handleChangeRegistro("horaCita", valor)
+    const name = arg1;
+    const value = arg2;
     setDataRegistro((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  };
+  } else {
+    // llamado como handleChangeRegistro(e)
+    const { name, value } = arg1.target
+      ? arg1.target
+      : { name: "fechaCita", value: arg1 };
+    setDataRegistro((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  }
+};
 
   // if (isLoading || !citas) {
   //   return (
@@ -232,7 +269,7 @@ function AgendarCitasPriv() {
                       handleChangeRegistro({
                         target: {
                           name: "fechaCita",
-                          value: date ? moment(date).utc().toISOString() : null,
+                          value: date ? moment(date).format("YYYY-MM-DD") : "",
                         },
                       })
                     }
@@ -248,18 +285,22 @@ function AgendarCitasPriv() {
                 </LocalizationProvider>
               </Box>
 
-              <TextField
-                fullWidth
-                label="Hora"
-                type="time"
-                name="horaCita"
-                id="horaCita"
-                value={dataRegistro.horaCita}
-                onChange={handleChangeRegistro}
-                InputLabelProps={{ shrink: true }}
-                // className="inputCrearCita"
-                // sx={{ minWidth: "250px" }}
-              />
+              <FormControl fullWidth>
+                <InputLabel id="hora-label">Hora</InputLabel>
+                <Select
+                  labelId="hora-label"
+                  value={dataRegistro.horaCita || ""}
+                  onChange={(e) =>
+                    handleChangeRegistro("horaCita", e.target.value)
+                  }
+                >
+                  {horasFiltradas?.map((hora) => (
+                    <MenuItem key={hora} value={hora}>
+                      {hora}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <TextField
                 fullWidth
                 label="Detalles"

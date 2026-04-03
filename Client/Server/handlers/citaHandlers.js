@@ -51,8 +51,16 @@ const getAvailabilityHandler = async (req, res) => {
 };
 
 const postCreateCita = async (req, res) => {
-  const { titulo, descripcion, fechaCita, horaCita, idProspecto, source } =
-    req.body;
+  const {
+    titulo,
+    descripcion,
+    fechaCita,
+    horaCita,
+    idProspecto,
+    nombres,
+    apellidos,
+    source,
+  } = req.body;
   const email = req.body.calendarId || "aveza.asesoria@gmail.com"; //process.env.EMAIL_NOTIFICACION;
   console.log(
     "Datos recibidos en el handler de creación de cita:",
@@ -66,6 +74,8 @@ const postCreateCita = async (req, res) => {
       fechaCita,
       horaCita,
       idProspecto,
+      nombres,
+      apellidos,
       email,
       source,
     );

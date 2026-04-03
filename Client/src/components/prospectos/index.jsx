@@ -431,23 +431,49 @@ const Prospectos = () => {
   const exportarExcel = () => {
     // Seleccionar solo las propiedades requeridas y en el orden correcto
     const datos = reduxProspectos.map((prospecto) => ({
+      "Fecha Creación": prospecto.fechaCreacion ? new Date(prospecto.fechaCreacion).toLocaleDateString() : "",
+      Estado: prospecto.status,
       Cedula: prospecto.cedulaProspecto,
       Apellidos: prospecto.apellidos,
       Nombres: prospecto.nombres,
       Celular: prospecto.celular,
       Direccion: prospecto.direccion,
+      Ciudad: prospecto.Ciudads?.[0]?.nombre_ciudad || "",
       Email: prospecto.email,
-      Status: prospecto.status,
+      Servicio: prospecto.servicio || "",
+      Fase: prospecto?.fase || "",
+      Pasivo: prospecto?.totalDeudas || 0,
+      Mora: prospecto?.tiempoMora || 0,
+      Entidades: prospecto?.numeroEntidades || 0,
+      Activos: prospecto?.totalBienes || 0,
+      Procesos: prospecto?.tieneProcesos || "No se ha registrado",
+      Responsable: prospecto?.responsable || "",
+      Fuente: prospecto?.fuente || "",
+      Genero: prospecto?.genero || "",
+      Descripción: prospecto.comentarios || "",
     }));
 
     const headers = [
+      "Fecha Creación",
+      "Estado",
       "Cedula",
       "Apellidos",
       "Nombres",
       "Celular",
       "Direccion",
+      "Ciudad",
       "Email",
-      "Status",
+      "Servicio",
+      "Fase",
+      "Pasivo",
+      "Mora",
+      "Entidades",
+      "Activos",
+      "Procesos",
+      "Responsable",
+      "Fuente",
+      "Genero",
+      "Descripción",
     ];
 
     // Crear hoja de cálculo

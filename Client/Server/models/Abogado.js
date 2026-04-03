@@ -60,7 +60,14 @@ export default (sequelize) => {
         defaultValue: false,
       },
     },
-    { timestamps: false }
+    {
+      timestamps: false,
+    },
+    // {
+    //   timestamps: true,
+    //   createdAt: "fechaCreacion",
+    //   updatedAt: "fechaActualizacion",
+    // },
   );
   return Abogado;
 };

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import { Button } from "../Mystyles";
 import "../detail/detail.css";
+import { codigoCiudades } from "../../utils/codigoCiudades";
 import {
   completarCita,
   completarTarea,
@@ -56,6 +57,7 @@ import {
   IconButton,
   Tooltip,
   Grid,
+  Autocomplete,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -67,6 +69,7 @@ import CitaForm from "./citaFormDetail";
 import TaskForm from "./taskFormDetail";
 
 import { generarDocumentos } from "../../handlers/generarDocumentos";
+import { codigoDepartamentos } from "../../utils/codigoDepartamentos";
 
 // import GooglePicker from "../../utils/googlePicker";
 // import GoogleDriveFileUploader from "../../utils/googlePicker";
@@ -139,6 +142,7 @@ const Detail = () => {
     celular: "",
     direccion: "",
     ciudad: "",
+    ciudadEnviar: "",
     departamento: "",
     // password: "",
     comentarios: "",
@@ -155,6 +159,8 @@ const Detail = () => {
     honorarios: [],
     responsable: "",
     fuente: "",
+    servicio: "",
+    genero: "",
   });
   console.log("User Data Detail:", userDataDetail);
 
@@ -240,6 +246,8 @@ const Detail = () => {
         valorRadicar_letras: datos?.Cotizacions[0].valorRadicar_letras || "",
         responsable: datos.responsable || "",
         fuente: datos.fuente || "",
+        servicio: datos.servicio || "",
+        genero: datos.genero || "",
       });
     } else {
       setUserDataDetail({
@@ -292,12 +300,49 @@ const Detail = () => {
         valorRadicar_letras: datos?.Cotizacions[0]?.valorRadicar_letras || "",
         responsable: datos.responsable || "",
         fuente: datos.fuente || "",
+        servicio: datos.servicio || "",
+        genero: datos.genero || "",
       });
     }
   }, [dispatch, source]);
 
   console.log("Tareas:", tareas);
   console.log("Citas:", citas);
+
+  const ciudadOpciones = useMemo(() => {
+    const nombresUnicos = new Set();
+
+    return codigoCiudades
+      .map((c) => {
+        const departamento = codigoDepartamentos.find(
+          (d) => d.codigo_departamento === c.codigo_departamento,
+        );
+        const nombreDepto =
+          departamento?.nombre_departamento || "SIN DEPARTAMENTO";
+
+        const etiqueta = `${c.nombre_ciudad}, ${nombreDepto}`;
+
+        return {
+          etiqueta,
+          ciudad: c.nombre_ciudad,
+          departamento: nombreDepto,
+          codigo: c.codigo_ciudad,
+        };
+      })
+      .filter((c) => {
+        if (nombresUnicos.has(c.etiqueta)) return false;
+        nombresUnicos.add(c.etiqueta);
+        return true;
+      });
+  }, []);
+
+  const ciudadFiltrada = useMemo(() => {
+    const input = userDataDetail.ciudad.toUpperCase();
+    return ciudadOpciones.filter((c) =>
+      c.etiqueta.toUpperCase().includes(input),
+    );
+  }, [userDataDetail.ciudad, ciudadOpciones]);
+
   const handleDelete = () => {
     if (source === "abogado") {
       const isConfirmed = window.confirm(
@@ -421,21 +466,21 @@ const Detail = () => {
       );
     }
   };
-  const handleCalificacionChange = (e) => {
-    const { name, value } = e.target;
-    setUserDataDetail({
-      ...userDataDetail,
-      [name]: value,
-    });
+  // const handleCalificacionChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setUserDataDetail({
+  //     ...userDataDetail,
+  //     [name]: value,
+  //   });
 
-    dispatch(
-      updateCalificacion({
-        cedulaCliente: userDataDetail.cedulanew,
-        field: name,
-        value: value,
-      }),
-    );
-  };
+  //   dispatch(
+  //     updateCalificacion({
+  //       cedulaCliente: userDataDetail.cedulanew,
+  //       field: name,
+  //       value: value,
+  //     }),
+  //   );
+  // };
 
   const handleFaseChange = (e) => {
     const { name, value } = e.target;
@@ -660,6 +705,20 @@ const Detail = () => {
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
+            <FormControl>
+                            <InputLabel>Género</InputLabel>
+                <Select
+                  value={userDataDetail.genero}
+                  label="Género"
+                  onChange={handleUpdateDetail}
+                  name="genero"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="masculino">Masculino</MenuItem>
+                  <MenuItem value="femenino">Femenino</MenuItem>
+                  <MenuItem value="otro">Otro</MenuItem>
+                </Select>
+              </FormControl>
             <TextField
               label="Número de cédula"
               name="cedulanew"
@@ -699,7 +758,51 @@ const Detail = () => {
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
-            <TextField
+
+            <Autocomplete
+              freeSolo
+              fullWidth
+              disableClearable
+              autoHighlight
+              options={ciudadFiltrada.map((c) => c.etiqueta)}
+              inputValue={userDataDetail.ciudad}
+              onInputChange={(_event, value) => {
+                setUserDataDetail((prev) => ({
+                  ...prev,
+                  ciudad: value,
+                }));
+              }}
+              onChange={(_event, value) => {
+                console.log("Ciudad seleccionada:", value); 
+                const nombre = value ? String(value).split(",")[0].trim() : "";
+                console.log("Nombre ciudad extraído:", nombre);
+                setUserDataDetail((prev) => ({
+                  ...prev,
+                  ciudadEnviar: nombre,
+                }));
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  id="ciudad"
+                  label="Ciudad"
+                  size="small"
+                  placeholder="Buscar ciudad..."
+                  fullWidth
+                  sx={{
+                    minWidth: 220,
+                    bgcolor: "#fff",
+                    "& .MuiInputBase-root": { bgcolor: "#fff" },
+                  }}
+                  InputProps={{
+                    ...params.InputProps,
+                    sx: { bgcolor: "#fff" },
+                  }}
+                />
+              )}
+            />
+
+            {/* <TextField
               label="Ciudad"
               name="ciudad"
               value={userDataDetail?.ciudad?.toUpperCase()}
@@ -707,7 +810,7 @@ const Detail = () => {
               fullWidth
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
-            />
+            /> */}
             <TextField
               label="Departamento"
               name="departamento"
@@ -728,7 +831,7 @@ const Detail = () => {
             />
             {source === "prospecto" && (
               <Stack spacing={2}>
-                <FormControl fullWidth size="small">
+                {/* <FormControl fullWidth size="small">
                   <InputLabel>Calificación</InputLabel>
                   <Select
                     name="calificacion"
@@ -761,7 +864,7 @@ const Detail = () => {
                       ⚠️ 5. Cotización rechazada
                     </MenuItem>
                   </Select>
-                </FormControl>
+                </FormControl> */}
 
                 <FormControl fullWidth size="small">
                   <InputLabel>Status</InputLabel>
@@ -897,6 +1000,43 @@ const Detail = () => {
                   <MenuItem value="crpazpacifico">CRPAZPACIFICO</MenuItem>
                   <MenuItem value="cremates">CREMATES</MenuItem>
                   <MenuItem value="tayc">TAYC</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl
+                fullWidth
+                size="small"
+                style={{ marginTop: "0.5rem" }}
+              >
+                <InputLabel>Servicio</InputLabel>
+                <Select
+                  value={userDataDetail.servicio}
+                  label="Servicio"
+                  onChange={handleUpdateDetail}
+                  name="servicio"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="ipn">IPN</MenuItem>
+                  <MenuItem value="liqpatrimonial">Liq. Patrimonial</MenuItem>
+                  <MenuItem value="acuerdodepago">Acuerdo de Pago</MenuItem>
+                  <MenuItem value="ley1116">Ley 1116</MenuItem>
+                  <MenuItem value="reformaacuerdo">Reforma acuerdo de pago</MenuItem>
+                  <MenuItem value="reduccreditohip">Reduc. Crédito Hip</MenuItem>
+                  <MenuItem value="asesorialegalintegral">Asesoría Legal Integral</MenuItem>
+                  <MenuItem value="asesoriaempresas">Asesoría Empresas</MenuItem>
+                  <MenuItem value="sucesion">Sucesión</MenuItem>
+                  <MenuItem value="familia">Familia</MenuItem>
+                  <MenuItem value="contratacionestatal">Contratación Estatal</MenuItem>
+                  <MenuItem value="divorcio">Divorcio</MenuItem>
+                  <MenuItem value="reclamacionlaboral">Reclamación Laboral</MenuItem>
+                  <MenuItem value="recaudodecartera">Recaudo de Cartera</MenuItem>
+                  <MenuItem value="notarial">Notarial</MenuItem>
+                  <MenuItem value="tutelas">Tutelas</MenuItem>
+                  <MenuItem value="rdd">RDD</MenuItem>
+                  <MenuItem value="ejecutivos">Ejecutivos</MenuItem>
+                  <MenuItem value="reclamacionseguro">Reclamación Seguro</MenuItem>
+                  <MenuItem value="extraprocesal">Extraprocesal</MenuItem>
+                  <MenuItem value="divisorios">Divisorios</MenuItem>
+                  <MenuItem value="dotros">Otros</MenuItem>
                 </Select>
               </FormControl>
               <TextField

@@ -74,6 +74,8 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
       onSave({
         ...dataCita,
         idProspecto: selected.idProspecto,
+        nombres: selected.nombres,
+        apellidos: selected.apellidos,
         source: "prospecto",
       });
       onClose();
@@ -82,6 +84,8 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
       onSave({
         ...dataCita,
         cedulaCliente: selected.cedulaCliente,
+        nombres: selected.nombres,
+        apellidos: selected.apellidos,
         source: "cliente",
       });
       onClose();

@@ -10,6 +10,7 @@ import {
   eliminarCita,
   getCitas,
   obtenerCitasCalendar,
+  obtenerDisponibilidad,
 } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,8 +20,15 @@ import {
   DialogActions,
   Button,
   TextField,
-  Typography,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import moment from "moment";
 
 dayjs.locale("es");
 dayjs.extend(utc);
@@ -29,6 +37,47 @@ dayjs.extend(timezone);
 const Calendario = () => {
   const datos = JSON.parse(localStorage.getItem("loggedUser"));
   const source = useSelector((state) => state.source);
+  const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
+  const dispatch = useDispatch();
+
+  const [cita, setCita] = useState({
+    idCita: "",
+    idCitaGoogle: "",
+    titulo: "",
+    descripcion: "",
+    fechaCita: "",
+    horaCita: "",
+    idProspecto: "",
+    cedulaCliente: "",
+    email: datos?.email || "",
+    calendarID: "aveza.asesoria@gmail.com",
+  });
+  const calendarId = "aveza.asesoria@gmail.com";
+
+  // Traer disponibilidad desde Google cuando cambia la fecha
+  useEffect(() => {
+    if (source === "google" && cita.fechaCita !== "") {
+      dispatch(obtenerDisponibilidad({ fecha: cita.fechaCita }));
+    }
+  }, [cita.fechaCita, dispatch, source]);
+
+  console.log("Horas disponibles en Agendar Cita:", horasDisponibles);
+
+  // Filtrar horas si la fecha seleccionada es hoy
+  const now = new Date();
+  const currentTime = now.toTimeString().slice(0, 5); // HH:MM
+  const hoy = now.toISOString().split("T")[0];
+
+  let horasFiltradas = horasDisponibles;
+
+  if (cita.fechaCita && cita.fechaCita === hoy) {
+    horasFiltradas = horasDisponibles.filter((hora) => {
+      const horaMoment = moment(hora, "HH:mm");
+      const currentMoment = moment(currentTime, "HH:mm");
+      return horaMoment.isAfter(currentMoment);
+    });
+  }
+
   const messages = {
     allDay: "Todo el día",
     previous: "Anterior",
@@ -44,16 +93,13 @@ const Calendario = () => {
   };
 
   const localizer = dayjsLocalizer(dayjs);
-  const dispatch = useDispatch();
+
   const citas = useSelector((state) =>
     source === "google" ? state.citasCalendar : state.citas,
   );
   const [view, setView] = useState("month");
   const [date, setDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [editTitle, setEditTitle] = useState("");
-  const [editDescription, setEditDescription] = useState("");
-  const calendarId = "aveza.asesoria@gmail.com";
 
   useEffect(() => {
     if (source !== "google") {
@@ -126,34 +172,47 @@ const Calendario = () => {
   };
 
   const handleSelectEvent = (event) => {
+    setCita({
+      ...cita,
+      idCita: event.idCita || "",
+      idCitaGoogle: event.idCitaGoogle || "",
+      titulo: event.title,
+      descripcion: event.description,
+      fechaCita: dayjs(event.start).format("YYYY-MM-DD"),
+      horaCita: dayjs(event.start).format("HH:mm"),
+      email: datos?.email || "",
+      calendarID: calendarId,
+    });
     setSelectedEvent(event);
-    setEditTitle(event.title);
-    setEditDescription(event.description);
   };
 
-const handleDeleteEvent = (event) => {
-  console.log("Eliminar evento:", event);
-  if (source === "google") {
-    dispatch(eliminarCita(event.idCitaGoogle, event.idCita, calendarId))
-      .then(() => dispatch(obtenerCitasCalendar(calendarId))); // refrescar citas
-  } else {
-    dispatch(eliminarCita(event.idCita))
-      .then(() => dispatch(getCitas())); // refrescar citas
-  }
-  setSelectedEvent(null);
-};
-
-
-  const handleEditEvent = () => {
-    // Aquí despacharías la acción de edición con los nuevos valores
-    console.log("Guardar cambios:", {
-      ...selectedEvent,
-      title: editTitle,
-      description: editDescription,
-    });
+  const handleDeleteEvent = (event) => {
+    console.log("Eliminar evento:", event);
+    if (source === "google") {
+      dispatch(
+        eliminarCita(event.idCitaGoogle, event.idCita, calendarId),
+      ).then(() => dispatch(obtenerCitasCalendar(calendarId))); // refrescar citas
+    } else {
+      dispatch(eliminarCita(event.idCita)).then(() => dispatch(getCitas())); // refrescar citas
+    }
     setSelectedEvent(null);
   };
 
+  const handleEditEvent = () => {
+    const payload = { ...cita };
+    console.log("Payload para actualizar:", payload);
+
+    if (source === "google") {
+      console.log("Actualizar evento en Google Calendar con payload:", payload);
+      // dispatch(actualizarCitaGoogle(payload));
+    } else {
+      console.log("Actualizar evento en base de datos con payload:", payload);
+      // dispatch(actualizarCita(payload));
+    }
+
+    setSelectedEvent(null);
+  };
+  console.log("Cita seleccionada para edición:", cita);
   return (
     <div style={{ height: "80vh", width: "100%" }}>
       <Calendar
@@ -170,7 +229,6 @@ const handleDeleteEvent = (event) => {
         onNavigate={handleNavigate}
         onView={setView}
       />
-
       {selectedEvent && (
         <Dialog open={true} onClose={() => setSelectedEvent(null)} fullWidth>
           <DialogTitle>Detalle de la cita</DialogTitle>
@@ -179,24 +237,64 @@ const handleDeleteEvent = (event) => {
               label="Título"
               fullWidth
               margin="dense"
-              value={editTitle}
-              onChange={(e) => setEditTitle(e.target.value)}
+              value={cita.titulo}
+              onChange={(e) => setCita({ ...cita, titulo: e.target.value })}
             />
+
             <TextField
               label="Descripción"
               fullWidth
               margin="dense"
               multiline
               rows={3}
-              value={editDescription}
-              onChange={(e) => setEditDescription(e.target.value)}
+              value={cita.descripcion}
+              onChange={(e) =>
+                setCita({ ...cita, descripcion: e.target.value })
+              }
             />
-            <Typography variant="body2" sx={{ mt: 2 }}>
-              <strong>Inicio:</strong> {selectedEvent.start.toString()}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Fin:</strong> {selectedEvent.end.toString()}
-            </Typography>
+
+            {/* Selector de fecha */}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Fecha"
+                value={cita.fechaCita ? dayjs(cita.fechaCita) : null}
+                onChange={(date) =>
+                  setCita({
+                    ...cita,
+                    fechaCita: date ? dayjs(date).format("YYYY-MM-DD") : "",
+                  })
+                }
+                format="DD/MM/YYYY"
+              />
+            </LocalizationProvider>
+
+            {/* Selector de hora */}
+            <FormControl fullWidth sx={{ mt: 2 }}>
+              <InputLabel id="hora-label">Hora</InputLabel>
+              <Select
+                value={cita.horaCita || ""}
+                onChange={(e) =>
+                  setCita({
+                    ...cita,
+                    horaCita: e.target.value,
+                  })
+                }
+              >
+                {/* Mostrar la hora actual de la cita como opción fija */}
+                {cita.horaCita && (
+                  <MenuItem value={cita.horaCita}>
+                    {cita.horaCita} (actual)
+                  </MenuItem>
+                )}
+
+                {/* Mostrar solo las horas filtradas disponibles */}
+                {horasFiltradas?.map((hora) => (
+                  <MenuItem key={hora} value={hora}>
+                    {hora}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button

@@ -14,7 +14,10 @@ const actualizaCliente = async (
   ciudad_anterior,
   comentarios,
   cedula_anterior,
-  modoContacto
+  modoContacto,
+  fuente,
+  servicio,
+  genero,
   // password,
 ) => {
 
@@ -45,6 +48,9 @@ const actualizaCliente = async (
       direccion: direccion,
       comentarios: comentarios,
       modoContacto: modoContacto,
+      fuente: fuente,
+      servicio: servicio,
+      genero: genero,
       // password: password,
     },
     {

@@ -17,10 +17,18 @@ const createProspectoBd = async (
   honorarios,
   cuotas,
   comentarios,
-  valor_pretensiones
+  valor_pretensiones,
+  tieneProcesos,
+  responsable,
+  fuente,
+  genero,
+  totalBienes,
+  tiempoMora,
+  numeroEntidades,
+  servicio,
+  status,
+  totalDeudas,
 ) => {
-
-  
   console.log("Body:", {
     email,
     nombres,
@@ -36,16 +44,25 @@ const createProspectoBd = async (
     cuotas,
     comentarios,
     valor_pretensiones,
+    tieneProcesos,
+    responsable,
+    fuente,
+    genero,
+    totalBienes,
+    tiempoMora,
+    numeroEntidades,
+    servicio,
+    status,
+    totalDeudas,
   });
   if (
     !email ||
     !nombres ||
     !apellidos ||
-    !cedulaProspecto ||
     !celular ||
     nombres.length === 0 ||
+    apellidos.length === 0 ||
     email.length === 0 ||
-    cedulaProspecto.length === 0 ||
     celular.length === 0
   ) {
     console.log("Faltan datos.");
@@ -54,35 +71,41 @@ const createProspectoBd = async (
   } else {
     try {
       const newProspecto = await Prospecto.create({
-        cedulaProspecto: cedulaProspecto,
         email: email,
         nombres: nombres,
         apellidos: apellidos,
         celular: celular,
         direccion: direccion,
-        forma_de_pago: forma_de_pago,
-        honorarios: honorarios,
-        cuotas: cuotas,
+        email: email,
         comentarios: comentarios,
-        valor_pretensiones: valor_pretensiones,
+        tieneProcesos: tieneProcesos,
+        responsable: responsable,
+        fuente: fuente,
+        genero: genero,
+        totalBienes: totalBienes,
+        tiempoMora: tiempoMora,
+        numeroEntidades: numeroEntidades,
+        servicio: servicio,
+        status: status,
+        totalDeudas: totalDeudas,
       });
-      if(nombre_ciudad){
+      if (nombre_ciudad) {
         const ciudadfilter = codigoCiudades.filter(
-          (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
+          (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase(),
         );
         console.log("Ciudad filter:", ciudadfilter);
-      
+
         const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
         console.log("Codigo ciudad:", codigo_ciudad);
-      
+
         console.log("ciudad:", ciudadfilter);
         newProspecto.addCiudad(codigo_ciudad);
       }
-      
+
       // newProspecto.addTipoDeCaso(tipo_de_caso);
       // newProspecto.addTipoUsuario(tipo_usuario);
 
-      if (newProspecto) sendEmailProspecto(newProspecto);
+      // if (newProspecto) sendEmailProspecto(newProspecto);
       console.log(newProspecto);
       return {
         ...newProspecto.toJSON(),
@@ -90,7 +113,7 @@ const createProspectoBd = async (
     } catch (error) {
       console.log(error);
       // res.status(500).send(error.message);
-      return error.message
+      return error.message;
     }
   }
 };

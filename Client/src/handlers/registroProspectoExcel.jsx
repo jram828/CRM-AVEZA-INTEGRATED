@@ -32,22 +32,37 @@ export async function registroProspectoExcel() {
     var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
     console.log("Datos del archivo:", jsonData);
-   jsonData.shift(); // Eliminar la primera fila (encabezados)
+    jsonData.shift(); // Eliminar la primera fila (encabezados)
     jsonData.forEach(async (row) => {
-
       const foundCiudad = codigoCiudades.filter((ciudad) =>
-            ciudad.nombre_ciudad.toLowerCase().includes(row[6].toLowerCase())
-          );
- console.log("Ciudades encontradas:", foundCiudad);
+        ciudad.nombre_ciudad.toLowerCase().includes(row[6].toLowerCase()),
+      );
+      console.log("Ciudades encontradas:", foundCiudad);
       const prospectoData = {
-        cedulaProspecto: row[0],
-        nombres: row[1],
+        // cedulaProspecto: row[0],
+        // nombres: row[1],
+        // apellidos: row[2],
+        // celular: row[3],
+        // email: row[4],
+        // direccion: row[5],
+        // nombre_ciudad: foundCiudad.length > 0 ? foundCiudad[0].nombre_ciudad : "",
+        status: row[1],
         apellidos: row[2],
-        celular: row[3],
-        email: row[4],
-        direccion: row[5],
-        nombre_ciudad: foundCiudad.length > 0 ? foundCiudad[0].nombre_ciudad : "",
-
+        nombres: row[3],
+        celular: row[4],
+        email: row[5],
+        nombre_ciudad:
+          foundCiudad.length > 0 ? foundCiudad[0].nombre_ciudad : "",
+        servicio: row[7],
+        totalDeudas: row[8],
+        tiempoMora: row[9],
+        numeroEntidades: row[10],
+        totalBienes: row[11],
+        tieneProcesos: row[12],
+        responsable: row[13],
+        fuente: row[14],
+        genero: row[19],
+        comentarios: row[20],
       };
       // console.log("Prospecto data:", ProspectoData);
       const URL = "/prospectos/registroProspecto";

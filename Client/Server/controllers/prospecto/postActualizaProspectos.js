@@ -23,6 +23,9 @@ const actualizaProspecto = async (
   totalBienes,
   totalDeudas,
   modoContacto,
+  fuente,
+  servicio,
+  genero,
   // password,
 ) => {
   const cedulaProspecto = cedula;
@@ -49,6 +52,10 @@ const actualizaProspecto = async (
     totalBienes,
     totalDeudas,
     modoContacto,
+    fuente,
+    servicio,
+    genero,
+    // password,
   );
   // console.log("Cedula anterior controller:", cedula_anterior);
   const ciudadfilter = codigoCiudades.filter(
@@ -65,14 +72,20 @@ const actualizaProspecto = async (
 
   ciudad_anterior ? prospectoActualizar.removeCiudad(ciudad_anterior) : null;
 
-  let numeroEntidadesNormalizado = 0;
-  if (numeroEntidades && numeroEntidades.trim() !== "") {
-    numeroEntidadesNormalizado = parseInt(numeroEntidades, 10);
-    if (isNaN(numeroEntidadesNormalizado)) {
-      numeroEntidadesNormalizado = 0;
-    }
-  }
+let numeroEntidadesNormalizado = 0;
 
+if (numeroEntidades !== undefined && numeroEntidades !== null) {
+  const valor =
+    typeof numeroEntidades === "string"
+      ? numeroEntidades.trim()
+      : numeroEntidades;
+
+  numeroEntidadesNormalizado = parseInt(valor, 10);
+
+  if (isNaN(numeroEntidadesNormalizado)) {
+    numeroEntidadesNormalizado = 0;
+  }
+}
   const [updateCount, updateClient] = await Prospecto.update(
     {
       cedulaProspecto: cedulaProspecto,
@@ -88,6 +101,9 @@ const actualizaProspecto = async (
       totalBienes: totalBienes,
       totalDeudas: totalDeudas,
       modoContacto: modoContacto,
+      fuente: fuente,
+      servicio: servicio,
+      genero: genero,
       // password: password,
     },
     {

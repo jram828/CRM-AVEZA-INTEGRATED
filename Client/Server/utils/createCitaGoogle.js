@@ -8,7 +8,7 @@ const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
 
 export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
   try {
-    const { fechaCita, horaCita, titulo, descripcion } = dataRegistro;
+    const { fechaCita, horaCita, titulo, descripcion,  idProspecto, cedulaCliente } = dataRegistro;
 
     // Convertir fechaCita a string YYYY-MM-DD si viene como Date
     const fechaStr =
@@ -42,7 +42,9 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
       },
       extendedProperties: {
         private: {
-          idCita: idCita.toString(), // Asegúrate de que sea string
+          idCita: idCita.toString(),
+          idProspecto: idProspecto ? idProspecto.toString() : undefined,
+          cedulaCliente: cedulaCliente ? cedulaCliente.toString() : undefined,
         },
       },
     };

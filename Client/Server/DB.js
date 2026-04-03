@@ -145,8 +145,8 @@ Contrato.belongsTo(Cotizacion);
 
 Consulta.belongsTo(Cliente);
 
-Cliente.belongsTo(Usuario);
-Abogado.belongsTo(Usuario);
+// Cliente.belongsTo(Usuario);
+// Abogado.belongsTo(Usuario);
 
 Pais.belongsToMany(Departamento, { through: "pais_departamento" });
 Departamento.belongsToMany(Pais, { through: "pais_departamento" });
@@ -211,8 +211,8 @@ Motivos.belongsToMany(Solicitud, { through: "solicitud_Motivos" });
 Solicitud.belongsToMany(Cliente, { through: "solicitud_cliente" });
 Cliente.belongsToMany(Solicitud, { through: "solicitud_cliente" });
 
-TipoUsuario.hasMany(Cliente);
-Cliente.belongsTo(TipoUsuario);
+// TipoUsuario.hasMany(Cliente);
+// Cliente.belongsTo(TipoUsuario);
 
 Cliente.belongsToMany(Deuda2, { through: "Cliente_Deuda" });
 Deuda2.belongsToMany(Cliente, { through: "Cliente_Deuda" });
@@ -283,11 +283,11 @@ Cita.belongsToMany(Cliente, { through: "Cliente_Cita" });
 Cliente.belongsToMany(Nota, { through: "Cliente_Nota" });
 Nota.belongsToMany(Cliente, { through: "Cliente_Nota" });
 
-Prospecto.belongsToMany(Abogado, { through: "Prospecto_Abogado" });
-Abogado.belongsToMany(Prospecto, { through: "Prospecto_Abogado" });
+// Prospecto.belongsToMany(Abogado, { through: "Prospecto_Abogado" });
+// Abogado.belongsToMany(Prospecto, { through: "Prospecto_Abogado" });
 
-Cliente.belongsToMany(Abogado, { through: "Cliente_Abogado" });
-Abogado.belongsToMany(Cliente, { through: "Cliente_Abogado" });
+// Cliente.belongsToMany(Abogado, { through: "Cliente_Abogado" });
+// Abogado.belongsToMany(Cliente, { through: "Cliente_Abogado" });
 
 const models = {
   ...sequelize.models,

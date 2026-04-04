@@ -76,6 +76,7 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
         idProspecto: selected.idProspecto,
         nombres: selected.nombres,
         apellidos: selected.apellidos,
+        email: selected.email,
         source: "prospecto",
       });
       onClose();
@@ -86,6 +87,7 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
         cedulaCliente: selected.cedulaCliente,
         nombres: selected.nombres,
         apellidos: selected.apellidos,
+        email: selected.email,
         source: "cliente",
       });
       onClose();

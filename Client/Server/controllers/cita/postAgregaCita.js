@@ -1,7 +1,10 @@
 import { models } from "../../DB.js";
 import moment from "moment";
-import { sendEmailCita } from "../../utils/emailNotifier.js";
+import { sendEmailCita, sendEmailCitaAveza } from "../../utils/emailNotifier.js";
 import { createCitaGoogle } from "../../utils/createCitaGoogle.js";
+import { calendar } from "googleapis/build/src/apis/calendar/index.js";
+const {  EMAIL_CALENDAR,
+} = process.env;
 
 const { Cita, Prospecto, Cliente } = models;
 const createCita = async (
@@ -12,9 +15,13 @@ const createCita = async (
   idProspecto,
   nombres,
   apellidos,
-  email,
   source,
+  email,
+  cedulaCliente,
 ) => {
+
+  const calendarId = EMAIL_CALENDAR;
+
   console.log("Creando cita con los siguientes datos:", {
     titulo,
     descripcion,
@@ -25,6 +32,9 @@ const createCita = async (
     apellidos,
     email,
     source,
+    calendarId,
+    cedulaCliente,
+
   });
 
   const fechaUTC = moment(fechaCita).utc().toDate();
@@ -75,6 +85,9 @@ const createCita = async (
       fechaCita: fechaUTC,
       horaCita: horaCita,
       idProspecto: idProspecto,
+      email: email,
+      nombres: nombres,
+      apellidos: apellidos,
     };
   } else if (source === "cliente") {
     dataRegistro = {
@@ -82,11 +95,14 @@ const createCita = async (
       descripcion: descripcionFinal,
       fechaCita: fechaUTC,
       horaCita: horaCita,
-      cedulaCliente: idProspecto,
+      cedulaCliente: cedulaCliente,
+      email: email,
+      nombres: nombres,
+      apellidos: apellidos,
     };
   }
 
-  console.log("Data para Google Calendar:", dataRegistro, email);
+  console.log("Data para Google Calendar:", dataRegistro, calendarId, email);
   // Crear la cita en Google Calendar
 
   if (source === "prospecto") {
@@ -94,14 +110,15 @@ const createCita = async (
     if (!prospecto) throw Error("Prospecto no encontrado");
     await prospecto.addCita(newCita);
   } else if (source === "cliente") {
-    const cliente = await Cliente.findByPk(idProspecto);
+    const cliente = await Cliente.findByPk(cedulaCliente);
+    console.log("Cliente encontrado:", cliente);
     if (!cliente) throw Error("Cliente no encontrado");
     await cliente.addCita(newCita);
   }
 
   const { evento } = await createCitaGoogle(
     dataRegistro,
-    email,
+    calendarId,
     newCita.idCita,
   );
 
@@ -111,15 +128,8 @@ const createCita = async (
 
   console.log("Cita actualizada con ID de Google Calendar:", newCita);
   // Enviar notificaciones por correo electrónico
-  // const { cedulaCliente, cedulaAbogado } = await Caso.findByPk(idCaso);
-
-  // if (cedulaCliente && cedulaAbogado) {
-  //   const cliente = await Cliente.findOne(cedulaCliente);
-  //   const abogado = await Abogado.findOne(cedulaAbogado);
-  //   if (cliente && abogado) {
-  //     sendEmailCita(cliente, abogado, newCita);
-  //   }
-  // }
+  sendEmailCita({ ...dataRegistro, URLReunion: enlaceReunion });
+  sendEmailCitaAveza({ ...dataRegistro, URLReunion: enlaceReunion });
   return newCita;
 };
 

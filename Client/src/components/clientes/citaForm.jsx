@@ -38,7 +38,6 @@ const CitaForm = ({ open, onClose, onSave, selectedCliente }) => {
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   console.log("Horas disponibles en CitaForm:", horasDisponibles);
 
-
   // Hora mínima si la fecha seleccionada es hoy
   const now = new Date();
   const currentTime = now.toTimeString().slice(0, 5); // formato HH:MM
@@ -71,7 +70,14 @@ const CitaForm = ({ open, onClose, onSave, selectedCliente }) => {
 
   const handleSave = () => {
     if (!selectedCliente) return;
-    onSave({ ...dataCita, cedulaCliente: selectedCliente.cedulaCliente, source: "cliente" });
+    onSave({
+      ...dataCita,
+      cedulaCliente: selectedCliente.cedulaCliente,
+      email: selectedCliente.email,
+      source: "cliente",
+      nombres: selectedCliente.nombres,
+      apellidos: selectedCliente.apellidos,
+    });
     setDataCita({
       titulo: "",
       fechaCita: "",
@@ -83,7 +89,6 @@ const CitaForm = ({ open, onClose, onSave, selectedCliente }) => {
 
   // Fecha mínima (hoy)
   const today = new Date().toISOString().split("T")[0];
-
 
   return (
     <Popover

@@ -11,6 +11,7 @@ const {
   CRON_GOOGLE_ID,
   CRON_GOOGLE_API_KEY,
   GOOGLE_REFRESH_TOKEN,
+  EMAIL_CALENDAR,
 } = process.env;
 
 // Configuración OAuth2
@@ -22,6 +23,17 @@ const oAuth2Client = new google.auth.OAuth2(
 
 oAuth2Client.setCredentials({ refresh_token: GOOGLE_REFRESH_TOKEN });
 
+// // Crear cliente JWT con delegación
+// const jwtClient = new google.auth.JWT(
+//   GOOGLE_CLIENT_EMAIL,
+//   null,
+//   GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+//   ["https://www.googleapis.com/auth/gmail.send"],
+//   GMAIL_USER // 👈 impersonación: correo del usuario real
+// );
+
+// // Inicializar Gmail API
+// const gmail = google.gmail({ version: "v1", auth: jwtClient });
 
 // Helper para cargar templates HTML
 function loadTemplate(fileName) {
@@ -61,6 +73,34 @@ async function sendMail({ to, subject, html }) {
 
   console.log("✅ Email enviado a:", to);
 }
+
+// Función para enviar correo
+// async function sendMail({ to, subject, html }) {
+//   const encodedSubject = `=?UTF-8?B?${Buffer.from(subject).toString("base64")}?=`;
+
+//   const message = [
+//     `From: ${EMAIL_CALENDAR}`,
+//     `To: ${to}`,
+//     `Subject: ${encodedSubject}`,
+//     "Content-Type: text/html; charset=utf-8",
+//     "",
+//     html,
+//   ].join("\n");
+
+//   const encodedMessage = Buffer.from(message)
+//     .toString("base64")
+//     .replace(/\+/g, "-")
+//     .replace(/\//g, "_")
+//     .replace(/=+$/, "");
+
+//   await gmail.users.messages.send({
+//     userId: "me", // "me" funciona porque el JWT está impersonando al usuario
+//     requestBody: { raw: encodedMessage },
+//   });
+
+//   console.log("✅ Email enviado a:", to);
+// }
+
 
 // ------------------ FUNCIONES DE ENVÍO ------------------
 
@@ -120,7 +160,7 @@ const sendEmailCita = async (data) => {
     .replace("{{linkReunion}}", data.URLReunion);
 
   await sendMail({
-    to: data.invitados[0],
+    to: data.email,
     subject: `☕ ${data.nombres}, Tienes una nueva cita agendada con Julián Avellaneda`,
     html: personalizedHtml,
   });

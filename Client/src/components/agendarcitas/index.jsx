@@ -39,6 +39,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import PublicIcon from "@mui/icons-material/Public";
 import { Avatar, Stack } from "@mui/material";
+const EMAIL_CALENDAR = import.meta.env.VITE_EMAIL_CALENDAR;
 
 const AgendarCita = () => {
   const [dataRegistro, setDataRegistro] = useState({
@@ -143,7 +144,8 @@ const AgendarCita = () => {
       await postCitaGoogleHandlers({
         ...dataRegistro,
         titulo: `Primera Asesoría ${dataRegistro.nombres} ${dataRegistro.apellidos}`,
-        calendarId: "aveza.asesoria@gmail.com",
+        // calendarId: "aveza.asesoria@gmail.com",
+        calendarId: EMAIL_CALENDAR,
         fechaCita: fechaSeleccionada,
         horaCita: horaSeleccionada,
         idProspecto: newProspecto.idProspecto,

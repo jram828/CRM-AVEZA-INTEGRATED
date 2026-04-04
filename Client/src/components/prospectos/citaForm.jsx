@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { obtenerDisponibilidad } from "../../redux/actions";
 import moment from "moment";
 
+
 const CitaForm = ({ open, onClose, onSave, selectedProspecto }) => {
   const [dataCita, setDataCita] = useState({
     titulo: "",
@@ -73,6 +74,9 @@ const CitaForm = ({ open, onClose, onSave, selectedProspecto }) => {
     onSave({
       ...dataCita,
       idProspecto: selectedProspecto.idProspecto,
+      email: selectedProspecto.email,
+      nombres: selectedProspecto.nombres,
+      apellidos: selectedProspecto.apellidos,
       source: "prospecto",
     });
     setDataCita({

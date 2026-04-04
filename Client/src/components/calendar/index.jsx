@@ -39,6 +39,7 @@ const Calendario = () => {
   const source = useSelector((state) => state.source);
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   const dispatch = useDispatch();
+  const calendarId = import.meta.env.VITE_EMAIL_CALENDAR;
 
   const [cita, setCita] = useState({
     idCita: "",
@@ -50,9 +51,8 @@ const Calendario = () => {
     idProspecto: "",
     cedulaCliente: "",
     email: datos?.email || "",
-    calendarID: "aveza.asesoria@gmail.com",
+    calendarID: calendarId,
   });
-  const calendarId = "aveza.asesoria@gmail.com";
 
   // Traer disponibilidad desde Google cuando cambia la fecha
   useEffect(() => {
@@ -107,7 +107,7 @@ const Calendario = () => {
     } else {
       dispatch(obtenerCitasCalendar(calendarId));
     }
-  }, [dispatch, source, datos.email]);
+  }, [dispatch, source, calendarId]);
   console.log("Citas en calendario:", citas);
   const events = citas
     ?.map((cita) => {

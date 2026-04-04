@@ -78,7 +78,7 @@ const Detail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const source = useSelector((state) => state.source);
-
+  const calendarId = import.meta.env.VITE_EMAIL_CALENDAR;
   // const datos = useSelector((state) =>
   //   source === "abogado" ? state.abogado : state.cliente
   // );
@@ -110,7 +110,6 @@ const Detail = () => {
   const [tabCitas, setTabCitas] = useState(0);
   const [tareas, setTareas] = useState([]);
   const [citas, setCitas] = useState([]);
-  const calendarId = "aveza.asesoria@gmail.com";
   const reduxCitas = useSelector((state) => state.citasDetail);
   const notas = useSelector((state) => state.notasDetail);
   const reduxTareas = useSelector((state) => state.tareasDetail);

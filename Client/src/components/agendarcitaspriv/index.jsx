@@ -4,6 +4,7 @@ import logo from "../../img/logoAveza.png";
 import { Link } from "react-router-dom";
 import {
   getCitas,
+  getClienteAll,
   getProspectoAllCasos,
   obtenerCitasCalendar,
   obtenerDisponibilidad,
@@ -35,9 +36,11 @@ import {
   createFilterOptions,
 } from "@mui/material";
 import moment from "moment";
+import { data } from "jquery";
 
 function AgendarCitasPriv() {
   const userData = JSON.parse(localStorage.getItem("loggedUser"));
+  const EMAIL_CALENDAR = import.meta.env.VITE_EMAIL_CALENDAR;
   const [dataRegistro, setDataRegistro] = useState({
     titulo: "",
     descripcion: "",
@@ -45,9 +48,11 @@ function AgendarCitasPriv() {
     horaCita: "",
     idCaso: "",
     idProspecto: "",
-    userEmail: userData?.email?.includes("@gmail.com") ? userData.email : "",
+    cedulaCliente: "",
+    userEmail: userData?.email?.includes("@gmail.com") ? userData?.email : "",
     email: "",
-    calendarId: userData?.calendarId || "aveza.asesoria@gmail.com",
+    calendarId: userData?.calendarId || EMAIL_CALENDAR,
+    // calendarId: userData?.calendarId || "aveza.asesoria@gmail.com",
   });
 
   const [isLoading, setIsLoading] = useState(true); // Estado para controlar la visualización del loading
@@ -59,12 +64,14 @@ function AgendarCitasPriv() {
 
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   const reduxProspectos = useSelector((state) => state.pages);
+  const reduxClientes = useSelector((state) => state.clientes);
   // const pages = useSelector((state) => state.pages);
   const filtro = useSelector((state) => state.filtro);
 
   useEffect(() => {
     dispatch(setSource("google"));
     dispatch(getProspectoAllCasos());
+    dispatch(getClienteAll());
   }, [dispatch]);
   // console.log("pages", pages);
 
@@ -98,8 +105,20 @@ function AgendarCitasPriv() {
       setIsLoading(true); // Activar el loading antes de enviar la solicitud
       // Guardar la cita en tu backend
       console.log("DataRegistro en submitHandlerRegistro:", dataRegistro);
-      await postCitaHandlers({ ...dataRegistro, descripcion });
 
+      if (dataRegistro.idProspecto !== "") {
+        await postCitaHandlers({
+          ...dataRegistro,
+          descripcion,
+          source: "prospecto",
+        });
+      } else if (dataRegistro.cedulaCliente !== "") {
+        await postCitaHandlers({
+          ...dataRegistro,
+          descripcion,
+          source: "cliente",
+        });
+      }
       dispatch(obtenerCitasCalendar(dataRegistro.calendarId));
       // window.alert("Cita creado con éxito");
       // window.location.reload();
@@ -122,26 +141,26 @@ function AgendarCitasPriv() {
     dispatch(setFiltro(filtroCita));
   };
 
-const handleChangeRegistro = (arg1, arg2) => {
-  if (typeof arg1 === "string") {
-    // llamado como handleChangeRegistro("horaCita", valor)
-    const name = arg1;
-    const value = arg2;
-    setDataRegistro((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  } else {
-    // llamado como handleChangeRegistro(e)
-    const { name, value } = arg1.target
-      ? arg1.target
-      : { name: "fechaCita", value: arg1 };
-    setDataRegistro((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  }
-};
+  const handleChangeRegistro = (arg1, arg2) => {
+    if (typeof arg1 === "string") {
+      // llamado como handleChangeRegistro("horaCita", valor)
+      const name = arg1;
+      const value = arg2;
+      setDataRegistro((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else {
+      // llamado como handleChangeRegistro(e)
+      const { name, value } = arg1.target
+        ? arg1.target
+        : { name: "fechaCita", value: arg1 };
+      setDataRegistro((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
 
   // if (isLoading || !citas) {
   //   return (
@@ -230,15 +249,41 @@ const handleChangeRegistro = (arg1, arg2) => {
                   setDataRegistro((prev) => ({
                     ...prev,
                     idProspecto: value ? value.idProspecto : "",
-                    email: value ? value.email : "",
-                    nombres: value ? value.nombres : "",
-                    apellidos: value ? value.apellidos : "",
+                    email: value ? value?.email : "",
+                    nombres: value ? value?.nombres : "",
+                    apellidos: value ? value?.apellidos : "",
                   }));
                 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Prospecto"
+                    placeholder="Buscar por nombre o apellido"
+                    fullWidth
+                  />
+                )}
+              />
+
+              {/* Selector de cliente */}
+              <Autocomplete
+                options={reduxClientes || []}
+                getOptionLabel={(option) =>
+                  `${option.nombres || ""} ${option.apellidos || ""}`
+                }
+                filterOptions={filter}
+                onChange={(event, value) => {
+                  setDataRegistro((prev) => ({
+                    ...prev,
+                    cedulaCliente: value ? value.cedulaCliente : "",
+                    email: value ? value?.email : "",
+                    nombres: value ? value?.nombres : "",
+                    apellidos: value ? value?.apellidos : "",
+                  }));
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Cliente"
                     placeholder="Buscar por nombre o apellido"
                     fullWidth
                   />

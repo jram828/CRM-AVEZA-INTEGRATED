@@ -65,7 +65,7 @@ const createCitaCalendar = async (
     descripcion: descripcionFinal,
     fechaCita: fechaUTC,
     horaCita: horaCita,
-    invitados: [email],
+    email: email,
     nombres: nombres,
     apellidos: apellidos,
   };
@@ -75,6 +75,11 @@ const createCitaCalendar = async (
   // Recuperar las propiedades devueltas por createCitaGoogle
   const { evento } = await createCitaGoogle(dataRegistro, calendarId);
   console.log("Evento Google:", evento);
+
+  // const enlaceReunion = evento?.conferenceData?.entryPoints?.[0]?.uri;
+  // console.log("Enlace Google Meet:", enlaceReunion);
+
+  // const descripcionFinal = `${descripcion || ""}\nEnlace para la reunión: ${enlaceReunion}`;
 
   // Combinar fecha y hora en la zona correcta
   const fechaStr2 =
@@ -112,7 +117,7 @@ const createCitaCalendar = async (
   }
   // Enviar notificaciones por correo electrónico
   // sendEmailCita({ ...dataRegistro, URLReunion: enlaceReunion });
-  // sendEmailCitaAveza({ ...dataRegistro, URLReunion: enlaceReunion });
+  sendEmailCitaAveza({ ...dataRegistro, URLReunion: enlaceReunion });
 
   //  newAbogado.addCliente(clientes);
 

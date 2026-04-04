@@ -60,12 +60,16 @@ const postCreateCita = async (req, res) => {
     nombres,
     apellidos,
     source,
+    calendarId,
+    email,
+    cedulaCliente,
+
   } = req.body;
-  const email = req.body.calendarId || "aveza.asesoria@gmail.com"; //process.env.EMAIL_NOTIFICACION;
+
   console.log(
     "Datos recibidos en el handler de creación de cita:",
     req.body,
-    email,
+    calendarId,
   );
   try {
     const response = await createCita(
@@ -76,8 +80,9 @@ const postCreateCita = async (req, res) => {
       idProspecto,
       nombres,
       apellidos,
-      email,
       source,
+      email,
+      cedulaCliente,
     );
     res.status(200).json(response);
   } catch (error) {

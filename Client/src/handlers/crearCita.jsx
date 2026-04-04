@@ -12,8 +12,10 @@ export async function postCitaHandlers(data) {
     nombres,
     apellidos,
     idProspecto,
+    source,
+    cedulaCliente,
   } = data;
-  console.log("data del post", data);
+  console.log("Data del post", data);
 
 
   try {
@@ -28,6 +30,8 @@ export async function postCitaHandlers(data) {
       nombres: `${nombres}`,
       apellidos: `${apellidos}`,
       idProspecto: `${idProspecto}`,
+      source: `${source}`,
+      cedulaCliente: `${cedulaCliente}`,
 
     });
     // mostrar un Snackbar de MUI en lugar de window.alert

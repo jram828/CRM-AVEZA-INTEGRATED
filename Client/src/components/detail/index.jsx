@@ -227,7 +227,7 @@ const Detail = () => {
         tarjetaProf: "",
         apellidos: datos.apellidos,
         direccion: datos.direccion,
-        comentarios: datos.comentarios,
+        comentarios: datos.comentarios || "",
         cedulanew: datos?.cedulaCliente,
         cedula_anterior: datos?.cedulaCliente,
         modoContacto: datos?.modoContacto || "",
@@ -266,7 +266,7 @@ const Detail = () => {
         apellidos: datos?.apellidos,
         apellidos_anterior: datos?.apellidos,
         direccion: datos?.direccion,
-        comentarios: datos?.comentarios,
+        comentarios: datos?.comentarios || "",
         cedulanew: datos?.cedulaProspecto,
         cedula_anterior: datos?.cedulaProspecto,
         impuestoLaboral: datos?.impuestoLaboral || "",
@@ -827,7 +827,7 @@ const Detail = () => {
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
 
-            {userDataDetail?.comentarios && (
+            {/* {userDataDetail?.comentarios && ( */}
               <TextField
                 label="Comentarios"
                 name="comentarios"
@@ -839,7 +839,7 @@ const Detail = () => {
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
                 sx={{ minWidth: "160px", bgcolor: "#fff" }}
               />
-            )}
+            {/* )} */}
           </Stack>
 
           {source === "prospecto" && (

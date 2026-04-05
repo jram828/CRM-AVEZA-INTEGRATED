@@ -7,6 +7,7 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { useEffect, useState } from "react";
 import {
+  actualizarCitaGoogle,
   eliminarCita,
   getCitas,
   obtenerCitasCalendar,
@@ -50,7 +51,7 @@ const Calendario = () => {
     horaCita: "",
     idProspecto: "",
     cedulaCliente: "",
-    email: datos?.email || "",
+    // email: datos?.email || "",
     calendarID: calendarId,
   });
 
@@ -121,7 +122,9 @@ const Calendario = () => {
           end: endDateTime,
           title: cita.resumen,
           description: cita.descripcion || "No hay descripción",
-          idCita: cita.extendedProperties?.private?.idCita,
+          idCita: cita?.extendedProperties?.private?.idCita,
+          idProspecto: cita?.extendedProperties?.private?.idProspecto ||"",
+          cedulaCliente: cita?.extendedProperties?.private?.cedulaCliente || "",
         };
       } else {
         const fechaCita = dayjs(cita.fechaCita);
@@ -182,6 +185,8 @@ const Calendario = () => {
       horaCita: dayjs(event.start).format("HH:mm"),
       email: datos?.email || "",
       calendarID: calendarId,
+      idProspecto: event.idProspecto || "",
+      cedulaCliente: event.cedulaCliente || "",  
     });
     setSelectedEvent(event);
   };
@@ -204,7 +209,7 @@ const Calendario = () => {
 
     if (source === "google") {
       console.log("Actualizar evento en Google Calendar con payload:", payload);
-      // dispatch(actualizarCitaGoogle(payload));
+      dispatch(actualizarCitaGoogle(payload));
     } else {
       console.log("Actualizar evento en base de datos con payload:", payload);
       // dispatch(actualizarCita(payload));
@@ -307,11 +312,15 @@ const Calendario = () => {
             <Button
               onClick={() => handleDeleteEvent(selectedEvent)}
               variant="outlined"
-              color="error"
+              color="primary"
             >
               Eliminar
             </Button>
-            <Button onClick={() => setSelectedEvent(null)} variant="text">
+            <Button
+              onClick={() => setSelectedEvent(null)}
+              variant="contained"
+              color="primary"
+            >
               Cerrar
             </Button>
           </DialogActions>

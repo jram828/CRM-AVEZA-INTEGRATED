@@ -1,8 +1,9 @@
 import { models } from "../../DB.js";
-import {codigoCiudades} from "../../utils/codigoCiudades.js";
+import { codigoCiudades } from "../../utils/codigoCiudades.js";
 import { sendEmailCliente } from "../../utils/emailNotifier.js";
 
-const { Cliente, Ciudad, TipoDeCaso, TipoUsuario } = models;
+const { Cliente } = models;
+
 const createClienteBd = async (
   email,
   nombres,
@@ -11,7 +12,6 @@ const createClienteBd = async (
   celular,
   direccion,
   nombre_ciudad,
-  modoContacto,
   tipo_usuario,
   tipo_de_caso,
   forma_de_pago,
@@ -19,8 +19,18 @@ const createClienteBd = async (
   cuotas,
   comentarios,
   valor_pretensiones,
+  tieneProcesos,
+  responsable,
+  fuente,
+  genero,
+  totalBienes,
+  tiempoMora,
+  numeroEntidades,
+  servicio,
+  status,
+  totalDeudas,
 ) => {
-  console.log("Body:", {
+  console.log("Body crear cliente controller:", {
     email,
     nombres,
     apellidos,
@@ -28,7 +38,6 @@ const createClienteBd = async (
     celular,
     direccion,
     nombre_ciudad,
-    modoContacto,
     tipo_usuario,
     tipo_de_caso,
     forma_de_pago,
@@ -36,61 +45,114 @@ const createClienteBd = async (
     cuotas,
     comentarios,
     valor_pretensiones,
+    tieneProcesos,
+    responsable,
+    fuente,
+    genero,
+    totalBienes,
+    tiempoMora,
+    numeroEntidades,
+    servicio,
+    status,
+    totalDeudas,
   });
+
   if (
     !email ||
     !nombres ||
     !apellidos ||
-    !cedulaCliente ||
     !celular ||
     nombres.length === 0 ||
+    apellidos.length === 0 ||
     email.length === 0 ||
-    cedulaCliente.length === 0 ||
     celular.length === 0
   ) {
     console.log("Faltan datos.");
-    // res.status(400).send("Faltan datos");
     return "Faltan datos";
   } else {
     try {
-      const newCliente = await Cliente.create({
-        cedulaCliente: cedulaCliente,
-        email: email,
-        nombres: nombres,
-        apellidos: apellidos,
-        celular: celular,
-        direccion: direccion,
-        forma_de_pago: forma_de_pago,
-        honorarios: honorarios,
-        cuotas: cuotas,
-        comentarios: comentarios,
-        valor_pretensiones: valor_pretensiones,
-        modoContacto: modoContacto,
+      // 👇 Verificar si ya existe cliente con email y celular
+      let cliente = await Cliente.findOne({
+        where: {
+          email: email,
+          celular: celular,
+        },
       });
+
+      if (cliente) {
+        console.log(
+          "Cliente ya existente, actualizando:",
+          cliente.cedulaCliente,
+        );
+
+        await cliente.update({
+          nombres,
+          apellidos,
+          cedulaCliente,
+          celular,
+          direccion,
+          comentarios,
+          tieneProcesos,
+          responsable,
+          fuente,
+          genero,
+          totalBienes,
+          tiempoMora,
+          numeroEntidades,
+          servicio,
+          status,
+          totalDeudas,
+        });
+
+        if (nombre_ciudad) {
+          const ciudadfilter = codigoCiudades.filter(
+            (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase(),
+          );
+          if (ciudadfilter.length > 0) {
+            const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
+            await cliente.setCiudads([codigo_ciudad]); // actualizar relación
+          }
+        }
+
+        return { ...cliente.toJSON() };
+      }
+
+      // Si no existe, crear nuevo
+      const newCliente = await Cliente.create({
+        email,
+        nombres,
+        apellidos,
+        celular,
+        direccion,
+        comentarios,
+        tieneProcesos,
+        responsable,
+        fuente,
+        genero,
+        totalBienes,
+        tiempoMora,
+        numeroEntidades,
+        servicio,
+        status,
+        totalDeudas,
+        cedulaCliente,
+      });
+
       if (nombre_ciudad) {
         const ciudadfilter = codigoCiudades.filter(
           (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase(),
         );
-        console.log("Ciudad filter:", ciudadfilter);
-
-        const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
-        console.log("Codigo ciudad:", codigo_ciudad);
-
-        console.log("ciudad:", ciudadfilter);
-        newCliente.addCiudad(codigo_ciudad);
+        if (ciudadfilter.length > 0) {
+          const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
+          await newCliente.addCiudad(codigo_ciudad);
+        }
       }
-
-      // newCliente.addTipoDeCaso(tipo_de_caso);
-      // newCliente.addTipoUsuario(tipo_usuario);
 
       // if (newCliente) sendEmailCliente(newCliente);
       console.log(newCliente);
-      return {
-        ...newCliente.toJSON(),
-      };
+      return { ...newCliente.toJSON() };
     } catch (error) {
       console.log(error);
-      // res.status(500).send(error.message);
       return error.message;
     }
   }

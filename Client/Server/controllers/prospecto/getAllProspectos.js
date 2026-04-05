@@ -12,6 +12,9 @@ const {
   PropuestaPago,
   Deuda2,
   Honorario,
+  Nota,
+  Cita,
+  Tarea,
 } = models;
 const getAllProspecto = async (filters) => {
   let allProspecto = [];
@@ -166,9 +169,12 @@ const getAllProspecto = async (filters) => {
             //verifico que el comando requiera ser ordnado
             newOrder[field.substring(0, field.length - 3)]; //traeme desde el cero hasta los tres anteriorres
           } else {
-            newFilters[field] = {
-              [Sequelize.Op.iLike]: `%${value}%`,
-            }; // acá estoy guardando de forma dinamica los valores de cada propiedad
+            newFilters[field] = Sequelize.where(
+              Sequelize.fn("unaccent", Sequelize.col(field)),
+              {
+                [Sequelize.Op.iLike]: `%${value}%`,
+              },
+            );
           }
         } else {
           pagina[field];
@@ -232,6 +238,18 @@ const getAllProspecto = async (filters) => {
         },
         {
           model: Honorario,
+          through: { attributes: [] },
+        },
+        {
+          model: Nota,
+          through: { attributes: [] },
+        },
+        {
+          model: Cita,
+          through: { attributes: [] },
+        },
+        {
+          model: Tarea,
           through: { attributes: [] },
         },
       ],

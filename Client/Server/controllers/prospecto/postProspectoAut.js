@@ -2,7 +2,7 @@ import { models } from "../../DB.js";
 import { codigoCiudades } from "../../utils/codigoCiudades.js";
 import { sendEmailProspecto } from "../../utils/emailNotifier.js";
 
-const { Prospecto, Ciudad, TipoDeCaso, TipoUsuario } = models;
+const { Prospecto } = models;
 
 export async function postProspectoAut(userDataRegistro) {
   const {
@@ -34,39 +34,10 @@ export async function postProspectoAut(userDataRegistro) {
   } = userDataRegistro;
 
   const ciudadfilter = codigoCiudades.filter(
-    (ciudad) => ciudad.nombre_ciudad === nombre_ciudad.toUpperCase()
+    (ciudad) => ciudad.nombre_ciudad === nombre_ciudad?.toUpperCase(),
   );
   const codigo_ciudad = ciudadfilter[0]?.codigo_ciudad || 0;
-  console.log("Codigo ciudad:", codigo_ciudad);
 
-  console.log("ciudad:", ciudadfilter);
-  // console.log("Body post prospecto:", {
-  //   email,
-  //   nombres,
-  //   apellidos,
-  //   cedula,
-  //   celular,
-  //   direccion,
-  //   nombre_ciudad,
-  //   tipo_usuario,
-  //   tipo_de_caso,
-  //   forma_de_pago,
-  //   honorarios,
-  //   cuotas,
-  //   comentarios,
-  //   valor_pretensiones,
-  //   impuestoLaboral,
-  //   vehiculoCooperativas,
-  //   hipotecario,
-  //   proveedores,
-  //   bancoPersonas,
-  //   familiares,
-  //   tieneBienes,
-  //   bienes,
-  //   totalBienes,
-  //   totalDeudas,
-  //   modoContacto,
-  // });
   if (
     !email ||
     !nombres ||
@@ -77,61 +48,94 @@ export async function postProspectoAut(userDataRegistro) {
     celular.length === 0
   ) {
     console.log("Faltan datos.");
-    res.status(400).send("Faltan datos");
+    return "Faltan datos";
   } else {
     try {
-
-       // 👇 Verificar si ya existe prospecto con email, nombres y apellidos
-      const existingProspecto = await Prospecto.findOne({
+      // 👇 Verificar si ya existe prospecto con email y celular
+      let prospecto = await Prospecto.findOne({
         where: {
-          email: email,
-          nombres: nombres,
-          apellidos: apellidos,
+          email,
+          celular,
         },
       });
 
-      if (existingProspecto) {
-        console.log("Prospecto ya existente:", existingProspecto.idProspecto);
-        return existingProspecto;
+      // convertir celular a número si no lo es
+      const celularParsed =
+        typeof celular === "number"
+          ? celular
+          : (() => {
+              const cleaned = String(celular || "").replace(/\D/g, "");
+              const n = cleaned ? Number(cleaned) : NaN;
+              return Number.isFinite(n) ? n : null;
+            })();
+
+      if (prospecto) {
+        console.log(
+          "Prospecto ya existente, actualizando:",
+          prospecto.idProspecto,
+        );
+
+        await prospecto.update({
+          cedulaProspecto: cedula,
+          email,
+          nombres,
+          apellidos,
+          celular: celularParsed,
+          direccion,
+          forma_de_pago,
+          honorarios,
+          cuotas,
+          comentarios,
+          valor_pretensiones,
+          impuestoLaboral,
+          vehiculoCooperativas,
+          hipotecario,
+          proveedores,
+          bancoPersonas,
+          familiares,
+          tieneBienes,
+          bienes,
+          totalBienes,
+          totalDeudas,
+          modoContacto,
+        });
+
+        if (codigo_ciudad !== 0) {
+          await prospecto.setCiudads([codigo_ciudad]); // actualizar relación
+        }
+
+        return { ...prospecto.toJSON() };
       }
 
-      // convertir celular a número si no lo es (limpiando caracteres no numéricos)
-      const celularParsed = (typeof celular === "number")
-        ? celular
-        : (() => {
-        const cleaned = String(celular || "").replace(/\D/g, "");
-        const n = cleaned ? Number(cleaned) : NaN;
-        return Number.isFinite(n) ? n : null;
-          })();
-
+      // Si no existe, crear nuevo
       const newProspecto = await Prospecto.create({
         cedulaProspecto: cedula,
-        email: email,
-        nombres: nombres,
-        apellidos: apellidos,
+        email,
+        nombres,
+        apellidos,
         celular: celularParsed,
-        direccion: direccion,
-        forma_de_pago: forma_de_pago,
-        honorarios: honorarios,
-        cuotas: cuotas,
-        comentarios: comentarios,
-        valor_pretensiones: valor_pretensiones,
-        impuestoLaboral: impuestoLaboral,   
-        vehiculoCooperativas: vehiculoCooperativas,
-        hipotecario: hipotecario,
-        proveedores: proveedores,
-        bancoPersonas: bancoPersonas,
-        familiares: familiares,
-        tieneBienes: tieneBienes,
-        bienes: bienes,
-        totalBienes: totalBienes,
-        totalDeudas: totalDeudas,
-        modoContacto: modoContacto,
+        direccion,
+        forma_de_pago,
+        honorarios,
+        cuotas,
+        comentarios,
+        valor_pretensiones,
+        impuestoLaboral,
+        vehiculoCooperativas,
+        hipotecario,
+        proveedores,
+        bancoPersonas,
+        familiares,
+        tieneBienes,
+        bienes,
+        totalBienes,
+        totalDeudas,
+        modoContacto,
       });
 
-      codigo_ciudad !== 0 ? newProspecto.addCiudad(codigo_ciudad) : null;
-      // newProspecto.addTipoDeCaso(tipo_de_caso);
-      // newProspecto.addTipoUsuario(tipo_usuario);
+      if (codigo_ciudad !== 0) {
+        await newProspecto.addCiudad(codigo_ciudad);
+      }
 
       return newProspecto;
     } catch (error) {

@@ -8,6 +8,7 @@ import {
   getCitaGoogleHandler,
   completarCitaHandler,
   eliminarCitaCalendarHandler,
+  actualizarCitaHandler,
 } from "../handlers/citaHandlers.js";
 
 const citasRouter = Router();
@@ -21,6 +22,7 @@ citasRouter.get("/disponibilidad", getAvailabilityHandler);
 citasRouter.get("/:idProspecto", getCitasByIdHandler);
 
 citasRouter.patch("/:idCita", completarCitaHandler);
+citasRouter.patch("/actualiza", actualizarCitaHandler);
 
 citasRouter.delete("/eliminar", eliminarCitaCalendarHandler);
 

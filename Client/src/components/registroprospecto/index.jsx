@@ -110,6 +110,7 @@ const RegistroProspecto = () => {
     }
     try {
       await registroProspectoExcel(fileInput.files[0]);
+      navigate("/Prospectos");
     } catch (error) {
       console.error("Error al cargar datos desde Excel:", error);
     }

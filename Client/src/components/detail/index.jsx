@@ -27,6 +27,7 @@ import {
   postCita,
   postNota,
   postTarea,
+  setFechaCierre,
   updateCalificacion,
   updateClienteFase,
   updateClienteStatus,
@@ -247,6 +248,7 @@ const Detail = () => {
         fuente: datos.fuente || "",
         servicio: datos.servicio || "",
         genero: datos.genero || "",
+        fechaCierre: datos.fechaCierre || "",
       });
     } else {
       setUserDataDetail({
@@ -301,6 +303,7 @@ const Detail = () => {
         fuente: datos.fuente || "",
         servicio: datos.servicio || "",
         genero: datos.genero || "",
+        fechaCierre: datos.fechaCierre || "",
       });
     }
   }, [dispatch, source]);
@@ -422,11 +425,19 @@ const Detail = () => {
     }
   };
 
-  const submitHandlerRegistro = (e) => {
+  const submitHandlerRegistro = async (e) => {
     e.preventDefault();
 
     if (userDataDetail.cedulanew !== "") {
-      registroCliente(userDataDetail);
+      dispatch(
+        setFechaCierre({
+          idProspecto: userDataDetail.idProspecto,
+          fechaCierre: new Date().toLocaleDateString("sv-SE", {
+            timeZone: "America/Bogota",
+          }), // YYYY-MM-DD en GMT-5
+        }),
+      );
+      await registroCliente(userDataDetail);
       dispatch(copyDeudas({ cedulaProspecto: userDataDetail.cedulanew }));
       dispatch(copyHonorarios({ cedulaProspecto: userDataDetail.cedulanew }));
       dispatch(copyBienes({ cedulaProspecto: userDataDetail.cedulanew }));
@@ -705,19 +716,19 @@ const Detail = () => {
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
             <FormControl>
-                            <InputLabel>Género</InputLabel>
-                <Select
-                  value={userDataDetail.genero}
-                  label="Género"
-                  onChange={handleUpdateDetail}
-                  name="genero"
-                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
-                >
-                  <MenuItem value="masculino">Masculino</MenuItem>
-                  <MenuItem value="femenino">Femenino</MenuItem>
-                  <MenuItem value="otro">Otro</MenuItem>
-                </Select>
-              </FormControl>
+              <InputLabel>Género</InputLabel>
+              <Select
+                value={userDataDetail.genero}
+                label="Género"
+                onChange={handleUpdateDetail}
+                name="genero"
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              >
+                <MenuItem value="masculino">Masculino</MenuItem>
+                <MenuItem value="femenino">Femenino</MenuItem>
+                <MenuItem value="otro">Otro</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               label="Número de cédula"
               name="cedulanew"
@@ -772,7 +783,7 @@ const Detail = () => {
                 }));
               }}
               onChange={(_event, value) => {
-                console.log("Ciudad seleccionada:", value); 
+                console.log("Ciudad seleccionada:", value);
                 const nombre = value ? String(value).split(",")[0].trim() : "";
                 console.log("Nombre ciudad extraído:", nombre);
                 setUserDataDetail((prev) => ({
@@ -1018,24 +1029,40 @@ const Detail = () => {
                   <MenuItem value="liqpatrimonial">Liq. Patrimonial</MenuItem>
                   <MenuItem value="acuerdodepago">Acuerdo de Pago</MenuItem>
                   <MenuItem value="ley1116">Ley 1116</MenuItem>
-                  <MenuItem value="reformaacuerdo">Reforma acuerdo de pago</MenuItem>
-                  <MenuItem value="reduccreditohip">Reduc. Crédito Hip</MenuItem>
-                  <MenuItem value="asesorialegalintegral">Asesoría Legal Integral</MenuItem>
-                  <MenuItem value="asesoriaempresas">Asesoría Empresas</MenuItem>
+                  <MenuItem value="reformaacuerdo">
+                    Reforma acuerdo de pago
+                  </MenuItem>
+                  <MenuItem value="reduccreditohip">
+                    Reduc. Crédito Hip
+                  </MenuItem>
+                  <MenuItem value="asesorialegalintegral">
+                    Asesoría Legal Integral
+                  </MenuItem>
+                  <MenuItem value="asesoriaempresas">
+                    Asesoría Empresas
+                  </MenuItem>
                   <MenuItem value="sucesion">Sucesión</MenuItem>
                   <MenuItem value="familia">Familia</MenuItem>
-                  <MenuItem value="contratacionestatal">Contratación Estatal</MenuItem>
+                  <MenuItem value="contratacionestatal">
+                    Contratación Estatal
+                  </MenuItem>
                   <MenuItem value="divorcio">Divorcio</MenuItem>
-                  <MenuItem value="reclamacionlaboral">Reclamación Laboral</MenuItem>
-                  <MenuItem value="recaudodecartera">Recaudo de Cartera</MenuItem>
+                  <MenuItem value="reclamacionlaboral">
+                    Reclamación Laboral
+                  </MenuItem>
+                  <MenuItem value="recaudodecartera">
+                    Recaudo de Cartera
+                  </MenuItem>
                   <MenuItem value="notarial">Notarial</MenuItem>
                   <MenuItem value="tutelas">Tutelas</MenuItem>
                   <MenuItem value="rdd">RDD</MenuItem>
                   <MenuItem value="ejecutivos">Ejecutivos</MenuItem>
-                  <MenuItem value="reclamacionseguro">Reclamación Seguro</MenuItem>
+                  <MenuItem value="reclamacionseguro">
+                    Reclamación Seguro
+                  </MenuItem>
                   <MenuItem value="extraprocesal">Extraprocesal</MenuItem>
                   <MenuItem value="divisorios">Divisorios</MenuItem>
-                  <MenuItem value="dotros">Otros</MenuItem>
+                  <MenuItem value="otros">Otros</MenuItem>
                 </Select>
               </FormControl>
               <TextField

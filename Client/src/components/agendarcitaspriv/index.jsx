@@ -122,6 +122,16 @@ function AgendarCitasPriv() {
       dispatch(obtenerCitasCalendar(dataRegistro.calendarId));
       // window.alert("Cita creado con éxito");
       // window.location.reload();
+      setDataRegistro((prevData) => ({
+        ...prevData, // mantiene los campos que no quieres modificar
+        titulo: "",
+        descripcion: "",
+        fechaCita: "",
+        horaCita: "",
+        idProspecto: "",
+        cedulaCliente: "",
+        email: "",
+      }));
     } catch (error) {
       console.error("Error al crear la cita:", error.message);
       // window.alert("No se pudo crear la cita");

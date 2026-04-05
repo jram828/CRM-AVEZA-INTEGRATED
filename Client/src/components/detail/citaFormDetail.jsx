@@ -79,6 +79,13 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
         email: selected.email,
         source: "prospecto",
       });
+      setDataCita({
+        titulo: "",
+        fechaCita: "",
+        horaCita: "",
+        descripcion: "",
+      });
+
       onClose();
     } else if (source === "cliente") {
       if (!selected) return;
@@ -89,6 +96,12 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
         apellidos: selected.apellidos,
         email: selected.email,
         source: "cliente",
+      });
+      setDataCita({
+        titulo: "",
+        fechaCita: "",
+        horaCita: "",
+        descripcion: "",
       });
       onClose();
     }

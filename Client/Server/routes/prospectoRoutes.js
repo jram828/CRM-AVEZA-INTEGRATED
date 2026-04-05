@@ -25,6 +25,7 @@ import {
   copyBienesHandler,
   postCotizacionHandler,
   copyCotizacionHandler,
+  actualizaFechaCierreHandler,
   // getClientByEmailHandler,
 } from "../handlers/prospectosHandlers.js";
 
@@ -55,7 +56,8 @@ prospectosRouter.put("/actualiza", postActualizaProspectos); //Actualizar datos 
 prospectosRouter.put("/cotizacion", postActualizaDatosCotizacion);
 prospectosRouter.put("/status", postActualizaStatus);
 prospectosRouter.put("/calificacion", postActualizaCalificacion);
-
+prospectosRouter.put("/actualiza", postActualizaProspectos); 
+prospectosRouter.put("/fechacierre", actualizaFechaCierreHandler);
 prospectosRouter.post("/elimina", postEliminaProspectos);
 
 export default prospectosRouter;

@@ -1,7 +1,7 @@
 import { models } from "../../DB.js";
 import { Sequelize } from "sequelize";
 
-const { Cliente, Ciudad, Departamento, Pais, Deuda2, Honorario, Bien, Cotizacion, PropuestaPago } = models;
+const { Cliente, Ciudad, Departamento, Pais, Deuda2, Honorario, Bien, Cotizacion, PropuestaPago, Nota, Cita, Tarea } = models;
 const getAllCliente = async (filters) => {
   let allClient = [];
 
@@ -107,9 +107,12 @@ const getAllCliente = async (filters) => {
             //verifico que el comando requiera ser ordnado
             newOrder[field.substring(0, field.length - 3)]; //traeme desde el cero hasta los tres anteriorres
           } else {
-            newFilters[field] = {
-              [Sequelize.Op.iLike]: `%${value}%`,
-            }; // acá estoy guardando de forma dinamica los valores de cada propiedad
+            newFilters[field] = Sequelize.where(
+              Sequelize.fn("unaccent", Sequelize.col(field)),
+              {
+                [Sequelize.Op.iLike]: `%${value}%`,
+              },
+            );
           }
         } else {
           pagina[field];
@@ -188,6 +191,19 @@ const getAllCliente = async (filters) => {
           model: PropuestaPago,
           through: { attributes: [] },
         },
+        {
+          model: Nota,
+          through: { attributes: [] },
+        },
+        {
+          model: Cita,
+          through: { attributes: [] },
+        },
+        {
+          model: Tarea,
+          through: { attributes: [] },
+        },
+
       ],
       order,
       offset: offset || 0,

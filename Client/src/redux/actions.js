@@ -92,6 +92,8 @@ export const POST_COTIZACION = "POST_COTIZACION";
 export const COPIAR_COTIZACION = "COPIAR_COTIZACION";
 export const PUT_CLIENTE_FASE = "PUT_CLIENTE_FASE";
 export const DELETE_CITAS_CALENDAR = "DELETE_CITAS_CALENDAR";
+export const MODIFICAR_CITA = "MODIFICAR_CITA";
+export const SET_FECHA_CIERRE = "SET_FECHA_CIERRE";
 
 export const clienteActual = (cliente) => {
   // console.log("Cliente Action:", cliente);
@@ -797,6 +799,17 @@ export const updateClienteCalificacion = (dataCalificacion) => {
   };
 };
 
+export const setFechaCierre = (dataFase) => {
+  const endpoint = `/prospectos/fechacierre`;
+  return async (dispatch) => {
+    const { data } = await axios.put(endpoint, dataFase);
+    return dispatch({
+      type: SET_FECHA_CIERRE,
+      payload: data,
+    });
+  };
+};
+
 export const postHonorarios = (honorariosData) => {
   const endpoint = `/prospectos/honorarios`;
   return async (dispatch) => {
@@ -999,6 +1012,19 @@ export const modificarCasoCotizacion = (payload) => {
   };
 };
 
+export const actualizarCitaGoogle = (payload) => {
+  const endpoint = `/citas/actualiza`;
+
+  return async (dispatch) => {
+    const data = await axios.put(endpoint, payload);
+    // console.log("URL", endpoint, "PAYLOAD", payload);
+    window.alert("Se ha actualizado la cita con éxito.");
+    return dispatch({
+      type: MODIFICAR_CITA,
+      payload: data,
+    });
+  };
+};
 export const crearDeudas = (payload) => {
   const endpoint = `/prospectos/creardeudas`;
 

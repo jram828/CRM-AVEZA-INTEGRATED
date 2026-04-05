@@ -21,6 +21,7 @@ import { copyPropuestas } from "../controllers/prospecto/copyPropuestas.js";
 import { createPropuestas } from "../controllers/prospecto/createPropuestas.js";
 import { copyCotizacion } from "../controllers/prospecto/copyCotizacion.js";
 import { createCotizacion } from "../controllers/prospecto/createCotizacion.js";
+import { actualizaFechaCierre } from "../controllers/prospecto/actualizaFechaCierre.js";
 
 const prospectosHandler = async (req, res) => {
   //const { name } = req.query;
@@ -262,6 +263,18 @@ const postActualizaStatus = async (req, res) => {
   }
 };
 
+const actualizaFechaCierreHandler = async (req, res) => {
+  const { idProspecto, fechaCierre } = req.body;
+
+  try {
+    const response = await actualizaFechaCierre(idProspecto, fechaCierre);
+    if (response) res.status(200).json(response);
+    else res.status(204).json("No se actualizo el Prospecto");
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const postActualizaCalificacion = async (req, res) => {
   const { idProspecto, field, value } = req.body;
 
@@ -482,4 +495,5 @@ export {
   copyBienesHandler,
   postCotizacionHandler,
   copyCotizacionHandler,
+  actualizaFechaCierreHandler,
 };

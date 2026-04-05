@@ -143,7 +143,9 @@ const Prospectos = () => {
   const handleResponsableChange = (idProspecto, newResponsable) => {
     setProspectos((prev) =>
       prev.map((p) =>
-        p.idProspecto === idProspecto ? { ...p, responsable: newResponsable } : p,
+        p.idProspecto === idProspecto
+          ? { ...p, responsable: newResponsable }
+          : p,
       ),
     );
     dispatch(
@@ -154,7 +156,6 @@ const Prospectos = () => {
       }),
     );
   };
-
 
   const handleCalificacionChange = (idProspecto, newCalificacion) => {
     setProspectos((prev) =>
@@ -233,7 +234,7 @@ const Prospectos = () => {
       dispatch(getTareas());
       dispatch(getCitas());
     });
-    
+
     handleCloseCitaForm();
   };
 
@@ -430,28 +431,97 @@ const Prospectos = () => {
 
   const exportarExcel = () => {
     // Seleccionar solo las propiedades requeridas y en el orden correcto
-    const datos = reduxProspectos.map((prospecto) => ({
-      "Fecha Creación": prospecto.fechaCreacion ? new Date(prospecto.fechaCreacion).toLocaleDateString() : "",
-      Estado: prospecto.status,
-      Cedula: prospecto.cedulaProspecto,
-      Apellidos: prospecto.apellidos,
-      Nombres: prospecto.nombres,
-      Celular: prospecto.celular,
-      Direccion: prospecto.direccion,
-      Ciudad: prospecto.Ciudads?.[0]?.nombre_ciudad || "",
-      Email: prospecto.email,
-      Servicio: prospecto.servicio || "",
-      Fase: prospecto?.fase || "",
-      Pasivo: prospecto?.totalDeudas || 0,
-      Mora: prospecto?.tiempoMora || 0,
-      Entidades: prospecto?.numeroEntidades || 0,
-      Activos: prospecto?.totalBienes || 0,
-      Procesos: prospecto?.tieneProcesos || "No se ha registrado",
-      Responsable: prospecto?.responsable || "",
-      Fuente: prospecto?.fuente || "",
-      Genero: prospecto?.genero || "",
-      Descripción: prospecto.comentarios || "",
-    }));
+    // const datos = reduxProspectos.map((prospecto) => ({
+    //   "Fecha Creación": prospecto.fechaCreacion ? new Date(prospecto.fechaCreacion).toLocaleDateString() : "",
+    //   Estado: prospecto.status,
+    //   Cedula: prospecto.cedulaProspecto,
+    //   Apellidos: prospecto.apellidos,
+    //   Nombres: prospecto.nombres,
+    //   Celular: prospecto.celular,
+    //   Direccion: prospecto.direccion,
+    //   Ciudad: prospecto.Ciudads?.[0]?.nombre_ciudad || "",
+    //   Email: prospecto.email,
+    //   Servicio: prospecto.servicio || "",
+    //   Fase: prospecto?.fase || "",
+    //   Pasivo: prospecto?.totalDeudas || 0,
+    //   Mora: prospecto?.tiempoMora || 0,
+    //   Entidades: prospecto?.numeroEntidades || 0,
+    //   Activos: prospecto?.totalBienes || 0,
+    //   Procesos: prospecto?.tieneProcesos || "No se ha registrado",
+    //   Responsable: prospecto?.responsable || "",
+    //   Fuente: prospecto?.fuente || "",
+    //   Genero: prospecto?.genero || "",
+    //   Descripción: prospecto.comentarios || "",
+    //   Reunión:prospecto?.Citas?.[0]?.titulo || "",
+    //   Tarea:prospecto?.Tareas?.[0]?.asunto || "",
+    //   "Fecha tarea": prospecto?.Tareas?.[0]?.fechaVencimiento || "",
+    // }));
+    const datos = reduxProspectos.map((prospecto) => {
+      // Obtener la cita más próxima
+
+      let reunionFecha = "";
+
+      if (prospecto.Cita && prospecto.Cita.length > 0) {
+        const ahora = new Date();
+        const citaMasProxima = prospecto.Cita.map((c) => ({
+          ...c,
+          fecha: new Date(c.fechaCita),
+          diff: Math.abs(new Date(c.fechaCita) - ahora),
+        })).sort((a, b) => a.diff - b.diff)[0]; // la más cercana, pasada o futura
+
+        if (citaMasProxima) {
+          reunionFecha = citaMasProxima.fecha.toISOString().split("T")[0]; // formato aaaa-mm-dd
+        }
+      }
+
+      // Obtener la tarea más próxima
+      let tareaAsunto = "";
+      let tareaFecha = "";
+
+      if (prospecto.Tareas && prospecto.Tareas.length > 0) {
+        const ahora = new Date();
+
+        const tareaMasProxima = prospecto.Tareas.map((t) => ({
+          ...t,
+          fecha: new Date(t.fechaVencimiento),
+          diff: Math.abs(new Date(t.fechaVencimiento) - ahora),
+        })).sort((a, b) => a.diff - b.diff)[0]; // la más cercana en cualquier dirección
+
+        if (tareaMasProxima) {
+          tareaAsunto = tareaMasProxima.asunto;
+          tareaFecha = tareaMasProxima.fecha.toISOString().split("T")[0];
+        }
+      }
+
+      return {
+        "Fecha Creación": prospecto.fechaCreacion
+          ? new Date(prospecto.fechaCreacion).toLocaleDateString()
+          : "",
+        Estado: prospecto.status,
+        Cedula: prospecto.cedulaProspecto,
+        Apellidos: prospecto.apellidos,
+        Nombres: prospecto.nombres,
+        Celular: prospecto.celular,
+        Direccion: prospecto.direccion,
+        Ciudad: prospecto.Ciudads?.[0]?.nombre_ciudad || "",
+        Email: prospecto.email,
+        Servicio: prospecto.servicio || "",
+        Fase: prospecto?.fase || "",
+        Pasivo: prospecto?.totalDeudas || 0,
+        Mora: prospecto?.tiempoMora || 0,
+        Entidades: prospecto?.numeroEntidades || 0,
+        Activos: prospecto?.totalBienes || 0,
+        Procesos: prospecto?.tieneProcesos || "No se ha registrado",
+        Responsable: prospecto?.responsable || "",
+        Fuente: prospecto?.fuente || "",
+        "Fecha reunión": reunionFecha,
+        Tarea: tareaAsunto,
+        "Fecha tarea": tareaFecha,
+        "Fecha de cierre": prospecto?.fechaCierre || "",
+        Genero: prospecto?.genero || "",
+        Descripción: prospecto.comentarios || "",
+      };
+    });
 
     const headers = [
       "Fecha Creación",
@@ -472,6 +542,10 @@ const Prospectos = () => {
       "Procesos",
       "Responsable",
       "Fuente",
+      "Fecha reunión",
+      "Tarea",
+      "Fecha tarea",
+      "Fecha de cierre",
       "Genero",
       "Descripción",
     ];

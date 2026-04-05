@@ -65,6 +65,7 @@ import {
   MODIFICAR_DATOS,
   MODIFICAR_DATOS_ABOGADO,
   MODIFICAR_DATOS_CAMPAIGN,
+  MODIFICAR_CITA,
   GET_PAGOS,
   MODIFICAR_CASO,
   MODIFICAR_CASO_COTIZACION,
@@ -96,7 +97,8 @@ import {
   POST_BIENES,
   COPIAR_BIENES,
   COPIAR_PROPUESTAS,
-  DELETE_CITAS_CALENDAR,  
+  DELETE_CITAS_CALENDAR,
+  SET_FECHA_CIERRE,
 } from "./actions";
 
 let initialState = {
@@ -156,6 +158,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         filtro: action.payload,
+      };
+    case SET_FECHA_CIERRE:
+      return {
+        ...state,
+        prospecto: action.payload,
       };
     case GET_ABOGADOS:
       return {
@@ -472,6 +479,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         campaign: action.payload,
+      };
+    case MODIFICAR_CITA:
+      return {
+        ...state,
+        citas: action.payload,
       };
     case GET_PAGOS:
       return {

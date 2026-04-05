@@ -96,6 +96,10 @@ export default (sequelize) => {
         allowNull: true,
         defaultValue: "noseleccionado",
       },
+      fechaCierre: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       activo: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,

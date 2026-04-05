@@ -6,7 +6,7 @@ export const codigoDepartamentos = [
   },
   {
     codigo_departamento: 8,
-    nombre_departamento: "ATLANTICO",
+    nombre_departamento: "ATLÁNTICO",
     codigo_pais: 169,
   },
   {
@@ -14,11 +14,11 @@ export const codigoDepartamentos = [
     nombre_departamento: "BOGOTA. D.C.",
     codigo_pais: 169,
   },
-  { codigo_departamento: 13, nombre_departamento: "BOLIVAR", codigo_pais: 169 },
-  { codigo_departamento: 15, nombre_departamento: "BOYACA", codigo_pais: 169 },
+  { codigo_departamento: 13, nombre_departamento: "BOLÍVAR", codigo_pais: 169 },
+  { codigo_departamento: 15, nombre_departamento: "BOYACÁ", codigo_pais: 169 },
   { codigo_departamento: 19, nombre_departamento: "CAUCA", codigo_pais: 169 },
   { codigo_departamento: 17, nombre_departamento: "CALDAS", codigo_pais: 169 },
-  { codigo_departamento: 18, nombre_departamento: "CAQUETA", codigo_pais: 169 },
+  { codigo_departamento: 18, nombre_departamento: "CAQUETÁ", codigo_pais: 169 },
   { codigo_departamento: 20, nombre_departamento: "CESAR", codigo_pais: 169 },
   { codigo_departamento: 23, nombre_departamento: "CORDOBA", codigo_pais: 169 },
   {
@@ -26,7 +26,7 @@ export const codigoDepartamentos = [
     nombre_departamento: "CUNDINAMARCA",
     codigo_pais: 169,
   },
-  { codigo_departamento: 27, nombre_departamento: "CHOCO", codigo_pais: 169 },
+  { codigo_departamento: 27, nombre_departamento: "CHOCÓ", codigo_pais: 169 },
   { codigo_departamento: 41, nombre_departamento: "HUILA", codigo_pais: 169 },
   {
     codigo_departamento: 44,
@@ -45,7 +45,7 @@ export const codigoDepartamentos = [
     nombre_departamento: "NORTE DE SANTANDER",
     codigo_pais: 169,
   },
-  { codigo_departamento: 63, nombre_departamento: "QUINDIO", codigo_pais: 169 },
+  { codigo_departamento: 63, nombre_departamento: "QUINDÍO", codigo_pais: 169 },
   {
     codigo_departamento: 66,
     nombre_departamento: "RISARALDA",
@@ -77,7 +77,7 @@ export const codigoDepartamentos = [
   {
     codigo_departamento: 88,
     nombre_departamento:
-      "ARCHIPIELAGO DE SAN ANDRES. PROVIDENCIA Y SANTA CATALINA",
+      "ARCHIPIELAGO DE SAN ANDRÉS. PROVIDENCIA Y SANTA CATALINA",
     codigo_pais: 169,
   },
   {
@@ -85,7 +85,7 @@ export const codigoDepartamentos = [
     nombre_departamento: "AMAZONAS",
     codigo_pais: 169,
   },
-  { codigo_departamento: 94, nombre_departamento: "GUAINIA", codigo_pais: 169 },
+  { codigo_departamento: 94, nombre_departamento: "GUAINÍA", codigo_pais: 169 },
   {
     codigo_departamento: 95,
     nombre_departamento: "GUAVIARE",

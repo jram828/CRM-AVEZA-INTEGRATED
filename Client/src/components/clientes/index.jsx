@@ -433,30 +433,72 @@ const Clientes = () => {
 
   const exportarExcel = () => {
     // Seleccionar solo las propiedades requeridas y en el orden correcto
-    const datos = reduxClientes.map((cliente) => ({
-      "Fecha Creación": cliente.fechaCreacion
-        ? new Date(cliente.fechaCreacion).toLocaleDateString()
-        : "",
-      Estado: cliente.status,
-      Cedula: cliente.cedulaCliente,
-      Apellidos: cliente.apellidos,
-      Nombres: cliente.nombres,
-      Celular: cliente.celular,
-      Direccion: cliente.direccion,
-      Ciudad: cliente.Ciudads?.[0]?.nombre_ciudad || "",
-      Email: cliente.email,
-      Servicio: cliente.servicio || "",
-      Fase: cliente?.fase || "",
-      Pasivo: cliente?.totalDeudas || 0,
-      Mora: cliente?.tiempoMora || 0,
-      Entidades: cliente?.numeroEntidades || 0,
-      Activos: cliente?.totalBienes || 0,
-      Procesos: cliente?.tieneProcesos || "No se ha registrado",
-      Responsable: cliente?.responsable || "",
-      Fuente: cliente?.fuente || "",
-      Genero: cliente?.genero || "",
-      Descripción: cliente.comentarios || "",
-    }));
+    const datos = reduxClientes.map((cliente) => {
+      // Obtener la cita más próxima
+
+      let reunionFecha = "";
+
+      if (cliente.Citas && cliente.Citas.length > 0) {
+        const ahora = new Date();
+        const citaMasProxima = cliente.Citas.map((c) => ({
+          ...c,
+          fecha: new Date(c.fechaCita),
+          diff: Math.abs(new Date(c.fechaCita) - ahora),
+        })).sort((a, b) => a.diff - b.diff)[0]; // la más cercana, pasada o futura
+
+        if (citaMasProxima) {
+          reunionFecha = citaMasProxima.fecha.toISOString().split("T")[0]; // formato aaaa-mm-dd
+        }
+      }
+
+      // Obtener la tarea más próxima
+      let tareaAsunto = "";
+      let tareaFecha = "";
+
+      if (cliente.Tareas && cliente.Tareas.length > 0) {
+        const ahora = new Date();
+
+        const tareaMasProxima = cliente.Tareas.map((t) => ({
+          ...t,
+          fecha: new Date(t.fechaVencimiento),
+          diff: Math.abs(new Date(t.fechaVencimiento) - ahora),
+        })).sort((a, b) => a.diff - b.diff)[0]; // la más cercana en cualquier dirección
+
+        if (tareaMasProxima) {
+          tareaAsunto = tareaMasProxima.asunto;
+          tareaFecha = tareaMasProxima.fecha.toISOString().split("T")[0];
+        }
+      }
+
+      return {
+        "Fecha Creación": cliente.fechaCreacion
+          ? new Date(cliente.fechaCreacion).toLocaleDateString()
+          : "",
+        Estado: cliente.status,
+        Cedula: cliente.cedulaCliente,
+        Apellidos: cliente.apellidos,
+        Nombres: cliente.nombres,
+        Celular: cliente.celular,
+        Direccion: cliente.direccion,
+        Ciudad: cliente.Ciudads?.[0]?.nombre_ciudad || "",
+        Email: cliente.email,
+        Servicio: cliente.servicio || "",
+        Fase: cliente?.fase || "",
+        Pasivo: cliente?.totalDeudas || 0,
+        Mora: cliente?.tiempoMora || 0,
+        Entidades: cliente?.numeroEntidades || 0,
+        Activos: cliente?.totalBienes || 0,
+        Procesos: cliente?.tieneProcesos || "No se ha registrado",
+        Responsable: cliente?.responsable || "",
+        Fuente: cliente?.fuente || "",
+                "Fecha reunión": reunionFecha,
+        Tarea: tareaAsunto,
+        "Fecha tarea": tareaFecha,
+        "Fecha de cierre":  "",
+        Genero: cliente?.genero || "",
+        Descripción: cliente.comentarios || "",
+      };
+    });
 
     const headers = [
       "Fecha Creación",
@@ -477,6 +519,10 @@ const Clientes = () => {
       "Procesos",
       "Responsable",
       "Fuente",
+      "Fecha reunión",
+      "Tarea",
+      "Fecha tarea",
+      "Fecha de cierre",
       "Genero",
       "Descripción",
     ];
@@ -495,7 +541,6 @@ const Clientes = () => {
       );
       return { wch: maxLength + 1 };
     });
-
 
     // Crear libro y añadir la hoja
     const libro = XLSX.utils.book_new();

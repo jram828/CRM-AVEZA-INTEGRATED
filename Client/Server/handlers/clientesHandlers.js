@@ -78,6 +78,34 @@ const getClientByEmailHandler = async (req, res) => {
 const postClientesHandler = async (req, res) => {
   console.log("Body post cliente handler:", req.body);
   const {
+    email,
+    nombres,
+    apellidos,
+    cedulaCliente,
+    celular,
+    direccion,
+    nombre_ciudad,
+    tipo_usuario,
+    tipo_de_caso,
+    forma_de_pago,
+    honorarios,
+    cuotas,
+    comentarios,
+    valor_pretensiones,
+    tieneProcesos,
+    responsable,
+    fuente,
+    genero,
+    totalBienes,
+    tiempoMora,
+    numeroEntidades,
+    servicio,
+    status,
+    totalDeudas,
+  } = req.body;
+
+  try {
+    const response = await createClienteBd(
       email,
       nombres,
       apellidos,
@@ -92,26 +120,16 @@ const postClientesHandler = async (req, res) => {
       cuotas,
       comentarios,
       valor_pretensiones,
-      modoContacto,
-  } = req.body;
-
-  try {
-    const response = await createClienteBd(
-      email,
-      nombres,
-      apellidos,
-      cedulaCliente,
-      celular,
-      direccion,
-      nombre_ciudad,
-      modoContacto,
-      tipo_usuario,
-      tipo_de_caso,
-      forma_de_pago,
-      honorarios,
-      cuotas,
-      comentarios,
-      valor_pretensiones
+      tieneProcesos,
+      responsable,
+      fuente,
+      genero,
+      totalBienes,
+      tiempoMora,
+      numeroEntidades,
+      servicio,
+      status,
+      totalDeudas,
     );
     console.log("Response crear cliente", response);
     if (response) res.status(200).json(response);

@@ -4,16 +4,7 @@ import * as XLSX from "xlsx";
 import { codigoCiudades } from "../utils/codigoCiudades";
 
 export async function registroClienteExcel() {
-  // const {
-  // email,
-  // nombres,
-  // apellidos,
-  // cedulaCliente,
-  // celular,
-  // direccion,
-  // nombre_ciudad,
-  // comentarios,
-  //   } = userDataRegistro;
+
 
   const fileInput = document.getElementById("docexcel");
   const file = fileInput.files[0];
@@ -33,31 +24,45 @@ export async function registroClienteExcel() {
 
     console.log("Datos del archivo:", jsonData);
    jsonData.shift(); // Eliminar la primera fila (encabezados)
-    jsonData.forEach(async (row) => {
-
-      const foundCiudad = codigoCiudades.filter((ciudad) =>
-            ciudad.nombre_ciudad.toLowerCase().includes(row[6].toLowerCase())
-          );
- console.log("Ciudades encontradas:", foundCiudad);
-      const clienteData = {
-        cedulaCliente: row[0],
-        nombres: row[1],
-        apellidos: row[2],
-        celular: row[3],
-        email: row[4],
-        direccion: row[5],
-        nombre_ciudad: foundCiudad.length > 0 ? foundCiudad[0].nombre_ciudad : "",
-
-      };
-      // console.log("Cliente data:", clienteData);
-      const URL = "/clientes/registrocliente";
-      try {
-        await axios.post(URL, clienteData);
-        window.alert("Se ha registrado el cliente con éxito.");
-      } catch (error) {
-        window.alert("No fue posible registrar el cliente.");
-      }
-    });
+       try {
+         jsonData.forEach(async (row) => {
+           const foundCiudad = codigoCiudades.filter((ciudad) =>
+             // console.log("Comparando:", ciudad.nombre_ciudad.toLowerCase(), "con", row[6])
+             ciudad.nombre_ciudad.toLowerCase().includes(row[8].toLowerCase()),
+           );
+           console.log("Ciudades encontradas:", foundCiudad);
+           const clienteData = {
+             status: row[1],
+             cedulaCliente: row[2],
+             apellidos: row[3],
+             nombres: row[4],
+             celular: row[5],
+             email: row[6],
+             direccion: row[7],
+             nombre_ciudad:
+               foundCiudad.length > 0 ? foundCiudad[0].nombre_ciudad : "",
+             servicio: row[9],
+             totalDeudas: row[10],
+             tiempoMora: row[11],
+             numeroEntidades: row[12],
+             totalBienes: row[13],
+             tieneProcesos: row[14],
+             responsable: row[15],
+             fuente: row[16],
+             genero: row[21],
+             comentarios: row[22],
+           };
+           // console.log("Cliente data:", clienteData);
+           const URL = "/clientes/registroCliente";
+   
+           await axios.post(URL, clienteData);
+         });
+         window.alert("Archivo procesado con éxito.");
+       } catch (error) {
+         window.alert(
+           "Error al procesar el archivo. Por favor, inténtalo de nuevo.",
+         );
+       }
   };
   reader.readAsArrayBuffer(file);
   reader.onerror = (error) => {

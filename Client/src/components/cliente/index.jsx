@@ -1,6 +1,7 @@
 import React from "react";
 // import "../../App.css";
 import "./cliente.css";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import {

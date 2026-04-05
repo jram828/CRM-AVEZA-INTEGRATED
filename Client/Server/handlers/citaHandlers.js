@@ -7,6 +7,7 @@ import { getCitaById } from "../controllers/cita/getCitaById.js";
 import { getAllCitaGoogle } from "../controllers/cita/getAllCitaGoogle.js";
 import { completarCita } from "../controllers/cita/completarCita.js";
 import { eliminarCitaCalendar } from "../controllers/cita/eliminarCitaCalendar.js";
+import { actualizarCita } from "../controllers/cita/actualizarCita.js";
 
 const getCitaHandler = async (req, res) => {
   try {
@@ -63,7 +64,6 @@ const postCreateCita = async (req, res) => {
     calendarId,
     email,
     cedulaCliente,
-
   } = req.body;
 
   console.log(
@@ -124,7 +124,8 @@ const postCreateCitaGoogle = async (req, res) => {
       source,
     );
     res.status(200).json(response);
-  } catch (error) {f
+  } catch (error) {
+    f;
     res.status(400).json({ error: error.message });
   }
 };
@@ -140,9 +141,31 @@ const completarCitaHandler = async (req, res) => {
 };
 
 const actualizarCitaHandler = async (req, res) => {
-  const { idCita, fechaCita, horaCita, descripcion, titulo } = req.body;
+  const {
+    idCita,
+    fechaCita,
+    horaCita,
+    descripcion,
+    titulo,
+    idProspecto,
+    cedulaCliente,
+    idCitaGoogle,
+    calendarId,
+  } = req.body;
+
+  console.log("Datos recibidos para actualizar cita:", req.body);
   try {
-    const response = await actualizarCita(idCita, fechaCita, horaCita, descripcion, titulo);
+    const response = await actualizarCita(
+      idCita,
+      fechaCita,
+      horaCita,
+      descripcion,
+      titulo,
+      idProspecto,
+      cedulaCliente,
+      idCitaGoogle,
+      calendarId,
+    );
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -156,14 +179,13 @@ const eliminarCitaCalendarHandler = async (req, res) => {
     idCita,
     calendarId,
     source,
-
   });
   try {
     const response = await eliminarCitaCalendar(
       idCitaGoogle,
       idCita,
       calendarId,
-      source
+      source,
     );
     res.status(200).json(response);
   } catch (error) {
@@ -174,7 +196,12 @@ const eliminarCitaCalendarHandler = async (req, res) => {
 const eliminarCitaHandler = async (req, res) => {
   const { idCitaGoogle, idCita, calendarId, source } = req.params;
   try {
-    const response = await eliminarCita(idCitaGoogle, idCita, calendarId, source);
+    const response = await eliminarCita(
+      idCitaGoogle,
+      idCita,
+      calendarId,
+      source,
+    );
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });

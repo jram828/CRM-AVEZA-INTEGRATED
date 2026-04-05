@@ -151,6 +151,10 @@ const actualizarCitaHandler = async (req, res) => {
     cedulaCliente,
     idCitaGoogle,
     calendarId,
+    email,
+    nombres,
+    apellidos,
+    source,
   } = req.body;
 
   console.log("Datos recibidos para actualizar cita:", req.body);

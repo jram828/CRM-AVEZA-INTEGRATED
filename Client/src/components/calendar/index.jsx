@@ -209,7 +209,7 @@ const Calendario = () => {
 
     if (source === "google") {
       console.log("Actualizar evento en Google Calendar con payload:", payload);
-      dispatch(actualizarCitaGoogle(payload));
+      dispatch(actualizarCitaGoogle(payload)).then(() => dispatch(obtenerCitasCalendar(calendarId))); 
     } else {
       console.log("Actualizar evento en base de datos con payload:", payload);
       // dispatch(actualizarCita(payload));

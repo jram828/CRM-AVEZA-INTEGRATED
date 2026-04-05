@@ -483,7 +483,7 @@ const rootReducer = (state = initialState, action) => {
     case MODIFICAR_CITA:
       return {
         ...state,
-        citas: action.payload,
+        cita: action.payload,
       };
     case GET_PAGOS:
       return {

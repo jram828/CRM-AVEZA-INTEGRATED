@@ -22,7 +22,8 @@ citasRouter.get("/disponibilidad", getAvailabilityHandler);
 citasRouter.get("/:idProspecto", getCitasByIdHandler);
 
 citasRouter.patch("/:idCita", completarCitaHandler);
-citasRouter.patch("/actualiza", actualizarCitaHandler);
+
+citasRouter.put("/actualiza", actualizarCitaHandler);
 
 citasRouter.delete("/eliminar", eliminarCitaCalendarHandler);
 

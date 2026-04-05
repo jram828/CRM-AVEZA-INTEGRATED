@@ -715,20 +715,7 @@ const Detail = () => {
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
-            <FormControl>
-              <InputLabel>Género</InputLabel>
-              <Select
-                value={userDataDetail.genero}
-                label="Género"
-                onChange={handleUpdateDetail}
-                name="genero"
-                sx={{ minWidth: "160px", bgcolor: "#fff" }}
-              >
-                <MenuItem value="masculino">Masculino</MenuItem>
-                <MenuItem value="femenino">Femenino</MenuItem>
-                <MenuItem value="otro">Otro</MenuItem>
-              </Select>
-            </FormControl>
+
             <TextField
               label="Número de cédula"
               name="cedulanew"
@@ -839,9 +826,25 @@ const Detail = () => {
               inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
               sx={{ minWidth: "160px", bgcolor: "#fff" }}
             />
-            {source === "prospecto" && (
-              <Stack spacing={2}>
-                {/* <FormControl fullWidth size="small">
+
+            {userDataDetail?.comentarios && (
+              <TextField
+                label="Comentarios"
+                name="comentarios"
+                value={userDataDetail.comentarios}
+                onChange={handleUpdateDetail}
+                fullWidth
+                multiline
+                minRows={5}
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+            )}
+          </Stack>
+
+          {source === "prospecto" && (
+            <Stack spacing={2} flex={1}>
+              {/* <FormControl fullWidth size="small">
                   <InputLabel>Calificación</InputLabel>
                   <Select
                     name="calificacion"
@@ -876,85 +879,43 @@ const Detail = () => {
                   </Select>
                 </FormControl> */}
 
-                <FormControl fullWidth size="small">
-                  <InputLabel>Status</InputLabel>
-                  <Select
-                    name="status"
-                    value={userDataDetail.status}
-                    label="Status"
-                    onChange={handleStatusChange}
-                  >
-                    <MenuItem value="lead">👤 1. Lead</MenuItem>
-                    <MenuItem value="agendado">📅 2. Agendado</MenuItem>
-                    <MenuItem value="asesorado">📞 3. Asesorado</MenuItem>
-                    <MenuItem value="cotizado">✅ 4. Cotizado</MenuItem>
-                    <MenuItem value="esperadocumentos">
-                      📄 5. Espera de documentos
-                    </MenuItem>
-                    <MenuItem value="contratoenviado">
-                      📤 5. Contrato enviado
-                    </MenuItem>
-                    <MenuItem value="remarketing">🔄 6. Remarketing</MenuItem>
-                    <MenuItem value="descartado">🗑️ 7. Descartado</MenuItem>
-                  </Select>
-                </FormControl>
-              </Stack>
-            )}
-
-            {source === "cliente" && (
-              <FormControl
-                fullWidth
-                size="small"
-                style={{ marginTop: "0.5rem" }}
-              >
+              <FormControl fullWidth size="small">
                 <InputLabel>Status</InputLabel>
                 <Select
+                  name="status"
                   value={userDataDetail.status}
                   label="Status"
                   onChange={handleStatusChange}
-                  name="status"
-                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
                 >
-                  <MenuItem value="cotizacionenevaluacion">
-                    💰 5. Cotización en evaluación
+                  <MenuItem value="lead">👤 1. Lead</MenuItem>
+                  <MenuItem value="agendado">📅 2. Agendado</MenuItem>
+                  <MenuItem value="asesorado">📞 3. Asesorado</MenuItem>
+                  <MenuItem value="cotizado">✅ 4. Cotizado</MenuItem>
+                  <MenuItem value="esperadocumentos">
+                    📄 5. Espera de documentos
                   </MenuItem>
-                  <MenuItem value="cotizacionrechazada">
-                    ⚠️ 5. Cotización rechazada
+                  <MenuItem value="contratoenviado">
+                    📤 5. Contrato enviado
                   </MenuItem>
-                  <MenuItem value="documentacion">📄 6. Documentación</MenuItem>
-                  <MenuItem value="contratoenevaluacion">
-                    📑 7. Contrato en evaluación
-                  </MenuItem>
-                  <MenuItem value="clienteactivo">
-                    🟢 8. Cliente activo
-                  </MenuItem>
-                  <MenuItem value="remarketing">📢 8. Remarketing</MenuItem>
-                  <MenuItem value="clienteprocesoactivo">
-                    ⚙️ 8. Cliente con Proceso Activo
-                  </MenuItem>
-                  <MenuItem value="fidelizacion">🤝 9. Fidelización</MenuItem>
-                  <MenuItem value="descartado">🚫 10. Descartado</MenuItem>
+                  <MenuItem value="remarketing">🔄 6. Remarketing</MenuItem>
+                  <MenuItem value="descartado">🗑️ 7. Descartado</MenuItem>
                 </Select>
               </FormControl>
-            )}
-
-            {userDataDetail?.comentarios && (
-              <TextField
-                label="Comentarios"
-                name="comentarios"
-                value={userDataDetail.comentarios}
-                onChange={handleUpdateDetail}
-                fullWidth
-                multiline
-                minRows={5}
-                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
-                sx={{ minWidth: "160px", bgcolor: "#fff" }}
-              />
-            )}
-          </Stack>
-
-          {source === "prospecto" && (
-            <Stack spacing={2} flex={1}>
+              <FormControl>
+                <InputLabel>Género</InputLabel>
+                <Select
+                  value={userDataDetail.genero}
+                  label="Género"
+                  size="small"
+                  onChange={handleUpdateDetail}
+                  name="genero"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="masculino">Masculino</MenuItem>
+                  <MenuItem value="femenino">Femenino</MenuItem>
+                  <MenuItem value="otro">Otro</MenuItem>
+                </Select>
+              </FormControl>
               <FormControl
                 fullWidth
                 size="small"
@@ -1115,6 +1076,55 @@ const Detail = () => {
           )}
           {source === "cliente" && (
             <Stack spacing={2} flex={1}>
+              <FormControl
+                fullWidth
+                size="small"
+                style={{ marginTop: "0.5rem" }}
+              >
+                <InputLabel>Status</InputLabel>
+                <Select
+                  value={userDataDetail.status}
+                  label="Status"
+                  onChange={handleStatusChange}
+                  name="status"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="cotizacionenevaluacion">
+                    💰 5. Cotización en evaluación
+                  </MenuItem>
+                  <MenuItem value="cotizacionrechazada">
+                    ⚠️ 5. Cotización rechazada
+                  </MenuItem>
+                  <MenuItem value="documentacion">📄 6. Documentación</MenuItem>
+                  <MenuItem value="contratoenevaluacion">
+                    📑 7. Contrato en evaluación
+                  </MenuItem>
+                  <MenuItem value="clienteactivo">
+                    🟢 8. Cliente activo
+                  </MenuItem>
+                  <MenuItem value="remarketing">📢 8. Remarketing</MenuItem>
+                  <MenuItem value="clienteprocesoactivo">
+                    ⚙️ 8. Cliente con Proceso Activo
+                  </MenuItem>
+                  <MenuItem value="fidelizacion">🤝 9. Fidelización</MenuItem>
+                  <MenuItem value="descartado">🚫 10. Descartado</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl>
+                <InputLabel>Género</InputLabel>
+                <Select
+                  value={userDataDetail.genero}
+                  label="Género"
+                  size="small"
+                  onChange={handleUpdateDetail}
+                  name="genero"
+                  sx={{ minWidth: "160px", bgcolor: "#fff" }}
+                >
+                  <MenuItem value="masculino">Masculino</MenuItem>
+                  <MenuItem value="femenino">Femenino</MenuItem>
+                  <MenuItem value="otro">Otro</MenuItem>
+                </Select>
+              </FormControl>
               <FormControl
                 fullWidth
                 size="small"

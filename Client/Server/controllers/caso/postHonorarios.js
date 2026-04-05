@@ -113,7 +113,7 @@ const guardaHonorarios = async (
       }
 
       if (honorariosVinculados && honorariosVinculados.length > 0) {
-        console.log("Honorarios vinculados encontrados para evaluar eliminación:", honorariosVinculados.map(h => h.idHonorario ?? h.id));
+        // console.log("Honorarios vinculados encontrados para evaluar eliminación:", honorariosVinculados.map(h => h.idHonorario ?? h.id));
         for (const h of honorariosVinculados) {
           try {
         // Si el honorario solo está asociado a este prospecto, lo eliminamos completamente.

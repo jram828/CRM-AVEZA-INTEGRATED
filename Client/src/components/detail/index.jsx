@@ -101,10 +101,10 @@ const Detail = () => {
   console.log("Datos cliente:", datos);
   const Cedula =
     source === "abogado"
-      ? datos.cedulaAbogado
+      ? datos?.cedulaAbogado
       : source === "prospecto"
-      ? datos.cedulaProspecto
-      : datos.cedulaCliente;
+      ? datos?.cedulaProspecto
+      : datos?.cedulaCliente;
   console.log("Cedula:", Cedula);
 
   const [tabTareas, setTabTareas] = useState(0);
@@ -172,10 +172,10 @@ const Detail = () => {
 
   useEffect(() => {
     if (source === "prospecto") {
-      dispatch(getCitasById(datos.idProspecto));
-      dispatch(getTareasById(datos.idProspecto));
+      dispatch(getCitasById(datos?.idProspecto));
+      dispatch(getTareasById(datos?.idProspecto));
     }
-  }, [dispatch, source, datos.idProspecto]);
+  }, [dispatch, source, datos?.idProspecto]);
 
   useEffect(() => {
     if (source === "prospecto") {
@@ -228,82 +228,82 @@ const Detail = () => {
         apellidos: datos.apellidos,
         direccion: datos.direccion,
         comentarios: datos.comentarios,
-        cedulanew: datos.cedulaCliente,
-        cedula_anterior: datos.cedulaCliente,
-        modoContacto: datos.modoContacto || "",
-        status: datos.status || "",
-        bienes: datos.Biens || [],
-        deudas: datos.Deuda2s || [],
+        cedulanew: datos?.cedulaCliente,
+        cedula_anterior: datos?.cedulaCliente,
+        modoContacto: datos?.modoContacto || "",
+        status: datos?.status || "",
+        bienes: datos?.Biens || [],
+        deudas: datos?.Deuda2s || [],
         honorarios: datos?.Honorarios || [],
-        fase: datos.fase || "",
-        ingresos: datos?.Cotizacions[0].ingresos || "",
-        gastos: datos?.Cotizacions[0].gastos || "",
-        posibleCuota: datos?.Cotizacions[0].posibleCuota || "",
-        totalBienes: datos?.Cotizacions[0].totalBienes || "",
-        totalDeudas: datos?.Cotizacions[0].totalDeudas || "",
-        totalDeudas_letras: datos?.Cotizacions[0].totalDeudas_letras || "",
-        totalBienes_letras: datos?.Cotizacions[0].totalBienes_letras || "",
-        valorRadicar_letras: datos?.Cotizacions[0].valorRadicar_letras || "",
-        responsable: datos.responsable || "",
-        fuente: datos.fuente || "",
-        servicio: datos.servicio || "",
-        genero: datos.genero || "",
-        fechaCierre: datos.fechaCierre || "",
+        fase: datos?.fase || "",
+        ingresos: datos?.Cotizacions[0]?.ingresos || "",
+        gastos: datos?.Cotizacions[0]?.gastos || "",
+        posibleCuota: datos?.Cotizacions[0]?.posibleCuota || "",
+        totalBienes: datos?.Cotizacions[0]?.totalBienes || "",
+        totalDeudas: datos?.Cotizacions[0]?.totalDeudas || "",
+        totalDeudas_letras: datos?.Cotizacions[0]?.totalDeudas_letras || "",
+        totalBienes_letras: datos?.Cotizacions[0]?.totalBienes_letras || "",
+        valorRadicar_letras: datos?.Cotizacions[0]?.valorRadicar_letras || "",
+        responsable: datos?.responsable || "",
+        fuente: datos?.fuente || "",
+        servicio: datos?.servicio || "",
+        genero: datos?.genero || "",
+        fechaCierre: datos?.fechaCierre || "",
       });
     } else {
       setUserDataDetail({
         ...userDataDetail,
-        idProspecto: datos.idProspecto,
-        email: datos.email,
-        celular: datos.celular,
+        idProspecto: datos?.idProspecto,
+        email: datos?.email,
+        celular: datos?.celular,
         ciudad: datos?.Ciudads[0]?.nombre_ciudad || "",
         ciudad_anterior: datos?.Ciudads[0]?.codigo_ciudad || "",
         departamento:
           datos?.Ciudads[0]?.Departamentos[0]?.nombre_departamento || "",
-        nombres: datos.nombres,
-        nombres_anterior: datos.nombres,
+        nombres: datos?.nombres,
+        nombres_anterior: datos?.nombres,
         tarjetaProf: "",
-        apellidos: datos.apellidos,
-        apellidos_anterior: datos.apellidos,
-        direccion: datos.direccion,
-        comentarios: datos.comentarios,
-        cedulanew: datos.cedulaProspecto,
-        cedula_anterior: datos.cedulaProspecto,
-        impuestoLaboral: datos.impuestoLaboral || "",
-        vehiculoCooperativas: datos.vehiculoCooperativas || "",
-        hipotecario: datos.hipotecario || "",
-        proveedores: datos.proveedores || "",
-        bancoPersonas: datos.bancoPersonas || "",
-        familiares: datos.familiares || "",
-        tieneBienes: datos.tieneBienes || "",
+        apellidos: datos?.apellidos,
+        apellidos_anterior: datos?.apellidos,
+        direccion: datos?.direccion,
+        comentarios: datos?.comentarios,
+        cedulanew: datos?.cedulaProspecto,
+        cedula_anterior: datos?.cedulaProspecto,
+        impuestoLaboral: datos?.impuestoLaboral || "",
+        vehiculoCooperativas: datos?.vehiculoCooperativas || "",
+        hipotecario: datos?.hipotecario || "",
+        proveedores: datos?.proveedores || "",
+        bancoPersonas: datos?.bancoPersonas || "",
+        familiares: datos?.familiares || "",
+        tieneBienes: datos?.tieneBienes || "",
         totalDeudas:
-          datos?.Cotizacions[0]?.totalDeudas || datos.totalDeudas || "",
-        modoContacto: datos.modoContacto || "",
-        contactado: datos.contactado || "No",
-        tieneCotizacion: datos.tieneCotizacion || "No",
-        cotizacionAprobada: datos.cotizacionAprobada || "No",
-        status: datos.status || "",
-        calificacion: datos.calificacion || "",
-        tiempoMora: datos.tiempoMora || "",
-        numeroEntidades: datos.numeroEntidades || "",
-        tieneProcesos: datos.tieneProcesos || "",
-        bienes: datos.Biens || [],
-        deudas: datos.Deuda2s || [],
+          datos?.Cotizacions[0]?.totalDeudas || datos?.totalDeudas || "",
+        modoContacto: datos?.modoContacto || "",
+        contactado: datos?.contactado || "No",
+        tieneCotizacion: datos?.tieneCotizacion || "No",
+        cotizacionAprobada: datos?.cotizacionAprobada || "No",
+        status: datos?.status || "",
+        calificacion: datos?.calificacion || "",
+        tiempoMora: datos?.tiempoMora || "",
+        numeroEntidades: datos?.numeroEntidades || "",
+        tieneProcesos: datos?.tieneProcesos || "",
+        bienes: datos?.Biens || [],
+        deudas: datos?.Deuda2s || [],
         honorarios: datos?.Honorarios || [],
-        fase: datos.fase || "",
+        fase: datos?.fase || "",
         ingresos: datos?.Cotizacions[0]?.ingresos || "",
         gastos: datos?.Cotizacions[0]?.gastos || "",
         posibleCuota: datos?.Cotizacions[0]?.posibleCuota || "",
         totalBienes:
-          datos?.Cotizacions[0]?.totalBienes || datos.totalBienes || "",
+          datos?.Cotizacions[0]?.totalBienes || datos?.totalBienes || "",
         totalDeudas_letras: datos?.Cotizacions[0]?.totalDeudas_letras || "",
         totalBienes_letras: datos?.Cotizacions[0]?.totalBienes_letras || "",
         valorRadicar_letras: datos?.Cotizacions[0]?.valorRadicar_letras || "",
-        responsable: datos.responsable || "",
-        fuente: datos.fuente || "",
-        servicio: datos.servicio || "",
-        genero: datos.genero || "",
-        fechaCierre: datos.fechaCierre || "",
+        responsable: datos?.responsable || "",
+        fuente: datos?.fuente || "",
+        servicio: datos?.servicio || "",
+        genero: datos?.genero || "",
+        fechaCierre: datos?.fechaCierre || "",
       });
     }
   }, [dispatch, source]);
@@ -431,7 +431,7 @@ const Detail = () => {
     if (userDataDetail.cedulanew !== "") {
       dispatch(
         setFechaCierre({
-          idProspecto: userDataDetail.idProspecto,
+          idProspecto: userDataDetail?.idProspecto,
           fechaCierre: new Date().toLocaleDateString("sv-SE", {
             timeZone: "America/Bogota",
           }), // YYYY-MM-DD en GMT-5
@@ -469,7 +469,7 @@ const Detail = () => {
     } else if (source === "prospecto") {
       dispatch(
         updateStatus({
-          idProspecto: userDataDetail.idProspecto,
+          idProspecto: userDataDetail?.idProspecto,
           field: name,
           value: value,
         }),
@@ -1595,7 +1595,7 @@ const Detail = () => {
                     ?.filter((nota) =>
                       source === "prospecto"
                         ? nota.Prospectos?.[0]?.idProspecto ===
-                          prospecto.idProspecto
+                          prospecto?.idProspecto
                         : nota.Clientes?.[0]?.cedulaCliente ===
                           cliente.cedulaCliente,
                     )

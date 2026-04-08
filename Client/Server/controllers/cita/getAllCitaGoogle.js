@@ -14,14 +14,19 @@ export const getAllCitaGoogle = async (calendarId, mes) => {
     // Si llega mes, usamos ese; si no, usamos el mes actual
     const mesUsado = mes ? parseInt(mes, 10) - 1 : hoy.month(); // moment usa 0-11
 
-    console.log("Mes usado para obtener citas de Google Calendar:", mesUsado + 1);
-    
+    console.log(
+      "Mes usado para obtener citas de Google Calendar:",
+      mesUsado + 1,
+    );
+
     const inicioMes = moment.tz(zona).month(mesUsado).startOf("month");
     const finMes = moment.tz(zona).month(mesUsado).endOf("month");
 
     // El rango debe empezar desde HOY si el mes es el actual
     const timeMin =
-      mesUsado === hoy.month() ? hoy.startOf("day").format() : inicioMes.format();
+      mesUsado === hoy.month()
+        ? hoy.startOf("day").format()
+        : inicioMes.format();
     const timeMax = finMes.format();
 
     // Autenticación con JWT
@@ -29,7 +34,7 @@ export const getAllCitaGoogle = async (calendarId, mes) => {
       GOOGLE_CLIENT_EMAIL,
       null,
       GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-      ["https://www.googleapis.com/auth/calendar.readonly"]
+      ["https://www.googleapis.com/auth/calendar.readonly"],
     );
 
     const calendar = google.calendar({ version: "v3", auth: jwtClient });
@@ -42,9 +47,13 @@ export const getAllCitaGoogle = async (calendarId, mes) => {
       timeZone: zona,
       singleEvents: true,
       orderBy: "startTime",
+      conferenceDataVersion: 1,
+      // fields:
+      //   "id,summary,description,start,end,attendees,extendedProperties,conferenceData"
     });
-
+//  console.log("Respuesta de Google Calendar API:", response.data);
     const eventos = response.data.items || [];
+    // console.log(`Eventos obtenidos para el mes ${mesUsado + 1}:`, eventos);
 
     const citas = eventos.map((event) => ({
       id: event.id,
@@ -54,6 +63,7 @@ export const getAllCitaGoogle = async (calendarId, mes) => {
       fin: event.end?.dateTime || event.end?.date,
       asistentes: event.attendees || [],
       extendedProperties: event.extendedProperties || {},
+      conferenceData: event.conferenceData || {},
     }));
 
     return citas;

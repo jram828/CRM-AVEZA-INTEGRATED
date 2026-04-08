@@ -4,18 +4,21 @@ import { config } from "dotenv";
 
 config();
 
-const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
+const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, EMAIL_CALENDAR } = process.env;
 
 
 
 export const getCitaGoogle = async (calendarId, eventId) => {
   try {
-    // Autenticación con JWT
+
+
+    // Con delegación a un usuario del dominio
     const jwtClient = new google.auth.JWT(
       GOOGLE_CLIENT_EMAIL,
       null,
       GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-      ["https://www.googleapis.com/auth/calendar.readonly"],
+      ["https://www.googleapis.com/auth/calendar"],
+      EMAIL_CALENDAR, // 👈 correo del usuario del Workspace
     );
 
     const calendar = google.calendar({ version: "v3", auth: jwtClient });

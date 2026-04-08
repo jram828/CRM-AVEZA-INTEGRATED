@@ -38,6 +38,7 @@ dayjs.extend(timezone);
 const Calendario = () => {
   const datos = JSON.parse(localStorage.getItem("loggedUser"));
   const source = useSelector((state) => state.source);
+  console.log("Fuente de datos para el calendario:", source);
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   const dispatch = useDispatch();
   const calendarId = import.meta.env.VITE_EMAIL_CALENDAR;

@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { obtenerDisponibilidad } from "../../redux/actions";
-import moment from "moment";
+import moment from "moment-timezone";
 
 const CitaForm = ({ open, onClose, onSave, selectedCliente }) => {
   const [dataCita, setDataCita] = useState({
@@ -38,11 +38,12 @@ const CitaForm = ({ open, onClose, onSave, selectedCliente }) => {
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   console.log("Horas disponibles en CitaForm:", horasDisponibles);
 
-  // Hora mínima si la fecha seleccionada es hoy
-  const now = new Date();
-  const currentTime = now.toTimeString().slice(0, 5); // formato HH:MM
-  const hoy = now.toISOString().split("T")[0];
+  const hoy = moment().tz("America/Bogota").format("YYYY-MM-DD");
+  const currentTime = moment().tz("America/Bogota").format("HH:mm");
 
+  console.log("Fecha seleccionada:", dataCita.fechaCita);
+  console.log("Fecha de hoy:", hoy);
+  
   let horasFiltradas = horasDisponibles;
 
   // Solo filtrar si dataCita no está vacío y ES la fecha actual

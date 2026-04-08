@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 
 config();
 
-const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, EMAIL_CALENDAR } = process.env;
+const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, EMAIL_CALENDAR, EMAIL_MARKETING } = process.env;
 
 export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
   try {
@@ -40,6 +40,7 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
         dateTime: endDateTime.format(),
         timeZone: "America/Bogota",
       },
+      visibility: "public",
       extendedProperties: {
         private: {
           idCita: idCita.toString(),
@@ -59,6 +60,9 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
         },
         {
           email: email,
+        },
+        {
+          email: EMAIL_MARKETING,
         },
       ],
     };
@@ -86,6 +90,7 @@ const response = await calendar.events.insert({
   calendarId: EMAIL_CALENDAR,
   resource: event,
   conferenceDataVersion: 1, // 👈 necesario para que se genere el enlace
+  
 });
 
 

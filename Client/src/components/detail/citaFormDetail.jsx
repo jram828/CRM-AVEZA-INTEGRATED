@@ -11,9 +11,9 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { obtenerDisponibilidad } from "../../redux/actions";
+import moment from "moment-timezone";
 
 const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
   const [dataCita, setDataCita] = useState({
@@ -38,21 +38,24 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   console.log("Horas disponibles en CitaForm:", horasDisponibles);
 
-  // Hora mínima si la fecha seleccionada es hoy
-  const now = new Date();
-  const currentTime = now.toTimeString().slice(0, 5); // formato HH:MM
-  const hoy = now.toISOString().split("T")[0];
-
-  let horasFiltradas = horasDisponibles;
-
-  // Solo filtrar si dataCita no está vacío y ES la fecha actual
-  if (dataCita.fechaCita && dataCita.fechaCita === hoy) {
-    horasFiltradas = horasDisponibles.filter((hora) => {
-      const horaMoment = moment(hora, "HH:mm");
-      const currentMoment = moment(currentTime, "HH:mm");
-      return horaMoment.isAfter(currentMoment);
-    });
-  }
+ // Hora mínima si la fecha seleccionada es hoy
+ 
+ const hoy = moment().tz("America/Bogota").format("YYYY-MM-DD");
+ const currentTime = moment().tz("America/Bogota").format("HH:mm");
+ 
+ 
+   console.log("Fecha seleccionada:", dataCita.fechaCita);
+   console.log("Fecha de hoy:", hoy);
+   let horasFiltradas = horasDisponibles;
+ 
+   // Solo filtrar si dataCita no está vacío y ES la fecha actual
+   if (dataCita.fechaCita && dataCita.fechaCita === hoy) {
+     horasFiltradas = horasDisponibles.filter((hora) => {
+       const horaMoment = moment(hora, "HH:mm");
+       const currentMoment = moment(currentTime, "HH:mm");
+       return horaMoment.isAfter(currentMoment);
+     });
+   }
 
   const handleChange = (field, value) => {
     setDataCita((prev) => ({ ...prev, [field]: value }));

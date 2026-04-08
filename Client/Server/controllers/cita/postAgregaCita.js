@@ -43,32 +43,32 @@ const createCita = async (
   // Generar enlace de reunión Jitsi
 
   // Formatear nombre base
-  const fullName = `${nombres || ""}-${apellidos || ""}`;
-  // quitar acentos/diacríticos, reemplazar caracteres no alfanuméricos por guiones,
-  // colapsar guiones repetidos y recortar guiones al inicio/fin
-  const nombreBase = fullName
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-zA-Z0-9]/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/(^-+|-+$)/g, "")
-    .toLowerCase();
+  // const fullName = `${nombres || ""}-${apellidos || ""}`;
+  // // quitar acentos/diacríticos, reemplazar caracteres no alfanuméricos por guiones,
+  // // colapsar guiones repetidos y recortar guiones al inicio/fin
+  // const nombreBase = fullName
+  //   .normalize("NFD")
+  //   .replace(/[\u0300-\u036f]/g, "")
+  //   .replace(/[^a-zA-Z0-9]/g, "-")
+  //   .replace(/-+/g, "-")
+  //   .replace(/(^-+|-+$)/g, "")
+  //   .toLowerCase();
 
-  // Generar nombre único para la sala
-  const nombreSala = `${nombreBase}-${fechaStr}`;
+  // // Generar nombre único para la sala
+  // const nombreSala = `${nombreBase}-${fechaStr}`;
 
-  // Construir enlace Jitsi
-  const enlaceReunion = `https://meet.jit.si/${nombreSala}`;
+  // // Construir enlace Jitsi
+  // const enlaceReunion = `https://meet.jit.si/${nombreSala}`;
 
-  // Construir descripción
-  const descripcionGoogle = `Enlace para la reunión: ${enlaceReunion}`;
+  // // Construir descripción
+  // const descripcionGoogle = `Enlace para la reunión: ${enlaceReunion}`;
 
-  // 👇 Concatenar la descripción recibida con la de Google
-  const descripcionFinal = `${descripcion || ""}\n${descripcionGoogle}`;
+  // // 👇 Concatenar la descripción recibida con la de Google
+  // const descripcionFinal = `${descripcion || ""}\n${descripcionGoogle}`;
 
   const newCita = await Cita.create({
     titulo: titulo,
-    descripcion: descripcionFinal,
+    descripcion: descripcion,
     fechaCita: fechaUTC,
     horaCita: horaCita,
     idProspecto: idProspecto,
@@ -81,9 +81,9 @@ const createCita = async (
   if (source === "prospecto") {
     dataRegistro = {
       titulo: titulo,
-      descripcion: descripcionFinal,
       fechaCita: fechaUTC,
       horaCita: horaCita,
+      descripcion: descripcion,
       idProspecto: idProspecto,
       email: email,
       nombres: nombres,
@@ -92,9 +92,9 @@ const createCita = async (
   } else if (source === "cliente") {
     dataRegistro = {
       titulo: titulo,
-      descripcion: descripcionFinal,
       fechaCita: fechaUTC,
       horaCita: horaCita,
+      descripcion: descripcion,
       cedulaCliente: cedulaCliente,
       email: email,
       nombres: nombres,
@@ -123,7 +123,14 @@ const createCita = async (
   );
 
   console.log("Evento Google:", evento);
+
+    const enlaceReunion = evento?.conferenceData?.entryPoints?.[0]?.uri;
+  console.log("Enlace Google Meet:", enlaceReunion);
+
+  const descripcionFinal = `${descripcion || ""}\nEnlace para la reunión: ${enlaceReunion}`;
+
   newCita.idCitaGoogle = evento.id;
+  newCita.descripcion = descripcionFinal;
   await newCita.save();
 
   console.log("Cita actualizada con ID de Google Calendar:", newCita);

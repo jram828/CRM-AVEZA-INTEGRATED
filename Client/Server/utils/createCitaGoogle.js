@@ -47,37 +47,37 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
           cedulaCliente: cedulaCliente ? cedulaCliente.toString() : undefined,
         },
       },
-      // conferenceData: {
-      //   createRequest: {
-      //     requestId: `meet-${Date.now()}`, // identificador único
-      //     conferenceSolutionKey: { type: "hangoutsMeet" },
-      //   },
-      // },
-      // attendees: [
-      //   {
-      //     email: EMAIL_CALENDAR,
-      //   },
-      //   {
-      //     email: email,
-      //   },
-      // ],
+      conferenceData: {
+        createRequest: {
+          requestId: `meet-${Date.now()}`, // identificador único
+          conferenceSolutionKey: { type: "hangoutsMeet" },
+        },
+      },
+      attendees: [
+        {
+          email: EMAIL_CALENDAR,
+        },
+        {
+          email: email,
+        },
+      ],
     };
 
-    const jwtClient = new google.auth.JWT(
-      GOOGLE_CLIENT_EMAIL,
-      null,
-      GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-      ["https://www.googleapis.com/auth/calendar"],
-    );
+    // const jwtClient = new google.auth.JWT(
+    //   GOOGLE_CLIENT_EMAIL,
+    //   null,
+    //   GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+    //   ["https://www.googleapis.com/auth/calendar"],
+    // );
 
-//Con delegación a un usuario del dominio
-// const jwtClient = new google.auth.JWT(
-//   GOOGLE_CLIENT_EMAIL,
-//   null,
-//   GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-//   ["https://www.googleapis.com/auth/calendar"],
-//   EMAIL_CALENDAR, // 👈 correo del usuario del Workspace
-// );
+// Con delegación a un usuario del dominio
+const jwtClient = new google.auth.JWT(
+  GOOGLE_CLIENT_EMAIL,
+  null,
+  GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  ["https://www.googleapis.com/auth/calendar"],
+  EMAIL_CALENDAR, // 👈 correo del usuario del Workspace
+);
 
 
     const calendar = google.calendar({ version: "v3", auth: jwtClient });

@@ -506,9 +506,9 @@ const Clientes = () => {
         Apellidos: cliente.apellidos,
         Nombres: cliente.nombres,
         Celular: cliente.celular,
+        Email: cliente.email,
         Direccion: cliente.direccion,
         Ciudad: cliente.Ciudads?.[0]?.nombre_ciudad || "",
-        Email: cliente.email,
         Servicio: cliente.servicio || "",
         Fase: cliente?.fase || "",
         Pasivo: cliente?.totalDeudas || 0,
@@ -534,9 +534,9 @@ const Clientes = () => {
       "Apellidos",
       "Nombres",
       "Celular",
+      "Email",
       "Direccion",
       "Ciudad",
-      "Email",
       "Servicio",
       "Fase",
       "Pasivo",
@@ -617,6 +617,9 @@ const Clientes = () => {
                 );
                 const notaReciente =
                   latestNoteByProspect[cliente.cedulaCliente]?.nota;
+
+                  // const { latestActivity, IconComp, color, tooltip, notaReciente } = cliente;
+
 
                 return (
                   <Draggable

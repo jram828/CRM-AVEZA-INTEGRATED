@@ -462,11 +462,11 @@ export const deleteCliente = (cedulaCliente) => {
   };
 };
 
-export const deleteProspecto = (cedulaProspecto) => {
+export const deleteProspecto = (idProspecto) => {
   const endpoint = `/prospectos/elimina`;
 
   return async (dispatch) => {
-    const data = await axios.post(endpoint, { cedulaProspecto });
+    const data = await axios.post(endpoint, { idProspecto });
     // console.log("url", endpoint);
     // console.log("cedula", cedulaAbogado);
     return dispatch({

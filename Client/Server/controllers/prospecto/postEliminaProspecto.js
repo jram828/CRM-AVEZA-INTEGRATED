@@ -1,12 +1,12 @@
  import { models } from "../../DB.js";
  
  const { Prospecto }=models
-const eliminaProspecto = async (cedulaProspecto) => {
+const eliminaProspecto = async (idProspecto) => {
     // console.log('imagen',imagen)
 
     const [updateCount, updateClient] = await Prospecto.update({activo:false},{
         where: {
-            cedulaProspecto: cedulaProspecto
+            idProspecto: idProspecto
         }
     }
 );

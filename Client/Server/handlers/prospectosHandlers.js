@@ -109,6 +109,7 @@ const postProspectosHandler = async (req, res) => {
     tiempoMora,
     numeroEntidades,
     servicio,
+    fase,
     status,
     totalDeudas,
   } = req.body;
@@ -137,6 +138,7 @@ const postProspectosHandler = async (req, res) => {
       tiempoMora,
       numeroEntidades,
       servicio,
+      fase,
       status,
       totalDeudas,
     );
@@ -162,10 +164,10 @@ const postProspectosAutoHandler = async (req, res) => {
 };
 
 const postEliminaProspectos = async (req, res) => {
-  const { cedulaProspecto } = req.body;
+  const { idProspecto } = req.body;
 
   try {
-    const response = await eliminaProspecto(cedulaProspecto);
+    const response = await eliminaProspecto(idProspecto);
     if (response) res.status(200).json("Prospecto eliminado");
     else res.status(204).json("No existe el Prospecto");
   } catch (error) {

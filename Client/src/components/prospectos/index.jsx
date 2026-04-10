@@ -433,32 +433,7 @@ const Prospectos = () => {
   };
 
   const exportarExcel = () => {
-    // Seleccionar solo las propiedades requeridas y en el orden correcto
-    // const datos = reduxProspectos.map((prospecto) => ({
-    //   "Fecha Creación": prospecto.fechaCreacion ? new Date(prospecto.fechaCreacion).toLocaleDateString() : "",
-    //   Estado: prospecto.status,
-    //   Cedula: prospecto.cedulaProspecto,
-    //   Apellidos: prospecto.apellidos,
-    //   Nombres: prospecto.nombres,
-    //   Celular: prospecto.celular,
-    //   Direccion: prospecto.direccion,
-    //   Ciudad: prospecto.Ciudads?.[0]?.nombre_ciudad || "",
-    //   Email: prospecto.email,
-    //   Servicio: prospecto.servicio || "",
-    //   Fase: prospecto?.fase || "",
-    //   Pasivo: prospecto?.totalDeudas || 0,
-    //   Mora: prospecto?.tiempoMora || 0,
-    //   Entidades: prospecto?.numeroEntidades || 0,
-    //   Activos: prospecto?.totalBienes || 0,
-    //   Procesos: prospecto?.tieneProcesos || "No se ha registrado",
-    //   Responsable: prospecto?.responsable || "",
-    //   Fuente: prospecto?.fuente || "",
-    //   Genero: prospecto?.genero || "",
-    //   Descripción: prospecto.comentarios || "",
-    //   Reunión:prospecto?.Citas?.[0]?.titulo || "",
-    //   Tarea:prospecto?.Tareas?.[0]?.asunto || "",
-    //   "Fecha tarea": prospecto?.Tareas?.[0]?.fechaVencimiento || "",
-    // }));
+ 
     const datos = reduxProspectos.map((prospecto) => {
       // Obtener la cita más próxima
 
@@ -505,9 +480,9 @@ const Prospectos = () => {
         Apellidos: prospecto.apellidos,
         Nombres: prospecto.nombres,
         Celular: prospecto.celular,
+        Email: prospecto.email,
         Direccion: prospecto.direccion,
         Ciudad: prospecto.Ciudads?.[0]?.nombre_ciudad || "",
-        Email: prospecto.email,
         Servicio: prospecto.servicio || "",
         Fase: prospecto?.fase || "",
         Pasivo: prospecto?.totalDeudas || 0,
@@ -533,9 +508,9 @@ const Prospectos = () => {
       "Apellidos",
       "Nombres",
       "Celular",
+      "Email",
       "Direccion",
       "Ciudad",
-      "Email",
       "Servicio",
       "Fase",
       "Pasivo",
@@ -615,7 +590,7 @@ const Prospectos = () => {
                 );
                 const notaReciente =
                   latestNoteByProspect[prospecto.idProspecto]?.nota;
-
+              // const { latestActivity, IconComp, color, tooltip, notaReciente } = prospecto;
                 return (
                   <Draggable
                     key={String(prospecto.idProspecto)}

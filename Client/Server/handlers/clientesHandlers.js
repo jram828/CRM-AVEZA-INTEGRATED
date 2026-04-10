@@ -102,6 +102,7 @@ const postClientesHandler = async (req, res) => {
     servicio,
     status,
     totalDeudas,
+    fase,
   } = req.body;
 
   try {
@@ -128,6 +129,7 @@ const postClientesHandler = async (req, res) => {
       tiempoMora,
       numeroEntidades,
       servicio,
+      fase,
       status,
       totalDeudas,
     );

@@ -99,7 +99,7 @@ const Detail = () => {
     source === "abogado"
       ? datos?.cedulaAbogado
       : source === "prospecto"
-      ? datos?.cedulaProspecto
+      ? datos?.idProspecto
       : datos?.cedulaCliente;
   console.log("Cedula:", Cedula);
 

@@ -40,15 +40,16 @@ export async function registroProspectoExcel() {
           nombre_ciudad:
             foundCiudad.length > 0 ? foundCiudad[0].nombre_ciudad : "",
           servicio: row[9],
-          totalDeudas: row[10],
-          tiempoMora: row[11],
-          numeroEntidades: row[12],
-          totalBienes: row[13],
-          tieneProcesos: row[14],
-          responsable: row[15],
-          fuente: row[16],
-          genero: row[21],
-          comentarios: row[22],
+          fase: row[10],
+          totalDeudas: row[11],
+          tiempoMora: row[12],
+          numeroEntidades: row[13],
+          totalBienes: row[14],
+          tieneProcesos: row[15],
+          responsable: row[16],
+          fuente: row[17],
+          genero: row[22],
+          comentarios: row[23],
         };
         // console.log("Prospecto data:", ProspectoData);
         const URL = "/prospectos/registroProspecto";

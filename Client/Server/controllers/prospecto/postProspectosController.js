@@ -27,6 +27,7 @@ const createProspectoBd = async (
   tiempoMora,
   numeroEntidades,
   servicio,
+  fase,
   status,
   totalDeudas,
 ) => {
@@ -53,6 +54,7 @@ const createProspectoBd = async (
     tiempoMora,
     numeroEntidades,
     servicio,
+    fase,
     status,
     totalDeudas,
   });
@@ -100,6 +102,7 @@ const createProspectoBd = async (
           tiempoMora,
           numeroEntidades,
           servicio,
+          fase,
           status,
           totalDeudas,
         });
@@ -133,6 +136,7 @@ const createProspectoBd = async (
         tiempoMora,
         numeroEntidades,
         servicio,
+        fase,
         status,
         totalDeudas,
         cedulaProspecto,

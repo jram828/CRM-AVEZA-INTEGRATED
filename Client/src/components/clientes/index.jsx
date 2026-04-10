@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import moment from "moment-timezone";
 import {
   filterCliente,
   getCitas,
@@ -376,18 +377,44 @@ const Clientes = () => {
   }, [clientes, notas]);
 
   // Propiedades del ícono según la fecha
+  // const getActivityIconProps = (activity) => {
+  //   if (!activity)
+  //     return { IconComp: null, color: "disabled", tooltip: "Sin actividad" };
+
+  //   const now = new Date();
+  //   const todayStr = now.toISOString().slice(0, 10);
+  //   const activityStr = activity.date.toISOString().slice(0, 10);
+
+  //   let color;
+  //   if (activityStr < todayStr) {
+  //     color = "error.main"; // rojo si ya pasó
+  //   } else if (activityStr === todayStr) {
+  //     color = "warning.main"; // amarillo si es hoy
+  //   } else {
+  //     color = "success.main"; // verde si es futura
+  //   }
+
+  //   if (activity.type === "cita") {
+  //     return { IconComp: CalendarTodayIcon, color, tooltip: activity.title };
+  //   }
+  //   return { IconComp: TaskIcon, color, tooltip: activity.title };
+  // };
+
   const getActivityIconProps = (activity) => {
     if (!activity)
       return { IconComp: null, color: "disabled", tooltip: "Sin actividad" };
 
-    const now = new Date();
-    const todayStr = now.toISOString().slice(0, 10);
-    const activityStr = activity.date.toISOString().slice(0, 10);
+    // Fecha actual en Bogotá (GMT-5)
+    const now = moment.tz("America/Bogota").startOf("day");
+    // Fecha de la actividad en Bogotá
+    const activityDate = moment
+      .tz(activity.date, "America/Bogota")
+      .startOf("day");
 
     let color;
-    if (activityStr < todayStr) {
+    if (activityDate.isBefore(now)) {
       color = "error.main"; // rojo si ya pasó
-    } else if (activityStr === todayStr) {
+    } else if (activityDate.isSame(now)) {
       color = "warning.main"; // amarillo si es hoy
     } else {
       color = "success.main"; // verde si es futura
@@ -491,10 +518,10 @@ const Clientes = () => {
         Procesos: cliente?.tieneProcesos || "No se ha registrado",
         Responsable: cliente?.responsable || "",
         Fuente: cliente?.fuente || "",
-                "Fecha reunión": reunionFecha,
+        "Fecha reunión": reunionFecha,
         Tarea: tareaAsunto,
         "Fecha tarea": tareaFecha,
-        "Fecha de cierre":  "",
+        "Fecha de cierre": "",
         Genero: cliente?.genero || "",
         Descripción: cliente.comentarios || "",
       };

@@ -36,17 +36,14 @@ import {
   updateStatus,
 } from "../../redux/actions";
 import { registroCliente } from "../../handlers/registroCliente";
+import moment from "moment-timezone";
 import {
   Box,
   Paper,
   Typography,
   Button as MUIButton,
   TextField,
-  // Checkbox,
-  // FormControlLabel,
-  // FormGroup,
   Stack,
-  Divider,
   FormControl,
   InputLabel,
   Select,
@@ -57,7 +54,6 @@ import {
   CardContent,
   IconButton,
   Tooltip,
-  Grid,
   Autocomplete,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -522,22 +518,20 @@ const Detail = () => {
     );
   };
 
-  const getFechaColor = (fechaVencimiento) => {
-    const hoy = new Date();
-    const fecha = new Date(fechaVencimiento);
+const getFechaColor = (fechaVencimiento) => {
+  // Fecha de hoy en zona horaria Bogotá
+  const hoy = moment.tz("America/Bogota").startOf("day");
 
-    if (isNaN(fecha.getTime())) return "gray"; // fecha inválida
+  // Normalizar fecha de vencimiento en Bogotá
+  const fecha = moment.tz(fechaVencimiento, "America/Bogota").startOf("day");
 
-    if (fecha < hoy) return "red"; // vencida
-    if (
-      fecha.getFullYear() === hoy.getFullYear() &&
-      fecha.getMonth() === hoy.getMonth() &&
-      fecha.getDate() === hoy.getDate()
-    ) {
-      return "gold"; // hoy
-    }
-    return "green"; // futura
-  };
+  if (!fecha.isValid()) return "gray"; // fecha inválida
+
+  if (fecha.isBefore(hoy)) return "red"; // vencida
+  if (fecha.isSame(hoy)) return "gold"; // hoy
+  return "green"; // futura
+};
+
 
   const [openNotaForm, setOpenNotaForm] = useState(false);
   const [openCitaForm, setOpenCitaForm] = useState(false);

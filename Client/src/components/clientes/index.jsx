@@ -276,6 +276,11 @@ const Clientes = () => {
     }
   };
 
+  const iconMap = {
+    calendar: CalendarTodayIcon,
+    task: TaskIcon,
+  };
+
   const handleDragEnd = (result) => {
     const { source, destination, draggableId } = result;
     if (!destination || source.droppableId === destination.droppableId) return;
@@ -302,128 +307,6 @@ const Clientes = () => {
         value: destination.droppableId,
       }),
     );
-  };
-
-  const actividadPorCliente = useMemo(() => {
-    if (!clientes || clientes.length === 0) return {};
-
-    const map = {};
-    const now = new Date();
-
-    clientes.forEach((p) => {
-      const pId = p.cedulaCliente;
-
-      const citasP = (citas || [])
-        .filter((c) => c?.Clientes?.[0]?.cedulaCliente === pId)
-        .map((c) => ({
-          type: "cita",
-          date: new Date(c.fechaCita),
-          title: c.titulo,
-        }));
-
-      const tareasP = (tareas || [])
-        .filter((t) => t?.Clientes?.[0]?.cedulaCliente === pId)
-        .map((t) => ({
-          type: "tarea",
-          date: new Date(t.fechaVencimiento),
-          title: t.asunto,
-        }));
-
-      const combined = [...citasP, ...tareasP].filter((a) => !isNaN(a.date));
-
-      if (combined.length === 0) return;
-
-      const future = combined.filter((a) => a.date >= now);
-      const past = combined.filter((a) => a.date < now);
-
-      if (future.length > 0) {
-        map[pId] = future.reduce((prev, curr) =>
-          curr.date < prev.date ? curr : prev,
-        );
-      } else if (past.length > 0) {
-        map[pId] = past.reduce((prev, curr) =>
-          curr.date > prev.date ? curr : prev,
-        );
-      }
-    });
-
-    return map;
-  }, [clientes, citas, tareas]);
-
-  const latestNoteByProspect = useMemo(() => {
-    if (!clientes || clientes.length === 0) return {};
-    if (!Array.isArray(notas) || notas.length === 0) return {};
-
-    const map = {};
-    notas.forEach((nota) => {
-      const pId = nota?.Clientes?.[0]?.cedulaCliente;
-      if (!pId) return;
-
-      // Solo considerar notas de clientes cargados
-      if (!clientes.find((p) => p.cedulaCliente === pId)) return;
-
-      const rawDate = nota.updatedAt || nota.createdAt;
-      const date = new Date(rawDate);
-      if (isNaN(date)) return;
-
-      const ts = date.getTime();
-
-      if (!map[pId] || ts > map[pId].ts) {
-        map[pId] = { nota, date, ts };
-      }
-    });
-
-    return map;
-  }, [clientes, notas]);
-
-  // Propiedades del ícono según la fecha
-  // const getActivityIconProps = (activity) => {
-  //   if (!activity)
-  //     return { IconComp: null, color: "disabled", tooltip: "Sin actividad" };
-
-  //   const now = new Date();
-  //   const todayStr = now.toISOString().slice(0, 10);
-  //   const activityStr = activity.date.toISOString().slice(0, 10);
-
-  //   let color;
-  //   if (activityStr < todayStr) {
-  //     color = "error.main"; // rojo si ya pasó
-  //   } else if (activityStr === todayStr) {
-  //     color = "warning.main"; // amarillo si es hoy
-  //   } else {
-  //     color = "success.main"; // verde si es futura
-  //   }
-
-  //   if (activity.type === "cita") {
-  //     return { IconComp: CalendarTodayIcon, color, tooltip: activity.title };
-  //   }
-  //   return { IconComp: TaskIcon, color, tooltip: activity.title };
-  // };
-
-  const getActivityIconProps = (activity) => {
-    if (!activity)
-      return { IconComp: null, color: "disabled", tooltip: "Sin actividad" };
-
-    // Fecha actual en Bogotá (GMT-5)
-    const now = moment.tz("America/Bogota").startOf("day");
-    // Fecha de la actividad en Bogotá
-    const activityDate = moment
-      .tz(activity.date, "America/Bogota")
-      .startOf("day");
-
-    let color;
-    if (activityDate.isBefore(now)) {
-      color = "error.main"; // rojo si ya pasó
-    } else if (activityDate.isSame(now)) {
-      color = "warning.main"; // amarillo si es hoy
-    } else {
-      color = "success.main"; // verde si es futura
-    }
-
-    if (activity.type === "cita") {
-      return { IconComp: CalendarTodayIcon, color, tooltip: activity.title };
-    }
-    return { IconComp: TaskIcon, color, tooltip: activity.title };
   };
 
   const createAction = (type, event) => {
@@ -609,17 +492,9 @@ const Clientes = () => {
               style={{ minHeight: "60vh" }}
             >
               {groupedClientes[faseKey]?.map((cliente, index) => {
-                const latestActivity =
-                  actividadPorCliente[cliente.cedulaCliente] ?? null;
+                const { iconType, color, tooltip, notaReciente } = cliente;
 
-                const { IconComp, color, tooltip } = getActivityIconProps(
-                  latestActivity,
-                );
-                const notaReciente =
-                  latestNoteByProspect[cliente.cedulaCliente]?.nota;
-
-                  // const { latestActivity, IconComp, color, tooltip, notaReciente } = cliente;
-
+                const IconComp = iconMap[iconType];
 
                 return (
                   <Draggable

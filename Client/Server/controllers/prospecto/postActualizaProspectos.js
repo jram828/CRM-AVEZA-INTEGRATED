@@ -104,6 +104,7 @@ if (numeroEntidades !== undefined && numeroEntidades !== null) {
       fuente: fuente,
       servicio: servicio,
       genero: genero,
+      activo: true,
       // password: password,
     },
     {

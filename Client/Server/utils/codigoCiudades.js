@@ -250,7 +250,7 @@ export const codigoCiudades = [
   },
   {
     codigo_ciudad: 13001,
-    nombre_ciudad: "CARTAGENA DE INDIAS",
+    nombre_ciudad: "CARTAGENA",
     codigo_departamento: 13,
   },
   { codigo_ciudad: 13006, nombre_ciudad: "ACHI", codigo_departamento: 13 },

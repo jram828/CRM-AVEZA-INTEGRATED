@@ -38,6 +38,8 @@ export async function postProspectoAut(userDataRegistro) {
   );
   const codigo_ciudad = ciudadfilter[0]?.codigo_ciudad || 0;
 
+  console.log("Codigo ciudad encontrado:", codigo_ciudad);
+
   if (
     !email ||
     !nombres ||
@@ -101,7 +103,7 @@ export async function postProspectoAut(userDataRegistro) {
         });
 
         if (codigo_ciudad !== 0) {
-          await prospecto.setCiudads([codigo_ciudad]); // actualizar relación
+          await prospecto.addCiudad(codigo_ciudad); // actualizar relación
         }
 
         return { ...prospecto.toJSON() };

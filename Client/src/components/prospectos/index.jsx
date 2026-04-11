@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import moment from "moment-timezone";
+
 import {
   filterProspecto,
   getCitas,
@@ -274,6 +274,11 @@ const Prospectos = () => {
     }
   };
 
+  const iconMap = {
+    calendar: CalendarTodayIcon,
+    task: TaskIcon,
+  };
+
   const handleDragEnd = (result) => {
     const { source, destination, draggableId } = result;
     if (!destination || source.droppableId === destination.droppableId) return;
@@ -301,104 +306,6 @@ const Prospectos = () => {
       }),
     );
   };
-
-  const actividadPorProspecto = useMemo(() => {
-    if (!prospectos || prospectos.length === 0) return {};
-
-    const map = {};
-    const now = new Date();
-
-    prospectos.forEach((p) => {
-      const pId = p.idProspecto;
-
-      const citasP = (citas || [])
-        .filter((c) => c?.Prospectos?.[0]?.idProspecto === pId)
-        .map((c) => ({
-          type: "cita",
-          date: new Date(c.fechaCita),
-          title: c.titulo,
-        }));
-
-      const tareasP = (tareas || [])
-        .filter((t) => t?.Prospectos?.[0]?.idProspecto === pId)
-        .map((t) => ({
-          type: "tarea",
-          date: new Date(t.fechaVencimiento),
-          title: t.asunto,
-        }));
-
-      const combined = [...citasP, ...tareasP].filter((a) => !isNaN(a.date));
-
-      if (combined.length === 0) return;
-
-      const future = combined.filter((a) => a.date >= now);
-      const past = combined.filter((a) => a.date < now);
-
-      if (future.length > 0) {
-        map[pId] = future.reduce((prev, curr) =>
-          curr.date < prev.date ? curr : prev,
-        );
-      } else if (past.length > 0) {
-        map[pId] = past.reduce((prev, curr) =>
-          curr.date > prev.date ? curr : prev,
-        );
-      }
-    });
-
-    return map;
-  }, [prospectos, citas, tareas]);
-
-  const latestNoteByProspect = useMemo(() => {
-    if (!prospectos || prospectos.length === 0) return {};
-    if (!Array.isArray(notas) || notas.length === 0) return {};
-
-    const map = {};
-    notas.forEach((nota) => {
-      const pId = nota?.Prospectos?.[0]?.idProspecto;
-      if (!pId) return;
-
-      // Solo considerar notas de prospectos cargados
-      if (!prospectos.find((p) => p.idProspecto === pId)) return;
-
-      const rawDate = nota.updatedAt || nota.createdAt;
-      const date = new Date(rawDate);
-      if (isNaN(date)) return;
-
-      const ts = date.getTime();
-
-      if (!map[pId] || ts > map[pId].ts) {
-        map[pId] = { nota, date, ts };
-      }
-    });
-
-    return map;
-  }, [prospectos, notas]);
-
-  // Propiedades del ícono según la fecha
- const getActivityIconProps = (activity) => {
-  if (!activity)
-    return { IconComp: null, color: "disabled", tooltip: "Sin actividad" };
-
-  // Fecha actual en Bogotá (GMT-5)
-  const now = moment.tz("America/Bogota").startOf("day");
-  // Fecha de la actividad en Bogotá
-  const activityDate = moment.tz(activity.date, "America/Bogota").startOf("day");
-
-  let color;
-  if (activityDate.isBefore(now)) {
-    color = "error.main"; // rojo si ya pasó
-  } else if (activityDate.isSame(now)) {
-    color = "warning.main"; // amarillo si es hoy
-  } else {
-    color = "success.main"; // verde si es futura
-  }
-
-  if (activity.type === "cita") {
-    return { IconComp: CalendarTodayIcon, color, tooltip: activity.title };
-  }
-  return { IconComp: TaskIcon, color, tooltip: activity.title };
-};
-
 
   const createAction = (type, event) => {
     if (!selectedProspecto) return;
@@ -433,7 +340,6 @@ const Prospectos = () => {
   };
 
   const exportarExcel = () => {
- 
     const datos = reduxProspectos.map((prospecto) => {
       // Obtener la cita más próxima
 
@@ -582,15 +488,10 @@ const Prospectos = () => {
               style={{ minHeight: "60vh" }}
             >
               {groupedProspectos[statusKey]?.map((prospecto, index) => {
-                const latestActivity =
-                  actividadPorProspecto[prospecto.idProspecto] ?? null;
+                const { iconType, color, tooltip, notaReciente } = prospecto;
 
-                const { IconComp, color, tooltip } = getActivityIconProps(
-                  latestActivity,
-                );
-                const notaReciente =
-                  latestNoteByProspect[prospecto.idProspecto]?.nota;
-              // const { latestActivity, IconComp, color, tooltip, notaReciente } = prospecto;
+                const IconComp = iconMap[iconType];
+
                 return (
                   <Draggable
                     key={String(prospecto.idProspecto)}

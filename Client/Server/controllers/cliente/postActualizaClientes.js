@@ -40,7 +40,8 @@ const actualizaCliente = async (
   clienteActualizar.removeCiudad(ciudad_anterior);
 
   const [updateCount, updateClient] = await Cliente.update(
-    { cedulaCliente: cedulaCliente,
+    {
+      cedulaCliente: cedulaCliente,
       nombres: nombres,
       apellidos: apellidos,
       email: email,
@@ -51,13 +52,14 @@ const actualizaCliente = async (
       fuente: fuente,
       servicio: servicio,
       genero: genero,
+      activo: true,
       // password: password,
     },
     {
       where: {
         cedulaCliente: cedula_anterior,
       },
-    }
+    },
   );
   
       const consulta = {

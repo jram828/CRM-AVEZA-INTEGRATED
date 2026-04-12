@@ -35,10 +35,11 @@ export default (sequelize) => {
       clasificacion: { type: DataTypes.STRING, allowNull: false },
       diasMora: {
         type: DataTypes.STRING,
-        defaultValue: "Más de 90 días",
+        allowNull: true,
+        // defaultValue: "Más de 90 días",
       },
     },
-    { timestamps: false }
+    { timestamps: false },
   );
   return Deuda2;
 };

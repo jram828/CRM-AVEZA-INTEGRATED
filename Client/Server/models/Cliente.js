@@ -49,7 +49,7 @@ export default (sequelize) => {
       tieneProcesos: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: "No",
+        // defaultValue: "No",
       },
       activo: {
         type: DataTypes.BOOLEAN,

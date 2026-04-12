@@ -48,7 +48,7 @@ export default (sequelize) => {
       tiempoMora: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: "Más de 90 días",
+        // defaultValue: "Más de 90 días",
       },
       totalDeudas: {
         type: DataTypes.STRING,
@@ -69,7 +69,7 @@ export default (sequelize) => {
       tieneProcesos: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: "No",
+        // defaultValue: "No",
       },
       cotizacionAprobada: {
         type: DataTypes.STRING,

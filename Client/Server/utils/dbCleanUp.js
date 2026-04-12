@@ -99,7 +99,7 @@ export const procesarProspectosDescartados = async () => {
     // 6. Enviar correo con el archivo adjunto
     const html = `<p>Se han eliminado ${antiguos.length} prospectos inactivos.</p>`;
     await sendMail({
-      to: "destinatario@tuempresa.com", // ajusta destinatario
+      to: EMAIL_NOTIFICACION, // ajusta destinatario
       subject: "Reporte de Prospectos Eliminados",
       html,
       attachments: [

@@ -19,11 +19,11 @@ const getCitaHandler = async (req, res) => {
 };
 
 const getCitaGoogleHandler = async (req, res) => {
-  const { calendarId, mes } = req.query;
+  const { calendarId1, calendarId2, mes } = req.query;
 
-  console.log("Calendar ID en el handler:", calendarId);
+  console.log("Calendar IDs en el handler:", calendarId1, calendarId2, mes);
   try {
-    const response = await getAllCitaGoogle(calendarId, mes);
+    const response = await getAllCitaGoogle(calendarId1, calendarId2, mes);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ error: error.message });

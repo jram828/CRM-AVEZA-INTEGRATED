@@ -4,7 +4,12 @@ import moment from "moment-timezone";
 
 config();
 
-const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, EMAIL_CALENDAR } = process.env;
+const {
+  GOOGLE_CLIENT_EMAIL,
+  GOOGLE_PRIVATE_KEY,
+  EMAIL_CALENDAR,
+  EMAIL_CALENDAR2,
+} = process.env;
 
 export const obtenerDisponibilidad = async (fecha) => {
   try {
@@ -18,7 +23,7 @@ export const obtenerDisponibilidad = async (fecha) => {
       GOOGLE_CLIENT_EMAIL,
       null,
       GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-      ["https://www.googleapis.com/auth/calendar"]
+      ["https://www.googleapis.com/auth/calendar"],
     );
 
     const calendar = google.calendar({ version: "v3", auth: jwtClient });
@@ -28,12 +33,17 @@ export const obtenerDisponibilidad = async (fecha) => {
         timeMin: startOfDay,
         timeMax: endOfDay,
         timeZone: zona,
-        items: [{ id: EMAIL_CALENDAR }],
+        items: [{ id: EMAIL_CALENDAR }, { id: EMAIL_CALENDAR2 }],
       },
     });
 
-    const ocupados = response.data.calendars[EMAIL_CALENDAR].busy;
-    console.log("Bloques ocupados:", ocupados);
+    // const ocupados = response.data.calendars[EMAIL_CALENDAR].busy;
+    // Bloques ocupados de cada calendario
+    const ocupados1 = response.data.calendars[EMAIL_CALENDAR].busy || [];
+    console.log("Bloques ocupados 1:", ocupados1);
+    const ocupados2 = response.data.calendars[EMAIL_CALENDAR2].busy || [];
+
+    console.log("Bloques ocupados 2:", ocupados2);
 
     const horasPosibles = [];
     const hoy = moment.tz(zona).format("YYYY-MM-DD");
@@ -60,21 +70,36 @@ export const obtenerDisponibilidad = async (fecha) => {
     while (actual.isBefore(finDia)) {
       const siguiente = actual.clone().add(30, "minutes");
 
-      const estaOcupado = ocupados.some(
+      // const estaOcupado = ocupados.some(
+      //   (bloque) =>
+      //     actual.isBefore(moment(bloque.end)) &&
+      //     siguiente.isAfter(moment(bloque.start)),
+      // );
+
+      // if (!estaOcupado) {
+      //   horasPosibles.push(actual.format("HH:mm"));
+      // }
+      const ocupadoEnPrimero = ocupados1.some(
         (bloque) =>
           actual.isBefore(moment(bloque.end)) &&
-          siguiente.isAfter(moment(bloque.start))
+          siguiente.isAfter(moment(bloque.start)),
       );
 
-      if (!estaOcupado) {
+      const ocupadoEnSegundo = ocupados2.some(
+        (bloque) =>
+          actual.isBefore(moment(bloque.end)) &&
+          siguiente.isAfter(moment(bloque.start)),
+      );
+
+      // Solo se agrega si está libre en ambos
+      if (!ocupadoEnPrimero && !ocupadoEnSegundo) {
         horasPosibles.push(actual.format("HH:mm"));
       }
 
       actual = siguiente;
     }
 
- return horasPosibles;
-
+    return horasPosibles;
   } catch (err) {
     console.error("Error al consultar disponibilidad:", err.message);
     return "Error al consultar disponibilidad";

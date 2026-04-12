@@ -6,7 +6,11 @@ config();
 
 const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
 
-export const getAllCitaGoogle = async (calendarId, mes) => {
+
+
+
+
+export const getAllCitaGoogle = async (calendarId1, calendarId2, mes) => {
   try {
     const zona = "America/Bogota";
     const hoy = moment.tz(zona);
@@ -39,32 +43,47 @@ export const getAllCitaGoogle = async (calendarId, mes) => {
 
     const calendar = google.calendar({ version: "v3", auth: jwtClient });
 
-    // Obtener eventos del calendario
-    const response = await calendar.events.list({
-      calendarId: calendarId,
+    // Función para obtener eventos de un calendario específico
+    async function getEventosDeCalendario(calendarId, timeMin, timeMax, zona) {
+      const response = await calendar.events.list({
+        calendarId,
+        timeMin,
+        timeMax,
+        timeZone: zona,
+        singleEvents: true,
+        orderBy: "startTime",
+        conferenceDataVersion: 1,
+      });
+
+      const eventos = response.data.items || [];
+      return eventos.map((event) => ({
+        id: event.id,
+        resumen: event.summary,
+        descripcion: event.description || "",
+        inicio: event.start?.dateTime || event.start?.date,
+        fin: event.end?.dateTime || event.end?.date,
+        asistentes: event.attendees || [],
+        extendedProperties: event.extendedProperties || {},
+        conferenceData: event.conferenceData || {},
+        calendarId, // 👈 importante: saber de qué calendario viene
+      }));
+    }
+
+    // Obtener eventos de dos calendarios y combinarlos
+    const eventosCalendario1 = await getEventosDeCalendario(
+      calendarId1,
       timeMin,
       timeMax,
-      timeZone: zona,
-      singleEvents: true,
-      orderBy: "startTime",
-      conferenceDataVersion: 1,
-      // fields:
-      //   "id,summary,description,start,end,attendees,extendedProperties,conferenceData"
-    });
-//  console.log("Respuesta de Google Calendar API:", response.data);
-    const eventos = response.data.items || [];
-    // console.log(`Eventos obtenidos para el mes ${mesUsado + 1}:`, eventos);
+      zona,
+    );
+    const eventosCalendario2 = await getEventosDeCalendario(
+      calendarId2,
+      timeMin,
+      timeMax,
+      zona,
+    );
 
-    const citas = eventos.map((event) => ({
-      id: event.id,
-      resumen: event.summary,
-      descripcion: event.description || "",
-      inicio: event.start?.dateTime || event.start?.date,
-      fin: event.end?.dateTime || event.end?.date,
-      asistentes: event.attendees || [],
-      extendedProperties: event.extendedProperties || {},
-      conferenceData: event.conferenceData || {},
-    }));
+    const citas = [...eventosCalendario1, ...eventosCalendario2];
 
     return citas;
   } catch (err) {

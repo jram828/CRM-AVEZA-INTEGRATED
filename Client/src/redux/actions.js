@@ -1208,12 +1208,12 @@ export const buscarAcreedores = (payload) => {
   };
 };
 
-export const obtenerCitasCalendar = (calendarId, mes) => {
+export const obtenerCitasCalendar = (calendarId1, calendarId2, mes) => {
   const endpoint = `/citas/calendar`;
-console.log("Action - obtenerCitasCalendar:", calendarId, mes);
+console.log("Action - obtenerCitasCalendar:", calendarId1, calendarId2, mes);
   return async (dispatch) => {
     const { data } = await axios.get(endpoint, {
-  params: { calendarId, mes },
+  params: { calendarId1, calendarId2, mes },
 });
     return dispatch({
       type: GET_CITAS_CALENDAR,

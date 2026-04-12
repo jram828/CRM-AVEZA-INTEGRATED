@@ -41,7 +41,8 @@ const Calendario = () => {
   console.log("Fuente de datos para el calendario:", source);
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   const dispatch = useDispatch();
-  const calendarId = import.meta.env.VITE_EMAIL_CALENDAR;
+  const calendarId1 = import.meta.env.VITE_EMAIL_CALENDAR;
+  const calendarId2 = import.meta.env.VITE_EMAIL_CALENDAR_2;
 
   const [cita, setCita] = useState({
     idCita: "",
@@ -107,7 +108,7 @@ const Calendario = () => {
     if (source !== "google") {
       dispatch(getCitas());
     } else {
-      dispatch(obtenerCitasCalendar(calendarId));
+      dispatch(obtenerCitasCalendar(calendarId1, calendarId2));
     }
   }, [dispatch, source, calendarId]);
   console.log("Citas en calendario:", citas);

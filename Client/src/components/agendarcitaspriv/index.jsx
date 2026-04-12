@@ -204,11 +204,11 @@ function AgendarCitasPriv() {
         }}
         wrap="nowrap"
       >
-        <Grid item xs={12} md={7}>
+        <Grid item xs={12} md={9}>
           <Calendario />
         </Grid>
 
-        <Grid item xs={12} md={5}>
+        <Grid item xs={12} md={3}>
           <Paper
             sx={{ p: 2, height: "100%" }}
             elevation={1}

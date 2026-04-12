@@ -44,19 +44,49 @@ function loadTemplate(fileName) {
 }
 
 // Función genérica para enviar correo vía Gmail API
-async function sendMail({ to, subject, html }) {
+
+async function sendMail({ to, subject, html, attachments = [] }) {
   const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
 
   const encodedSubject = `=?UTF-8?B?${Buffer.from(subject).toString("base64")}?=`;
 
-  const message = [
+  // Construir mensaje MIME con adjuntos
+  let boundary = "boundary_" + Date.now();
+  let messageParts = [
     `From: CRM AVEZA <${EMAIL}>`,
     `To: ${to}`,
     `Subject: ${encodedSubject}`,
+    "MIME-Version: 1.0",
+    `Content-Type: multipart/mixed; boundary="${boundary}"`,
+    "",
+    `--${boundary}`,
     "Content-Type: text/html; charset=utf-8",
     "",
     html,
-  ].join("\n");
+  ];
+
+  // Adjuntar archivos
+  for (const attachment of attachments) {
+    const fileContent = fs.readFileSync(attachment.path);
+    const encodedFile = fileContent
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+
+    messageParts.push(
+      `--${boundary}`,
+      `Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; name="${attachment.filename}"`,
+      "Content-Transfer-Encoding: base64",
+      `Content-Disposition: attachment; filename="${attachment.filename}"`,
+      "",
+      encodedFile,
+    );
+  }
+
+  messageParts.push(`--${boundary}--`);
+
+  const message = messageParts.join("\n");
 
   // Codificar en Base64URL
   const encodedMessage = Buffer.from(message)
@@ -73,13 +103,13 @@ async function sendMail({ to, subject, html }) {
 
   console.log("✅ Email enviado a:", to);
 }
-
-// Función para enviar correo
 // async function sendMail({ to, subject, html }) {
+//   const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
+
 //   const encodedSubject = `=?UTF-8?B?${Buffer.from(subject).toString("base64")}?=`;
 
 //   const message = [
-//     `From: ${EMAIL_CALENDAR}`,
+//     `From: CRM AVEZA <${EMAIL}>`,
 //     `To: ${to}`,
 //     `Subject: ${encodedSubject}`,
 //     "Content-Type: text/html; charset=utf-8",
@@ -87,14 +117,16 @@ async function sendMail({ to, subject, html }) {
 //     html,
 //   ].join("\n");
 
+//   // Codificar en Base64URL
 //   const encodedMessage = Buffer.from(message)
 //     .toString("base64")
 //     .replace(/\+/g, "-")
 //     .replace(/\//g, "_")
 //     .replace(/=+$/, "");
 
+//   // Enviar
 //   await gmail.users.messages.send({
-//     userId: "me", // "me" funciona porque el JWT está impersonando al usuario
+//     userId: "me",
 //     requestBody: { raw: encodedMessage },
 //   });
 
@@ -237,4 +269,5 @@ export {
   sendEmailCitaAveza,
   sendEmailActualizaCita,
   sendEmailActualizaCitaAveza,
+  sendMail
 };

@@ -126,18 +126,10 @@ const RegistroProspecto = () => {
   );
   const requiredFieldsFilled =
     userDataRegistro.email &&
-    userDataRegistro.cedulaProspecto &&
     userDataRegistro.nombres &&
     userDataRegistro.apellidos;
   const isFormValid =
-    requiredFieldsFilled && isEmailValid && isCedulaValid && isCelularValid;
-
-  const ciudadNombres = (codigoCiudades || []).map((c) => c.nombre_ciudad);
-
-  const filteredNombres = useMemo(() => {
-    const input = userDataRegistro.nombre_ciudad.toUpperCase();
-    return ciudadNombres.filter((nombre) => nombre.includes(input));
-  }, [userDataRegistro.nombre_ciudad, ciudadNombres]);
+    requiredFieldsFilled && isEmailValid && isCelularValid;
 
   console.log("Input actual:", userDataRegistro);
   console.log("ciudad seleccionada:", ciudadSeleccionada);
@@ -213,15 +205,15 @@ const RegistroProspecto = () => {
               value={userDataRegistro.cedulaProspecto}
               onChange={handleChangeRegistro}
               fullWidth
-              required
-              error={
-                Boolean(userDataRegistro.cedulaProspecto) && !isCedulaValid
-              }
-              helperText={
-                Boolean(userDataRegistro.cedulaProspecto) && !isCedulaValid
-                  ? "Cédula inválida (solo dígitos, 6-10 caracteres)"
-                  : ""
-              }
+              // required
+              // error={
+              //   Boolean(userDataRegistro.cedulaProspecto) && !isCedulaValid
+              // }
+              // helperText={
+              //   Boolean(userDataRegistro.cedulaProspecto) && !isCedulaValid
+              //     ? "Cédula inválida (solo dígitos, 6-10 caracteres)"
+              //     : ""
+              // }
               inputProps={{ inputMode: "numeric", pattern: "\\d*" }}
               sx={{bgcolor: "#fff",}}
             />

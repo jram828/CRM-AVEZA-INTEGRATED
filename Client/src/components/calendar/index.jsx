@@ -54,7 +54,8 @@ const Calendario = () => {
     idProspecto: "",
     cedulaCliente: "",
     // email: datos?.email || "",
-    calendarID: calendarId,
+    calendarId2: calendarId2,
+    calendarId1: calendarId1,
   });
 
   // Traer disponibilidad desde Google cuando cambia la fecha
@@ -110,7 +111,7 @@ const Calendario = () => {
     } else {
       dispatch(obtenerCitasCalendar(calendarId1, calendarId2));
     }
-  }, [dispatch, source, calendarId]);
+  }, [dispatch, source, calendarId1, calendarId2]);
   console.log("Citas en calendario:", citas);
   const events = citas
     ?.map((cita) => {
@@ -170,7 +171,7 @@ const Calendario = () => {
     setDate(newDate);
     if (source === "google") {
       const mes = dayjs(newDate).month() + 1;
-      dispatch(obtenerCitasCalendar(calendarId, mes));
+      dispatch(obtenerCitasCalendar(calendarId1,calendarId2, mes));
     } else {
       dispatch(getCitas());
     }
@@ -186,7 +187,8 @@ const Calendario = () => {
       fechaCita: dayjs(event.start).format("YYYY-MM-DD"),
       horaCita: dayjs(event.start).format("HH:mm"),
       email: datos?.email || "",
-      calendarID: calendarId,
+      calendarId1: calendarId1,
+      calendarId2: calendarId2,
       idProspecto: event.idProspecto || "",
       cedulaCliente: event.cedulaCliente || "",  
     });
@@ -197,8 +199,8 @@ const Calendario = () => {
     console.log("Eliminar evento:", event);
     if (source === "google") {
       dispatch(
-        eliminarCita(event.idCitaGoogle, event.idCita, calendarId),
-      ).then(() => dispatch(obtenerCitasCalendar(calendarId))); // refrescar citas
+        eliminarCita(event.idCitaGoogle, event.idCita, calendarId1),
+      ).then(() => dispatch(obtenerCitasCalendar(calendarId1, calendarId2))); // refrescar citas
     } else {
       dispatch(eliminarCita(event.idCita)).then(() => dispatch(getCitas())); // refrescar citas
     }
@@ -211,7 +213,7 @@ const Calendario = () => {
 
     if (source === "google") {
       console.log("Actualizar evento en Google Calendar con payload:", payload);
-      dispatch(actualizarCitaGoogle(payload)).then(() => dispatch(obtenerCitasCalendar(calendarId))); 
+      dispatch(actualizarCitaGoogle(payload)).then(() => dispatch(obtenerCitasCalendar(calendarId1, calendarId2))); // refrescar citas
     } else {
       console.log("Actualizar evento en base de datos con payload:", payload);
       // dispatch(actualizarCita(payload));

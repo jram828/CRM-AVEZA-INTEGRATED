@@ -41,6 +41,7 @@ import { data } from "jquery";
 function AgendarCitasPriv() {
   const userData = JSON.parse(localStorage.getItem("loggedUser"));
   const EMAIL_CALENDAR = import.meta.env.VITE_EMAIL_CALENDAR;
+  const EMAIL_CALENDAR2 = import.meta.env.VITE_EMAIL_CALENDAR2; 
   const [dataRegistro, setDataRegistro] = useState({
     titulo: "",
     descripcion: "",
@@ -51,7 +52,8 @@ function AgendarCitasPriv() {
     cedulaCliente: "",
     userEmail: userData?.email?.includes("@gmail.com") ? userData?.email : "",
     email: "",
-    calendarId: userData?.calendarId || EMAIL_CALENDAR,
+    calendarId1: EMAIL_CALENDAR,
+    calendarId2: EMAIL_CALENDAR2, 
     // calendarId: userData?.calendarId || "aveza.asesoria@gmail.com",
   });
 
@@ -120,7 +122,7 @@ function AgendarCitasPriv() {
           source: "cliente",
         });
       }
-      dispatch(obtenerCitasCalendar(dataRegistro.calendarId));
+      dispatch(obtenerCitasCalendar(dataRegistro?.calendarId1, dataRegistro?.calendarId2));
       // window.alert("Cita creado con éxito");
       // window.location.reload();
       setDataRegistro((prevData) => ({

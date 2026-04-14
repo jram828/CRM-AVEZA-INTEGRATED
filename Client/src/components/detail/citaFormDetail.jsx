@@ -38,24 +38,23 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
   const horasDisponibles = useSelector((state) => state.horasDisponibles || []);
   console.log("Horas disponibles en CitaForm:", horasDisponibles);
 
- // Hora mínima si la fecha seleccionada es hoy
- 
- const hoy = moment().tz("America/Bogota").format("YYYY-MM-DD");
- const currentTime = moment().tz("America/Bogota").format("HH:mm");
- 
- 
-   console.log("Fecha seleccionada:", dataCita.fechaCita);
-   console.log("Fecha de hoy:", hoy);
-   let horasFiltradas = horasDisponibles;
- 
-   // Solo filtrar si dataCita no está vacío y ES la fecha actual
-   if (dataCita.fechaCita && dataCita.fechaCita === hoy) {
-     horasFiltradas = horasDisponibles.filter((hora) => {
-       const horaMoment = moment(hora, "HH:mm");
-       const currentMoment = moment(currentTime, "HH:mm");
-       return horaMoment.isAfter(currentMoment);
-     });
-   }
+  // Hora mínima si la fecha seleccionada es hoy
+
+  const hoy = moment().tz("America/Bogota").format("YYYY-MM-DD");
+  const currentTime = moment().tz("America/Bogota").format("HH:mm");
+
+  console.log("Fecha seleccionada:", dataCita.fechaCita);
+  console.log("Fecha de hoy:", hoy);
+  let horasFiltradas = horasDisponibles;
+
+  // Solo filtrar si dataCita no está vacío y ES la fecha actual
+  if (dataCita.fechaCita && dataCita.fechaCita === hoy) {
+    horasFiltradas = horasDisponibles.filter((hora) => {
+      const horaMoment = moment(hora, "HH:mm");
+      const currentMoment = moment(currentTime, "HH:mm");
+      return horaMoment.isAfter(currentMoment);
+    });
+  }
 
   const handleChange = (field, value) => {
     setDataCita((prev) => ({ ...prev, [field]: value }));
@@ -114,16 +113,30 @@ const CitaFormDetail = ({ open, onClose, onSave, selected, source }) => {
   const today = new Date().toISOString().split("T")[0];
 
   return (
+    // <Popover
+    //   open={open}
+    //   onClose={onClose}
+    //   anchorReference="none" // 👈 ignora el anchorEl
+    //   PaperProps={{
+    //     sx: {
+    //       position: "absolute",
+    //       top: "50%",
+    //       left: "50%",
+    //       transform: "translate(-50%, -50%)", // 👈 centra vertical y horizontal
+    //     },
+    //   }}
+    // >
     <Popover
       open={open}
       onClose={onClose}
-      anchorReference="none" // 👈 ignora el anchorEl
+      anchorReference="anchorPosition"
+      anchorPosition={{
+        top: 100,
+        left: window.innerWidth / 2,
+      }}
       PaperProps={{
         sx: {
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)", // 👈 centra vertical y horizontal
+          transform: "translate(-50%, -50%)",
         },
       }}
     >

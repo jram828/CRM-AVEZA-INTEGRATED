@@ -340,7 +340,14 @@ const Prospectos = () => {
   };
 
   const exportarExcel = () => {
-    const datos = reduxProspectos.map((prospecto) => {
+    // Ordenar primero por fechaCreacion descendente (más reciente primero)
+    const prospectosOrdenados = [...reduxProspectos].sort((a, b) => {
+      const fechaA = new Date(a.fechaCreacion || 0);
+      const fechaB = new Date(b.fechaCreacion || 0);
+      return fechaB - fechaA; // descendente
+    });
+
+    const datos = prospectosOrdenados.map((prospecto) => {
       // Obtener la cita más próxima
 
       let reunionFecha = "";

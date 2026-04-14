@@ -24,46 +24,54 @@ const TaskFormDetail = ({ open, onClose, onSave, selected, source }) => {
     repeticiones: 0,
   });
 
-
   const handleChange = (field, value) => {
     setDataTarea((prev) => ({ ...prev, [field]: value }));
   };
 
-const handleSave = () => {
-  if (!selected) return;
+  const handleSave = () => {
+    if (!selected) return;
 
-  const payload = { ...dataTarea };
+    const payload = { ...dataTarea };
 
-  if (source === "prospecto") {
-    onSave({ ...payload, idProspecto: selected.idProspecto, source: "prospecto" });
-  } else if (source === "cliente") {
-    onSave({ ...payload, cedulaCliente: selected.cedulaCliente, source: "cliente" });
-  } else {
-    onSave(payload);
-  }
+    if (source === "prospecto") {
+      onSave({
+        ...payload,
+        idProspecto: selected.idProspecto,
+        source: "prospecto",
+      });
+    } else if (source === "cliente") {
+      onSave({
+        ...payload,
+        cedulaCliente: selected.cedulaCliente,
+        source: "cliente",
+      });
+    } else {
+      onSave(payload);
+    }
 
-  onClose();
-};
+    onClose();
+  };
 
   // 👇 calcular fecha mínima (hoy) en formato YYYY-MM-DD
-  const today =  new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
 
   return (
-<Popover
-  open={open}
-  onClose={onClose}
-  anchorReference="none" // 👈 ignora el anchorEl
-  PaperProps={{
-    sx: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)", // 👈 centra vertical y horizontal
-    },
-  }}
->
+    <Popover
+      open={open}
+      onClose={onClose}
+      anchorReference="anchorPosition" // 👈 usa coordenadas absolutas
+      anchorPosition={{
+        top: 100,
+        left: window.innerWidth / 2,
+      }}
+      PaperProps={{
+        sx: {
+          transform: "translate(-50%, -50%)", // 👈 centra respecto a las coordenadas
+        },
+      }}
+    >
       <Box sx={{ p: 2, bgcolor: "white", minWidth: 300 }}>
-        <h3 style={{ marginTop: 0, marginBottom:2 }}>Nueva Tarea</h3>
+        <h3 style={{ marginTop: 0, marginBottom: 2 }}>Nueva Tarea</h3>
         <Stack spacing={2}>
           <TextField
             label="Asunto"

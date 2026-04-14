@@ -342,8 +342,14 @@ const Clientes = () => {
   };
 
   const exportarExcel = () => {
+    const clientesOrdenados = [...reduxClientes].sort((a, b) => {
+      const fechaA = new Date(a.fechaCreacion || 0);
+      const fechaB = new Date(b.fechaCreacion || 0);
+      return fechaB - fechaA; // descendente
+    });
+
     // Seleccionar solo las propiedades requeridas y en el orden correcto
-    const datos = reduxClientes.map((cliente) => {
+    const datos = clientesOrdenados.map((cliente) => {
       // Obtener la cita más próxima
 
       let reunionFecha = "";

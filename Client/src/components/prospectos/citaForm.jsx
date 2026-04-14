@@ -40,9 +40,8 @@ const CitaForm = ({ open, onClose, onSave, selectedProspecto }) => {
 
   // Hora mínima si la fecha seleccionada es hoy
 
-const hoy = moment().tz("America/Bogota").format("YYYY-MM-DD");
-const currentTime = moment().tz("America/Bogota").format("HH:mm");
-
+  const hoy = moment().tz("America/Bogota").format("YYYY-MM-DD");
+  const currentTime = moment().tz("America/Bogota").format("HH:mm");
 
   console.log("Fecha seleccionada:", dataCita.fechaCita);
   console.log("Fecha de hoy:", hoy);
@@ -99,13 +98,14 @@ const currentTime = moment().tz("America/Bogota").format("HH:mm");
     <Popover
       open={open}
       onClose={onClose}
-      anchorReference="none" // 👈 ignora el anchorEl
+      anchorReference="anchorPosition" // 👈 usa coordenadas absolutas
+      anchorPosition={{
+        top: 100,
+        left: window.innerWidth / 2,
+      }}
       PaperProps={{
         sx: {
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)", // 👈 centra vertical y horizontal
+          transform: "translate(-50%, -50%)", // 👈 centra respecto a las coordenadas
         },
       }}
     >

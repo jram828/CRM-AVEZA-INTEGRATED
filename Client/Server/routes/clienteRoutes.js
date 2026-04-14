@@ -15,6 +15,7 @@ import {
   postActualizaClienteFase,
   // getClientByEmailHandler,
 } from "../handlers/clientesHandlers.js";
+import { actualizarCiudades } from "../controllers/actualizarCiudades.js";
 
 const clientesRouter = Router();
 
@@ -27,7 +28,8 @@ clientesRouter.post("/registrocliente", postClientesHandler);
 clientesRouter.post("/relacionarpaises", relacionarPaises);
 clientesRouter.post("/relacionardepartamentos", relacionarDepartamentos);
 clientesRouter.post("/crearciudades", crearCiudades);
-
+clientesRouter.post("/actualizaciudades", actualizarCiudades);
+  
 clientesRouter.put("/actualiza", postActualizaClientes); //Actualizar datos (uno a la vez)
 clientesRouter.put("/status", postActualizaClienteStatus);
 clientesRouter.put("/calificacion", postActualizaClienteCalificacion);

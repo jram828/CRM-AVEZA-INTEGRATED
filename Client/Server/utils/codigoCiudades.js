@@ -1,5 +1,5 @@
 export const codigoCiudades = [
-  { codigo_ciudad: 5001, nombre_ciudad: "MEDELLIN", codigo_departamento: 5 },
+  { codigo_ciudad: 5001, nombre_ciudad: "MEDELLÍN", codigo_departamento: 5 },
   { codigo_ciudad: 5002, nombre_ciudad: "ABEJORRAL", codigo_departamento: 5 },
   { codigo_ciudad: 5004, nombre_ciudad: "ABRIAQUI", codigo_departamento: 5 },
   { codigo_ciudad: 5021, nombre_ciudad: "ALEJANDRIA", codigo_departamento: 5 },

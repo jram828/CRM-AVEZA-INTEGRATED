@@ -43,19 +43,20 @@ const WhatsappForm = ({
   };
 
   return (
-<Popover
-  open={open}
-  onClose={onClose}
-  anchorReference="none" // 👈 ignora el anchorEl
-  PaperProps={{
-    sx: {
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)", // 👈 centra vertical y horizontal
-    },
-  }}
->
+    <Popover
+      open={open}
+      onClose={onClose}
+      anchorReference="anchorPosition" // 👈 usa coordenadas absolutas
+      anchorPosition={{
+        top: 100,
+        left: window.innerWidth / 2,
+      }}
+      PaperProps={{
+        sx: {
+          transform: "translate(-50%, -50%)", // 👈 centra respecto a las coordenadas
+        },
+      }}
+    >
       <Box sx={{ p: 2, bgcolor: "white", minWidth: 300 }}>
         <h3 style={{ marginTop: 0, marginBottom: 2 }}>Nuevo Mensaje</h3>
         <Stack spacing={2}>

@@ -66,7 +66,7 @@ const actualizaProspecto = async (
   const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
   console.log("Codigo ciudad:", codigo_ciudad);
 
-  // console.log("ciudad:", ciudadfilter);
+//  console.log("ciudad:", ciudadfilter);
 
   const prospectoActualizar = await Prospecto.findByPk(idProspecto);
 

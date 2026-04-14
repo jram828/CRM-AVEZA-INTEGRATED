@@ -94,7 +94,7 @@ export default (sequelize) => {
       fuente: {
         type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: "noseleccionado",
+        defaultValue: "cpweb",
       },
       fechaCierre: {
         type: DataTypes.STRING,

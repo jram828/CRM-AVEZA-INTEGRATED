@@ -95,13 +95,14 @@ const CitaForm = ({ open, onClose, onSave, selectedCliente }) => {
     <Popover
       open={open}
       onClose={onClose}
-      anchorReference="none" // 👈 ignora el anchorEl
+      anchorReference="anchorPosition" // 👈 usa coordenadas absolutas
+      anchorPosition={{
+        top: 100,
+        left: window.innerWidth / 2,
+      }}
       PaperProps={{
         sx: {
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)", // 👈 centra vertical y horizontal
+          transform: "translate(-50%, -50%)", // 👈 centra respecto a las coordenadas
         },
       }}
     >

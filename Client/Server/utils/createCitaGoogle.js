@@ -4,11 +4,24 @@ import moment from "moment-timezone";
 
 config();
 
-const { GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, EMAIL_CALENDAR, EMAIL_MARKETING } = process.env;
+const {
+  GOOGLE_CLIENT_EMAIL,
+  GOOGLE_PRIVATE_KEY,
+  EMAIL_CALENDAR,
+  EMAIL_MARKETING,
+} = process.env;
 
 export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
   try {
-    const { fechaCita, horaCita, titulo, descripcion,  idProspecto, cedulaCliente, email } = dataRegistro;
+    const {
+      fechaCita,
+      horaCita,
+      titulo,
+      descripcion,
+      idProspecto,
+      cedulaCliente,
+      email,
+    } = dataRegistro;
 
     // Convertir fechaCita a string YYYY-MM-DD si viene como Date
     const fechaStr =
@@ -40,6 +53,7 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
         dateTime: endDateTime.format(),
         timeZone: "America/Bogota",
       },
+      status: "confirmed",
       visibility: "public",
       extendedProperties: {
         private: {
@@ -52,6 +66,20 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
         createRequest: {
           requestId: `meet-${Date.now()}`, // identificador único
           conferenceSolutionKey: { type: "hangoutsMeet" },
+          conferenceProperties: {
+            allowedConferenceSolutionTypes: ["hangoutsMeet"],
+          },
+        },
+        // Configuración del espacio para permitir grabación y transcripción
+        settings: {
+          configuration: {
+            settings: {
+              sessionControls: {
+                recordingAllowed: true,
+                transcriptionAllowed: true,
+              },
+            },
+          },
         },
       },
       attendees: [
@@ -63,6 +91,7 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
         },
         {
           email: EMAIL_MARKETING,
+          optional: true,
         },
       ],
     };
@@ -74,25 +103,22 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
     //   ["https://www.googleapis.com/auth/calendar"],
     // );
 
-// Con delegación a un usuario del dominio
-const jwtClient = new google.auth.JWT(
-  GOOGLE_CLIENT_EMAIL,
-  null,
-  GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-  ["https://www.googleapis.com/auth/calendar"],
-  EMAIL_CALENDAR, // 👈 correo del usuario del Workspace
-);
-
+    // Con delegación a un usuario del dominio
+    const jwtClient = new google.auth.JWT(
+      GOOGLE_CLIENT_EMAIL,
+      null,
+      GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+      ["https://www.googleapis.com/auth/calendar"],
+      EMAIL_CALENDAR, // 👈 correo del usuario del Workspace
+    );
 
     const calendar = google.calendar({ version: "v3", auth: jwtClient });
 
-const response = await calendar.events.insert({
-  calendarId: EMAIL_CALENDAR,
-  resource: event,
-  conferenceDataVersion: 1, // 👈 necesario para que se genere el enlace
-  
-});
-
+    const response = await calendar.events.insert({
+      calendarId: EMAIL_CALENDAR,
+      resource: event,
+      conferenceDataVersion: 1, // 👈 necesario para que se genere el enlace
+    });
 
     return {
       evento: response.data,

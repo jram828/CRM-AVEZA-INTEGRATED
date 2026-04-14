@@ -85,6 +85,7 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
       attendees: [
         {
           email: EMAIL_CALENDAR,
+          responseStatus: "accepted",
         },
         {
           email: email,
@@ -92,6 +93,7 @@ export const createCitaGoogle = async (dataRegistro, calendarId, idCita) => {
         {
           email: EMAIL_MARKETING,
           optional: true,
+          responseStatus: "accepted",
         },
       ],
     };

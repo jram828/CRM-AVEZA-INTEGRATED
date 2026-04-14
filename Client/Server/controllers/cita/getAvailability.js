@@ -48,21 +48,39 @@ export const obtenerDisponibilidad = async (fecha) => {
     const horasPosibles = [];
     const hoy = moment.tz(zona).format("YYYY-MM-DD");
 
-    // Si la fecha es hoy, inicio desde la hora actual redondeada al próximo bloque de 30 min
     let inicioDia;
+    const diaSemana = moment.tz(fecha, zona).day(); // 0=domingo, 6=sábado
+    const horaMinima = diaSemana === 6 ? "09:00" : "08:00";
+
+    const minDia = moment.tz(`${fecha} ${horaMinima}`, zona);
+
     if (fecha === hoy) {
       const ahora = moment.tz(zona);
       const minutos = ahora.minutes();
       const extra = minutos % 30 === 0 ? 0 : 30 - (minutos % 30);
-      inicioDia = ahora.clone().add(extra, "minutes").seconds(0);
+      const redondeado = ahora.clone().add(extra, "minutes").seconds(0);
+
+      // 👇 siempre tomar el mayor entre la hora mínima y la hora actual redondeada
+      inicioDia = redondeado.isBefore(minDia) ? minDia : redondeado;
     } else {
-      const diaSemana = moment.tz(fecha, zona).day(); // 0=domingo, 6=sábado
-      if (diaSemana === 6) {
-        inicioDia = moment.tz(`${fecha} 09:00`, zona); // sábados desde las 9
-      } else {
-        inicioDia = moment.tz(`${fecha} 08:00`, zona); // resto de días desde las 8
-      }
+      inicioDia = minDia;
     }
+
+    // // Si la fecha es hoy, inicio desde la hora actual redondeada al próximo bloque de 30 min
+    // let inicioDia;
+    // if (fecha === hoy) {
+    //   const ahora = moment.tz(zona);
+    //   const minutos = ahora.minutes();
+    //   const extra = minutos % 30 === 0 ? 0 : 30 - (minutos % 30);
+    //   inicioDia = ahora.clone().add(extra, "minutes").seconds(0);
+    // } else {
+    //   const diaSemana = moment.tz(fecha, zona).day(); // 0=domingo, 6=sábado
+    //   if (diaSemana === 6) {
+    //     inicioDia = moment.tz(`${fecha} 09:00`, zona); // sábados desde las 9
+    //   } else {
+    //     inicioDia = moment.tz(`${fecha} 08:00`, zona); // resto de días desde las 8
+    //   }
+    // }
 
     const finDia = moment.tz(`${fecha} 18:00`, zona);
 

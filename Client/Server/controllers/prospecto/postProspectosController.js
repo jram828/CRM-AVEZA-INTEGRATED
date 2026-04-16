@@ -139,7 +139,7 @@ const createProspectoBd = async (
         fase,
         status,
         totalDeudas,
-        cedulaProspecto,
+        cedulaProspecto: cedulaProspecto && cedulaProspecto !== "" ? cedulaProspecto : null,
       });
 
       if (nombre_ciudad) {

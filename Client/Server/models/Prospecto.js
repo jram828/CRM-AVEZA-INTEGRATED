@@ -15,6 +15,7 @@ export default (sequelize) => {
       cedulaProspecto: {
         type: DataTypes.BIGINT,
         allowNull: true,
+        defaultValue: 0,
       },
       email: {
         type: DataTypes.STRING,

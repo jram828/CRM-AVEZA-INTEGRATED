@@ -63,7 +63,7 @@ const actualizaProspecto = async (
   );
   console.log("Ciudad filter:", ciudadfilter);
 
-  const codigo_ciudad = ciudadfilter[0].codigo_ciudad;
+  const codigo_ciudad = ciudadfilter[0]?.codigo_ciudad || 0;
   console.log("Codigo ciudad:", codigo_ciudad);
 
 //  console.log("ciudad:", ciudadfilter);

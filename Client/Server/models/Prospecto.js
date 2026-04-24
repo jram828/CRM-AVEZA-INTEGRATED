@@ -36,15 +36,20 @@ export default (sequelize) => {
       bienes: { type: DataTypes.STRING, allowNull: true },
       servicio: { type: DataTypes.STRING, allowNull: true },
       genero: { type: DataTypes.STRING, allowNull: true },
+      fase: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "noseleccionado",
+      },
       totalBienes: {
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: "No se ha registrado",
       },
       numeroEntidades: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
-        defaultValue: 0,
+        // defaultValue: 0,
       },
       tiempoMora: {
         type: DataTypes.STRING,

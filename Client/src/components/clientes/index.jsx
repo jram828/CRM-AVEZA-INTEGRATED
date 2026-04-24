@@ -402,7 +402,7 @@ const Clientes = () => {
         Fase: cliente?.fase || "",
         Pasivo: cliente?.totalDeudas || 0,
         Mora: cliente?.tiempoMora || 0,
-        Entidades: cliente?.numeroEntidades || 0,
+        Entidades: cliente?.numeroEntidades || "",
         Activos: cliente?.totalBienes || 0,
         Procesos: cliente?.tieneProcesos || "No se ha registrado",
         Responsable: cliente?.responsable || "",

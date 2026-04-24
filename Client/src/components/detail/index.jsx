@@ -147,7 +147,7 @@ const Detail = () => {
     cotizacionAprobada: "No",
     status: "",
     tiempoMora: "",
-    numeroEntidades: 0,
+    numeroEntidades: "",
     calificacion: "",
     siguientePaso: "",
     ingresos: "",

@@ -23,7 +23,7 @@ export default (sequelize) => {
       genero: { type: DataTypes.STRING, allowNull: true },
       totalDeudas: { type: DataTypes.STRING, allowNull: true },
       tiempoMora: { type: DataTypes.STRING, allowNull: true },
-      numeroEntidades: { type: DataTypes.INTEGER, allowNull: true },
+      numeroEntidades: { type: DataTypes.STRING, allowNull: true },
       totalBienes: { type: DataTypes.STRING, allowNull: true },
       fechaCierre: { type: DataTypes.STRING, allowNull: true },
       status: {

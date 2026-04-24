@@ -72,20 +72,20 @@ const actualizaProspecto = async (
 
   ciudad_anterior ? prospectoActualizar.removeCiudad(ciudad_anterior) : null;
 
-let numeroEntidadesNormalizado = 0;
+// let numeroEntidadesNormalizado = 0;
 
-if (numeroEntidades !== undefined && numeroEntidades !== null) {
-  const valor =
-    typeof numeroEntidades === "string"
-      ? numeroEntidades.trim()
-      : numeroEntidades;
+// if (numeroEntidades !== undefined && numeroEntidades !== null) {
+//   const valor =
+//     typeof numeroEntidades === "string"
+//       ? numeroEntidades.trim()
+//       : numeroEntidades;
 
-  numeroEntidadesNormalizado = parseInt(valor, 10);
+//   numeroEntidadesNormalizado = parseInt(valor, 10);
 
-  if (isNaN(numeroEntidadesNormalizado)) {
-    numeroEntidadesNormalizado = 0;
-  }
-}
+//   if (isNaN(numeroEntidadesNormalizado)) {
+//     numeroEntidadesNormalizado = 0;
+//   }
+// }
   const [updateCount, updateClient] = await Prospecto.update(
     {
       cedulaProspecto: cedulaProspecto,
@@ -96,7 +96,7 @@ if (numeroEntidades !== undefined && numeroEntidades !== null) {
       direccion: direccion,
       comentarios: comentarios,
       tieneProcesos: tieneProcesos,
-      numeroEntidades: numeroEntidadesNormalizado,
+      numeroEntidades: numeroEntidades,
       tiempoMora: tiempoMora,
       totalBienes: totalBienes,
       totalDeudas: totalDeudas,

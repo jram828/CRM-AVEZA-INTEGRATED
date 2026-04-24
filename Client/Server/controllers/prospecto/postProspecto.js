@@ -45,6 +45,7 @@ const postProspecto = async (req, res) => {
     cuotas,
     comentarios,
     valor_pretensiones,
+      numeroEntidades,
   });
   if (
     !email ||
@@ -73,6 +74,8 @@ const postProspecto = async (req, res) => {
         cuotas: cuotas,
         comentarios: comentarios,
         valor_pretensiones: valor_pretensiones,
+        numeroEntidades: numeroEntidades,
+        tiempoMora: tiempoMora,
       });
 
       newProspecto.addCiudad(codigo_ciudad);

@@ -400,7 +400,7 @@ const Prospectos = () => {
         Fase: prospecto?.fase || "",
         Pasivo: prospecto?.totalDeudas || 0,
         Mora: prospecto?.tiempoMora || 0,
-        Entidades: prospecto?.numeroEntidades || 0,
+        Entidades: prospecto?.numeroEntidades || "",
         Activos: prospecto?.totalBienes || 0,
         Procesos: prospecto?.tieneProcesos || "No se ha registrado",
         Responsable: prospecto?.responsable || "",

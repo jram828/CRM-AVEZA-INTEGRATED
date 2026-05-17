@@ -48,7 +48,11 @@ export const buscarCorreos = async () => {
 
       const obtenerContenidoPlano = (parts) => {
         for (const part of parts) {
-          if (part.which === "TEXT" || part.which === "BODY" || part.which === "1") {
+          if (
+            part.which === "TEXT" ||
+            part.which === "BODY" ||
+            part.which === "1"
+          ) {
             return part.body;
           }
           if (Array.isArray(part.parts)) {
@@ -61,7 +65,11 @@ export const buscarCorreos = async () => {
 
       const obtenerCharset = (headers) => {
         const rawHeader = headers["content-type"];
-        const raw = Array.isArray(rawHeader) ? rawHeader[0] : (typeof rawHeader === "string" ? rawHeader : "");
+        const raw = Array.isArray(rawHeader)
+          ? rawHeader[0]
+          : typeof rawHeader === "string"
+            ? rawHeader
+            : "";
         const match = raw.match(/charset="?([\w\-]+)"?/i);
         return match ? match[1].toLowerCase() : "utf-8";
       };
@@ -79,7 +87,9 @@ export const buscarCorreos = async () => {
       try {
         decoded = iconv.decode(Buffer.from(decodedQP), charset);
       } catch (err) {
-        console.warn(`⚠️ Charset "${charset}" no soportado, usando fallback latin1`);
+        console.warn(
+          `⚠️ Charset "${charset}" no soportado, usando fallback latin1`,
+        );
         decoded = iconv.decode(Buffer.from(decodedQP), "latin1");
       }
 
@@ -128,31 +138,25 @@ const extraerDatos = (texto) => {
     celular: normalizarTexto(lineas[2] || ""),
     nombre_ciudad: normalizarTexto(lineas[3] || ""),
     email: normalizarTexto(lineas[4] || ""),
-    impuestoLaboral: "",
-    vehiculoCooperativas: "",
-    hipotecario: "",
-    proveedores: "",
-    bancoPersonas: "",
-    familiares: "",
-    tieneBienes: "",
-    bienes: "",
-    totalBienes: "",
     totalDeudas: "",
+    numeroEntidades: "",
+    tiempoMora: "",
+    tieneBienes: "",
+    tieneProcesos: "",
+    totalBienes: "",
+    codeudor: "",
     modoContacto: "",
   };
 
   let idx = 5;
   const campos = [
-    "impuestoLaboral",
-    "vehiculoCooperativas",
-    "hipotecario",
-    "proveedores",
-    "bancoPersonas",
-    "familiares",
-    "tieneBienes",
-    "bienes",
-    "totalBienes",
     "totalDeudas",
+    "numeroEntidades",
+    "tiempoMora",
+    "tieneBienes",
+    "tieneProcesos",
+    "totalBienes",
+    "codeudor",
     "modoContacto",
   ];
 

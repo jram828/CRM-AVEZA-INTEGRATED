@@ -35,6 +35,10 @@ const RegistroProspecto = () => {
     comentarios: "",
     valor_pretensiones: "",
     nombreEnviar: "",
+    codeudor: "",
+    tieneProcesos: "",
+    numeroEntidades: "",
+    tiempoMora: "",
   });
 
   const [ciudadFilt, setCiudadFilt] = useState([]);

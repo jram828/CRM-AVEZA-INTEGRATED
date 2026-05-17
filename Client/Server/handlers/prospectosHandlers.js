@@ -112,6 +112,8 @@ const postProspectosHandler = async (req, res) => {
     fase,
     status,
     totalDeudas,
+    codeudor,
+
   } = req.body;
 
   try {
@@ -141,6 +143,7 @@ const postProspectosHandler = async (req, res) => {
       fase,
       status,
       totalDeudas,
+      codeudor
     );
     console.log("Response crear prospecto", response);
     if (response) res.status(200).json(response);
@@ -201,6 +204,7 @@ const postActualizaProspectos = async (req, res) => {
     fuente,
     servicio,
     genero,
+    codeudor,
   } = req.body;
 
   const ciudadNew = ciudadEnviar || ciudad;
@@ -232,6 +236,7 @@ const postActualizaProspectos = async (req, res) => {
       fuente,
       servicio,
       genero,
+      codeudor
     );
 
     if (response) res.status(200).json(response);

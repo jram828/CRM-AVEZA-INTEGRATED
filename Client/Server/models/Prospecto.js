@@ -61,6 +61,10 @@ export default (sequelize) => {
         allowNull: true,
         defaultValue: "No se ha registrado",
       },
+        codeudor: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       modoContacto: { type: DataTypes.STRING, allowNull: true },
       contactado: {
         type: DataTypes.STRING,

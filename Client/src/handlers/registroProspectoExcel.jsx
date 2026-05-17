@@ -45,11 +45,12 @@ export async function registroProspectoExcel() {
           tiempoMora: row[12],
           numeroEntidades: row[13],
           totalBienes: row[14],
-          tieneProcesos: row[15],
-          responsable: row[16],
-          fuente: row[17],
-          genero: row[22],
-          comentarios: row[23],
+          codeudor: row[15],
+          tieneProcesos: row[16],
+          responsable: row[17],
+          fuente: row[18],
+          genero: row[23],
+          comentarios: row[24],
         };
         // console.log("Prospecto data:", ProspectoData);
         const URL = "/prospectos/registroProspecto";

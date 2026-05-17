@@ -157,6 +157,8 @@ const Detail = () => {
     fuente: "",
     servicio: "",
     genero: "",
+    codeudor: "",
+    tieneProcesos: "",
   });
   console.log("User Data Detail:", userDataDetail);
 
@@ -245,6 +247,10 @@ const Detail = () => {
         servicio: datos?.servicio || "",
         genero: datos?.genero || "",
         fechaCierre: datos?.fechaCierre || "",
+        codeudor: datos?.codeudor || "",
+        tieneProcesos: datos?.tieneProcesos || "",
+        numeroEntidades: datos?.numeroEntidades || "",
+        tiempoMora: datos?.tiempoMora || "",
       });
     } else {
       setUserDataDetail({
@@ -300,6 +306,7 @@ const Detail = () => {
         servicio: datos?.servicio || "",
         genero: datos?.genero || "",
         fechaCierre: datos?.fechaCierre || "",
+        codeudor: datos?.codeudor || "",
       });
     }
   }, [dispatch, source]);
@@ -1042,6 +1049,15 @@ const getFechaColor = (fechaVencimiento) => {
                 label="Numero de entidades"
                 name="numeroEntidades"
                 value={userDataDetail.numeroEntidades}
+                onChange={handleUpdateDetail}
+                fullWidth
+                inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}
+                sx={{ minWidth: "160px", bgcolor: "#fff" }}
+              />
+              <TextField
+                label="Codeudor"
+                name="codeudor"
+                value={userDataDetail.codeudor}
                 onChange={handleUpdateDetail}
                 fullWidth
                 inputProps={{ style: { paddingTop: 4, paddingBottom: 4 } }}

@@ -31,11 +31,24 @@ export async function postProspectoAut(userDataRegistro) {
     totalBienes,
     totalDeudas,
     modoContacto,
+    codeudor,
+    numeroEntidades,
+    tiempoMora,
+    tieneProcesos,
   } = userDataRegistro;
 
+  // Limpia el nombre de ciudad eliminando todo lo que esté entre paréntesis
+  const ciudadNombreLimpio = nombre_ciudad
+    ? nombre_ciudad
+        .replace(/\s*\(.*?\)\s*/g, "")
+        .trim()
+        .toUpperCase()
+    : null;
+
   const ciudadfilter = codigoCiudades.filter(
-    (ciudad) => ciudad.nombre_ciudad === nombre_ciudad?.toUpperCase(),
+    (ciudad) => ciudad.nombre_ciudad === ciudadNombreLimpio,
   );
+
   const codigo_ciudad = ciudadfilter[0]?.codigo_ciudad || 0;
 
   console.log("Codigo ciudad encontrado:", codigo_ciudad);
@@ -100,6 +113,10 @@ export async function postProspectoAut(userDataRegistro) {
           totalBienes,
           totalDeudas,
           modoContacto,
+          numeroEntidades,
+          tiempoMora,
+          tieneProcesos,
+          codeudor,
         });
 
         if (codigo_ciudad !== 0) {
@@ -133,6 +150,10 @@ export async function postProspectoAut(userDataRegistro) {
         totalBienes,
         totalDeudas,
         modoContacto,
+        codeudor,
+        numeroEntidades,
+        tiempoMora,
+        tieneProcesos,
       });
 
       if (codigo_ciudad !== 0) {

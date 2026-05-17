@@ -26,6 +26,7 @@ const actualizaProspecto = async (
   fuente,
   servicio,
   genero,
+  codeudor,
   // password,
 ) => {
   const cedulaProspecto = cedula;
@@ -55,6 +56,7 @@ const actualizaProspecto = async (
     fuente,
     servicio,
     genero,
+    codeudor,
     // password,
   );
   // console.log("Cedula anterior controller:", cedula_anterior);
@@ -104,6 +106,7 @@ const actualizaProspecto = async (
       fuente: fuente,
       servicio: servicio,
       genero: genero,
+      codeudor: codeudor,
       activo: true,
       // password: password,
     },

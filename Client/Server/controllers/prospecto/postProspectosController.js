@@ -30,6 +30,7 @@ const createProspectoBd = async (
   fase,
   status,
   totalDeudas,
+  codeudor
 ) => {
   console.log("Body crear prospecto controller:", {
     email,
@@ -57,6 +58,7 @@ const createProspectoBd = async (
     fase,
     status,
     totalDeudas,
+    codeudor,
   });
 
   if (
@@ -105,6 +107,7 @@ const createProspectoBd = async (
           fase,
           status,
           totalDeudas,
+          codeudor
         });
 
         if (nombre_ciudad) {
@@ -140,6 +143,7 @@ const createProspectoBd = async (
         status,
         totalDeudas,
         cedulaProspecto: cedulaProspecto && cedulaProspecto !== "" ? cedulaProspecto : null,
+        codeudor
       });
 
       if (nombre_ciudad) {

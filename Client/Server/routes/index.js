@@ -17,6 +17,7 @@ import uploadRouter from "./uploadRoutes.js";
 import acreedorRouter from "./acreedorRoutes.js";
 import dbbackupRouter from "./dbbackupRoutes.js";
 import notasRouter from "./notasRoutes.js";
+import chatRouter from "./chatRoutes.js";
 // import reviewsRouter from "./reviewsRoutes.js";
 // import dashboardRouter from './dashboardRoutes.js'
 
@@ -40,6 +41,7 @@ router.use("/pagosClientes", pagosClientesRouter);
 router.use("/storefile", uploadRouter);
 router.use("/acreedores", acreedorRouter);
 router.use("/dbbackup", dbbackupRouter);
+router.use("/whatsapp", chatRouter);
 // router.use("/reviews", reviewsRouter);
 // router.use("/dashboard", dashboardRouter)
 

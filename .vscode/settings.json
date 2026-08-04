@@ -20,7 +20,8 @@
         "Tareas",
         "Notas",
         "CAMPAÑAS",
-        "Clientes"
+        "Clientes",
+        "IA INTEGRATION"
     ],
     "postman.settings.dotenv-detection-notification-visibility": false
 }
